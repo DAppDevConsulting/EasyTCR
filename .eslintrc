@@ -1,0 +1,10 @@
+{
+  "extends": ["standard", "standard-react"],
+  "plugins": [
+    "standard",
+    "promise"
+  ],
+  "rules": {
+    "react/jsx-uses-vars": [2]
+  }
+}
