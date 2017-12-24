@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import * as publisherActions from './actions/PublisherActions';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -17,21 +22,24 @@ import './App.css';
 
 const muiTheme = getMuiTheme({
   palette: {
-    accent1Color: deepOrange500,
-  },
+    accent1Color: deepOrange500
+  }
 });
 
 class App extends Component {
-  render() {
+  render () {
+    const { publisher } = this.props;
+    const { buyTokens } = this.props.publisherActions;
     return (
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div className='App'>
-            <Header />
+            <Header tokensTotal={publisher.tokensTotal} fetching={publisher.fetching} />
             <div>
               <SideBar Link={Link} />
               <div className='MainContainerWrap column twelve wide'>
                 <MainContainer
+                  buyTokens={buyTokens}
                   Router={Router}
                   Route={Route}
                   Switch={Switch}
@@ -45,4 +53,21 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps (state) {
+  return {
+    publisher: state.publisher
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    publisherActions: bindActionCreators(publisherActions, dispatch)
+  };
+}
+
+App.propTypes = {
+  publisherActions: PropTypes.object.isRequired,
+  publisher: PropTypes.object.isRequired
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
