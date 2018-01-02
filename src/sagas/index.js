@@ -1,11 +1,11 @@
-import { delay } from 'redux-saga';
-import { put, takeEvery } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 
-export function* buyTokens (action) {
-  yield delay(1000);
-  yield put({ type: 'BUY_TOKENS_COMPLETE', tokens: action.tokens });
-}
+import publisher from './publisher';
 
-export default function* watchIncrementAsync () {
-  yield takeEvery('BUY_TOKENS', buyTokens);
+const sagas = [
+  publisher
+];
+
+export default function * root () {
+  yield all(sagas.map(fork));
 }

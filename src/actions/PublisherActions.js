@@ -4,3 +4,9 @@ export function buyTokens (tokens) {
     tokens: tokens
   };
 }
+
+export function getTokens () {
+  return {
+    type: 'REQUEST_TOKEN_INFORMATION'
+  };
+}

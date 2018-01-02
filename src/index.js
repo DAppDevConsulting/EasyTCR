@@ -6,6 +6,11 @@ import './index.css';
 import App from './App';
 import rootSaga from './sagas';
 import registerServiceWorker from './registerServiceWorker';
+import resolveProvider from './resolveProvider';
+
+window.contracts = require('./secrets.json').contracts;
+
+resolveProvider();
 
 const store = configureStore();
 store.runSaga(rootSaga);

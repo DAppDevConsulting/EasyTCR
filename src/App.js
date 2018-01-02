@@ -27,6 +27,10 @@ const muiTheme = getMuiTheme({
 });
 
 class App extends Component {
+  componentWillMount () {
+    this.props.publisherActions.getTokens();
+  }
+
   render () {
     const { publisher } = this.props;
     const { buyTokens } = this.props.publisherActions;
@@ -34,7 +38,7 @@ class App extends Component {
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div className='App'>
-            <Header tokensTotal={publisher.tokensTotal} fetching={publisher.fetching} />
+            <Header tokens={publisher.tokens} ethers={publisher.ethers} fetching={publisher.fetching} />
             <div>
               <SideBar Link={Link} />
               <div className='MainContainerWrap column twelve wide'>

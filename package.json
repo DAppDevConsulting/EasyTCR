@@ -11,7 +11,9 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "web3": "^1.0.0-beta.27",
+    "ethereum-tcr-api": "git+ssh://git@gitlab.com:ethereum-tcr/ethereum-tcr-api.git"
   },
   "scripts": {
     "start": "react-scripts start",
