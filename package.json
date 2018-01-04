@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "ethereum-tcr-api": "git+ssh://git@gitlab.com:ethereum-tcr/ethereum-tcr-api.git",
     "material-ui": "^0.20.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
@@ -12,8 +14,7 @@
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0",
-    "web3": "^1.0.0-beta.27",
-    "ethereum-tcr-api": "git+ssh://git@gitlab.com:ethereum-tcr/ethereum-tcr-api.git"
+    "web3": "^1.0.0-beta.27"
   },
   "scripts": {
     "start": "react-scripts start",
