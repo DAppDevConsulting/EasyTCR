@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import * as publisherActions from './actions/PublisherActions';
+import * as appActions from './actions/AppActions'
 
 import {
   BrowserRouter as Router,
@@ -14,9 +15,12 @@ import {
 import {deepOrange500} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import Header from './components/Header';
 import SideBar from './components/SideBar';
 import MainContainer from './components/MainContainer';
+import TxDialog from './components/TxDialog';
 
 import './App.css';
 
@@ -32,14 +36,21 @@ class App extends Component {
   }
 
   render () {
-    const { publisher } = this.props;
-    const { buyTokens } = this.props.publisherActions;
+    const { publisher, app } = this.props;
+    const { buyTokens, sendTestTxs } = this.props.publisherActions;
+    const { hideTxModal } = this.props.appActions;
     return (
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div className='App'>
+            <TxDialog
+              open={app.transactionsModalOpened}
+              transactions={app.transactions}
+              onClose={hideTxModal}
+            />
             <Header tokens={publisher.tokens} ethers={publisher.ethers} fetching={publisher.fetching} />
             <div>
+              <RaisedButton label='Send a bunch of test TXs' onClick={sendTestTxs} />
               <SideBar Link={Link} />
               <div className='MainContainerWrap column twelve wide'>
                 <MainContainer
@@ -59,19 +70,23 @@ class App extends Component {
 
 function mapStateToProps (state) {
   return {
+    app: state.app,
     publisher: state.publisher
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    appActions: bindActionCreators(appActions, dispatch),
     publisherActions: bindActionCreators(publisherActions, dispatch)
   };
 }
 
 App.propTypes = {
+  appActions: PropTypes.object.isRequired,
   publisherActions: PropTypes.object.isRequired,
-  publisher: PropTypes.object.isRequired
+  publisher: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

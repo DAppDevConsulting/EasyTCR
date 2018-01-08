@@ -10,8 +10,7 @@ export default function publisher (state = initialState, action) {
       return {...state, fetching: true};
 
     case 'BUY_TOKENS_COMPLETE':
-      let { tokens, ethers } = action;
-      return {...state, tokens, ethers, fetching: false};
+      return {...state, fetching: false};
 
     case 'UPDATE_TOKEN_INFORMATION':
       return {...state, tokens: action.tokens, ethers: action.ethers};
