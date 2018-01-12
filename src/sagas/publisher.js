@@ -58,15 +58,31 @@ export function * sendTestTxs (action) {
   yield put({ type: 'SEND_TRANSACTIONS', transactions });
 }
 
+const getListings = async (domains, registry) => {
+  let listings = [];
+  for (let domain of domains) {
+    let listing = registry.getListing(domain);
+    let result = {};
+    result.name = listing.name;
+    let whitelisted = await listing.isWhitelisted();
+    result.status = whitelisted ? 'In registry' : 'In application';
+    result.dueDate = '';
+    if (!whitelisted) {
+      var expTs = await listing.expiresAt();
+      result.dueDate = new Date(expTs).toDateString();
+    }
+    listings.push(result);
+  }
+  return listings;
+};
+
 export function * getPublisherDomains (action) {
   // TODO: спрятать это все за tcr-api
   let registry = new Registry(window.contracts.registry, window.Web3);
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
   let domains = yield apply(api, 'getDomains', [[], account.address]);
 
-  let listings = domains.map((domain) => {
-    return registry.getListing(domain);
-  });
+  let listings = yield apply({getListings: getListings}, 'getListings', [domains, registry]);
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
 }
 

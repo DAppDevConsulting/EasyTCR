@@ -8,15 +8,16 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
+import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 
 class PublisherDomainsList extends Component {
   render () {
     const {listings} = this.props;
     const headersFixed = true;
-    const selectable = true;
-    const adjustForCheckbox = true;
-    const displayRowCheckbox = true;
+    const selectable = false;
+    const adjustForCheckbox = false;
+    const displayRowCheckbox = false;
     const deselectOnClickaway = true;
     const showRowHover = false;
     const stripedRows = false;
@@ -27,11 +28,12 @@ class PublisherDomainsList extends Component {
           fixedFooter={headersFixed}
           selectable={selectable}
         >
-          <TableHeader adjustForCheckbox={adjustForCheckbox}>
+          <TableHeader adjustForCheckbox={adjustForCheckbox} displaySelectAll={selectable}>
             <TableRow>
-              <TableHeaderColumn tooltip='The ID'>ID</TableHeaderColumn>
-              <TableHeaderColumn tooltip='The Domain'>Domain</TableHeaderColumn>
-              <TableHeaderColumn tooltip='The Status'>Status</TableHeaderColumn>
+              <TableHeaderColumn tooltip='The Domain'>MY DOMAIN</TableHeaderColumn>
+              <TableHeaderColumn tooltip='The Status'>STATUS</TableHeaderColumn>
+              <TableHeaderColumn tooltip='Date'>DUE DATE</TableHeaderColumn>
+              <TableHeaderColumn tooltip='View'>ACTIONS</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
@@ -42,24 +44,13 @@ class PublisherDomainsList extends Component {
           >
             {listings.map((row, index) => (
               <TableRow key={index}>
-                <TableRowColumn>{index}</TableRowColumn>
                 <TableRowColumn>{row.name}</TableRowColumn>
                 <TableRowColumn>{row.status}</TableRowColumn>
+                <TableRowColumn>{row.dueDate}</TableRowColumn>
+                <TableRowColumn><RaisedButton label='VIEW' /></TableRowColumn>
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter adjustForCheckbox={adjustForCheckbox}>
-            <TableRow>
-              <TableRowColumn>ID</TableRowColumn>
-              <TableRowColumn>Domain</TableRowColumn>
-              <TableRowColumn>Status</TableRowColumn>
-            </TableRow>
-            <TableRow>
-              <TableRowColumn colSpan='3' style={{textAlign: 'center'}}>
-                Greate Register!
-              </TableRowColumn>
-            </TableRow>
-          </TableFooter>
         </Table>
       </div>
     );
