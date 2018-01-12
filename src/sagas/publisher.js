@@ -2,6 +2,7 @@ import { put, takeEvery, apply } from 'redux-saga/effects';
 import 'babel-polyfill';
 import { Registry } from 'ethereum-tcr-api';
 import Faucet from '../faucet';
+import api from '../services/MetaxApi';
 
 export function * buyTokens (action) {
   let faucet = new Faucet();
@@ -57,8 +58,21 @@ export function * sendTestTxs (action) {
   yield put({ type: 'SEND_TRANSACTIONS', transactions });
 }
 
+export function * getPublisherDomains (action) {
+  // TODO: спрятать это все за tcr-api
+  let registry = new Registry(window.contracts.registry, window.Web3);
+  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
+  let domains = yield apply(api, 'getDomains', [[], account.address]);
+
+  let listings = domains.map((domain) => {
+    return registry.getListing(domain);
+  });
+  yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
+}
+
 export default function * flow () {
   yield takeEvery('BUY_TOKENS', buyTokens);
   yield takeEvery('REQUEST_TOKEN_INFORMATION', fetchTokenInformation);
   yield takeEvery('SEND_TEST_TXS', sendTestTxs);
+  yield takeEvery('REQUEST_PUBLISHER_DOMAINS', getPublisherDomains);
 }

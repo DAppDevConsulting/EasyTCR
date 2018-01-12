@@ -1,0 +1,29 @@
+.PublisherContainer {
+    background-color: #f3f6f8;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.formWrapper {
+    padding-bottom: 30px;
+}
+
+.formItem {
+    display: inline-block;
+    text-align: left;
+    padding-right: 30px;
+    font-family: ProximaNova;
+    font-size: 13px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.46;
+    letter-spacing: normal;
+    color: #3f536e;
+}
+
+.requiredIcon {
+    font-family: Heebo;
+    font-size: 15px;
+    color: #ff151f;
+}

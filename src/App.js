@@ -37,7 +37,7 @@ class App extends Component {
 
   render () {
     const { publisher, app } = this.props;
-    const { buyTokens, sendTestTxs } = this.props.publisherActions;
+    const { buyTokens, sendTestTxs, getPublisherDomains } = this.props.publisherActions;
     const { hideTxModal } = this.props.appActions;
     return (
       <Router>
@@ -52,9 +52,11 @@ class App extends Component {
             <div>
               <RaisedButton label='Send a bunch of test TXs' onClick={sendTestTxs} />
               <SideBar Link={Link} />
-              <div className='MainContainerWrap column twelve wide'>
+              <div className='MainContainerWrapper'>
                 <MainContainer
                   buyTokens={buyTokens}
+                  getPublisherDomains={getPublisherDomains}
+                  publisher={publisher}
                   Router={Router}
                   Route={Route}
                   Switch={Switch}

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Faucet from '../faucet';
+import PublisherDomainsList from './PublisherDomainsList';
+import './PublisherContainer.css';
 
 class PublisherContainer extends Component {
   constructor (props) {
@@ -18,11 +21,29 @@ class PublisherContainer extends Component {
     // Setting token price for further usage
     const faucet = new Faucet();
     faucet.getPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
+    this.props.getPublisherDomains();
   }
 
   render () {
+    const {listings} = this.props.publisher;
     return (
-      <div>
+      <div className='PublisherContainer'>
+        <div>Publisher page</div>
+        <h3> Publisher Application </h3>
+        <div className='formWrapper'>
+          <div className='formItem'>
+            <div>Domain<span className='requiredIcon'>*</span></div>
+            <TextField hintText='example.com' />
+          </div>
+          <div className='formItem'>
+            <div>Bet Token or get Tokens to bet!<span className='requiredIcon'>*</span></div>
+            <TextField hintText='Min 10000' inputStyle={{disableUnderline: true, borderRadius: 4, border: '1px solid #ced4da'}} />
+          </div>
+          <div className='formItem'>
+            <RaisedButton label='Apply' />
+          </div>
+        </div>
+        <PublisherDomainsList listings={listings} />
         <h3> Buy tokens </h3>
         <TextField hintText='0' onChange={(e, value) => this.setState({ value: parseInt(value, 10) })} />
         <FlatButton label='Buy' onClick={() => {
@@ -43,7 +64,9 @@ class PublisherContainer extends Component {
 }
 
 PublisherContainer.propTypes = {
-  buyTokens: PropTypes.func.isRequired
+  buyTokens: PropTypes.func.isRequired,
+  getPublisherDomains: PropTypes.func.isRequired,
+  publisher: PropTypes.object.isRequired
 };
 
 export default PublisherContainer;

@@ -1,13 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AppBar from 'material-ui/AppBar';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import {EtherIcon, AdtIcon, ProfileIcon} from './icons/Icons';
+import './Header.css';
 
 class Header extends Component {
   render () {
     const { tokens, ethers, fetching } = this.props;
     return (
-      <AppBar title={fetching ? 'Loading...' : 'You have ' + tokens + ' tokens and ' + ethers + ' ETH'}
-        iconClassNameRight='muidocs-icon-navigation-expand-more' />
+      <Toolbar className='Header'>
+        <ToolbarGroup firstChild={true}>
+          <ToolbarTitle text='TCR' className='HeaderTitle' />
+        </ToolbarGroup>
+        <ToolbarGroup>
+          <EtherIcon />
+          <ToolbarTitle className='HeaderText' text={fetching ? '...' : ethers + ' ETH'} />
+          <ToolbarSeparator className='Separator' />
+          <AdtIcon />
+          <ToolbarTitle className='HeaderText' text={fetching ? '...' : tokens + ' ADT'} />
+          <ToolbarSeparator className='Separator' />
+          <ProfileIcon />
+        </ToolbarGroup>
+      </Toolbar>
     );
   }
 }

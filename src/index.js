@@ -11,7 +11,7 @@ import resolveProvider from './resolveProvider';
 window.contracts = require('./secrets.json').contracts;
 
 resolveProvider();
-
+document.addEventListener('load', resolveProvider);
 const store = configureStore();
 store.runSaga(rootSaga);
 

@@ -16,3 +16,9 @@ export function sendTestTxs () {
     type: 'SEND_TEST_TXS'
   };
 }
+
+export function getPublisherDomains () {
+  return {
+    type: 'REQUEST_PUBLISHER_DOMAINS'
+  };
+}

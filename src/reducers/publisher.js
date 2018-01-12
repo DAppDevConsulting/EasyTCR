@@ -1,6 +1,7 @@
 const initialState = {
   ethers: 0,
   tokens: 0,
+  listings: [],
   fetching: false
 };
 
@@ -14,6 +15,9 @@ export default function publisher (state = initialState, action) {
 
     case 'UPDATE_TOKEN_INFORMATION':
       return {...state, tokens: action.tokens, ethers: action.ethers};
+
+    case 'UPDATE_PUBLISHER_DOMAINS':
+      return {...state, listings: action.listings};
 
     default:
       return state;
