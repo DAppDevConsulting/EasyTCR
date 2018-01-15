@@ -72,15 +72,20 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+### Deploying
+To completely install all dependencies via `npm install` you have to add an SSH key of the machine you're working on in order to pull a [ethereum-tcr-api](https://gitlab.com/ethereum-tcr/ethereum-tcr-api).
+
 ### src/secrets.json
 ```json
 {
   "contracts": {
-    "registry": "0x0000", // Registry contract address
-    "faucet": "0x0000"    // Sale (Faucet) contract address
+    "registry": "0x0000",
+    "faucet": "0x0000"
   }
 }
 ```
+
+where `"registry"` is the Registry contract address and `"faucet"` is the Sale contract address.
 
 Here are the addresses for local Test RPC. They will be the same in case you've deployed Test RPC like described in [ethereum-tcr-solidity](https://gitlab.com/ethereum-tcr/ethereum-tcr-solidity) using `run.sh`
 
