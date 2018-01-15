@@ -76,7 +76,19 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ```json
 {
   "contracts": {
-    "registry": "0x0000"
+    "registry": "0x0000", // Registry contract address
+    "faucet": "0x0000"    // Sale (Faucet) contract address
+  }
+}
+```
+
+Here are the addresses for local Test RPC. They will be the same in case you've deployed Test RPC like described in [ethereum-tcr-solidity](https://gitlab.com/ethereum-tcr/ethereum-tcr-solidity) using `run.sh`
+
+```json
+{
+  "contracts": {
+    "registry": "0x8cca204fe0a9d9f734f6d05a870eab36f64cce5e",
+    "faucet": "0xfb35d3cb34e823f52fcf5c55111c7e8f3552716b"
   }
 }
 ```
