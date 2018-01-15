@@ -1,50 +1,16 @@
 import React, { Component } from 'react';
-import Paper from 'material-ui/Paper';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
-import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import {List, ListItem} from 'material-ui/List';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
+import ListItemToNavigate from './ListItemToNavigate';
 import {TokenHolderIcon, AdvertiserIcon, PublisherIcon, ManageIcon} from './icons/Icons';
 import './SideBar.css';
 
-const style = {
-  paper: {
-    display: 'inline-block',
-    float: 'left',
-    margin: '16px 32px 16px 0',
-  },
-  rightIcon: {
-    textAlign: 'center',
-    lineHeight: '24px',
-  },
-};
-
 class SideBar extends Component {
   constructor (props) {
-     super();
+    super();
+  }
 
-     this._Link = props.Link;
-   }
-  state = {
-    open: false,
-  };
-
-  handleToggle = () => {
-    this.setState({
-      open: !this.state.open,
-    });
-  };
-
-  handleNestedListToggle = (item) => {
-    this.setState({
-      open: item.state.open,
-    });
-  };
-
-   render() {
-    const Link = this._Link;
+  render () {
+    const primaryTogglesNestedList = true;
     return (
       <div className='SideBarContainer'>
         <div>
@@ -52,54 +18,46 @@ class SideBar extends Component {
             <ListItem
               primaryText='Menu'
               initiallyOpen={true}
-              primaryTogglesNestedList={true}
+              primaryTogglesNestedList={primaryTogglesNestedList}
               nestedItems={[
                 <ListItem
                   key={1}
                   primaryText='Token Holder'
                   leftIcon={<TokenHolderIcon />}
                 />,
-                <ListItem
+                <ListItemToNavigate
                   key={2}
                   primaryText='Publisher page'
+                  navigationPath='/publisher'
                   leftIcon={<PublisherIcon />}
                 />,
-                <ListItem
+                <ListItemToNavigate
                   key={3}
                   primaryText='Advertiser page'
+                  navigationPath='/advertizer'
                   leftIcon={<AdvertiserIcon />}
                 />,
                 <ListItem
                   key={4}
                   primaryText='Manage token'
                   leftIcon={<ManageIcon />}
-                />,
+                />
+              ]}
+            />
+            <ListItem
+              primaryText='Documentation'
+              initiallyOpen={false}
+              primaryTogglesNestedList={primaryTogglesNestedList}
+              nestedItems={[
+                <ListItem
+                  key={1}
+                  primaryText='Some documentation'
+                  leftIcon={<TokenHolderIcon />}
+                />
               ]}
             />
           </List>
-          <ListItem
-            primaryText='Documentation'
-            initiallyOpen={false}
-            primaryTogglesNestedList={true}
-            nestedItems={[
-              <ListItem
-                key={1}
-                primaryText='Some documentation'
-                leftIcon={<TokenHolderIcon />}
-              />
-            ]}
-          />
         </div>
-        <Paper style={style.paper}>
-          <Menu>
-            <MenuItem leftIcon={<RemoveRedEye />}>
-              <Link to='/advertizer'>As Advertizer</Link>
-            </MenuItem>
-            <MenuItem leftIcon={<PersonAdd />}>
-              <Link to='/publisher'>As Publisher</Link>
-            </MenuItem>
-          </Menu>
-        </Paper>
       </div>
     );
   }

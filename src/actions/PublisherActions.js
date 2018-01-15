@@ -22,3 +22,10 @@ export function getPublisherDomains () {
     type: 'REQUEST_PUBLISHER_DOMAINS'
   };
 }
+
+export function addDomain (name) {
+  return {
+    type: 'ADD_DOMAIN',
+    name: name
+  };
+}

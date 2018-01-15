@@ -37,7 +37,7 @@ class PublisherContainer extends Component {
           </div>
           <div className='formItem'>
             <div>Bet Token or get Tokens to bet!<span className='requiredIcon'>*</span></div>
-            <TextField hintText='Min 10000' inputStyle={{disableUnderline: true, borderRadius: 4, border: '1px solid #ced4da'}} />
+            <TextField hintText='Min 10000' />
           </div>
           <div className='formItem'>
             <RaisedButton label='Apply' />
