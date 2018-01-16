@@ -33,10 +33,11 @@ const muiTheme = getMuiTheme({
 class App extends Component {
   componentWillMount () {
     this.props.publisherActions.getTokens();
+    this.props.appActions.init();
   }
 
   render () {
-    const { publisher, app } = this.props;
+    const { publisher, app, parameterizer } = this.props;
     const { buyTokens, sendTestTxs, getPublisherDomains } = this.props.publisherActions;
     const { hideTxModal } = this.props.appActions;
     return (
@@ -57,6 +58,8 @@ class App extends Component {
                   buyTokens={buyTokens}
                   getPublisherDomains={getPublisherDomains}
                   publisher={publisher}
+                  app={app}
+                  parameterizer={parameterizer}
                   Router={Router}
                   Route={Route}
                   Switch={Switch}
@@ -73,14 +76,15 @@ class App extends Component {
 function mapStateToProps (state) {
   return {
     app: state.app,
-    publisher: state.publisher
+    publisher: state.publisher,
+    parameterizer: state.parameterizer
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     appActions: bindActionCreators(appActions, dispatch),
-    publisherActions: bindActionCreators(publisherActions, dispatch)
+    publisherActions: bindActionCreators(publisherActions, dispatch),
   };
 }
 
@@ -88,7 +92,8 @@ App.propTypes = {
   appActions: PropTypes.object.isRequired,
   publisherActions: PropTypes.object.isRequired,
   publisher: PropTypes.object.isRequired,
-  app: PropTypes.object.isRequired
+  app: PropTypes.object.isRequired,
+  parameterizer: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

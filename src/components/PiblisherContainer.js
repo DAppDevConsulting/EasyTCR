@@ -37,7 +37,7 @@ class PublisherContainer extends Component {
           </div>
           <div className='formItem'>
             <div>Bet Token or get Tokens to bet!<span className='requiredIcon'>*</span></div>
-            <TextField hintText='Min 10000' />
+            <TextField hintText={'Min ' + this.props.minDeposit} />
           </div>
           <div className='formItem'>
             <RaisedButton label='Apply' />
@@ -66,7 +66,11 @@ class PublisherContainer extends Component {
 PublisherContainer.propTypes = {
   buyTokens: PropTypes.func.isRequired,
   getPublisherDomains: PropTypes.func.isRequired,
-  publisher: PropTypes.object.isRequired
+  publisher: PropTypes.object.isRequired,
+  minDeposit: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ])
 };
 
 export default PublisherContainer;

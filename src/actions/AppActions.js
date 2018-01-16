@@ -3,3 +3,9 @@ export function hideTxModal () {
     type: 'HIDE_TRANSACTIONS_MODAL'
   };
 }
+
+export function init () {
+  return {
+    type: 'APP_INIT'
+  };
+}
