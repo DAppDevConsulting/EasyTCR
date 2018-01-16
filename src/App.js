@@ -37,7 +37,7 @@ class App extends Component {
 
   render () {
     const { publisher, app } = this.props;
-    const { buyTokens, sendTestTxs, getPublisherDomains } = this.props.publisherActions;
+    const { buyTokens, sendTestTxs, getPublisherDomains, addDomain } = this.props.publisherActions;
     const { hideTxModal } = this.props.appActions;
     return (
       <Router>
@@ -56,6 +56,7 @@ class App extends Component {
                 <MainContainer
                   buyTokens={buyTokens}
                   getPublisherDomains={getPublisherDomains}
+                  addDomain={addDomain}
                   publisher={publisher}
                   Router={Router}
                   Route={Route}

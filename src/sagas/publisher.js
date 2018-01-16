@@ -69,7 +69,7 @@ const getListings = async (domains, registry) => {
     result.dueDate = '';
     if (!whitelisted) {
       var expTs = await listing.expiresAt();
-      result.dueDate = new Date(expTs).toDateString();
+      result.dueDate = new Date(expTs * 1000).toDateString();
     }
     listings.push(result);
   }
@@ -86,9 +86,19 @@ export function * getPublisherDomains (action) {
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
 }
 
+export function * addDomain (action) {
+  // TODO: спрятать это все за tcr-api
+  let registry = new Registry(window.contracts.registry, window.Web3);
+  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
+  yield apply(api, 'addDomain', [action.name, account.address]);
+  yield apply(registry, 'createListing', [action.name, action.stake]);
+  yield put({type: 'REQUEST_PUBLISHER_DOMAINS'});
+}
+
 export default function * flow () {
   yield takeEvery('BUY_TOKENS', buyTokens);
   yield takeEvery('REQUEST_TOKEN_INFORMATION', fetchTokenInformation);
   yield takeEvery('SEND_TEST_TXS', sendTestTxs);
   yield takeEvery('REQUEST_PUBLISHER_DOMAINS', getPublisherDomains);
+  yield takeEvery('ADD_DOMAIN', addDomain);
 }

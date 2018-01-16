@@ -23,9 +23,10 @@ export function getPublisherDomains () {
   };
 }
 
-export function addDomain (name) {
+export function addDomain (name, tokens) {
   return {
     type: 'ADD_DOMAIN',
-    name: name
+    name: name,
+    stake: tokens
   };
 }

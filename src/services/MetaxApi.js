@@ -9,5 +9,22 @@ export default {
     }
     let domains = await (await window.fetch(`${config.host}registry/domains?${params.join('&')}`)).json();
     return domains;
+  },
+  addDomain: async (domainName, ownerAddress) => {
+    try {
+      await window.fetch(
+        `${config.host}applications`,
+        {
+          method: 'post',
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({domain: domainName, account: ownerAddress})
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   }
 };

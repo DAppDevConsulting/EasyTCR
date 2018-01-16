@@ -13,7 +13,9 @@ class PublisherContainer extends Component {
 
     this.state = {
       value: 0,
-      price: 0
+      price: 0,
+      domain: '',
+      stake: 0
     };
   }
 
@@ -33,14 +35,14 @@ class PublisherContainer extends Component {
         <div className='formWrapper'>
           <div className='formItem'>
             <div>Domain<span className='requiredIcon'>*</span></div>
-            <TextField hintText='example.com' />
+            <TextField hintText='example.com' onChange={(e, value) => this.setState({ domain: value })} />
           </div>
           <div className='formItem'>
             <div>Bet Token or get Tokens to bet!<span className='requiredIcon'>*</span></div>
-            <TextField hintText='Min 10000' />
+            <TextField hintText='Min 10000' onChange={(e, value) => this.setState({ stake: parseInt(value, 10) })} />
           </div>
           <div className='formItem'>
-            <RaisedButton label='Apply' />
+            <RaisedButton label='Apply' onClick={() => this.addDomain()} />
           </div>
         </div>
         <PublisherDomainsList listings={listings} />
@@ -61,11 +63,16 @@ class PublisherContainer extends Component {
   buyTokens () {
     this.props.buyTokens(this.state.value, 10);
   }
+
+  addDomain () {
+    this.props.addDomain(this.state.domain, this.state.stake);
+  }
 }
 
 PublisherContainer.propTypes = {
   buyTokens: PropTypes.func.isRequired,
   getPublisherDomains: PropTypes.func.isRequired,
+  addDomain: PropTypes.func.isRequired,
   publisher: PropTypes.object.isRequired
 };
 
