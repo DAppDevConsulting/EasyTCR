@@ -84,7 +84,7 @@ export function * getPublisherDomains (action) {
   // TODO: спрятать это все за tcr-api
   let registry = new Registry(window.contracts.registry, window.Web3);
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
-  let domains = yield apply(api, 'getDomains', [[], account.address]);
+  let domains = yield apply(api, 'getDomains', [[], account.owner]);
 
   let listings = yield apply({getListings: getListings}, 'getListings', [domains, registry]);
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
