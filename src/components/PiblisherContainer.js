@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import Card from 'material-ui/Card';
+
 import Faucet from '../faucet';
 import PublisherDomainsList from './PublisherDomainsList';
 import './PublisherContainer.css';
+import TxQueue from './TxQueue';
 
 class PublisherContainer extends Component {
   constructor (props) {
@@ -30,6 +33,9 @@ class PublisherContainer extends Component {
       <div className='PublisherContainer'>
         <div>Publisher page</div>
         <h3> Publisher Application </h3>
+        <Card className='txqueue-container'>
+          <TxQueue />
+        </Card>
         <div className='formWrapper'>
           <div className='formItem'>
             <div>Domain<span className='requiredIcon'>*</span></div>

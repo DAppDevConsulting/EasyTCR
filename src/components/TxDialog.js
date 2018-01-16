@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import {red500} from 'material-ui/styles/colors';
 
-class TxDialog extends Component {
+class TxQueue extends Component {
   constructor (props) {
     super(props);
 
@@ -101,37 +99,19 @@ class TxDialog extends Component {
     const { txIndex, finished } = this.state;
 
     return (
-      <Dialog
-        title='You will have to complete 3 transactions'
-        modal={false}
-        open={this.props.open}
-        actions={[
-          <FlatButton
-            label='Close'
-            disableTouchRipple
-            disableFocusRipple
-            primary
-            onClick={() => this.props.onClose()}
-          />
-        ]}
-      >
         <Stepper orientation='vertical' activeStep={txIndex}>
           {this.renderTxs()}
         </Stepper>
-      </Dialog>
     );
   }
 }
 
-TxDialog.defaultProps = {
-  open: false,
+TxQueue.defaultProps = {
   transactions: []
 };
 
-TxDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
+TxQueue.propTypes = {
   transactions: PropTypes.array.isRequired,
-  onClose: PropTypes.func.isRequired
 };
 
-export default TxDialog;
+export default TxQueue;
