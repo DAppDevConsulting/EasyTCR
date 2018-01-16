@@ -98,8 +98,12 @@ export function * addDomain (action) {
   // TODO: спрятать это все за tcr-api
   let registry = new Registry(window.contracts.registry, window.Web3);
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
-  yield apply(api, 'addDomain', [action.name, account.address]);
-  yield apply(registry, 'createListing', [action.name, action.stake]);
+  try {
+    yield apply(api, 'addDomain', [action.name, account.address]);
+    yield apply(registry, 'createListing', [action.name, action.stake]);
+  } catch (err) {
+    console.log(err);
+  }
   yield put({type: 'REQUEST_PUBLISHER_DOMAINS'});
 }
 

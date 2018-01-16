@@ -15,7 +15,9 @@ class PublisherContainer extends Component {
       value: 0,
       price: 0,
       domain: '',
-      stake: 0
+      domainError: '',
+      stake: 0,
+      stakeError: ''
     };
   }
 
@@ -35,11 +37,29 @@ class PublisherContainer extends Component {
         <div className='formWrapper'>
           <div className='formItem'>
             <div>Domain<span className='requiredIcon'>*</span></div>
-            <TextField hintText='example.com' onChange={(e, value) => this.setState({ domain: value })} />
+            <TextField
+              hintText='example.com'
+              value={this.state.domain}
+              errorText={this.state.domainError}
+              onChange={(e, value) => {
+                let parts = value.split('.');
+                let errorText = (parts.length > 1 || value === '') ? '' : 'invalid domain name';
+                this.setState({ domain: value, domainError: errorText });
+              }}
+            />
           </div>
           <div className='formItem'>
             <div>Bet Token or get Tokens to bet!<span className='requiredIcon'>*</span></div>
-            <TextField hintText='Min 10000' onChange={(e, value) => this.setState({ stake: parseInt(value, 10) })} />
+            <TextField
+              hintText='Min 10000'
+              value={this.state.stake || ''}
+              errorText={this.state.stakeError}
+              onChange={(e, value) => {
+                let stake = parseInt(value, 10);
+                let errorText = stake > 0 && stake < 10000 ? 'stake less then min' : '';
+                this.setState({ stake: stake, stakeError: errorText });
+              }}
+            />
           </div>
           <div className='formItem'>
             <RaisedButton label='Apply' onClick={() => this.addDomain()} />
@@ -66,6 +86,7 @@ class PublisherContainer extends Component {
 
   addDomain () {
     this.props.addDomain(this.state.domain, this.state.stake);
+    this.setState({domain: '', stake: 0});
   }
 }
 
