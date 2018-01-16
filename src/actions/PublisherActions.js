@@ -23,9 +23,16 @@ export function getPublisherDomains () {
   };
 }
 
-export function addDomain (name) {
+export function applyDomain (name, tokens) {
   return {
-    type: 'ADD_DOMAIN',
-    name: name
+    type: 'APPLY_DOMAIN',
+    name,
+    tokens
+  };
+}
+
+export function hideTxQueue () {
+  return {
+    type: 'HIDE_TX_QUEUE'
   };
 }

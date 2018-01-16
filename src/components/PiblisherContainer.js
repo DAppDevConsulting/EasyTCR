@@ -16,7 +16,9 @@ class PublisherContainer extends Component {
 
     this.state = {
       value: 0,
-      price: 0
+      price: 0,
+      domain: '',
+      deposit: ''
     };
   }
 
@@ -28,25 +30,25 @@ class PublisherContainer extends Component {
   }
 
   render () {
-    const {listings} = this.props.publisher;
+    const { listings, txQueue } = this.props.publisher;
     return (
       <div className='PublisherContainer'>
         <div>Publisher page</div>
         <h3> Publisher Application </h3>
         <Card className='txqueue-container'>
-          <TxQueue />
+          {txQueue && <TxQueue transactions={txQueue.transactions} title={txQueue.title} onEnd={this.props.hideTxQueue} />}
         </Card>
         <div className='formWrapper'>
           <div className='formItem'>
             <div>Domain<span className='requiredIcon'>*</span></div>
-            <TextField hintText='example.com' />
+            <TextField hintText='example.com' onChange={(e, domain) => this.setState({ domain })} />
           </div>
           <div className='formItem'>
             <div>Bet Token or get Tokens to bet!<span className='requiredIcon'>*</span></div>
-            <TextField hintText={'Min ' + this.props.minDeposit} />
+            <TextField hintText={'Min ' + this.props.minDeposit} onChange={(e, deposit) => this.setState({ deposit })} />
           </div>
           <div className='formItem'>
-            <RaisedButton label='Apply' />
+            <RaisedButton label='Apply' onClick={() => this.props.applyDomain(this.state.domain, this.state.deposit)} />
           </div>
         </div>
         <PublisherDomainsList listings={listings} />
@@ -71,6 +73,8 @@ class PublisherContainer extends Component {
 
 PublisherContainer.propTypes = {
   buyTokens: PropTypes.func.isRequired,
+  applyDomain: PropTypes.func.isRequired,
+  hideTxQueue: PropTypes.func.isRequired,
   getPublisherDomains: PropTypes.func.isRequired,
   publisher: PropTypes.object.isRequired,
   minDeposit: PropTypes.oneOfType([
