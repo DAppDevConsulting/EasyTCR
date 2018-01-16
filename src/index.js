@@ -10,14 +10,18 @@ import resolveProvider from './resolveProvider';
 
 window.contracts = require('./secrets.json').contracts;
 
-resolveProvider();
-document.addEventListener('load', resolveProvider);
-const store = configureStore();
-store.runSaga(rootSaga);
+document.addEventListener('DOMContentLoaded', function () {
+  resolveProvider().then(() => runApplication());
+});
 
-ReactDOM.render(
-  <Provider store={store}><App /></Provider>,
-  document.getElementById('root')
-);
+function runApplication () {
+  const store = configureStore();
+  store.runSaga(rootSaga);
 
-registerServiceWorker();
+  ReactDOM.render(
+    <Provider store={store}><App /></Provider>,
+    document.getElementById('root')
+  );
+
+  registerServiceWorker();
+}

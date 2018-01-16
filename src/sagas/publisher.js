@@ -3,6 +3,7 @@ import 'babel-polyfill';
 import { Registry } from 'ethereum-tcr-api';
 import Faucet from '../faucet';
 import api from '../services/MetaxApi';
+import resolveProvider from '../resolveProvider';
 
 export function * buyTokens (action) {
   let faucet = new Faucet();
@@ -77,6 +78,9 @@ const getListings = async (domains, registry) => {
 };
 
 export function * getPublisherDomains (action) {
+  if (!window.Web3.eth.defaultAccount) {
+    return;
+  }
   // TODO: спрятать это все за tcr-api
   let registry = new Registry(window.contracts.registry, window.Web3);
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
@@ -87,6 +91,10 @@ export function * getPublisherDomains (action) {
 }
 
 export function * addDomain (action) {
+  // TODO: handle this case
+  if (!window.Web3.eth.defaultAccount) {
+    return;
+  }
   // TODO: спрятать это все за tcr-api
   let registry = new Registry(window.contracts.registry, window.Web3);
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
