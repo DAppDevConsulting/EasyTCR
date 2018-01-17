@@ -23,12 +23,26 @@ export function * fetchTokenInformation (action) {
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
 
   let tokens = yield apply(account, 'getTokenBalance');
-  let ethers = yield apply(account, 'getEtherBalance');
+  // TODO: спрятать уровнем выше
+  let ethers = window.web3.fromWei(yield apply(account, 'getEtherBalance'));
 
   yield put({ type: 'UPDATE_TOKEN_INFORMATION', tokens, ethers });
 }
 
 export function * applyDomain (action) {
+  // TODO: handle this case
+  if (!window.Web3.eth.defaultAccount) {
+    return;
+  }
+  // TODO: спрятать это все за tcr-api
+  let registry = new Registry(window.contracts.registry, window.Web3);
+  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
+  try {
+    yield apply(api, 'addDomain', [action.name, account.owner]);
+  } catch (err) {
+    console.log(err);
+  }
+
   let { minDeposit } = (yield select()).parameterizer;
   let queue = yield call(getApplyDomainQueue, action.name, action.tokens, minDeposit);
 
@@ -66,27 +80,11 @@ export function * getPublisherDomains (action) {
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
 }
 
-export function * addDomain (action) {
-  // TODO: handle this case
-  if (!window.Web3.eth.defaultAccount) {
-    return;
-  }
-  // TODO: спрятать это все за tcr-api
-  let registry = new Registry(window.contracts.registry, window.Web3);
-  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
-  try {
-    yield apply(api, 'addDomain', [action.name, account.address]);
-    yield apply(registry, 'createListing', [action.name, action.stake]);
-  } catch (err) {
-    console.log(err);
-  }
-  yield put({type: 'REQUEST_PUBLISHER_DOMAINS'});
-}
-
 export default function * flow () {
   yield takeEvery('BUY_TOKENS', buyTokens);
   yield takeEvery('APPLY_DOMAIN', applyDomain);
   yield takeEvery('REQUEST_TOKEN_INFORMATION', fetchTokenInformation);
   yield takeEvery('REQUEST_PUBLISHER_DOMAINS', getPublisherDomains);
-  yield takeEvery('ADD_DOMAIN', addDomain);
+  yield takeEvery('HIDE_TX_QUEUE', getPublisherDomains);
+//  yield takeEvery('ADD_DOMAIN', addDomain);
 }
