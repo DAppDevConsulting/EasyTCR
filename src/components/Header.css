@@ -1,0 +1,37 @@
+.Header {
+    background-color: #748ffc !important;
+    box-shadow: 0 0 10px 0 rgba(101, 111, 119, 0.25), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.HeaderTitle {
+    font-family: ProximaNova !important;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    padding-left: 30px !important;
+}
+
+.HeaderText {
+    font-family: ProximaNova !important;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffffff !important;
+    font-size: 13px !important;
+}
+
+.Separator {
+    margin-left: 30px !important;
+    margin-right: 30px !important;
+    height: 60px !important;
+    opacity: 0.1 !important;
+    background-color: #ffffff !important;
+}
