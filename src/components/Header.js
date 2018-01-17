@@ -10,7 +10,7 @@ class Header extends Component {
     return (
       <Toolbar className='Header'>
         <ToolbarGroup firstChild={true}>
-          <ToolbarTitle text='TCR' className='HeaderTitle' />
+          <ToolbarTitle text='AdChain' className='HeaderTitle' />
         </ToolbarGroup>
         <ToolbarGroup>
           <EtherIcon />

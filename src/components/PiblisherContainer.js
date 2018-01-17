@@ -62,16 +62,13 @@ class PublisherContainer extends Component {
             />
           </div>
           <div className='formItem'>
-            <RaisedButton label='Apply' onClick={() => this.addDomain()} />
+            <RaisedButton
+              label='Apply'
+              onClick={() => this.addDomain()}
+              disabled={!this.state.domain || this.state.domainError || this.state.stakeError} />
           </div>
         </div>
         <PublisherDomainsList listings={listings} />
-        <h3> Buy tokens </h3>
-        <TextField hintText='0' onChange={(e, value) => this.setState({ value: parseInt(value, 10) })} />
-        <FlatButton label='Buy' onClick={() => {
-          this.buyTokens();
-        }} />
-        <span>Total Price: {this.getTotalPrice()} ETH</span>
       </div>
     );
   }
