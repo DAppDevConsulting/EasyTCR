@@ -39,6 +39,7 @@ class PublisherContainer extends Component {
         <Card className='txqueue-container'>
           {showTxQueue && <TxQueue transactions={txQueue.transactions} title={txQueue.title} onEnd={this.props.hideTxQueue} />}
         </Card>
+        {!showTxQueue &&
         <div className='formWrapper'>
           <div className='formItem'>
             <div>Domain<span className='requiredIcon'>*</span></div>
@@ -49,7 +50,7 @@ class PublisherContainer extends Component {
               onChange={(e, value) => {
                 let parts = value.split('.');
                 let errorText = (parts.length > 1 || value === '') ? '' : 'invalid domain name';
-                this.setState({ domain: value, domainError: errorText });
+                this.setState({domain: value, domainError: errorText});
               }}
             />
           </div>
@@ -62,7 +63,7 @@ class PublisherContainer extends Component {
               onChange={(e, value) => {
                 let stake = parseInt(value, 10);
                 let errorText = stake > 0 && stake < 10000 ? 'stake less then min' : '';
-                this.setState({ stake: stake, stakeError: errorText });
+                this.setState({stake: stake, stakeError: errorText});
               }}
             />
           </div>
@@ -74,7 +75,10 @@ class PublisherContainer extends Component {
             />
           </div>
         </div>
-        <PublisherDomainsList listings={listings} />
+        }
+        <Card>
+          <PublisherDomainsList listings={listings} />
+        </Card>
       </div>
     );
   }

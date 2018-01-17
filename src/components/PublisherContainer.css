@@ -2,6 +2,7 @@
     background-color: #f3f6f8;
     padding-left: 30px;
     padding-right: 30px;
+    padding-top: 20px;
     height: 100%;
     min-height: 600px;
 }
@@ -33,4 +34,5 @@
 
 .txQueueContainer {
     padding-bottom: 12px;
+    margin-bottom: 10px;
 }
