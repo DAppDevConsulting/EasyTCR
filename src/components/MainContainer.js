@@ -15,13 +15,13 @@ class MainContainer extends Component {
     const Route = this._Route;
     const Switch = this._Switch;
     const Redirect = this._Redirect;
-    const { buyTokens, getPublisherDomains, applyDomain, publisher, app, parameterizer, hideTxQueue } = this.props;
+    const { buyTokens, getPublisherDomains, getAdvertiserDomains, applyDomain, publisher, advertiser, app, parameterizer, hideTxQueue } = this.props;
     return (
       <Route>
         <Switch>
           <Redirect path='/' to='/advertizer' exact />
           <Route path='/advertizer' render={(props) => (
-            <AdvContainer {...props} />
+            <AdvContainer advertiser={advertiser} getAdvertiserDomains={getAdvertiserDomains} />
           )} />
           <Route path='/publisher' render={() => (
             <PublisherContainer
@@ -43,9 +43,11 @@ class MainContainer extends Component {
 MainContainer.propTypes = {
   buyTokens: PropTypes.func.isRequired,
   getPublisherDomains: PropTypes.func.isRequired,
+  getAdvertiserDomains: PropTypes.func.isRequired,
   hideTxQueue: PropTypes.func.isRequired,
   applyDomain: PropTypes.func.isRequired,
   publisher: PropTypes.object.isRequired,
+  advertiser: PropTypes.object.isRequired,
   app: PropTypes.object.isRequired,
   parameterizer: PropTypes.object.isRequired
 };

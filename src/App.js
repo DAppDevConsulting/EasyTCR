@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import * as publisherActions from './actions/PublisherActions';
+import * as advertiserActions from './actions/AdvertiserActions';
 import * as appActions from './actions/AppActions';
 
 import {
@@ -35,8 +36,9 @@ class App extends Component {
   }
 
   render () {
-    const { publisher, app, parameterizer } = this.props;
+    const { publisher, advertiser, app, parameterizer } = this.props;
     const { buyTokens, getPublisherDomains, applyDomain, hideTxQueue } = this.props.publisherActions;
+    const { getAdvertiserDomains } = this.props.advertiserActions;
     return (
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
@@ -48,9 +50,11 @@ class App extends Component {
                 <MainContainer
                   buyTokens={buyTokens}
                   getPublisherDomains={getPublisherDomains}
+                  getAdvertiserDomains={getAdvertiserDomains}
                   applyDomain={applyDomain}
                   hideTxQueue={hideTxQueue}
                   publisher={publisher}
+                  advertiser={advertiser}
                   app={app}
                   parameterizer={parameterizer}
                   Router={Router}
@@ -71,6 +75,7 @@ function mapStateToProps (state) {
   return {
     app: state.app,
     publisher: state.publisher,
+    advertiser: state.advertiser,
     parameterizer: state.parameterizer
   };
 }
@@ -78,7 +83,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     appActions: bindActionCreators(appActions, dispatch),
-    publisherActions: bindActionCreators(publisherActions, dispatch)
+    publisherActions: bindActionCreators(publisherActions, dispatch),
+    advertiserActions: bindActionCreators(advertiserActions, dispatch)
   };
 }
 
@@ -86,6 +92,8 @@ App.propTypes = {
   appActions: PropTypes.object.isRequired,
   publisherActions: PropTypes.object.isRequired,
   publisher: PropTypes.object.isRequired,
+  advertiserActions: PropTypes.object.isRequired,
+  advertiser: PropTypes.object.isRequired,
   app: PropTypes.object.isRequired,
   parameterizer: PropTypes.object.isRequired
 };
