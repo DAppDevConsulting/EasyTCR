@@ -124,13 +124,13 @@ class TxQueue extends Component {
 
   render () {
     const { txIndex } = this.state;
-
+    let margin = 48 + 490 * txIndex;
     return (
       <div className='txQueueContainer'>
         <Stepper activeStep={txIndex} connector={<span />}>
           {this.renderTxs()}
         </Stepper>
-        <div style={{margin: '0 48px'}}>
+        <div style={{margin: `0 ${margin}px`}}>
           {this.renderTxAction(this.getCurrentTx())}
         </div>
       </div>
