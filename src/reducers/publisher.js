@@ -15,8 +15,8 @@ export default function publisher (state = initialState, action) {
     case 'SHOW_TX_QUEUE':
       return {...state, txQueue: action.queue, showTxQueue: true};
 
-    case 'HIDE_TX_QUEUE':
-      return {...state, showTxQueue: false};
+    /*case 'HIDE_TX_QUEUE':
+      return {...state, showTxQueue: false};*/
 
     case 'BUY_TOKENS_COMPLETE':
       return {...state, fetching: false};
@@ -25,7 +25,7 @@ export default function publisher (state = initialState, action) {
       return {...state, tokens: action.tokens, ethers: action.ethers};
 
     case 'UPDATE_PUBLISHER_DOMAINS':
-      return {...state, listings: action.listings};
+      return {...state, listings: action.listings, showTxQueue: false};
 
     default:
       return state;
