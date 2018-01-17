@@ -30,13 +30,13 @@ class PublisherContainer extends Component {
   }
 
   render () {
-    const { listings, txQueue } = this.props.publisher;
+    const { listings, txQueue, showTxQueue } = this.props.publisher;
     return (
       <div className='PublisherContainer'>
         <div>Publisher page</div>
         <h3> Publisher Application </h3>
         <Card className='txqueue-container'>
-          {txQueue && <TxQueue transactions={txQueue.transactions} title={txQueue.title} onEnd={this.props.hideTxQueue} />}
+          {showTxQueue && <TxQueue transactions={txQueue.transactions} title={txQueue.title} onEnd={this.props.hideTxQueue} />}
         </Card>
         <div className='formWrapper'>
           <div className='formItem'>

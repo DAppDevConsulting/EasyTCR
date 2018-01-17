@@ -84,6 +84,7 @@ class TxQueue extends Component {
       })
       .catch(e => {
         // @TODO: same as above
+        console.log(e);
         this.props.transactions[txIndex].exception = true;
         this.setState({}); // Used because we're hardsetting the prop `exception` and component doesn't see changes
       });
