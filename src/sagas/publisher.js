@@ -1,9 +1,9 @@
-import { put, takeEvery, apply } from 'redux-saga/effects';
+import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
 import 'babel-polyfill';
 import { Registry } from 'ethereum-tcr-api';
 import Faucet from '../faucet';
 import api from '../services/MetaxApi';
-import resolveProvider from '../resolveProvider';
+import { applyDomain as getApplyDomainQueue } from '../transactions';
 
 export function * buyTokens (action) {
   let faucet = new Faucet();
@@ -28,35 +28,11 @@ export function * fetchTokenInformation (action) {
   yield put({ type: 'UPDATE_TOKEN_INFORMATION', tokens, ethers });
 }
 
-export function * sendTestTxs (action) {
-  let registry = new Registry(window.contracts.registry, window.Web3);
-  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
+export function * applyDomain (action) {
+  let { minDeposit } = (yield select()).parameterizer;
+  let queue = yield call(getApplyDomainQueue, action.name, action.tokens, minDeposit);
 
-  let transactions = [
-    {
-      label: 'Approve 150 Tokens',
-      content: 'In order to complete further actions with application you have to allow it to use certain amount of your tokens for further usage without your permission.',
-      processed: true,
-      exception: false,
-      action: () => account.tokenContract.methods.transfer(window.Web3.eth.defaultAccount, 10).send({from: window.Web3.eth.defaultAccount})
-    },
-    {
-      label: 'Commit your vote',
-      content: 'Committing a vote is a first and essential step which involves you into voting process.',
-      processed: false,
-      exception: false,
-      action: () => account.tokenContract.methods.transfer(window.Web3.eth.defaultAccount, 10).send({from: window.Web3.eth.defaultAccount})
-    },
-    {
-      label: 'Reveal your vote',
-      content: 'Revealing a vote is the last step of the voting process which make visible all the votes.',
-      processed: false,
-      exception: false,
-      action: () => account.tokenContract.methods.transfer(window.Web3.eth.defaultAccount, 10).send({from: window.Web3.eth.defaultAccount})
-    }
-  ];
-
-  yield put({ type: 'SEND_TRANSACTIONS', transactions });
+  yield put({ type: 'SHOW_TX_QUEUE', queue });
 }
 
 const getListings = async (domains, registry) => {
@@ -109,8 +85,8 @@ export function * addDomain (action) {
 
 export default function * flow () {
   yield takeEvery('BUY_TOKENS', buyTokens);
+  yield takeEvery('APPLY_DOMAIN', applyDomain);
   yield takeEvery('REQUEST_TOKEN_INFORMATION', fetchTokenInformation);
-  yield takeEvery('SEND_TEST_TXS', sendTestTxs);
   yield takeEvery('REQUEST_PUBLISHER_DOMAINS', getPublisherDomains);
   yield takeEvery('ADD_DOMAIN', addDomain);
 }

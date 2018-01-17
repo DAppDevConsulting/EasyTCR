@@ -1,5 +1,5 @@
-export function hideTxModal () {
+export function init () {
   return {
-    type: 'HIDE_TRANSACTIONS_MODAL'
+    type: 'APP_INIT'
   };
 }

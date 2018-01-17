@@ -1,0 +1,10 @@
+.txQueueLabel:not(.hasAction) svg  {
+    fill: #fafbfc !important;
+    border: 1px solid #e6eaee;
+    background-color: #fafbfc;
+    border-radius: 100%;
+}
+
+.txQueueLabel text {
+    fill: #7f8fa4 !important;
+}

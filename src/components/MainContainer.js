@@ -15,7 +15,7 @@ class MainContainer extends Component {
     const Route = this._Route;
     const Switch = this._Switch;
     const Redirect = this._Redirect;
-    const { buyTokens, getPublisherDomains, addDomain, publisher } = this.props;
+    const { buyTokens, getPublisherDomains, applyDomain, publisher, app, parameterizer, hideTxQueue } = this.props;
     return (
       <Route>
         <Switch>
@@ -26,9 +26,12 @@ class MainContainer extends Component {
           <Route path='/publisher' render={() => (
             <PublisherContainer
               buyTokens={buyTokens}
+              applyDomain={applyDomain}
+              hideTxQueue={hideTxQueue}
               getPublisherDomains={getPublisherDomains}
-              addDomain={addDomain}
-              publisher={publisher} />
+              publisher={publisher}
+              minDeposit={parameterizer.minDeposit}
+            />
           )} />
           <Route path='/' exact component={AdvContainer} />
         </Switch>
@@ -40,8 +43,11 @@ class MainContainer extends Component {
 MainContainer.propTypes = {
   buyTokens: PropTypes.func.isRequired,
   getPublisherDomains: PropTypes.func.isRequired,
-  addDomain: PropTypes.func.isRequired,
-  publisher: PropTypes.object.isRequired
+  hideTxQueue: PropTypes.func.isRequired,
+  applyDomain: PropTypes.func.isRequired,
+  publisher: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired,
+  parameterizer: PropTypes.object.isRequired
 };
 
 export default MainContainer;
