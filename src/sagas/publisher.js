@@ -59,7 +59,7 @@ const getListings = async (domains, registry) => {
     result.status = whitelisted ? 'In registry' : 'In application';
     result.dueDate = '';
     if (!whitelisted) {
-      var expTs = await listing.expiresAt();
+      let expTs = await listing.expiresAt();
       result.dueDate = new Date(expTs * 1000).toDateString();
     }
     listings.push(result);
