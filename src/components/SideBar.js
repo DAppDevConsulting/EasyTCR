@@ -37,9 +37,10 @@ class SideBar extends Component {
                   navigationPath='/advertizer'
                   leftIcon={<AdvertiserIcon />}
                 />,
-                <ListItem
+                <ListItemToNavigate
                   key={4}
                   primaryText='Manage token'
+                  navigationPath='/manage_tokens'
                   leftIcon={<ManageIcon />}
                 />
               ]}

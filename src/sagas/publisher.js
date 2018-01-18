@@ -1,15 +1,18 @@
 import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
 import 'babel-polyfill';
 import { Registry } from 'ethereum-tcr-api';
-import Faucet from '../faucet';
 import api from '../services/MetaxApi';
 import { applyDomain as getApplyDomainQueue } from '../transactions';
+import TransactionsManager from '../transactions/TransactionsManager';
 
 export function * buyTokens (action) {
-  let faucet = new Faucet();
-
-  yield apply(faucet, 'purchaseTokens', [action.tokens]);
-
+  try {
+    let manager = new TransactionsManager(window.contracts.registry, window.Web3);
+    yield apply(manager, 'buyTokens', [action.tokens]);
+  } catch (err) {
+    // TODO: update UI
+    console.log(err);
+  }
   yield put({ type: 'BUY_TOKENS_COMPLETE' });
   yield put({ type: 'REQUEST_TOKEN_INFORMATION' });
 }

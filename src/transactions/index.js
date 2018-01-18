@@ -4,6 +4,7 @@ export async function applyDomain (name, tokensAmount, minDeposit) {
   const registry = new Registry(window.contracts.registry, window.Web3);
   const account = await registry.getAccount(window.Web3.eth.defaultAccount);
 
+  // TODO: здесь оставить только данные и идентификаторы транзакций. Сами тексты унести на уровень ui-компонентов
   return constructTxPayload('Make an application to registry', [
     {
       label: `Approve ${minDeposit} Tokens`,

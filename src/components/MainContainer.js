@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AdvContainer from './AdvContainer';
 import PublisherContainer from './PiblisherContainer';
+import ManageTokensContainer from './ManageTokensContainer';
 
 class MainContainer extends Component {
   constructor (props) {
@@ -20,6 +21,9 @@ class MainContainer extends Component {
       <Route>
         <Switch>
           <Redirect path='/' to='/advertizer' exact />
+          <Route path='/manage_tokens' render={(props) => (
+            <ManageTokensContainer publisher={publisher} buyTokens={buyTokens} />
+          )} />
           <Route path='/advertizer' render={(props) => (
             <AdvContainer advertiser={advertiser} getAdvertiserDomains={getAdvertiserDomains} />
           )} />
