@@ -15,7 +15,7 @@ class MainContainer extends Component {
     const Route = this._Route;
     const Switch = this._Switch;
     const Redirect = this._Redirect;
-    const { buyTokens, getPublisherDomains, getAdvertiserDomains, applyDomain, publisher, advertiser, app, parameterizer, hideTxQueue } = this.props;
+    const { buyTokens, getPublisherDomains, getAdvertiserDomains, applyDomain, publisher, advertiser, parameterizer, hideTxQueue } = this.props;
     return (
       <Route>
         <Switch>
