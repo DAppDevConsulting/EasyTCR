@@ -8,8 +8,6 @@ import rootSaga from './sagas';
 import registerServiceWorker from './registerServiceWorker';
 import resolveProvider from './resolveProvider';
 
-window.contracts = require('./secrets.json').contracts;
-
 document.addEventListener('DOMContentLoaded', function () {
   resolveProvider().then(() => runApplication());
 });

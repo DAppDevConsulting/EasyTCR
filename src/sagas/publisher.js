@@ -1,43 +1,33 @@
 import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
 import 'babel-polyfill';
-import { Registry } from 'ethereum-tcr-api';
-import Faucet from '../faucet';
+import TCR from './TCR';
 import api from '../services/MetaxApi';
 import { applyDomain as getApplyDomainQueue } from '../transactions';
 import ListingsMapper from '../services/ListingsMapper';
 
 export function * buyTokens (action) {
-  let faucet = new Faucet();
-
-  yield apply(faucet, 'purchaseTokens', [action.tokens]);
+  yield apply(TCR, 'buyTokens', [action.tokens]);
 
   yield put({ type: 'BUY_TOKENS_COMPLETE' });
   yield put({ type: 'REQUEST_TOKEN_INFORMATION' });
 }
 
 export function * fetchTokenInformation (action) {
-  if (!window.Web3.eth.defaultAccount) {
+  if (!TCR.defaultAccountAddress()) {
     return;
   }
 
-  let registry = new Registry(window.contracts.registry, window.Web3);
-  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
+  let balance = yield apply(TCR, 'getBalance');
 
-  let tokens = yield apply(account, 'getTokenBalance');
-  // TODO: спрятать уровнем выше
-  let ethers = window.web3.fromWei(yield apply(account, 'getEtherBalance'));
-
-  yield put({ type: 'UPDATE_TOKEN_INFORMATION', tokens, ethers });
+  yield put({ type: 'UPDATE_TOKEN_INFORMATION', tokens: balance.tokens, ethers: balance.ethers });
 }
 
 export function * applyDomain (action) {
   // TODO: handle this case
-  if (!window.Web3.eth.defaultAccount) {
+  if (!TCR.defaultAccountAddress()) {
     return;
   }
-  // TODO: спрятать это все за tcr-api
-  let registry = new Registry(window.contracts.registry, window.Web3);
-  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
+  let account = yield apply(TCR, 'defaultAccount');
   try {
     yield apply(api, 'addDomain', [action.name, account.owner]);
   } catch (err) {
@@ -51,15 +41,13 @@ export function * applyDomain (action) {
 }
 
 export function * getPublisherDomains (action) {
-  if (!window.Web3.eth.defaultAccount) {
+  if (!TCR.defaultAccountAddress()) {
     return;
   }
-  // TODO: спрятать это все за tcr-api
-  let registry = new Registry(window.contracts.registry, window.Web3);
-  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
-  let domains = yield apply(api, 'getDomains', [[], account.owner]);
 
-  let listings = yield apply(ListingsMapper, 'mapListings', [domains, registry]);
+  let domains = yield apply(api, 'getDomains', [[], TCR.defaultAccountAddress()]);
+  let listings = yield apply(ListingsMapper, 'mapListings', [domains, TCR.registry()]);
+
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
 }
 
@@ -69,5 +57,4 @@ export default function * flow () {
   yield takeEvery('REQUEST_TOKEN_INFORMATION', fetchTokenInformation);
   yield takeEvery('REQUEST_PUBLISHER_DOMAINS', getPublisherDomains);
   yield takeEvery('HIDE_TX_QUEUE', getPublisherDomains);
-//  yield takeEvery('ADD_DOMAIN', addDomain);
 }
