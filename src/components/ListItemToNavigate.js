@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ListItem } from 'material-ui/List';
 import { withRouter } from 'react-router-dom';
 
-class ListItemToNavigate extends Component {
-  constructor (props) {
-    super();
-  }
-
+class ListItemToNavigate extends ListItem {
   render () {
     const { history, navigationPath } = this.props;
-    return (
-      <ListItem {...this.props} onClick={() => { history.push(navigationPath); }} />
-    );
+    this.handleClick = () => { history.push(navigationPath); };
+    return super.render();
   }
 }
 

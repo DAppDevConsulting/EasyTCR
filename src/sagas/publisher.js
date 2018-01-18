@@ -4,6 +4,7 @@ import { Registry } from 'ethereum-tcr-api';
 import api from '../services/MetaxApi';
 import { applyDomain as getApplyDomainQueue } from '../transactions';
 import TransactionsManager from '../transactions/TransactionsManager';
+import ListingsMapper from '../services/ListingsMapper';
 
 export function * buyTokens (action) {
   try {
@@ -52,24 +53,6 @@ export function * applyDomain (action) {
   yield put({ type: 'SHOW_TX_QUEUE', queue });
 }
 
-const getListings = async (domains, registry) => {
-  let listings = [];
-  for (let domain of domains) {
-    let listing = registry.getListing(domain);
-    let result = {};
-    result.name = listing.name;
-    let whitelisted = await listing.isWhitelisted();
-    result.status = whitelisted ? 'In registry' : 'In application';
-    result.dueDate = '';
-    if (!whitelisted) {
-      let expTs = await listing.expiresAt();
-      result.dueDate = new Date(expTs * 1000).toDateString();
-    }
-    listings.push(result);
-  }
-  return listings;
-};
-
 export function * getPublisherDomains (action) {
   if (!window.Web3.eth.defaultAccount) {
     return;
@@ -79,7 +62,7 @@ export function * getPublisherDomains (action) {
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
   let domains = yield apply(api, 'getDomains', [[], account.owner]);
 
-  let listings = yield apply({getListings: getListings}, 'getListings', [domains, registry]);
+  let listings = yield apply(ListingsMapper, 'mapListings', [domains, registry]);
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
 }
 
