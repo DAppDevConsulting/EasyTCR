@@ -4,7 +4,7 @@ import SvgIcon from 'material-ui/SvgIcon';
 export const TokenHolderIcon = (props) => (
   <SvgIcon {...props}>
     <g id='06' stroke='none' strokeWidth='1' fill='none' fillRule='evenodd' transform='translate(-31.000000, -129.000000)'>
-      <g id='Left-Navigation-White' transform='translate(0.000000, -18.500000)' fill='#7F8FA4'>
+      <g id='Left-Navigation-White' transform='translate(0.000000, -18.500000)' fill={props.color}>
         <g id='Menu' transform='translate(20.000000, 98.500000)'>
           <g id='Menu-Items' transform='translate(9.000000, 0.000000)'>
             <g id='Icon' transform='translate(2.000000, 49.000000)'>
@@ -20,7 +20,7 @@ export const TokenHolderIcon = (props) => (
 export const PublisherIcon = (props) => (
   <SvgIcon {...props}>
     <g id='06' stroke='none' strokeWidth='1' fill='none' fillRule='evenodd' transform='translate(-30.000000, -170.000000)'>
-      <g id='Left-Navigation-White' transform='translate(0.000000, -18.500000)' fill='#748FFC'>
+      <g id='Left-Navigation-White' transform='translate(0.000000, -18.500000)' fill={props.color}>
         <g id='Menu' transform='translate(20.000000, 98.500000)'>
           <g id='Menu-Items' transform='translate(9.000000, 0.000000)'>
             <g id='Icon' transform='translate(1.000000, 90.313028)'>
@@ -35,7 +35,7 @@ export const PublisherIcon = (props) => (
 export const AdvertiserIcon = (props) => (
   <SvgIcon {...props}>
     <g id='06' stroke='none' strokeWidth='1' fill='none' fillRule='evenodd' transform='translate(-30.000000, -214.000000)'>
-      <g id='Left-Navigation-White' transform='translate(0.000000, -18.500000)' fill='#7F8FA4'>
+      <g id='Left-Navigation-White' transform='translate(0.000000, -18.500000)' fill={props.color}>
         <g id='Menu' transform='translate(20.000000, 98.500000)'>
           <g id='Menu-Items' transform='translate(9.000000, 0.000000)'>
             <g id='Icons-White-/-Location-Icon' transform='translate(1.002000, 134.313028)'>
@@ -51,7 +51,7 @@ export const AdvertiserIcon = (props) => (
 export const ManageIcon = (props) => (
   <SvgIcon {...props}>
     <g id='06' stroke='none' strokeWidth='1' fill='none' fillRule='evenodd' transform='translate(-30.000000, -260.000000)'>
-      <g id='Left-Navigation-White' transform='translate(0.000000, -18.500000)' fill='#7F8FA4'>
+      <g id='Left-Navigation-White' transform='translate(0.000000, -18.500000)' fill={props.color}>
         <g id='Menu' transform='translate(20.000000, 98.500000)'>
           <g id='Menu-Items' transform='translate(9.000000, 0.000000)'>
             <g id='Icon-Copy' transform='translate(1.000000, 180.287446)'>
