@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
+import Faucet from '../faucet';
 
 class ManageTokensContainer extends Component {
   constructor (props) {
@@ -10,6 +11,12 @@ class ManageTokensContainer extends Component {
       value: '',
       price: 0
     };
+  }
+
+  componentWillMount () {
+    // Setting token price for further usage
+    const faucet = new Faucet();
+    faucet.getPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
   }
 
   render () {
