@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AdvContainer from './AdvContainer';
 import PublisherContainer from './PiblisherContainer';
 import ManageTokensContainer from './ManageTokensContainer';
+import {ADVERTISER, MANAGE_TOKENS, PUBLISHER} from './constants/Navigation';
 
 class MainContainer extends Component {
   constructor (props) {
@@ -20,14 +21,14 @@ class MainContainer extends Component {
     return (
       <Route>
         <Switch>
-          <Redirect path='/' to='/advertizer' exact />
-          <Route path='/manage_tokens' render={(props) => (
+          <Redirect path='/' to={ADVERTISER} exact />
+          <Route path={MANAGE_TOKENS} render={(props) => (
             <ManageTokensContainer publisher={publisher} buyTokens={buyTokens} />
           )} />
-          <Route path='/advertizer' render={(props) => (
+          <Route path={ADVERTISER} render={(props) => (
             <AdvContainer advertiser={advertiser} getAdvertiserDomains={getAdvertiserDomains} />
           )} />
-          <Route path='/publisher' render={() => (
+          <Route path={PUBLISHER} render={() => (
             <PublisherContainer
               buyTokens={buyTokens}
               applyDomain={applyDomain}

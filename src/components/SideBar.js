@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {List, ListItem} from 'material-ui/List';
-import ListItemToNavigate from './ListItemToNavigate';
+import { withRouter } from 'react-router-dom';
+import {ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER} from './constants/Navigation';
 import {TokenHolderIcon, AdvertiserIcon, PublisherIcon, ManageIcon} from './icons/Icons';
+import {indigoA200} from 'material-ui/styles/colors';
 import './SideBar.css';
 
-class SideBar extends Component {
-  constructor (props) {
-    super();
-  }
+const createClickHandler = (history, navigationPath) => {
+  return () => history.push(navigationPath);
+};
 
+const isCurrentPath = (location, navigationPath) => {
+  return location.pathname === navigationPath;
+};
+
+const getColor = (location, navigationPath) => isCurrentPath(location, navigationPath) ? indigoA200 : '#7f8fa4';
+
+class SideBar extends Component {
   render () {
     const primaryTogglesNestedList = true;
+    const {location, history} = this.props;
     return (
       <div className='SideBarContainer'>
         <div>
@@ -23,25 +33,29 @@ class SideBar extends Component {
                 <ListItem
                   key={1}
                   primaryText='Token Holder'
-                  leftIcon={<TokenHolderIcon />}
+                  style={{color: getColor(location, TOKEN_HOLDER)}}
+                  leftIcon={<TokenHolderIcon color={getColor(location, TOKEN_HOLDER)} />}
                 />,
-                <ListItemToNavigate
+                <ListItem
                   key={2}
                   primaryText='Publisher page'
-                  navigationPath='/publisher'
-                  leftIcon={<PublisherIcon />}
+                  style={{color: getColor(location, PUBLISHER)}}
+                  onClick={createClickHandler(history, PUBLISHER)}
+                  leftIcon={<PublisherIcon color={getColor(location, PUBLISHER)} />}
                 />,
-                <ListItemToNavigate
+                <ListItem
                   key={3}
                   primaryText='Advertiser page'
-                  navigationPath='/advertizer'
-                  leftIcon={<AdvertiserIcon />}
+                  style={{color: getColor(location, ADVERTISER)}}
+                  onClick={createClickHandler(history, ADVERTISER)}
+                  leftIcon={<AdvertiserIcon color={getColor(location, ADVERTISER)} />}
                 />,
-                <ListItemToNavigate
+                <ListItem
                   key={4}
                   primaryText='Manage token'
-                  navigationPath='/manage_tokens'
-                  leftIcon={<ManageIcon />}
+                  style={{color: getColor(location, MANAGE_TOKENS)}}
+                  onClick={createClickHandler(history, MANAGE_TOKENS)}
+                  leftIcon={<ManageIcon color={getColor(location, MANAGE_TOKENS)} />}
                 />
               ]}
             />
@@ -64,4 +78,13 @@ class SideBar extends Component {
   }
 }
 
-export default SideBar;
+SideBar.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired
+};
+
+export default withRouter(SideBar);
