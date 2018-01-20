@@ -33,7 +33,7 @@ class PublisherContainer extends Component {
   render () {
     const { listings, txQueue, showTxQueue } = this.props.publisher;
     // TODO: validate this value
-    const minCrutch = Math.max(this.props.minDeposit, 10000);
+    const minCrutch = Math.max(this.props.minDeposit, 50000);
     return (
       <div className='ContentContainer'>
         <div>Publisher page</div>
