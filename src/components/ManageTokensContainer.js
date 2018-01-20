@@ -74,7 +74,7 @@ class ManageTokensContainer extends Component {
   }
 
   buyTokens () {
-    this.props.buyTokens(this.state.value);
+    this.props.buyTokens(this.getTokensToBuy());
     this.setState({value: ''});
   }
 

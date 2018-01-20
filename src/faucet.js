@@ -1,3 +1,5 @@
+import BN from 'bn.js';
+
 class Faucet {
   constructor () {
     this.address = window.contracts.faucet;
@@ -6,9 +8,12 @@ class Faucet {
 
   async purchaseTokens (amount) {
     // TODO: так делать нельзя, там включается большая арифметика
-    let value = parseFloat(await this.getPrice('wei') * amount);
+    let bnAmount = new BN(amount, 10);
+    let price = new BN(await this.getPrice('wei'), 10);
+    let value = bnAmount.mul(price);// parseFloat(await this.getPrice('wei') * amount);
+    console.log('price', value.toString());
 
-    return this.contract.methods.purchaseTokens().send({ value, from: window.Web3.eth.defaultAccount });
+    return this.contract.methods.purchaseTokens().send({ value: value, from: window.Web3.eth.defaultAccount });
   }
 
   async getPrice (unit = 'ether') {

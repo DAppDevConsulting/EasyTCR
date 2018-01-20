@@ -1,4 +1,5 @@
 import { Registry } from 'ethereum-tcr-api';
+import BN from 'bn.js';
 import Faucet from '../faucet';
 
 function wait (time) {
@@ -13,14 +14,15 @@ class TransactionsManager {
 
   async buyTokens (amount) {
     let account = await this.registry.getAccount(this.provider.eth.defaultAccount);
-    let prevTokensBalance = await account.getTokenBalance();
+    let prevTokensBalance = new BN(await account.getTokenBalance(), 10);
     let faucet = new Faucet();
+    let bnAmount = new BN(amount, 10);
     await faucet.purchaseTokens(amount);
-    let currentBalance = await account.getTokenBalance();
+    let currentBalance = new BN(await account.getTokenBalance(), 10);
     // TODO: костыль! Разобраться как можно получить актуальное состояние контракта
-    while (currentBalance < prevTokensBalance + amount) {
+    while (currentBalance.lt(prevTokensBalance.add(bnAmount))) {
       await wait(1000);
-      currentBalance = await account.getTokenBalance();
+      currentBalance = new BN(await account.getTokenBalance(), 10);
     }
   }
 }
