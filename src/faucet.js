@@ -5,6 +5,7 @@ class Faucet {
   }
 
   async purchaseTokens (amount) {
+    // TODO: так делать нельзя, там включается большая арифметика
     let value = parseFloat(await this.getPrice('wei') * amount);
 
     return this.contract.methods.purchaseTokens().send({ value, from: window.Web3.eth.defaultAccount });
@@ -18,6 +19,10 @@ class Faucet {
     }
 
     return window.web3.fromWei(price.toString(), unit);
+  }
+
+  getWeiToEthConverter () {
+    return (amount) => window.web3.fromWei(amount, 'ether');
   }
 }
 

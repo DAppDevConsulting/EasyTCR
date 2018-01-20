@@ -12,7 +12,7 @@ class AdvContainer extends Component {
   render () {
     const { listings } = this.props.advertiser;
     return (
-      <div className='PublisherContainer'>
+      <div className='ContentContainer'>
         <div>Advertiser page</div>
         <h3> Advertiser Application </h3>
         <Card>

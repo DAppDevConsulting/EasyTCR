@@ -32,8 +32,10 @@ class PublisherContainer extends Component {
 
   render () {
     const { listings, txQueue, showTxQueue } = this.props.publisher;
+    // TODO: validate this value
+    const minCrutch = Math.max(this.props.minDeposit, 10000);
     return (
-      <div className='PublisherContainer'>
+      <div className='ContentContainer'>
         <div>Publisher page</div>
         <h3> Publisher Application </h3>
         <Card className='txqueue-container'>
@@ -57,12 +59,12 @@ class PublisherContainer extends Component {
           <div className='formItem'>
             <div>Bet Token or get Tokens to bet!<span className='requiredIcon'>*</span></div>
             <TextField
-              hintText={'Min ' + this.props.minDeposit}
+              hintText={'Min ' + minCrutch}
               value={this.state.stake || ''}
               errorText={this.state.stakeError}
               onChange={(e, value) => {
                 let stake = parseInt(value, 10);
-                let errorText = stake > 0 && stake < 10000 ? 'stake less then min' : '';
+                let errorText = stake > 0 && stake < minCrutch ? 'stake less then min' : '';
                 this.setState({stake: stake, stakeError: errorText});
               }}
             />
@@ -71,7 +73,7 @@ class PublisherContainer extends Component {
             <RaisedButton
               label='Apply'
               onClick={() => this.addDomain()}
-              disabled={!this.state.domain || this.state.domainError || this.state.stakeError}
+              disabled={!!(!this.state.domain || !this.state.stake || this.state.domainError || this.state.stakeError)}
             />
           </div>
         </div>
