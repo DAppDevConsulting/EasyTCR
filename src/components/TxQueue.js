@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
+import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import SuccessIcon from 'material-ui/svg-icons/action/check-circle';
 import {red500} from 'material-ui/styles/colors';
@@ -49,24 +49,17 @@ class TxQueue extends Component {
     return this.props.transactions[this.state.txIndex];
   }
 
-  renderTxAction (tx) {
+  renderTxAction (tx, index) {
     return (
       <div>
-        {!tx.processed ? (
+        {!tx.processed && index === this.state.txIndex ? (
           <RaisedButton
             label={tx.exception ? 'Retry' : 'Approve'}
             backgroundColor='#536dfe'
             labelColor='#fff'
             onClick={() => this.handleTxAction(tx.action)}
           />
-        ) : (
-          <RaisedButton
-            label='Next'
-            backgroundColor='#536dfe'
-            labelColor='#fff'
-            onClick={() => this.handleNext()}
-          />
-        )}
+        ) : ('')}
       </div>
     );
   }
@@ -101,7 +94,7 @@ class TxQueue extends Component {
   }
 
   renderTxs () {
-    return this.props.transactions.map(tx => {
+    return this.props.transactions.map((tx, index) => {
       let icon = this.getIconForTransaction(tx);
       let warningClass = this.getIconForTransaction(tx) ? 'hasAction' : '';
 
@@ -117,6 +110,7 @@ class TxQueue extends Component {
               <div>{tx.content}</div>
             </div>
           </StepLabel>
+          <div className='txQueueStepButton'>{this.renderTxAction(tx, index)}</div>
         </Step>
       );
     });
@@ -124,15 +118,11 @@ class TxQueue extends Component {
 
   render () {
     const { txIndex } = this.state;
-    let margin = 48 + 490 * txIndex;
     return (
       <div className='txQueueContainer'>
-        <Stepper activeStep={txIndex} connector={<span />}>
+        <Stepper activeStep={txIndex} connector={<span />} style={{alignItems: 'top'}}>
           {this.renderTxs()}
         </Stepper>
-        <div style={{margin: `0 ${margin}px`}}>
-          {this.renderTxAction(this.getCurrentTx())}
-        </div>
       </div>
 
     );

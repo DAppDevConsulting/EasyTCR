@@ -26,4 +26,5 @@
 .txQueueContainer {
     padding-bottom: 12px;
     margin-bottom: 10px;
+    vertical-align: top;
 }
