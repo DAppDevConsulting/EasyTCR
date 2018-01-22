@@ -1,29 +1,28 @@
-.formWrapper {
+.buyTokensForm {
     padding-bottom: 30px;
 }
 
-.formItem {
+.buyTokensForm_item {
     display: inline-block;
     text-align: left;
     padding-right: 30px;
-    font-family: ProximaNova;
     font-size: 13px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.46;
     letter-spacing: normal;
-    vertical-align: top;
     color: #3f536e;
 }
 
-.requiredIcon {
-    font-family: Heebo;
-    font-size: 15px;
-    color: #ff151f;
+.buyTokensForm_element {
+    height: 61px;
+    display: inline-block;
+    padding-right: 10px;
+    vertical-align: bottom;
 }
 
-.txQueueContainer {
-    padding-bottom: 12px;
-    margin-bottom: 10px;
+.buyTokensForm_multiplier {
+    display: inline-block;
+    padding-top: 15px;
 }
