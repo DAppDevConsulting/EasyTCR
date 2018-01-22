@@ -64,6 +64,7 @@ export function * getPublisherDomains (action) {
 
   let listings = yield apply(ListingsMapper, 'mapListings', [domains, registry]);
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
+  yield put({ type: 'REQUEST_TOKEN_INFORMATION' });
 }
 
 export default function * flow () {

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
+import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
+import LinearProgress from 'material-ui/LinearProgress';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import SuccessIcon from 'material-ui/svg-icons/action/check-circle';
 import {red500} from 'material-ui/styles/colors';
@@ -15,6 +16,7 @@ class TxQueue extends Component {
 
     this.state = {
       txIndex: 0,
+      txIndexInProgress: -1,
       finished: false,
       exception: []
     };
@@ -30,6 +32,7 @@ class TxQueue extends Component {
 
     this.setState({
       txIndex: txIndex + 1,
+      txIndexInProgress: -1,
       finished: txIndex >= this.getTxAmount() - 1
     });
   }
@@ -50,22 +53,24 @@ class TxQueue extends Component {
   }
 
   renderTxAction (tx, index) {
-    return (
+    const showButton = !tx.processed && index === this.state.txIndex;
+    return showButton ? (
       <div>
-        {!tx.processed && index === this.state.txIndex ? (
-          <RaisedButton
-            label={tx.exception ? 'Retry' : 'Approve'}
-            backgroundColor='#536dfe'
-            labelColor='#fff'
-            onClick={() => this.handleTxAction(tx.action)}
-          />
-        ) : ('')}
+        <RaisedButton
+          label={tx.exception ? 'Retry' : 'Approve'}
+          backgroundColor='#536dfe'
+          labelColor='#fff'
+          disabled={index === this.state.txIndexInProgress}
+          onClick={() => this.handleTxAction(tx.action)}
+        />
+
       </div>
-    );
+    ) : ('');
   }
 
   handleTxAction (action) {
     let { txIndex } = this.state;
+    this.setState({txIndexInProgress: txIndex});
     action()
       .then(resp => {
         if (resp) {
@@ -79,7 +84,7 @@ class TxQueue extends Component {
         // @TODO: same as above
         console.log(e);
         this.props.transactions[txIndex].exception = true;
-        this.setState({}); // Used because we're hardsetting the prop `exception` and component doesn't see changes
+        this.setState({txIndexInProgress: -1}); // Used because we're hardsetting the prop `exception` and component doesn't see changes
       });
   }
 
@@ -93,6 +98,12 @@ class TxQueue extends Component {
     }
   }
 
+  renderLoader (index) {
+    return this.state.txIndexInProgress === index ? (
+      <LinearProgress style={{width: 100, display: 'inline-block'}} />
+    ) : ('');
+  }
+
   renderTxs () {
     return this.props.transactions.map((tx, index) => {
       let icon = this.getIconForTransaction(tx);
@@ -100,12 +111,13 @@ class TxQueue extends Component {
 
       return (
         <Step key={tx.label} completed={tx.processed} style={{flex: 1}}>
-          <StepLabel className={`txQueueLabel ${warningClass}`}
+          <StepLabel className={`txQueueLabel ${warningClass}`} style={{alignItems: 'top'}}
             {...(icon && {icon})}
           >
             <div style={{flexDirection: 'column', justifyContent: 'space-between', fontSize: '13px'}}>
               <div>
-                <span style={{fontWeight: 600}}>{tx.label}</span>
+                <span style={{fontWeight: 600, paddingRight: 10}}>{tx.label}</span>
+                {this.renderLoader(index)}
               </div>
               <div>{tx.content}</div>
             </div>
@@ -120,6 +132,7 @@ class TxQueue extends Component {
     const { txIndex } = this.state;
     return (
       <div className='txQueueContainer'>
+        <div style={{paddingTop: 10, paddingLeft: 10}}>You will receive two metamask prompt:</div>
         <Stepper activeStep={txIndex} connector={<span />} style={{alignItems: 'top'}}>
           {this.renderTxs()}
         </Stepper>
