@@ -13,7 +13,7 @@ class ManageTokensContainer extends Component {
     super(props);
     this.state = {
       value: '',
-      multiplier: 100000,
+      multiplier: 1,
       price: ''
     };
     this.weiToEthConverter = (wei) => wei; // TODO: сделать один конвертер. Кажется там константные значения везде.
@@ -44,21 +44,6 @@ class ManageTokensContainer extends Component {
                 hintText='0'
                 value={this.state.value || ''}
                 onChange={(e, value) => this.setState({ value: new BN(value, 10) })} />
-            </div>
-            <div className='buyTokensForm_element'>
-              <div className='buyTokensForm_multiplier'> X </div>
-            </div>
-            <div className='buyTokensForm_element'>
-              <SelectField
-                value={this.state.multiplier}
-                onChange={(e, i, value) => this.setState({ multiplier: value })}
-                style={{ width: 150 }}
-              >
-                <MenuItem value={1} primaryText='1' />
-                <MenuItem value={1000} primaryText='1000' />
-                <MenuItem value={100000} primaryText='100 000' />
-                <MenuItem value={10000000} primaryText='10 000 000' />
-              </SelectField>
             </div>
             <div className='buyTokensForm_element'>
               <RaisedButton label='Buy' disabled={!this.state.value} onClick={() => {
