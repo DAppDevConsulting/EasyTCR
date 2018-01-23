@@ -1,7 +1,7 @@
 import { Registry } from 'ethereum-tcr-api';
 import TransactionManager from './TransactionsManager';
 import PromisesQueue from '../utils/PromisesQueue';
-import api from '../services/MetaxApi';
+import api from '../services/BackendApi';
 
 export async function applyDomain (name, tokensAmount, minDeposit) {
   const registry = new Registry(window.contracts.registry, window.Web3);
@@ -23,7 +23,7 @@ export async function applyDomain (name, tokensAmount, minDeposit) {
     ).add(
       async () => {
         try {
-          await api.addDomain(name, account.owner);
+          await api.addListing(name, account.owner);
         } catch (err) {
           console.log(err);
         }

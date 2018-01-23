@@ -2,7 +2,7 @@ export default class ListingsMapper {
   static async mapListings (domains, registry) {
     let listings = [];
     for (let domain of domains) {
-      let listing = registry.getListing(domain);
+      let listing = registry.getListing(domain.listing);
       let result = {};
       result.name = listing.name;
       let whitelisted = await listing.isWhitelisted();

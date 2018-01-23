@@ -1,7 +1,7 @@
 import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
 import 'babel-polyfill';
 import { Registry } from 'ethereum-tcr-api';
-import api from '../services/MetaxApi';
+import api from '../services/BackendApi';
 import { applyDomain as getApplyDomainQueue } from '../transactions';
 import TransactionsManager from '../transactions/TransactionsManager';
 import ListingsMapper from '../services/ListingsMapper';
@@ -56,7 +56,7 @@ export function * getPublisherDomains (action) {
   // TODO: спрятать это все за tcr-api
   let registry = new Registry(window.contracts.registry, window.Web3);
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
-  let domains = yield apply(api, 'getDomains', [[], account.owner]);
+  let domains = yield apply(api, 'getListings', [[], account.owner]);
 
   let listings = yield apply(ListingsMapper, 'mapListings', [domains, registry]);
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
