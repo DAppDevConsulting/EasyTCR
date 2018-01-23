@@ -37,6 +37,7 @@ class App extends Component {
 
   render () {
     const { publisher, advertiser, app, parameterizer } = this.props;
+    const {publisherActions, advertiserActions} = this.props;
     const { buyTokens, getPublisherDomains, applyDomain, hideTxQueue } = this.props.publisherActions;
     const { getAdvertiserDomains } = this.props.advertiserActions;
     return (
@@ -48,6 +49,8 @@ class App extends Component {
               <SideBar Link={Link} />
               <div className='MainContainerWrapper'>
                 <MainContainer
+                  publisherActions={publisherActions}
+                  advertiserActions={advertiserActions}
                   buyTokens={buyTokens}
                   getPublisherDomains={getPublisherDomains}
                   getAdvertiserDomains={getAdvertiserDomains}

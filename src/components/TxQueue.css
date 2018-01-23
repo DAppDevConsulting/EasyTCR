@@ -17,3 +17,23 @@
     padding-top: 5px;
     padding-left: 50px;
 }
+
+.txHeader {
+    display: table;
+    width: 100%;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: center;
+}
+
+.txHeader-right-block {
+    display: table-cell;
+    text-align: right;
+    vertical-align: center;
+}
+
+.txHeader-left-block {
+    display: table-cell;
+    vertical-align: center;
+}

@@ -53,6 +53,10 @@ export function * applyDomain (action) {
   yield put({ type: 'SHOW_TX_QUEUE', queue });
 }
 
+export function * cancelDomainApplication (action) {
+  yield put({type: 'REQUEST_PUBLISHER_DOMAINS'});
+}
+
 export function * getPublisherDomains (action) {
   if (!window.Web3.eth.defaultAccount) {
     return;
@@ -73,5 +77,6 @@ export default function * flow () {
   yield takeEvery('REQUEST_TOKEN_INFORMATION', fetchTokenInformation);
   yield takeEvery('REQUEST_PUBLISHER_DOMAINS', getPublisherDomains);
   yield takeEvery('HIDE_TX_QUEUE', getPublisherDomains);
+  yield takeEvery('CANCEL_DOMAIN_APPLICATION', cancelDomainApplication);
 //  yield takeEvery('ADD_DOMAIN', addDomain);
 }

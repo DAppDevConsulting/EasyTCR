@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import LinearProgress from 'material-ui/LinearProgress';
+import IconButton from 'material-ui/IconButton';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import SuccessIcon from 'material-ui/svg-icons/action/check-circle';
+import ClearIcon from 'material-ui/svg-icons/content/clear';
 import {red500} from 'material-ui/styles/colors';
+import * as actions from '../actions/PublisherActions';
 
 import './TxQueue.css';
 
@@ -132,7 +135,12 @@ class TxQueue extends Component {
     const { txIndex } = this.state;
     return (
       <div className='txQueueContainer'>
-        <div style={{paddingTop: 10, paddingLeft: 10}}>You will receive two metamask prompt:</div>
+        <div className='txHeader'>
+          <div className='txHeader-left-block'>You will receive two metamask prompt:</div>
+          <div className='txHeader-right-block'>
+            <IconButton onClick={() => this.props.cancel()}><ClearIcon /></IconButton>
+          </div>
+        </div>
         <Stepper activeStep={txIndex} connector={<span />} style={{alignItems: 'top'}}>
           {this.renderTxs()}
         </Stepper>
