@@ -38,14 +38,6 @@ export function * applyDomain (action) {
   if (!window.Web3.eth.defaultAccount) {
     return;
   }
-  // TODO: спрятать это все за tcr-api
-  let registry = new Registry(window.contracts.registry, window.Web3);
-  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
-  try {
-    yield apply(api, 'addDomain', [action.name, account.owner]);
-  } catch (err) {
-    console.log(err);
-  }
 
   let { minDeposit } = (yield select()).parameterizer;
   let queue = yield call(getApplyDomainQueue, action.name, action.tokens, minDeposit);

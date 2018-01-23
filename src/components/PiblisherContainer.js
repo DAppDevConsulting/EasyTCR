@@ -42,9 +42,9 @@ class PublisherContainer extends Component {
         <Card className='txqueue-container'>
           {showTxQueue &&
           <TxQueue
-            transactions={txQueue.transactions}
+            queue={txQueue}
             cancel={cancelDomainApplication}
-            title={txQueue.title}
+            title='Make an application to registry'
             onEnd={this.props.hideTxQueue} />
           }
         </Card>
