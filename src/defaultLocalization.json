@@ -1,0 +1,83 @@
+{
+  "en": {
+    "appHeader": "TCR",
+
+    "eth": "ETH",
+    "adt": "ADT",
+    "wei": "WEI",
+
+    "one": "one",
+    "two": "two",
+
+    "apply": "Apply",
+    "buy": "Buy",
+
+    "candidate": "Domain",
+    "candidateExample": "example.com",
+
+    "inApplication": "In application",
+    "inRegistry": "in Registry",
+    "inVotingCommit": "in Commit",
+    "inVotingReveal": "in Reveal",
+    "notExists": "Ooops... No domain in contract",
+
+    "menu_header": "Menu",
+    "menu_tokenHolder": "Token Holder",
+    "menu_candidate": "Publisher page",
+    "menu_consumer": "Advertiser page",
+    "menu_manageTokens": "Manage tokens",
+
+    "tokenHolderPage_title": "Overview",
+    "tokenHolderPage_listingName": "Domain to review",
+    "tokenHolderPage_listingTooltip": "Domain to review",
+    "tokenHolderPage_listingStatus": "Status",
+    "tokenHolderPage_listingStatusTooltip": "Status of domain",
+    "tokenHolderPage_listingDate": "Due date",
+    "tokenHolderPage_listingDateTooltip": "Date",
+    "tokenHolderPage_listingActions": "Actions",
+    "tokenHolderPage_listingActionsTooltip": "Available actions",
+
+    "candidatePage_title": "Publisher",
+    "candidatePage_addListingTitle": "Publisher application",
+    "candidatePage_transactionsSteps_title": "Make an application to registry",
+    "candidatePage_transactionsSteps_applyCandidate": "Apply domain",
+    "candidatePage_transactionsSteps_applyCandidateText": "Submit domain application to AdChain registry.",
+    "candidatePage_applyForm_stakeTitle": "Bet Token or get Tokens to bet!",
+    "candidatePage_applyForm_stakeHint": "Min {0}",
+    "candidatePage_applyForm_stakeErrorText": "Stake less then min!",
+    "candidatePage_listingName": "My domain",
+    "candidatePage_listingTooltip": "My domain",
+    "candidatePage_listingStatus": "Status",
+    "candidatePage_listingStatusTooltip": "Status of my domain",
+    "candidatePage_listingDate": "Due date",
+    "candidatePage_listingDateTooltip": "Date",
+    "candidatePage_listingActions": "Actions",
+    "candidatePage_listingActionsTooltip": "Available actions",
+
+    "consumerPage_title": "Advertiser page",
+    "consumerPage_listingName": "Domain",
+    "consumerPage_listingTooltip": "Domain to advertise",
+    "consumerPage_listingStatus": "Status",
+    "consumerPage_listingStatusTooltip": "Status of domain",
+    "consumerPage_listingDate": "Due date",
+    "consumerPage_listingDateTooltip": "Date",
+    "consumerPage_listingActions": "Actions",
+    "consumerPage_listingActionsTooltip": "Available actions",
+
+    "manageTokensPage_title": "Manage Tokens",
+    "manageTokensPage_balanceHeader": "Your balance",
+    "manageTokensPage_balanceText": "You have {tokens} {adt} and {ethers} {eth}",
+    "manageTokensPage_buyTokensHeader": "Buy tokens",
+    "manageTokensPage_rate": "Current rate is {price} {wei} for 1 {adt}",
+    "manageTokensPage_buyTokensHint": "Enter tokens quantity",
+    "manageTokensPage_supposedTokens": "You want to buy {0} {1}",
+    "manageTokensPage_supposedPrice": "Total price {0}",
+
+
+    "transaction_Approve": "Approve",
+    "transaction_Retry": "Retry",
+    "transaction_metaMaskPrompts": "You will receive {0} MetaMask prompts",
+    "transaction_approveTransferTokensHeader": "Approve {0} Tokens",
+    "transaction_approveTransferTokensText": "Allow AdChain Registry contract to transfer adToken deposit from your account."
+  }
+}
