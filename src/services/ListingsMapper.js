@@ -9,7 +9,7 @@ export default class ListingsMapper {
       result.name = listing.name;
       let whitelisted = await listing.isWhitelisted();
       let exists = await listing.exists();
-      result.status = whitelisted ? keys.inRegistry: keys.inApplication;
+      result.status = whitelisted ? keys.inRegistry : keys.inApplication;
       if (!exists) {
         result.status = keys.notExists;
       }
