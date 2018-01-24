@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -46,7 +47,8 @@ class PublisherDomainsList extends Component {
                 <TableRowColumn>{row.name}</TableRowColumn>
                 <TableRowColumn>{row.status}</TableRowColumn>
                 <TableRowColumn>{row.dueDate}</TableRowColumn>
-                <TableRowColumn><RaisedButton label='VIEW' /></TableRowColumn>
+                {/* maybe we need to add id to listings? */}
+                <TableRowColumn><Link to={`/listing/${row.name}`}><RaisedButton label='VIEW' /></Link></TableRowColumn>
               </TableRow>
             ))}
           </TableBody>
