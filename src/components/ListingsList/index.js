@@ -45,7 +45,7 @@ class ListingsList extends Component {
     const adjustForCheckbox = false;
     const displayRowCheckbox = false;
     const deselectOnClickaway = true;
-    const showRowHover = false;
+    const showRowHover = true;
     const stripedRows = false;
     return (
       <div>
