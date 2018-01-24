@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
+import LinearProgress from 'material-ui/LinearProgress';
+import IconButton from 'material-ui/IconButton';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import SuccessIcon from 'material-ui/svg-icons/action/check-circle';
+import ClearIcon from 'material-ui/svg-icons/content/clear';
 import {red500} from 'material-ui/styles/colors';
+import PromisesQueue from '../utils/PromisesQueue';
 
 import './TxQueue.css';
 
@@ -15,124 +19,93 @@ class TxQueue extends Component {
 
     this.state = {
       txIndex: 0,
+      txIndexInProgress: -1,
       finished: false,
       exception: []
     };
   }
 
-  handleNext () {
-    const { txIndex } = this.state;
-
-    // Finished
-    if (txIndex + 1 > this.getTxAmount() - 1) {
-      return this.props.onEnd();
-    }
-
-    this.setState({
-      txIndex: txIndex + 1,
-      finished: txIndex >= this.getTxAmount() - 1
-    });
-  }
-
-  handlePrev () {
-    const { txIndex } = this.state;
-    if (txIndex > 0) {
-      this.setState({txIndex: txIndex - 1});
-    }
-  }
-
-  getTxAmount () {
-    return this.props.transactions.length;
-  }
-
-  getCurrentTx () {
-    return this.props.transactions[this.state.txIndex];
-  }
-
-  renderTxAction (tx) {
-    return (
+  renderTxAction (step, queue) {
+    const showButton = step === queue.actualStep();
+    return showButton ? (
       <div>
-        {!tx.processed ? (
-          <RaisedButton
-            label={tx.exception ? 'Retry' : 'Approve'}
-            backgroundColor='#536dfe'
-            labelColor='#fff'
-            onClick={() => this.handleTxAction(tx.action)}
-          />
-        ) : (
-          <RaisedButton
-            label='Next'
-            backgroundColor='#536dfe'
-            labelColor='#fff'
-            onClick={() => this.handleNext()}
-          />
-        )}
+        <RaisedButton
+          label={step.failed ? 'Retry' : 'Approve'}
+          backgroundColor='#536dfe'
+          labelColor='#fff'
+          disabled={step.started}
+          onClick={() => this.handleTxAction(queue)}
+        />
+
       </div>
-    );
+    ) : ('');
   }
 
-  handleTxAction (action) {
-    let { txIndex } = this.state;
-    action()
-      .then(resp => {
-        if (resp) {
-          // @TODO: delete this temporary shit
-          this.props.transactions[txIndex].processed = true;
-          this.props.transactions[txIndex].exception = false;
-          this.handleNext();
+  handleTxAction (queue) {
+    queue.next()
+      .then(() => {
+        if (queue.complete()) {
+          this.props.onEnd();
         }
-      })
-      .catch(e => {
-        // @TODO: same as above
-        console.log(e);
-        this.props.transactions[txIndex].exception = true;
-        this.setState({}); // Used because we're hardsetting the prop `exception` and component doesn't see changes
-      });
+        this.setState({});
+      }).catch((err) => console.log(err));
+    this.setState({});
   }
 
-  getIconForTransaction (tx) {
-    if (tx.exception) {
+  getIconForTransaction (step) {
+    if (step.failed) {
       return <WarningIcon color={red500} />;
-    } else if (tx.processed) {
+    } else if (step.finished) {
       return <SuccessIcon color='#66bb6a' />;
     } else {
       return null;
     }
   }
 
+  renderLoader (step) {
+    return step.started && !step.finished ? (
+      <LinearProgress style={{width: 100, display: 'inline-block'}} />
+    ) : ('');
+  }
+
   renderTxs () {
-    return this.props.transactions.map(tx => {
-      let icon = this.getIconForTransaction(tx);
-      let warningClass = this.getIconForTransaction(tx) ? 'hasAction' : '';
+    const queue = this.props.queue;
+    return queue.steps.map((step) => {
+      let icon = this.getIconForTransaction(step);
+      let warningClass = icon ? 'hasAction' : '';
 
       return (
-        <Step key={tx.label} completed={tx.processed} style={{flex: 1}}>
-          <StepLabel className={`txQueueLabel ${warningClass}`}
+        <Step key={step.customData.label} completed={step.finished} style={{flex: 1}}>
+          <StepLabel className={`txQueueLabel ${warningClass}`} style={{alignItems: 'top'}}
             {...(icon && {icon})}
           >
             <div style={{flexDirection: 'column', justifyContent: 'space-between', fontSize: '13px'}}>
               <div>
-                <span style={{fontWeight: 600}}>{tx.label}</span>
+                <span style={{fontWeight: 600, paddingRight: 10}}>{step.customData.label}</span>
+                {this.renderLoader(step)}
               </div>
-              <div>{tx.content}</div>
+              <div>{step.customData.content}</div>
             </div>
           </StepLabel>
+          <div className='txQueueStepButton'>{this.renderTxAction(step, queue)}</div>
         </Step>
       );
     });
   }
 
   render () {
-    const { txIndex } = this.state;
-    let margin = 48 + 490 * txIndex;
+    const index = this.props.queue.actualStepIndex();
     return (
       <div className='txQueueContainer'>
-        <Stepper activeStep={txIndex} connector={<span />}>
+        <div className='txHeader'>
+          <div className='txHeader-left-block'>You will receive two metamask prompt:</div>
+          <div className='txHeader-right-block'>
+            <IconButton onClick={() => this.props.cancel()}><ClearIcon /></IconButton>
+          </div>
+        </div>
+        <Stepper activeStep={index} connector={<span />} style={{alignItems: 'top'}}>
           {this.renderTxs()}
         </Stepper>
-        <div style={{margin: `0 ${margin}px`}}>
-          {this.renderTxAction(this.getCurrentTx())}
-        </div>
       </div>
 
     );
@@ -140,12 +113,13 @@ class TxQueue extends Component {
 }
 
 TxQueue.defaultProps = {
-  transactions: []
+  queue: new PromisesQueue()
 };
 
 TxQueue.propTypes = {
-  transactions: PropTypes.array.isRequired,
+  queue: PropTypes.instanceOf(PromisesQueue).isRequired,
   title: PropTypes.string.isRequired,
+  cancel: PropTypes.func.isRequired,
   onEnd: PropTypes.func.isRequired
 };
 

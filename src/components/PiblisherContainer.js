@@ -32,6 +32,7 @@ class PublisherContainer extends Component {
 
   render () {
     const { listings, txQueue, showTxQueue } = this.props.publisher;
+    const {cancelDomainApplication} = this.props.actions;
     // TODO: validate this value
     const minCrutch = Math.max(this.props.minDeposit, 50000);
     return (
@@ -39,7 +40,13 @@ class PublisherContainer extends Component {
         <div>Publisher page</div>
         <h3> Publisher Application </h3>
         <Card className='txqueue-container'>
-          {showTxQueue && <TxQueue transactions={txQueue.transactions} title={txQueue.title} onEnd={this.props.hideTxQueue} />}
+          {showTxQueue &&
+          <TxQueue
+            queue={txQueue}
+            cancel={cancelDomainApplication}
+            title='Make an application to registry'
+            onEnd={this.props.hideTxQueue} />
+          }
         </Card>
         {!showTxQueue &&
         <div className='formWrapper'>

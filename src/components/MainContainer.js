@@ -18,6 +18,7 @@ class MainContainer extends Component {
     const Switch = this._Switch;
     const Redirect = this._Redirect;
     const { buyTokens, getPublisherDomains, getAdvertiserDomains, applyDomain, publisher, advertiser, parameterizer, hideTxQueue } = this.props;
+    const {publisherActions, advertiserActions} = this.props;
     return (
       <Route>
         <Switch>
@@ -35,6 +36,7 @@ class MainContainer extends Component {
               hideTxQueue={hideTxQueue}
               getPublisherDomains={getPublisherDomains}
               publisher={publisher}
+              actions={publisherActions}
               minDeposit={parameterizer.minDeposit}
             />
           )} />

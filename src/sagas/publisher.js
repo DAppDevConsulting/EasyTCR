@@ -1,7 +1,7 @@
 import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
 import 'babel-polyfill';
 import { Registry } from 'ethereum-tcr-api';
-import api from '../services/MetaxApi';
+import api from '../services/BackendApi';
 import { applyDomain as getApplyDomainQueue } from '../transactions';
 import TransactionsManager from '../transactions/TransactionsManager';
 import ListingsMapper from '../services/ListingsMapper';
@@ -38,19 +38,15 @@ export function * applyDomain (action) {
   if (!window.Web3.eth.defaultAccount) {
     return;
   }
-  // TODO: спрятать это все за tcr-api
-  let registry = new Registry(window.contracts.registry, window.Web3);
-  let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
-  try {
-    yield apply(api, 'addDomain', [action.name, account.owner]);
-  } catch (err) {
-    console.log(err);
-  }
 
   let { minDeposit } = (yield select()).parameterizer;
   let queue = yield call(getApplyDomainQueue, action.name, action.tokens, minDeposit);
 
   yield put({ type: 'SHOW_TX_QUEUE', queue });
+}
+
+export function * cancelDomainApplication (action) {
+  yield put({type: 'REQUEST_PUBLISHER_DOMAINS'});
 }
 
 export function * getPublisherDomains (action) {
@@ -60,10 +56,11 @@ export function * getPublisherDomains (action) {
   // TODO: спрятать это все за tcr-api
   let registry = new Registry(window.contracts.registry, window.Web3);
   let account = yield apply(registry, 'getAccount', [window.Web3.eth.defaultAccount]);
-  let domains = yield apply(api, 'getDomains', [[], account.owner]);
+  let domains = yield apply(api, 'getListings', [[], account.owner]);
 
   let listings = yield apply(ListingsMapper, 'mapListings', [domains, registry]);
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
+  yield put({ type: 'REQUEST_TOKEN_INFORMATION' });
 }
 
 export default function * flow () {
@@ -72,5 +69,6 @@ export default function * flow () {
   yield takeEvery('REQUEST_TOKEN_INFORMATION', fetchTokenInformation);
   yield takeEvery('REQUEST_PUBLISHER_DOMAINS', getPublisherDomains);
   yield takeEvery('HIDE_TX_QUEUE', getPublisherDomains);
+  yield takeEvery('CANCEL_DOMAIN_APPLICATION', cancelDomainApplication);
 //  yield takeEvery('ADD_DOMAIN', addDomain);
 }

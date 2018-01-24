@@ -36,3 +36,9 @@ export function hideTxQueue () {
     type: 'HIDE_TX_QUEUE'
   };
 }
+
+export function cancelDomainApplication () {
+  return {
+    type: 'CANCEL_DOMAIN_APPLICATION'
+  };
+}
