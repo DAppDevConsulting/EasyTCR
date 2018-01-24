@@ -34,6 +34,7 @@ class SideBar extends Component {
                   key={1}
                   primaryText='Token Holder'
                   style={{color: getColor(location, TOKEN_HOLDER)}}
+                  onClick={createClickHandler(history, TOKEN_HOLDER)}
                   leftIcon={<TokenHolderIcon color={getColor(location, TOKEN_HOLDER)} />}
                 />,
                 <ListItem

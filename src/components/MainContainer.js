@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import AdvContainer from './AdvContainer';
 import PublisherContainer from './PiblisherContainer';
 import ManageTokensContainer from './ManageTokensContainer';
-import {ADVERTISER, MANAGE_TOKENS, PUBLISHER} from './constants/Navigation';
+import TokenHolderContainer from './TokenHolderContainer';
+import {ADVERTISER, MANAGE_TOKENS, PUBLISHER, TOKEN_HOLDER} from './constants/Navigation';
 
 class MainContainer extends Component {
   constructor (props) {
@@ -39,6 +40,9 @@ class MainContainer extends Component {
               actions={publisherActions}
               minDeposit={parameterizer.minDeposit}
             />
+          )} />
+          <Route path={TOKEN_HOLDER} render={(props) => (
+            <TokenHolderContainer advertiser={advertiser} getAdvertiserDomains={getAdvertiserDomains} />
           )} />
           <Route path='/' exact component={AdvContainer} />
         </Switch>
