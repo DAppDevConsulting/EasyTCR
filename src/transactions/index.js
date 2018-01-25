@@ -2,6 +2,7 @@ import { Registry } from 'ethereum-tcr-api';
 import TransactionManager from './TransactionsManager';
 import PromisesQueue from '../utils/PromisesQueue';
 import api from '../services/BackendApi';
+import keys from '../i18n';
 
 export async function applyDomain (name, tokensAmount, minDeposit) {
   const registry = new Registry(window.contracts.registry, window.Web3);
@@ -17,8 +18,8 @@ export async function applyDomain (name, tokensAmount, minDeposit) {
           });
       },
       {
-        label: `Approve ${minDeposit} Tokens`,
-        content: 'Allow AdChain Registry contract to transfer adToken deposit from your account.'
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, minDeposit),
+        content: keys.transaction_approveTransferTokensText
       }
     ).add(
       async () => {
@@ -30,8 +31,8 @@ export async function applyDomain (name, tokensAmount, minDeposit) {
         return registry.createListing(name, tokensAmount); // TODO: следить за статусом транзакции
       },
       {
-        label: 'Apply domain',
-        content: 'Submit domain application to AdChain registry.'
+        label: keys.candidatePage_transactionsSteps_applyCandidate,
+        content: keys.candidatePage_transactionsSteps_applyCandidateText
       }
     );
 }

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import PropTypes from 'prop-types';
 import BN from 'bn.js';
 import Faucet from '../faucet';
+import keys from '../i18n';
 import './ManageTokensContainer.css';
 
 class ManageTokensContainer extends Component {
@@ -29,31 +28,34 @@ class ManageTokensContainer extends Component {
 
   render () {
     const { tokens, ethers, fetching } = this.props.publisher;
-    const balanceText = fetching ? 'Updating...' : `You have ${tokens} ADT and ${ethers} ETH`;
+    const balanceText = keys.formatString(
+      keys.manageTokensPage_balanceText,
+      {tokens, adt: keys.adt, ethers, eth: keys.eth}
+    );
     return (
       <div className='ContentContainer'>
-        <div>Manage Tokens</div>
-        <h3> Your balance </h3>
-        <div>{balanceText}</div>
-        <h3> Buy tokens </h3>
-        <div>Current rate is {this.state.price} WEI for 1 ADT</div>
+        <div>{keys.manageTokensPage_title}</div>
+        <h3> {keys.manageTokensPage_balanceHeader} </h3>
+        <div>{fetching ? 'Updating...' : balanceText}</div>
+        <h3> {keys.manageTokensPage_buyTokensHeader} </h3>
+        <div>{keys.formatString(keys.manageTokensPage_rate, {price: this.state.price, wei: keys.wei, adt: keys.adt})}</div>
         <div className='buyTokensForm'>
           <div className='buyTokensForm_item'>
             <div className='buyTokensForm_element'>
               <TextField
-                hintText='0'
+                hintText={keys.manageTokensPage_buyTokensHint}
                 value={this.state.value || ''}
                 onChange={(e, value) => this.setState({ value: new BN(value, 10) })} />
             </div>
             <div className='buyTokensForm_element'>
-              <RaisedButton label='Buy' disabled={!this.state.value} onClick={() => {
+              <RaisedButton label={keys.buy} disabled={!this.state.value} onClick={() => {
                 this.buyTokens();
               }} />
             </div>
           </div>
         </div>
-        <div> You want to buy {this.getTokensToBuy().toString()} ADT</div>
-        <div> Total price {this.getTotalPriceText()} </div>
+        <div>{keys.formatString(keys.manageTokensPage_supposedTokens, this.getTokensToBuy().toString(), keys.adt)}</div>
+        <div>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</div>
       </div>
     );
   }
@@ -77,10 +79,10 @@ class ManageTokensContainer extends Component {
   getTotalPriceText () {
     const price = this.getTotalPrice();
     if (price.lt(this.weiToEthLimit)) {
-      return price.toString() + ' WEI';
+      return price.toString() + ` ${keys.wei}`;
     }
 
-    return parseFloat(this.weiToEthConverter(price.toString())) + 'ETH';
+    return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
   }
 }
 

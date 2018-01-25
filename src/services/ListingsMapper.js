@@ -1,3 +1,5 @@
+import keys from '../i18n';
+
 export default class ListingsMapper {
   static async mapListings (domains, registry) {
     let listings = [];
@@ -7,9 +9,9 @@ export default class ListingsMapper {
       result.name = listing.name;
       let whitelisted = await listing.isWhitelisted();
       let exists = await listing.exists();
-      result.status = whitelisted ? 'In registry' : 'In application';
+      result.status = whitelisted ? keys.inRegistry : keys.inApplication;
       if (!exists) {
-        result.status = 'Pending';
+        result.status = keys.notExists;
       }
       result.dueDate = '';
       if (!whitelisted && exists) {
