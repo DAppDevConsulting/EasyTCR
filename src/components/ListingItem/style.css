@@ -1,0 +1,34 @@
+.listing {
+	min-width: 450px;
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
+	box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.14);
+}
+
+.listingHeader {
+	padding: 25px 25px 18px 25px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.listingTitle {
+	font-family: Montserrat;
+	margin: 0 0 3px;
+}
+
+.listingMeta {
+	font-family: OpenSans;
+	color: #7f8fa4;
+	font-size: 12px;
+	margin: 0;
+}
+
+.listingContent {
+	text-align: center;
+	font-family: OpenSans;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #7f8fa4;
+	padding: 40px 0;
+}
