@@ -15,7 +15,9 @@ class ListingContainer extends Component {
   }
 
   componentDidMount () {
-    this.props.advertiserActions.getAdvertiserDomains();
+    if (!this.props.listing) {
+      this.props.advertiserActions.getAdvertiserDomains();
+    }
   }
 
   render () {
