@@ -1,52 +1,56 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import LinearProgress from 'material-ui/LinearProgress';
+import * as advertiserActions from '../../actions/AdvertiserActions';
 import ListingStatus from '../ListingStatus';
 import ListingItem from '../ListingItem';
 import ListingChallenge from '../ListingChallenge';
 import './style.css';
-
-// const listing = {
-//   listing: 'Candidat Name',
-//   description: 'The actual content will be available later',
-//   // state: 'inapplication'
-//   // state: 'inreveal'
-//   // state: 'incommit'
-//   state: 'inregistry',
-//   added: '01-02-2017',
-//   unchallenged: '13:04:01',
-//   remaingTime: '22:12:31'
-// };
 
 class ListingContainer extends Component {
   challengeListing () {
     console.log('challenge');
   }
 
+  componentDidMount () {
+    this.props.advertiserActions.getAdvertiserDomains();
+  }
+
   render () {
     const { listing } = this.props;
 
+    if (listing) {
+      return (
+        <div className='ContentContainer'>
+          <ListingStatus
+            status={listing.status}
+          />
+          <div className='ListingContainer'>
+            <ListingItem
+              listing={listing}
+            />
+            <ListingChallenge
+              dueDate={listing.dueDate}
+              challengeHandler={this.challengeListing}
+            />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className='ContentContainer'>
-        <ListingStatus
-          status={listing.status}
-        />
-        <div className='ListingContainer'>
-          <ListingItem
-            listing={listing}
-          />
-          <ListingChallenge
-            dueDate={listing.dueDate}
-            challengeHandler={this.challengeListing}
-          />
-        </div>
+        <LinearProgress mode='indeterminate' />
       </div>
     );
   }
 }
 
-ListingItem.propTypes = {
-  listing: PropTypes.object.isRequired
+ListingContainer.propTypes = {
+  listing: PropTypes.object.isRequired,
+  advertiserActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps (state) {
@@ -58,12 +62,10 @@ function mapStateToProps (state) {
   };
 }
 
-// function mapDispatchToProps (dispatch) {
-//   return {
-//     appActions: bindActionCreators(appActions, dispatch),
-//     publisherActions: bindActionCreators(publisherActions, dispatch),
-//     advertiserActions: bindActionCreators(advertiserActions, dispatch)
-//   };
-// }
+function mapDispatchToProps (dispatch) {
+  return {
+    advertiserActions: bindActionCreators(advertiserActions, dispatch)
+  };
+}
 
-export default connect(mapStateToProps)(ListingContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ListingContainer);
