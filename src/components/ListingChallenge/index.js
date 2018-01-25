@@ -55,7 +55,7 @@ class ListingChallenge extends Component {
             { 
               remainingTime
                 ? <p>{ remainingTime }</p>
-                : <LinearProgress mode='indeterminate' style={{ width: '80px' }} />
+                : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
             }
           </div>
           <div className='challengeDeposit'>
