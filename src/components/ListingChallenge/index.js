@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
 import TextField from 'material-ui/TextField';
 import './style.css';
 
@@ -14,7 +15,7 @@ class ListingChallenge extends Component {
     this.state = {
       depositValue: '',
       errorText: '',
-      remainingTime: 0
+      remainingTime: null
     };
   }
 
@@ -51,7 +52,11 @@ class ListingChallenge extends Component {
         <div className='challengeData'>
           <div className='challengeTime'>
             <p>Remaining time</p>
-            <p>{ remainingTime }</p>
+            { 
+              remainingTime
+                ? <p>{ remainingTime }</p>
+                : <LinearProgress mode='indeterminate' style={{ width: '80px' }} />
+            }
           </div>
           <div className='challengeDeposit'>
             <p>Minimum deposit required</p>
