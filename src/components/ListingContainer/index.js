@@ -6,7 +6,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import * as advertiserActions from '../../actions/AdvertiserActions';
 import ListingStatus from '../ListingStatus';
 import ListingItem from '../ListingItem';
-import ListingChallenge from '../ListingChallenge';
+import ListingAction from '../ListingAction';
 import './style.css';
 
 class ListingContainer extends Component {
@@ -33,7 +33,8 @@ class ListingContainer extends Component {
             <ListingItem
               listing={listing}
             />
-            <ListingChallenge
+            <ListingAction
+              status={listing.status}
               dueDate={listing.dueDate}
               challengeHandler={this.challengeListing}
             />
@@ -51,7 +52,7 @@ class ListingContainer extends Component {
 }
 
 ListingContainer.propTypes = {
-  listing: PropTypes.object.isRequired,
+  listing: PropTypes.object,
   advertiserActions: PropTypes.object.isRequired
 };
 

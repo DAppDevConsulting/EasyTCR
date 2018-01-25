@@ -1,9 +1,7 @@
-.listingChallenge {
+.listingAction {
 	background-color: #fff;
-	/* margin-top: 22px; */
 	margin-left: 26px;
 	min-height: 350px;
-	/* width: 388px; */
 	padding: 26px 24px;
 	border-radius: 2px;
 	box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.14);
@@ -16,7 +14,7 @@
 	flex: 1 1 auto;
 }
 
-.challengeTitle {
+.actionTitle {
 	font-family: Montserrat;
 	margin: 0 0 40px;
 }
