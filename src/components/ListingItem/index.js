@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './style.css';
 import Icon from './icon';
 
@@ -16,5 +17,9 @@ const ListingItem = ({ listing }) => (
     </div>
   </div>
 );
+
+ListingItem.propTypes = {
+  listing: PropTypes.object.isRequired
+};
 
 export default ListingItem;

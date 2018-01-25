@@ -30,7 +30,7 @@ class ListingContainer extends Component {
             listing={listing}
           />
           <ListingChallenge
-            listing={listing}
+            remainingTime={listing.remaingTime}
             challengeHandler={this.challengeListing}
           />
         </div>

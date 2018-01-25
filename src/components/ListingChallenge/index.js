@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import './style.css';
@@ -28,14 +29,14 @@ class ListingChallenge extends Component {
   }
 
   render () {
-    const { listing, challengeHandler } = this.props;
+    const { remainingTime, challengeHandler } = this.props;
     return (
       <div className='listingChallenge'>
         <h4 className='challengeTitle'>Challenge</h4>
         <div className='challengeData'>
           <div className='challengeTime'>
             <p>Remaining time</p>
-            <p>{ listing.remaingTime }</p>
+            <p>{ remainingTime }</p>
           </div>
           <div className='challengeDeposit'>
             <p>Minimum deposit required</p>
@@ -59,5 +60,10 @@ class ListingChallenge extends Component {
     );
   }
 }
+
+ListingChallenge.propTypes = {
+  remainingTime: PropTypes.string.isRequired,
+  challengeHandler: PropTypes.func.isRequired
+};
 
 export default ListingChallenge;
