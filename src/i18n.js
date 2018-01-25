@@ -2,6 +2,13 @@ import LocalizedStrings from 'react-localization';
 const defaultLocalization = require('./defaultLocalization');
 
 // TODO: унести на бэкенд
-const keys = new LocalizedStrings(defaultLocalization);
+let keys = new LocalizedStrings(defaultLocalization);
+
+export function updateLocalization (localization) {
+  if (!localization) {
+    return;
+  }
+  keys = new LocalizedStrings(localization);
+}
 
 export default keys;

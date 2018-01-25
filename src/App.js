@@ -31,11 +31,19 @@ const muiTheme = getMuiTheme({
 
 class App extends Component {
   componentWillMount () {
-    this.props.publisherActions.getTokens();
     this.props.appActions.init();
   }
 
+  renderNotInitialized () {
+    return (
+      <h1>Initialization...</h1>
+    );
+  }
   render () {
+    if (!this.props.app.registry) {
+      return this.renderNotInitialized();
+    }
+
     const { publisher, advertiser, app, parameterizer } = this.props;
     const {publisherActions, advertiserActions} = this.props;
     const { buyTokens, getPublisherDomains, applyDomain, hideTxQueue } = this.props.publisherActions;

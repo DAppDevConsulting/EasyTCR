@@ -1,9 +1,8 @@
 import { put, takeLatest, apply } from 'redux-saga/effects';
-import { Registry } from 'ethereum-tcr-api';
+import TCR from '../TCR';
 
 export function * fetchParameters (action) {
-  let registry = new Registry(window.contracts.registry, window.Web3);
-  let parameterizer = yield apply(registry, 'getParameterizer');
+  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
   // Don't mind this shitty piece, it'll work cool when we have getParameters() method for parameterizer
   let params = {minDeposit: yield apply(parameterizer, 'get', ['minDeposit'])};
 
