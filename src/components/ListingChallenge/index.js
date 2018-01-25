@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import './style.css';
@@ -8,9 +9,12 @@ class ListingChallenge extends Component {
   constructor (props) {
     super(props);
 
+    this.calculateRemainingTime = this.calculateRemainingTime.bind(this)
+
     this.state = {
       depositValue: '',
-      errorText: ''
+      errorText: '',
+      remainingTime: 0
     };
   }
 
@@ -28,8 +32,19 @@ class ListingChallenge extends Component {
     }
   }
 
+  componentDidMount () {
+    setInterval(() => this.calculateRemainingTime(), 1000);
+  }
+
+  calculateRemainingTime () {
+    this.setState({
+      remainingTime: moment(new Date(this.props.dueDate) - Date.now()).format('hh:mm:ss')
+    });
+  }
+
   render () {
-    const { remainingTime, challengeHandler } = this.props;
+    const { challengeHandler } = this.props;
+    const { remainingTime, depositValue, errorText } = this.state;
     return (
       <div className='listingChallenge'>
         <h4 className='challengeTitle'>Challenge</h4>
@@ -41,10 +56,10 @@ class ListingChallenge extends Component {
           <div className='challengeDeposit'>
             <p>Minimum deposit required</p>
             <TextField
-              value={this.state.depositValue}
+              value={depositValue}
               id='deposit'
               hintText='100 Token'
-              errorText={this.state.errorText}
+              errorText={errorText}
               onChange={evt => this.updateDepositValue(evt)}
             />
           </div>
@@ -62,7 +77,7 @@ class ListingChallenge extends Component {
 }
 
 ListingChallenge.propTypes = {
-  remainingTime: PropTypes.string.isRequired,
+  dueDate: PropTypes.string.isRequired,
   challengeHandler: PropTypes.func.isRequired
 };
 
