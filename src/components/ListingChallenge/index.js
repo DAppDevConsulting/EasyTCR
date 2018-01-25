@@ -9,7 +9,7 @@ class ListingChallenge extends Component {
   constructor (props) {
     super(props);
 
-    this.calculateRemainingTime = this.calculateRemainingTime.bind(this)
+    this.calculateRemainingTime = this.calculateRemainingTime.bind(this);
 
     this.state = {
       depositValue: '',
