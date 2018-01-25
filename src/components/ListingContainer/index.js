@@ -55,19 +55,15 @@ ListingContainer.propTypes = {
   advertiserActions: PropTypes.object.isRequired
 };
 
-function mapStateToProps (state) {
-  const pathname = window.location.pathname.split('/')[2];
-
-  return {
-    listing: state.advertiser.listings.find(x => x.name === pathname),
+const mapStateToProps = state =>
+  ({
+    listing: state.advertiser.listings.find(x => x.name === window.location.pathname.split('/')[2]),
     minDeposit: state.parameterizer.minDeposit
-  };
-}
+  });
 
-function mapDispatchToProps (dispatch) {
-  return {
+const mapDispatchToProps = dispatch =>
+  ({
     advertiserActions: bindActionCreators(advertiserActions, dispatch)
-  };
-}
+  });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListingContainer);
