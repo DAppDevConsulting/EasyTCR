@@ -27,7 +27,7 @@ class SideBar extends Component {
           <List>
             <ListItem
               primaryText='Menu'
-              initiallyOpen={true}
+              initiallyOpen
               primaryTogglesNestedList={primaryTogglesNestedList}
               nestedItems={[
                 <ListItem
