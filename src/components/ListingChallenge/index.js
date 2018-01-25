@@ -52,7 +52,7 @@ class ListingChallenge extends Component {
         <div className='challengeData'>
           <div className='challengeTime'>
             <p>Remaining time</p>
-            { 
+            {
               remainingTime
                 ? <p>{ remainingTime }</p>
                 : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />

@@ -1,0 +1,13 @@
+.listingStatus {
+	height: 70px;
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+}
+
+.listingStatus p {
+	font-family: OpenSans;
+	font-size: 12px;
+	color: #7f8fa4;
+	margin-right: 40px;
+}
