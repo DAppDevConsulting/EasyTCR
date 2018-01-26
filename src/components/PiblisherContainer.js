@@ -45,7 +45,8 @@ class PublisherContainer extends Component {
             queue={txQueue}
             cancel={cancelDomainApplication}
             title='Make an application to registry'
-            onEnd={this.props.hideTxQueue} />
+            onEnd={this.props.hideTxQueue}
+          />
           }
         </Card>
         {!showTxQueue &&
