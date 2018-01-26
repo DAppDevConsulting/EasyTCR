@@ -59,7 +59,7 @@ class PublisherContainer extends Component {
         {!showTxQueue &&
         <div className='formWrapper'>
           <div className='formItem'>
-            <div>keys.candidate<span className='requiredIcon'>*</span></div>
+            <div>{keys.candidate}<span className='requiredIcon'>*</span></div>
             <TextField
               hintText={keys.candidateExample}
               value={this.state.domain}

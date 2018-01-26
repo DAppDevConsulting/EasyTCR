@@ -33,6 +33,24 @@ export default {
   },
   getRegistryLocalization: async (registry) => {
     let localization = await (await window.fetch(`${config.host}registry/localization?registry=${registry}`)).json();
-    return JSON.stringify(localization.localizationData);
+    return localization.localizationData ? JSON.parse(localization.localizationData) : '';
+  },
+  addRegistry: async (registry, faucet, owner, localization) => {
+    console.log(localization);
+    try {
+      await window.fetch(
+        `${config.host}add`,
+        {
+          method: 'post',
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({registry, faucet, owner, localizationData: localization})
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   }
 };

@@ -69,7 +69,7 @@ export class ContractsManager {
   }
 
   static getCurrentRegistryAddress () {
-    return _map.get(CONTRACTS).registry;
+    return _map.has(CONTRACTS) ? _map.get(CONTRACTS).registry : '';
   }
 }
 
