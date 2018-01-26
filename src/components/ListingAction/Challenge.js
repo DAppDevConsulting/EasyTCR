@@ -24,7 +24,7 @@ class Challenge extends Component {
 
   calculateRemainingTime () {
     this.setState({
-      remainingTime: moment(new Date(this.props.dueDate) - Date.now()).format('hh:mm:ss')
+      remainingTime: moment(new Date(this.props.listing.dueDate) - Date.now()).format('hh:mm:ss')
     });
   }
 
@@ -43,7 +43,7 @@ class Challenge extends Component {
   }
 
   render () {
-    const { challengeHandler } = this.props;
+    const { challengeHandler, listing } = this.props;
     const { remainingTime, depositValue, errorText } = this.state;
 
     return (
@@ -71,9 +71,9 @@ class Challenge extends Component {
         </div>
         <RaisedButton
           label='Challenge'
-          backgroundColor='#4CAF50'
+          backgroundColor='#66bb6a'
           labelColor='#fff'
-          onClick={() => challengeHandler()}
+          onClick={() => challengeHandler(listing.name, depositValue)}
           disabled={!depositValue || !!errorText}
         />
       </div>
@@ -83,7 +83,7 @@ class Challenge extends Component {
 
 Challenge.propTypes = {
   challengeHandler: PropTypes.func.isRequired,
-  dueDate: PropTypes.string.isRequired
+  listing: PropTypes.object.isRequired
 };
 
 export default Challenge;

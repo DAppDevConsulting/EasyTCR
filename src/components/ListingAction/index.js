@@ -4,13 +4,13 @@ import './style.css';
 import Challenge from './Challenge';
 import Commit from './Commit';
 
-const ListingAction = ({ dueDate, status, challengeHandler }) => {
-  switch (status) {
+const ListingAction = ({ listing, challengeHandler }) => {
+  switch (listing.status) {
     case 'In application':
       return (
         <Challenge
           challengeHandler={challengeHandler}
-          dueDate={dueDate}
+          listing={listing}
         />
       );
     case 'In reveal':
@@ -19,16 +19,15 @@ const ListingAction = ({ dueDate, status, challengeHandler }) => {
       return <Commit />;
     case 'In registry':
       return null;
-    case 'Pending':
-      return null;
+    // case 'Pending':
+    //   return null;
     default:
-      return null;
+      return <Commit />;
   }
 };
 
 ListingAction.propTypes = {
-  status: PropTypes.string.isRequired,
-  dueDate: PropTypes.string.isRequired,
+  listing: PropTypes.object.isRequired,
   challengeHandler: PropTypes.func.isRequired
 };
 

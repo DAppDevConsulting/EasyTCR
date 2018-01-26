@@ -4,14 +4,30 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import * as advertiserActions from '../../actions/AdvertiserActions';
+import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import ListingStatus from '../ListingStatus';
 import ListingItem from '../ListingItem';
 import ListingAction from '../ListingAction';
 import './style.css';
 
 class ListingContainer extends Component {
-  challengeListing () {
+  constructor (props) {
+    super();
+
+    this.challengeListing = this.challengeListing.bind(this);
+    this.voteListing = this.voteListing.bind(this);
+  }
+
+  challengeListing (listing, deposit) {
     console.log('challenge');
+    console.log('listing', listing);
+    console.log('deposit', deposit);
+
+    this.props.tokenHolderActions.challenge(listing, deposit);
+  }
+
+  voteListing () {
+    console.log('vote');
   }
 
   componentDidMount () {
@@ -34,9 +50,9 @@ class ListingContainer extends Component {
               listing={listing}
             />
             <ListingAction
-              status={listing.status}
-              dueDate={listing.dueDate}
+              listing={listing}
               challengeHandler={this.challengeListing}
+              voteHandler={this.voteHandler}
             />
           </div>
         </div>
@@ -53,7 +69,8 @@ class ListingContainer extends Component {
 
 ListingContainer.propTypes = {
   listing: PropTypes.object,
-  advertiserActions: PropTypes.object.isRequired
+  advertiserActions: PropTypes.object.isRequired,
+  tokenHolderActions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state =>
@@ -64,7 +81,8 @@ const mapStateToProps = state =>
 
 const mapDispatchToProps = dispatch =>
   ({
-    advertiserActions: bindActionCreators(advertiserActions, dispatch)
+    advertiserActions: bindActionCreators(advertiserActions, dispatch),
+    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListingContainer);

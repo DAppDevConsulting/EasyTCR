@@ -4,12 +4,14 @@ import publisher from './publisher';
 import advertiser from './advertiser';
 import app from './app';
 import parameterizer from './parameterizer';
+import challenge from './challenge';
 
 const sagas = [
   app,
   publisher,
   advertiser,
-  parameterizer
+  parameterizer,
+  challenge
 ];
 
 export default function * root () {
