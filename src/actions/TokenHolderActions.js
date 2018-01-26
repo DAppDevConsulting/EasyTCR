@@ -1,8 +1,7 @@
-export function challenge (listing, deposit) {
+export function challenge (listing) {
   console.log('CHALLENGE action');
   return {
     type: 'CHALLENGE',
-    listing,
-    deposit
+    listing
   };
 }
