@@ -6,7 +6,6 @@ export function * challengeListing (action) {
   // TODO: спрятать это все за tcr-api
   let registry = new Registry(window.contracts.registry, window.Web3);
   let listing = yield apply(registry, 'getListing', [action.listing]);
-  // what to do with response?
   let response = yield apply(listing, 'challenge');
 
   console.log('response: ', response);
