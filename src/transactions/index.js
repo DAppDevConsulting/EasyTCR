@@ -30,19 +30,18 @@ export async function applyDomain (name, tokensAmount, minDeposit) {
 }
 
 export async function challengeListing (name, tokensAmount, minDeposit) {
-  const registry = new Registry(window.contracts.registry, window.Web3);
-  const account = await registry.getAccount(window.Web3.eth.defaultAccount);
-  const manager = new TransactionManager(window.contracts.registry, window.Web3);
+  const account = await TCR.registry().getAccount(TCR.defaultAccountAddress());
+  const manager = new TransactionManager(provider());
   // TODO: здесь оставить только данные и идентификаторы транзакций. Сами тексты унести на уровень ui-компонентов
   return new PromisesQueue()
-    .add(() => account.approveTokens(registry.address, tokensAmount)
+    .add(() => account.approveTokens(TCR.registry().address, tokensAmount)
       .then(ti => manager.watchForTransaction(ti)
       ),
     {
       label: `Approve ${minDeposit} Tokens`,
       content: 'Allow Registry contract to transfer tokens deposit from your account.'
     })
-    .add(() => registry.challenge(name),
+    .add(() => TCR.registry().challenge(name),
       {
         label: 'Challenge listing',
         content: 'Challenge listing'
