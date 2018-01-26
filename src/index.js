@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -8,7 +9,7 @@ import rootSaga from './sagas';
 import registerServiceWorker from './registerServiceWorker';
 import resolveProvider from './resolveProvider';
 
-window.contracts = require('./secrets.json').contracts;
+// window.contracts = require('./secrets.json').contracts;
 
 document.addEventListener('DOMContentLoaded', function () {
   resolveProvider().then(() => runApplication());

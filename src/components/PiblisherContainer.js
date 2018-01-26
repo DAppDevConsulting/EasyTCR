@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Card from 'material-ui/Card';
 import keys from '../i18n';
-import Faucet from '../faucet';
+import TCR from '../TCR';
 import ListingsList from './ListingsList';
 import './PublisherContainer.css';
 import TxQueue from './TxQueue';
@@ -34,8 +34,7 @@ class PublisherContainer extends Component {
 
   componentWillMount () {
     // Setting token price for further usage
-    const faucet = new Faucet();
-    faucet.getPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
+    TCR.getTokenPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
     this.props.getPublisherDomains();
   }
 

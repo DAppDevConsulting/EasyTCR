@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import BN from 'bn.js';
-import Faucet from '../faucet';
+import TCR from '../TCR';
 import keys from '../i18n';
 import './ManageTokensContainer.css';
 
@@ -21,9 +21,8 @@ class ManageTokensContainer extends Component {
 
   componentWillMount () {
     // Setting token price for further usage
-    const faucet = new Faucet();
-    this.weiToEthConverter = faucet.getWeiToEthConverter();
-    faucet.getPrice('wei').then(price => this.setState({ price: price.toString() }));
+    this.weiToEthConverter = TCR.fromWei;
+    TCR.getTokenPrice('wei').then(price => this.setState({ price: price.toString() }));
   }
 
   render () {

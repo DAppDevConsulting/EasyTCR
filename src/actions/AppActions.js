@@ -3,3 +3,10 @@ export function init () {
     type: 'APP_INIT'
   };
 }
+
+export function changeRegistry (registryAddress) {
+  return {
+    type: 'CHANGE_REGISTRY',
+    registryAddress
+  };
+}
