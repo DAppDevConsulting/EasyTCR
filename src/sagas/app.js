@@ -1,6 +1,6 @@
 import {apply, put, call, takeLatest} from 'redux-saga/effects';
 import api from '../services/BackendApi';
-import {ContractsManager} from '../TCR';
+import TCR, {ContractsManager} from '../TCR';
 import {updateLocalization} from '../i18n';
 
 export function * sendTxBatch (action) {
@@ -16,11 +16,17 @@ export function * changeRegistry (action) {
   yield put({ type: 'REQUEST_PARAMETERIZER_INFORMATION' });
 }
 
+export function * addRegistry (action) {
+  yield apply(api, 'addRegistry', [action.registry, action.faucet, TCR.defaultAccountAddress(), action.localization]);
+  yield call(init, {defaultRegistry: action.registry});
+}
+
 export function * init (action) {
   let contracts = yield apply(api, 'getRegistries', [[]]);
   ContractsManager.setContracts(contracts);
   let addresses = ContractsManager.getRegistriesAddresses();
-  yield call(changeRegistry, {registryAddress: addresses[0]});
+  let address = action.defaultRegistry || addresses[0];
+  yield call(changeRegistry, {registryAddress: address});
   yield put({ type: 'REQUEST_TOKEN_INFORMATION' });
   yield put({ type: 'UPDATE_REGISTRIES_LIST', registries: ContractsManager.getRegistriesAddresses() });
 }
@@ -28,5 +34,6 @@ export function * init (action) {
 export default function * flow () {
   yield takeLatest('SEND_TRANSACTIONS', sendTxBatch);
   yield takeLatest('APP_INIT', init);
-  yield takeLatest('CHANGE_REGISTRY', changeRegistry);
+  yield takeLatest('ADD_REGISTRY', addRegistry);
+  yield takeLatest('CHANGE_REGISTRY', init);
 }

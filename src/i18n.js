@@ -6,9 +6,20 @@ let keys = new LocalizedStrings(defaultLocalization);
 
 export function updateLocalization (localization) {
   if (!localization) {
+    keys = new LocalizedStrings(defaultLocalization);
     return;
   }
   keys = new LocalizedStrings(localization);
 }
 
-export default keys;
+export default new Proxy({}, {
+  get (target, prop) {
+    return keys[prop];
+  },
+  has (target, phrase) {
+    return keys.has(phrase);
+  },
+  apply (target, thisArg, argumentsList) {
+    return target.apply(keys, argumentsList);
+  }
+});

@@ -20,6 +20,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from './components/Header';
 import SideBar from './components/SideBar';
 import MainContainer from './components/MainContainer';
+import ManageRegistriesForm from './components/ManageRegistriesForm';
 
 import './App.css';
 
@@ -30,6 +31,12 @@ const muiTheme = getMuiTheme({
 });
 
 class App extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      manageRegistriesOpened: false
+    };
+  }
   componentWillMount () {
     this.props.appActions.init();
   }
@@ -52,9 +59,18 @@ class App extends Component {
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div className='App'>
-            <Header tokens={publisher.tokens} ethers={publisher.ethers} fetching={publisher.fetching} />
+            <Header
+              tokens={publisher.tokens}
+              ethers={publisher.ethers}
+              fetching={publisher.fetching}
+              onSwitcherClick={() => this.setState({manageRegistriesOpened: true})}
+            />
             <div>
               <SideBar Link={Link} />
+              <ManageRegistriesForm
+                open={this.state.manageRegistriesOpened}
+                onClose={() => this.setState({manageRegistriesOpened: false})}
+              />
               <div className='MainContainerWrapper'>
                 <MainContainer
                   publisherActions={publisherActions}

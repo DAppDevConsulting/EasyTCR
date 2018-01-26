@@ -7,6 +7,15 @@ export function init () {
 export function changeRegistry (registryAddress) {
   return {
     type: 'CHANGE_REGISTRY',
-    registryAddress
+    defaultRegistry: registryAddress
+  };
+}
+
+export function addRegistry (registry, faucet, localization = '') {
+  return {
+    type: 'ADD_REGISTRY',
+    registry,
+    faucet,
+    localization
   };
 }
