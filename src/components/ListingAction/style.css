@@ -18,7 +18,7 @@
 
 .actionTitle {
 	font-family: Montserrat;
-	margin: 0;
+	margin-top: 0;
 }
 
 .challengeTime {
@@ -55,4 +55,37 @@
 
 .challengeId {
 	margin-bottom: 0;
+}
+
+.challengeTxSteps {
+	flex: 1 1 auto;
+}
+
+.challengeTxStep {
+	padding-left: 45px;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.challengeTxStep h4 {
+	margin-top: 0;
+}
+
+.challengeTxStep::before {
+	content: '1';
+	position: absolute;
+	left: 0;
+	height: 28px;
+	width: 28px;
+	border-radius: 50%;
+	background-color: #fafbfc;
+	border: solid 1px #e6eaee;
+	display: flex;
+    justify-content: center;
+	align-items: center;
+	color: #7f8fa4;
+}
+
+.challengeTxStep:last-child::before {
+	content: '2';
 }
