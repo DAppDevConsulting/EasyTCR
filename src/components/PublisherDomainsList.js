@@ -47,7 +47,6 @@ class PublisherDomainsList extends Component {
                 <TableRowColumn>{row.name}</TableRowColumn>
                 <TableRowColumn>{row.status}</TableRowColumn>
                 <TableRowColumn>{row.dueDate}</TableRowColumn>
-                {/* maybe we need to add id to listings? */}
                 <TableRowColumn><Link to={`/listing/${row.name}`}><RaisedButton label='VIEW' /></Link></TableRowColumn>
               </TableRow>
             ))}
@@ -61,4 +60,5 @@ class PublisherDomainsList extends Component {
 PublisherDomainsList.propTypes = {
   listings: PropTypes.array.isRequired
 };
+
 export default PublisherDomainsList;

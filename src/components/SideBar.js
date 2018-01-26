@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import {ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER} from './constants/Navigation';
 import {TokenHolderIcon, AdvertiserIcon, PublisherIcon, ManageIcon} from './icons/Icons';
 import {indigoA200} from 'material-ui/styles/colors';
+import keys from '../i18n';
 import './SideBar.css';
 
 const createClickHandler = (history, navigationPath) => {
@@ -26,34 +27,34 @@ class SideBar extends Component {
         <div>
           <List>
             <ListItem
-              primaryText='Menu'
-              initiallyOpen
+              primaryText={keys.menuHeader}
+              initiallyOpen={true}
               primaryTogglesNestedList={primaryTogglesNestedList}
               nestedItems={[
                 <ListItem
                   key={1}
-                  primaryText='Token Holder'
+                  primaryText={keys.menu_tokenHolder}
                   style={{color: getColor(location, TOKEN_HOLDER)}}
                   onClick={createClickHandler(history, TOKEN_HOLDER)}
                   leftIcon={<TokenHolderIcon color={getColor(location, TOKEN_HOLDER)} />}
                 />,
                 <ListItem
                   key={2}
-                  primaryText='Publisher page'
+                  primaryText={keys.menu_candidate}
                   style={{color: getColor(location, PUBLISHER)}}
                   onClick={createClickHandler(history, PUBLISHER)}
                   leftIcon={<PublisherIcon color={getColor(location, PUBLISHER)} />}
                 />,
                 <ListItem
                   key={3}
-                  primaryText='Advertiser page'
+                  primaryText={keys.menu_consumer}
                   style={{color: getColor(location, ADVERTISER)}}
                   onClick={createClickHandler(history, ADVERTISER)}
                   leftIcon={<AdvertiserIcon color={getColor(location, ADVERTISER)} />}
                 />,
                 <ListItem
                   key={4}
-                  primaryText='Manage token'
+                  primaryText={keys.menu_manageTokens}
                   style={{color: getColor(location, MANAGE_TOKENS)}}
                   onClick={createClickHandler(history, MANAGE_TOKENS)}
                   leftIcon={<ManageIcon color={getColor(location, MANAGE_TOKENS)} />}

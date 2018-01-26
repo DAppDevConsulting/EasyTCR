@@ -1,15 +1,16 @@
 import config from '../apiConfig';
 
 export default {
-  getListings: async (filters = [], address = '') => {
+  getListings: async (registry, filters = [], address = '') => {
     let params = filters.length ? [`filter=${filters.join(',')}`] : [];
+    params.push(`registry=${registry}`);
     if (address) {
       params.push(`account=${address}`);
     }
     let domains = await (await window.fetch(`${config.host}registry/listings?${params.join('&')}`)).json();
     return domains;
   },
-  addListing: async (listingName, ownerAddress) => {
+  addListing: async (registry, listingName, ownerAddress) => {
     try {
       await window.fetch(
         `${config.host}registry/add`,
@@ -19,11 +20,19 @@ export default {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({listing: listingName, account: ownerAddress})
+          body: JSON.stringify({listing: listingName, account: ownerAddress, registry: registry})
         }
       );
     } catch (err) {
       console.log(err);
     }
+  },
+  getRegistries: async () => {
+    let registries = await (await window.fetch(`${config.host}list`)).json();
+    return registries;
+  },
+  getRegistryLocalization: async (registry) => {
+    let localization = await (await window.fetch(`${config.host}registry/localization?registry=${registry}`)).json();
+    return JSON.stringify(localization.localizationData);
   }
 };

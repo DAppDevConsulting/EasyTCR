@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+import {ContractsManager} from './TCR';
 
 const getMetamaskAccounts = async () => {
   return new Promise((resolve, reject) => {
@@ -19,12 +20,16 @@ const getMetamaskAccounts = async () => {
 const resolveProvider = async () => {
   if (typeof window.web3 !== 'undefined') {
     // Metamask/Mist
-    window.Web3 = new Web3(window.web3.currentProvider);
+    const provider = new Web3(window.web3.currentProvider);
     let accounts = await getMetamaskAccounts();
-    window.Web3.eth.defaultAccount = window.web3.eth.defaultAccount;
-    if (!window.Web3.eth.defaultAccount) {
-      window.Web3.eth.defaultAccount = accounts[0];
+    provider.eth.defaultAccount = window.web3.eth.defaultAccount;
+    if (!provider.eth.defaultAccount) {
+      provider.eth.defaultAccount = accounts[0];
     }
+    ContractsManager.mount(
+      provider,
+      (amount, unit = 'ether') => { return window.web3.fromWei(amount, unit); }
+    );
   } else {
     // Fallback. No provider
     window.Web3 = null;
