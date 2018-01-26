@@ -28,3 +28,24 @@ export async function applyDomain (name, tokensAmount, minDeposit) {
       }
     );
 }
+
+export async function challengeListing (name, tokensAmount, minDeposit) {
+  const registry = new Registry(window.contracts.registry, window.Web3);
+  const account = await registry.getAccount(window.Web3.eth.defaultAccount);
+  const manager = new TransactionManager(window.contracts.registry, window.Web3);
+  // TODO: здесь оставить только данные и идентификаторы транзакций. Сами тексты унести на уровень ui-компонентов
+  return new PromisesQueue()
+    .add(() => account.approveTokens(registry.address, tokensAmount)
+      .then(ti => manager.watchForTransaction(ti)
+      ),
+    {
+      label: `Approve ${minDeposit} Tokens`,
+      content: 'Allow Registry contract to transfer tokens deposit from your account.'
+    })
+    .add(() => registry.challenge(name),
+      {
+        label: 'Challenge listing',
+        content: 'Challenge listing'
+      }
+    );
+}

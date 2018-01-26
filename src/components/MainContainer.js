@@ -4,7 +4,8 @@ import AdvContainer from './AdvContainer';
 import PublisherContainer from './PiblisherContainer';
 import ManageTokensContainer from './ManageTokensContainer';
 import TokenHolderContainer from './TokenHolderContainer';
-import {ADVERTISER, MANAGE_TOKENS, PUBLISHER, TOKEN_HOLDER} from './constants/Navigation';
+import ListingContainer from './ListingContainer';
+import { ADVERTISER, LISTING, MANAGE_TOKENS, PUBLISHER, TOKEN_HOLDER } from './constants/Navigation';
 
 class MainContainer extends Component {
   constructor (props) {
@@ -19,16 +20,22 @@ class MainContainer extends Component {
     const Switch = this._Switch;
     const Redirect = this._Redirect;
     const { buyTokens, getPublisherDomains, getAdvertiserDomains, applyDomain, publisher, advertiser, parameterizer, hideTxQueue } = this.props;
-    const {publisherActions, advertiserActions} = this.props;
+    const { publisherActions, advertiserActions } = this.props;
     return (
       <Route>
         <Switch>
           <Redirect path='/' to={ADVERTISER} exact />
           <Route path={MANAGE_TOKENS} render={(props) => (
-            <ManageTokensContainer publisher={publisher} buyTokens={buyTokens} />
+            <ManageTokensContainer
+              publisher={publisher}
+              buyTokens={buyTokens}
+            />
           )} />
           <Route path={ADVERTISER} render={(props) => (
-            <AdvContainer advertiser={advertiser} getAdvertiserDomains={getAdvertiserDomains} />
+            <AdvContainer
+              advertiser={advertiser}
+              getAdvertiserDomains={getAdvertiserDomains}
+            />
           )} />
           <Route path={PUBLISHER} render={() => (
             <PublisherContainer
@@ -42,7 +49,13 @@ class MainContainer extends Component {
             />
           )} />
           <Route path={TOKEN_HOLDER} render={(props) => (
-            <TokenHolderContainer advertiser={advertiser} getAdvertiserDomains={getAdvertiserDomains} />
+            <TokenHolderContainer
+              advertiser={advertiser}
+              getAdvertiserDomains={getAdvertiserDomains}
+            />
+          )} />
+          <Route path={LISTING} render={(props) => (
+            <ListingContainer />
           )} />
           <Route path='/' exact component={AdvContainer} />
         </Switch>

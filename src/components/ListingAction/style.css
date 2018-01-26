@@ -1,0 +1,91 @@
+.listingAction {
+	width: 350px;
+	background-color: #fff;
+	margin-left: 26px;
+	min-height: 350px;
+	padding: 26px 24px;
+	border-radius: 2px;
+	box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.14);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.actionData {
+	flex: 1 1 auto;
+}
+
+.actionTitle {
+	font-family: Montserrat;
+	margin-top: 0;
+}
+
+.challengeTime {
+	margin-bottom: 22px;
+}
+
+.challengeTime p {
+	margin: 0;
+	font-family: OpenSans;
+	font-size: 12px;
+	color: #3f536e;
+	line-height: 1.75;
+}
+
+.challengeTime p:first-child {
+	font-weight: 600;
+}
+
+.challengeDeposit p {
+	margin: 0;
+	font-family: OpenSans;
+	font-size: 12px;
+	color: #7f8fa4;
+	line-height: 1.33;
+}
+
+.groupLable {
+	display: inline-block;
+	font-family: Roboto, sans-serif;
+	font-size: 12px;
+	line-height: 1.33;
+	color: rgba(0, 0, 0, 0.3);
+}
+
+.challengeId {
+	margin-bottom: 0;
+}
+
+.challengeTxSteps {
+	flex: 1 1 auto;
+}
+
+.challengeTxStep {
+	padding-left: 45px;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.challengeTxStep h4 {
+	margin-top: 0;
+}
+
+.challengeTxStep::before {
+	content: '1';
+	position: absolute;
+	left: 0;
+	height: 28px;
+	width: 28px;
+	border-radius: 50%;
+	background-color: #fafbfc;
+	border: solid 1px #e6eaee;
+	display: flex;
+    justify-content: center;
+	align-items: center;
+	color: #7f8fa4;
+}
+
+.challengeTxStep:last-child::before {
+	content: '2';
+}
