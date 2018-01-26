@@ -18,12 +18,8 @@ class ListingContainer extends Component {
     this.voteListing = this.voteListing.bind(this);
   }
 
-  challengeListing (listing, deposit) {
-    console.log('challenge');
-    console.log('listing', listing);
-    console.log('deposit', deposit);
-
-    this.props.tokenHolderActions.challenge(listing, deposit);
+  challengeListing (listing) {
+    this.props.tokenHolderActions.challenge(listing);
   }
 
   voteListing () {
