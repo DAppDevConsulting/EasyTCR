@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Card from 'material-ui/Card';
-import ListingsList from './ListingsList';
 import PropTypes from 'prop-types';
-import keys from '../i18n';
+import Card from 'material-ui/Card';
+import ListingsList from '../ListingsList';
+import keys from '../../i18n';
 
 class AdvContainer extends Component {
   componentWillMount () {

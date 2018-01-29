@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AdvContainer from './AdvContainer';
-import PublisherContainer from './PiblisherContainer';
-import ManageTokensContainer from './ManageTokensContainer';
-import TokenHolderContainer from './TokenHolderContainer';
-import ListingContainer from './ListingContainer';
-import { ADVERTISER, LISTING, MANAGE_TOKENS, PUBLISHER, TOKEN_HOLDER } from './constants/Navigation';
+import AdvContainer from '../AdvContainer';
+import PublisherContainer from '../PublisherContainer';
+import ManageTokensContainer from '../ManageTokensContainer';
+import TokenHolderContainer from '../TokenHolderContainer';
+import ListingContainer from '../ListingContainer';
+import { ADVERTISER, LISTING, MANAGE_TOKENS, PUBLISHER, TOKEN_HOLDER } from '../../constants/Navigation';
 
 class MainContainer extends Component {
   constructor (props) {

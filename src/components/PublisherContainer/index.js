@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Card from 'material-ui/Card';
-import keys from '../i18n';
-import TCR from '../TCR';
-import ListingsList from './ListingsList';
-import './PublisherContainer.css';
-import TxQueue from './TxQueue';
+import keys from '../../i18n';
+import TCR from '../../TCR';
+import ListingsList from '../ListingsList';
+import TxQueue from '../TxQueue';
+import './style.css';
 
 class PublisherContainer extends Component {
   constructor (props) {
