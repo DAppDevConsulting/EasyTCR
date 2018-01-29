@@ -30,7 +30,6 @@ class TokenHolderContainer extends Component {
           <ListingsList
             listings={listings}
             config={this.listConfig}
-            onListingAction={() => {}}
           />
         </Card>
       </div>

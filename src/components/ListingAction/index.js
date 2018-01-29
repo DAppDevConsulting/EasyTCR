@@ -6,13 +6,13 @@ import Commit from './Commit';
 
 const ListingAction = ({ listing, challengeHandler }) => {
   switch (listing.status) {
-    case 'In application':
-      return (
-        <Challenge
-          challengeHandler={challengeHandler}
-          listing={listing}
-        />
-      );
+    // case 'In application':
+    //   return (
+    //     <Challenge
+    //       challengeHandler={challengeHandler}
+    //       listing={listing}
+    //     />
+    //   );
     case 'In reveal':
       return null;
     case 'In commit':

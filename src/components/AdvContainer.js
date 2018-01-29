@@ -26,7 +26,7 @@ class AdvContainer extends Component {
           <ListingsList
             listings={listings}
             config={listConfig}
-            onListingAction={() => {}} />
+          />
         </Card>
       </div>
     );

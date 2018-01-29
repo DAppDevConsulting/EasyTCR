@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -23,7 +24,7 @@ class ListingsList extends Component {
     );
   }
 
-  renderRow (config, data, index, action) {
+  renderRow (config, data, index) {
     return (
       <TableRow key={index}>
         {config.columns.map((column) => {
@@ -32,14 +33,14 @@ class ListingsList extends Component {
             return (<TableRowColumn key={key}>{data[column.propName]}</TableRowColumn>);
           }
           // TODO: view valid action state
-          return (<TableRowColumn key={key}><RaisedButton label='VIEW' onClick={() => action()} /></TableRowColumn>);
+          return (<TableRowColumn key={key}><Link to={`listing/${data.name}`} ><RaisedButton label='VIEW' /></Link></TableRowColumn>);
         })}
       </TableRow>
     );
   }
 
   render () {
-    const {listings, config, onListingAction} = this.props;
+    const {listings, config} = this.props;
     const headersFixed = true;
     const selectable = false;
     const adjustForCheckbox = false;
@@ -61,7 +62,7 @@ class ListingsList extends Component {
             showRowHover={showRowHover}
             stripedRows={stripedRows}
           >
-            {listings.map((row, index) => this.renderRow(config, row, index, onListingAction))}
+            {listings.map((row, index) => this.renderRow(config, row, index))}
           </TableBody>
         </Table>
       </div>
@@ -71,8 +72,7 @@ class ListingsList extends Component {
 
 ListingsList.propTypes = {
   listings: PropTypes.array.isRequired,
-  config: PropTypes.object.isRequired,
-  onListingAction: PropTypes.func.isRequired
+  config: PropTypes.object.isRequired
 };
 
 export default ListingsList;
