@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { List, ListItem } from 'material-ui/List';
 import { NavLink, withRouter } from 'react-router-dom';
 import { ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER } from './constants/Navigation';
@@ -15,10 +14,46 @@ const iconStyles = {
   color: 'inherit', fill: 'currentColor', transition: 'none'
 };
 
+const navItems = [
+  {
+    key: keys.menu_tokenHolder,
+    icon: <AssessmentIcon style={iconStyles} />,
+    to: TOKEN_HOLDER
+  },
+  {
+    key: keys.menu_candidate,
+    icon: <AssignmentIcon style={iconStyles} />,
+    to: PUBLISHER
+  },
+  {
+    key: keys.menu_consumer,
+    icon: <TargetIcon style={iconStyles} />,
+    to: ADVERTISER
+  },
+  {
+    key: keys.menu_manageTokens,
+    icon: <FolderIcon style={iconStyles} />,
+    to: MANAGE_TOKENS
+  }
+];
+
+const renderNavItem = (key, to, icon) => (
+  <NavLink
+    key={key}
+    to={to}
+    activeStyle={{ color: indigoA200 }}
+    style={{ color: '#7f8fa4' }}
+  >
+    <ListItem
+      primaryText={key}
+      style={{ color: 'inherit' }}
+      leftIcon={icon}
+    />
+  </NavLink>
+);
+
 class SideBar extends Component {
   render () {
-    const primaryTogglesNestedList = true;
-
     return (
       <div className='SideBarContainer'>
         <div>
@@ -26,62 +61,13 @@ class SideBar extends Component {
             <ListItem
               primaryText={keys.menu_header}
               initiallyOpen
-              primaryTogglesNestedList={primaryTogglesNestedList}
-              nestedItems={[
-                <NavLink
-                  key={1}
-                  to={TOKEN_HOLDER}
-                  activeStyle={{ color: indigoA200 }}
-                  style={{ color: '#7f8fa4' }}
-                >
-                  <ListItem
-                    primaryText={keys.menu_tokenHolder}
-                    style={{ color: 'inherit' }}
-                    leftIcon={<AssessmentIcon style={iconStyles} />}
-                  />
-                </NavLink>,
-                <NavLink
-                  key={2}
-                  to={PUBLISHER}
-                  activeStyle={{ color: indigoA200 }}
-                  style={{ color: '#7f8fa4' }}
-                >
-                  <ListItem
-                    primaryText={keys.menu_candidate}
-                    style={{ color: 'inherit' }}
-                    leftIcon={<AssignmentIcon style={iconStyles} />}
-                  />
-                </NavLink>,
-                <NavLink
-                  key={3}
-                  to={ADVERTISER}
-                  activeStyle={{ color: indigoA200 }}
-                  style={{ color: '#7f8fa4' }}
-                >
-                  <ListItem
-                    primaryText={keys.menu_consumer}
-                    style={{ color: 'inherit' }}
-                    leftIcon={<TargetIcon style={iconStyles} />}
-                  />
-                </NavLink>,
-                <NavLink
-                  key={4}
-                  to={MANAGE_TOKENS}
-                  activeStyle={{ color: indigoA200 }}
-                  style={{ color: '#7f8fa4' }}
-                >
-                  <ListItem
-                    primaryText={keys.menu_manageTokens}
-                    style={{ color: 'inherit' }}
-                    leftIcon={<FolderIcon style={iconStyles} />}
-                  />
-                </NavLink>
-              ]}
+              primaryTogglesNestedList
+              nestedItems={navItems.map(x => renderNavItem(x.key, x.to, x.icon))}
             />
             <ListItem
               primaryText='Documentation'
               initiallyOpen={false}
-              primaryTogglesNestedList={primaryTogglesNestedList}
+              primaryTogglesNestedList
               nestedItems={[
                 <ListItem
                   key={1}
