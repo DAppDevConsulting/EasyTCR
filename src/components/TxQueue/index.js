@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import RaisedButton from 'material-ui/RaisedButton';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import LinearProgress from 'material-ui/LinearProgress';
@@ -8,11 +7,10 @@ import IconButton from 'material-ui/IconButton';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import SuccessIcon from 'material-ui/svg-icons/action/check-circle';
 import ClearIcon from 'material-ui/svg-icons/content/clear';
-import {red500} from 'material-ui/styles/colors';
-import PromisesQueue from '../utils/PromisesQueue';
-import keys from '../i18n';
-
-import './TxQueue.css';
+import { red500 } from 'material-ui/styles/colors';
+import PromisesQueue from '../../utils/PromisesQueue';
+import keys from '../../i18n';
+import './style.css';
 
 class TxQueue extends Component {
   constructor (props) {
