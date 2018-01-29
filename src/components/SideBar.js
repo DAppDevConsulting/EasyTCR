@@ -1,64 +1,81 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {List, ListItem} from 'material-ui/List';
-import { withRouter } from 'react-router-dom';
-import {ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER} from './constants/Navigation';
-import {TokenHolderIcon, AdvertiserIcon, PublisherIcon, ManageIcon} from './icons/Icons';
-import {indigoA200} from 'material-ui/styles/colors';
+import { List, ListItem } from 'material-ui/List';
+import { NavLink, withRouter } from 'react-router-dom';
+import { ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER } from './constants/Navigation';
+import { indigoA200 } from 'material-ui/styles/colors';
 import keys from '../i18n';
 import './SideBar.css';
+import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
+import AssignmentIcon from 'material-ui/svg-icons/action/assignment';
+import TargetIcon from 'material-ui/svg-icons/device/gps-fixed';
+import FolderIcon from 'material-ui/svg-icons/file/folder';
 
-const createClickHandler = (history, navigationPath) => {
-  return () => history.push(navigationPath);
+const iconStyles = {
+  color: 'inherit', fill: 'currentColor', transition: 'none'
 };
-
-const isCurrentPath = (location, navigationPath) => {
-  return location.pathname === navigationPath;
-};
-
-const getColor = (location, navigationPath) => isCurrentPath(location, navigationPath) ? indigoA200 : '#7f8fa4';
 
 class SideBar extends Component {
   render () {
     const primaryTogglesNestedList = true;
-    const {location, history} = this.props;
+
     return (
       <div className='SideBarContainer'>
         <div>
           <List>
             <ListItem
-              primaryText={keys.menuHeader}
-              initiallyOpen={true}
+              primaryText={keys.menu_header}
+              initiallyOpen
               primaryTogglesNestedList={primaryTogglesNestedList}
               nestedItems={[
-                <ListItem
+                <NavLink
                   key={1}
-                  primaryText={keys.menu_tokenHolder}
-                  style={{color: getColor(location, TOKEN_HOLDER)}}
-                  onClick={createClickHandler(history, TOKEN_HOLDER)}
-                  leftIcon={<TokenHolderIcon color={getColor(location, TOKEN_HOLDER)} />}
-                />,
-                <ListItem
+                  to={TOKEN_HOLDER}
+                  activeStyle={{ color: indigoA200 }}
+                  style={{ color: '#7f8fa4' }}
+                >
+                  <ListItem
+                    primaryText={keys.menu_tokenHolder}
+                    style={{ color: 'inherit' }}
+                    leftIcon={<AssessmentIcon style={iconStyles} />}
+                  />
+                </NavLink>,
+                <NavLink
                   key={2}
-                  primaryText={keys.menu_candidate}
-                  style={{color: getColor(location, PUBLISHER)}}
-                  onClick={createClickHandler(history, PUBLISHER)}
-                  leftIcon={<PublisherIcon color={getColor(location, PUBLISHER)} />}
-                />,
-                <ListItem
+                  to={PUBLISHER}
+                  activeStyle={{ color: indigoA200 }}
+                  style={{ color: '#7f8fa4' }}
+                >
+                  <ListItem
+                    primaryText={keys.menu_candidate}
+                    style={{ color: 'inherit' }}
+                    leftIcon={<AssignmentIcon style={iconStyles} />}
+                  />
+                </NavLink>,
+                <NavLink
                   key={3}
-                  primaryText={keys.menu_consumer}
-                  style={{color: getColor(location, ADVERTISER)}}
-                  onClick={createClickHandler(history, ADVERTISER)}
-                  leftIcon={<AdvertiserIcon color={getColor(location, ADVERTISER)} />}
-                />,
-                <ListItem
+                  to={ADVERTISER}
+                  activeStyle={{ color: indigoA200 }}
+                  style={{ color: '#7f8fa4' }}
+                >
+                  <ListItem
+                    primaryText={keys.menu_consumer}
+                    style={{ color: 'inherit' }}
+                    leftIcon={<TargetIcon style={iconStyles} />}
+                  />
+                </NavLink>,
+                <NavLink
                   key={4}
-                  primaryText={keys.menu_manageTokens}
-                  style={{color: getColor(location, MANAGE_TOKENS)}}
-                  onClick={createClickHandler(history, MANAGE_TOKENS)}
-                  leftIcon={<ManageIcon color={getColor(location, MANAGE_TOKENS)} />}
-                />
+                  to={MANAGE_TOKENS}
+                  activeStyle={{ color: indigoA200 }}
+                  style={{ color: '#7f8fa4' }}
+                >
+                  <ListItem
+                    primaryText={keys.menu_manageTokens}
+                    style={{ color: 'inherit' }}
+                    leftIcon={<FolderIcon style={iconStyles} />}
+                  />
+                </NavLink>
               ]}
             />
             <ListItem
@@ -68,8 +85,9 @@ class SideBar extends Component {
               nestedItems={[
                 <ListItem
                   key={1}
+                  style={{ color: '#7f8fa4' }}
                   primaryText='Some documentation'
-                  leftIcon={<TokenHolderIcon />}
+                  leftIcon={<AssessmentIcon style={iconStyles} />}
                 />
               ]}
             />
@@ -79,14 +97,5 @@ class SideBar extends Component {
     );
   }
 }
-
-SideBar.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }).isRequired
-};
 
 export default withRouter(SideBar);
