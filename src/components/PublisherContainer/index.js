@@ -9,7 +9,7 @@ import ListingsList from '../ListingsList';
 import TxQueue from '../TxQueue';
 import './style.css';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/PublisherActions';
+import * as actions from '../../actions/PublisherActions';
 import {connect} from 'react-redux';
 
 class PublisherContainer extends Component {

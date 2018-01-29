@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/PublisherActions';
+import * as actions from '../../actions/PublisherActions';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';

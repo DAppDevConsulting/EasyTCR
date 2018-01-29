@@ -4,7 +4,7 @@ import Card from 'material-ui/Card';
 import ListingsList from '../ListingsList';
 import keys from '../../i18n';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/AdvertiserActions';
+import * as actions from '../../actions/AdvertiserActions';
 import {connect} from 'react-redux';
 
 class AdvContainer extends Component {
