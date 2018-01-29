@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
-import TextField from 'material-ui/TextField';
 
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
@@ -19,8 +18,6 @@ class Challenge extends Component {
     this.toggleChallenge = this.toggleChallenge.bind(this);
 
     this.state = {
-      depositValue: '',
-      errorText: '',
       remainingTime: null,
       isChallenging: false
     };
@@ -50,23 +47,9 @@ class Challenge extends Component {
   //   // this.props.challengeHandler(listing.name)
   // }
 
-  updateDepositValue (evt) {
-    if (!!evt.target.value && !evt.target.value.match(/^\d+$/)) {
-      this.setState({
-        depositValue: evt.target.value,
-        errorText: 'invalid input'
-      });
-    } else {
-      this.setState({
-        depositValue: evt.target.value,
-        errorText: ''
-      });
-    }
-  }
-
   render () {
     const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
-    const { isChallenging, remainingTime, depositValue, errorText } = this.state;
+    const { remainingTime } = this.state;
 
     if (showTxQueue) {
       return (
@@ -79,36 +62,6 @@ class Challenge extends Component {
           />
         </div>
       );
-
-      /*
-      return (
-        <div className='listingAction'>
-          <h4 className='actionTitle'>You will receive two MetaMask prompts:</h4>
-          <div className='challengeTxSteps'>
-            <div className='challengeTxStep'>
-              <h4>First Prompt</h4>
-              <p>Allow Registry contract to transfer adToken deposit from your account.</p>
-              <RaisedButton
-                label='NEXT'
-                backgroundColor='#66bb6a'
-                labelColor='#fff'
-                onClick={this.toggleChallenge}
-              />
-            </div>
-            <div className='challengeTxStep'>
-              <h4>Second Prompt</h4>
-              <p>Submit challenge to the Registry contract.</p>
-              <RaisedButton
-                label='SUBMIT'
-                backgroundColor='#66bb6a'
-                labelColor='#fff'
-                onClick={this.toggleChallenge}
-              />
-            </div>
-          </div>
-        </div>
-      );
-      */
     }
 
     return (
@@ -123,16 +76,6 @@ class Challenge extends Component {
                 : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
             }
           </div>
-          <div className='challengeDeposit'>
-            <p>Minimum deposit required</p>
-            <TextField
-              value={depositValue}
-              id='deposit'
-              hintText='100 Token'
-              errorText={errorText}
-              onChange={evt => this.updateDepositValue(evt)}
-            />
-          </div>
         </div>
         <RaisedButton
           label='Challenge'
@@ -146,7 +89,6 @@ class Challenge extends Component {
 }
 
 Challenge.propTypes = {
-  // challengeHandler: PropTypes.func.isRequired,
   listing: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object,
