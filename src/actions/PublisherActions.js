@@ -1,3 +1,4 @@
+// TODO: move to TokenHolderActions
 export function buyTokens (tokens) {
   return {
     type: 'BUY_TOKENS',
@@ -5,6 +6,7 @@ export function buyTokens (tokens) {
   };
 }
 
+// TODO: move to TokenHolderActions
 export function getTokens () {
   return {
     type: 'REQUEST_TOKEN_INFORMATION'

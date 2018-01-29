@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {bindActionCreators} from 'redux';
+import * as actions from '../actions/PublisherActions';
+import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
@@ -60,7 +63,7 @@ class ManageTokensContainer extends Component {
   }
 
   buyTokens () {
-    this.props.buyTokens(this.getTokensToBuy());
+    this.props.actions.buyTokens(this.getTokensToBuy());
     this.setState({value: ''});
   }
 
@@ -85,9 +88,21 @@ class ManageTokensContainer extends Component {
   }
 }
 
+function mapStateToProps (state) {
+  return {
+    publisher: state.publisher
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+
 ManageTokensContainer.propTypes = {
   publisher: PropTypes.object.isRequired,
-  buyTokens: PropTypes.func.isRequired
+  actions: PropTypes.object.isRequired
 };
 
-export default ManageTokensContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(ManageTokensContainer);

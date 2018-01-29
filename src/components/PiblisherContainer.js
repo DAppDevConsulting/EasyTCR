@@ -6,8 +6,11 @@ import Card from 'material-ui/Card';
 import keys from '../i18n';
 import TCR from '../TCR';
 import ListingsList from './ListingsList';
-import './PublisherContainer.css';
 import TxQueue from './TxQueue';
+import {bindActionCreators} from 'redux';
+import * as actions from '../actions/PublisherActions';
+import {connect} from 'react-redux';
+import './PublisherContainer.css';
 
 class PublisherContainer extends Component {
   constructor (props) {
@@ -35,14 +38,14 @@ class PublisherContainer extends Component {
   componentWillMount () {
     // Setting token price for further usage
     TCR.getTokenPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
-    this.props.getPublisherDomains();
+    this.props.actions.getPublisherDomains();
   }
 
   render () {
     const { listings, txQueue, showTxQueue } = this.props.publisher;
     const {cancelDomainApplication} = this.props.actions;
     // TODO: validate this value
-    const minCrutch = Math.max(this.props.minDeposit, 50000);
+    const minCrutch = Math.max(this.props.parametrizer.minDeposit, 50000);
     return (
       <div className='ContentContainer'>
         <div>{keys.candidatePage_title}</div>
@@ -53,7 +56,7 @@ class PublisherContainer extends Component {
             queue={txQueue}
             cancel={cancelDomainApplication}
             title={keys.candidatePage_transactionsSteps_title}
-            onEnd={this.props.hideTxQueue} />
+            onEnd={this.props.actions.hideTxQueue} />
           }
         </Card>
         {!showTxQueue &&
@@ -107,25 +110,32 @@ class PublisherContainer extends Component {
   }
 
   buyTokens () {
-    this.props.buyTokens(this.state.value, 10);
+    this.props.actions.buyTokens(this.state.value, 10);
   }
 
   addDomain () {
-    this.props.applyDomain(this.state.domain, this.state.stake);
+    this.props.actions.applyDomain(this.state.domain, this.state.stake);
     this.setState({domain: '', stake: 0});
   }
 }
 
+function mapStateToProps (state) {
+  return {
+    publisher: state.publisher,
+    parametrizer: state.parameterizer
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+
 PublisherContainer.propTypes = {
-  buyTokens: PropTypes.func.isRequired,
-  applyDomain: PropTypes.func.isRequired,
-  hideTxQueue: PropTypes.func.isRequired,
-  getPublisherDomains: PropTypes.func.isRequired,
   publisher: PropTypes.object.isRequired,
-  minDeposit: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ])
+  parametrizer: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
-export default PublisherContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(PublisherContainer);

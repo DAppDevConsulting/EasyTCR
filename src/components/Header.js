@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {bindActionCreators} from 'redux';
+import * as publisherActions from '../actions/PublisherActions';
+import {connect} from 'react-redux';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import ActionHome from 'material-ui/svg-icons/action/home';
@@ -9,7 +12,8 @@ import './Header.css';
 
 class Header extends Component {
   render () {
-    const { tokens, ethers, fetching, onSwitcherClick } = this.props;
+    const { onSwitcherClick } = this.props;
+    const { tokens, ethers, fetching } = this.props.balance;
     return (
       <Toolbar className='Header'>
         <ToolbarGroup firstChild={true}>
@@ -32,12 +36,22 @@ class Header extends Component {
   }
 }
 
+function mapStateToProps (state) {
+  return {
+    balance: state.publisher
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    actions: bindActionCreators(publisherActions, dispatch)
+  };
+}
+
 Header.propTypes = {
   // Sometimes web3 returns numbers as strings because they're greater than 2^53
-  tokens: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  ethers: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  fetching: PropTypes.bool.isRequired,
+  balance: PropTypes.object.isRequired,
   onSwitcherClick: PropTypes.func.isRequired
 };
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

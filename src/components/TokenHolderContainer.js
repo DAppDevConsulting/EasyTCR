@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import ListingsList from './ListingsList';
 import keys from '../i18n';
+import {bindActionCreators} from 'redux';
+import * as advertiserActions from '../actions/AdvertiserActions';
+import {connect} from 'react-redux';
 
 class TokenHolderContainer extends Component {
   constructor (props) {
@@ -18,7 +21,7 @@ class TokenHolderContainer extends Component {
   }
 
   componentWillMount () {
-    this.props.getAdvertiserDomains();
+    this.props.advertiserActions.getAdvertiserDomains();
   }
 
   render () {
@@ -38,9 +41,21 @@ class TokenHolderContainer extends Component {
   }
 }
 
+function mapStateToProps (state) {
+  return {
+    advertiser: state.advertiser
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    advertiserActions: bindActionCreators(advertiserActions, dispatch)
+  };
+}
+
 TokenHolderContainer.propTypes = {
   advertiser: PropTypes.object.isRequired,
-  getAdvertiserDomains: PropTypes.func.isRequired
+  advertiserActions: PropTypes.object.isRequired
 };
 
-export default TokenHolderContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(TokenHolderContainer);

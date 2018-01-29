@@ -3,10 +3,13 @@ import Card from 'material-ui/Card';
 import ListingsList from './ListingsList';
 import PropTypes from 'prop-types';
 import keys from '../i18n';
+import {bindActionCreators} from 'redux';
+import * as actions from '../actions/AdvertiserActions';
+import {connect} from 'react-redux';
 
 class AdvContainer extends Component {
   componentWillMount () {
-    this.props.getAdvertiserDomains();
+    this.props.actions.getAdvertiserDomains();
   }
 
   render () {
@@ -33,9 +36,21 @@ class AdvContainer extends Component {
   }
 }
 
+function mapStateToProps (state) {
+  return {
+    advertiser: state.advertiser
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+
 AdvContainer.propTypes = {
   advertiser: PropTypes.object.isRequired,
-  getAdvertiserDomains: PropTypes.func.isRequired
+  actions: PropTypes.object.isRequired
 };
 
-export default AdvContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(AdvContainer);

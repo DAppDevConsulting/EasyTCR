@@ -5,14 +5,7 @@ import PropTypes from 'prop-types';
 import * as publisherActions from './actions/PublisherActions';
 import * as advertiserActions from './actions/AdvertiserActions';
 import * as appActions from './actions/AppActions';
-
-import {
-  BrowserRouter as Router,
-  Route,
-  NavLink as Link,
-  Switch,
-  Redirect
-} from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import {deepOrange500} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -52,44 +45,19 @@ class App extends Component {
       return this.renderNotInitialized();
     }
 
-    const { publisher, advertiser, app, parameterizer } = this.props;
-    const {publisherActions, advertiserActions} = this.props;
-    const { buyTokens, getPublisherDomains, applyDomain, hideTxQueue } = this.props.publisherActions;
-    const { getAdvertiserDomains } = this.props.advertiserActions;
     return (
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div className='App'>
-            <Header
-              tokens={publisher.tokens}
-              ethers={publisher.ethers}
-              fetching={publisher.fetching}
-              onSwitcherClick={() => this.setState({manageRegistriesOpened: true})}
-            />
+            <Header onSwitcherClick={() => this.setState({manageRegistriesOpened: true})} />
             <div>
-              <SideBar Link={Link} />
+              <SideBar />
               <ManageRegistriesForm
                 open={this.state.manageRegistriesOpened}
                 onClose={() => this.setState({manageRegistriesOpened: false})}
               />
               <div className='MainContainerWrapper'>
-                <MainContainer
-                  publisherActions={publisherActions}
-                  advertiserActions={advertiserActions}
-                  buyTokens={buyTokens}
-                  getPublisherDomains={getPublisherDomains}
-                  getAdvertiserDomains={getAdvertiserDomains}
-                  applyDomain={applyDomain}
-                  hideTxQueue={hideTxQueue}
-                  publisher={publisher}
-                  advertiser={advertiser}
-                  app={app}
-                  parameterizer={parameterizer}
-                  Router={Router}
-                  Route={Route}
-                  Switch={Switch}
-                  Redirect={Redirect}
-                />
+                <MainContainer />
               </div>
             </div>
           </div>
@@ -118,12 +86,7 @@ function mapDispatchToProps (dispatch) {
 
 App.propTypes = {
   appActions: PropTypes.object.isRequired,
-  publisherActions: PropTypes.object.isRequired,
-  publisher: PropTypes.object.isRequired,
-  advertiserActions: PropTypes.object.isRequired,
-  advertiser: PropTypes.object.isRequired,
   app: PropTypes.object.isRequired,
-  parameterizer: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
