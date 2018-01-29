@@ -1,0 +1,18 @@
+// app actions
+export const APP_INIT = 'APP_INIT';
+export const CHANGE_REGISTRY = 'CHANGE_REGISTRY';
+
+// advertiser
+export const REQUEST_ADVERTISER_DOMAINS = 'REQUEST_ADVERTISER_DOMAINS';
+
+// publisher
+export const BUY_TOKENS = 'BUY_TOKENS';
+export const REQUEST_TOKEN_INFORMATION = 'REQUEST_TOKEN_INFORMATION';
+export const SEND_TEST_TXS = 'SEND_TEST_TXS';
+export const REQUEST_PUBLISHER_DOMAINS = 'REQUEST_PUBLISHER_DOMAINS';
+export const APPLY_DOMAIN = 'APPLY_DOMAIN';
+export const HIDE_TX_QUEUE = 'HIDE_TX_QUEUE';
+export const CANCEL_DOMAIN_APPLICATION = 'CANCEL_DOMAIN_APPLICATION';
+
+// token holder
+export const CHALLENGE_START = 'CHALLENGE_START';

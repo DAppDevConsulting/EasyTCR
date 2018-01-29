@@ -8,7 +8,7 @@ import TargetIcon from 'material-ui/svg-icons/device/gps-fixed';
 import FolderIcon from 'material-ui/svg-icons/file/folder';
 import './style.css';
 import keys from '../../i18n';
-import { ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER } from '../constants/Navigation';
+import { ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER } from '../../constants/Navigation';
 
 const iconStyles = {
   color: 'inherit', fill: 'currentColor', transition: 'none'
