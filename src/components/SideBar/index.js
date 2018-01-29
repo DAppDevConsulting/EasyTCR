@@ -52,36 +52,32 @@ const renderNavItem = (key, to, icon) => (
   </NavLink>
 );
 
-class SideBar extends Component {
-  render () {
-    return (
-      <div className='SideBarContainer'>
-        <div>
-          <List>
+const SideBar = () => (
+  <div className='SideBarContainer'>
+    <div>
+      <List>
+        <ListItem
+          primaryText={keys.menu_header}
+          initiallyOpen
+          primaryTogglesNestedList
+          nestedItems={navItems.map(x => renderNavItem(x.key, x.to, x.icon))}
+        />
+        <ListItem
+          primaryText='Documentation'
+          initiallyOpen={false}
+          primaryTogglesNestedList
+          nestedItems={[
             <ListItem
-              primaryText={keys.menu_header}
-              initiallyOpen
-              primaryTogglesNestedList
-              nestedItems={navItems.map(x => renderNavItem(x.key, x.to, x.icon))}
+              key={1}
+              style={{ color: '#7f8fa4' }}
+              primaryText='Some documentation'
+              leftIcon={<AssessmentIcon style={iconStyles} />}
             />
-            <ListItem
-              primaryText='Documentation'
-              initiallyOpen={false}
-              primaryTogglesNestedList
-              nestedItems={[
-                <ListItem
-                  key={1}
-                  style={{ color: '#7f8fa4' }}
-                  primaryText='Some documentation'
-                  leftIcon={<AssessmentIcon style={iconStyles} />}
-                />
-              ]}
-            />
-          </List>
-        </div>
-      </div>
-    );
-  }
-}
+          ]}
+        />
+      </List>
+    </div>
+  </div>
+);
 
 export default withRouter(SideBar);
