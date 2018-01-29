@@ -14,7 +14,7 @@ const ListingItem = ({ listing }) => (
         listing.description
           ? <p>{listing.description}</p>
           : <div>
-            <Icon />
+            <Icon color='#748FFC' />
             <p>The actual content will be available later</p>
           </div>
       }
