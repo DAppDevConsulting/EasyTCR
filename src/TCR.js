@@ -48,14 +48,19 @@ export class ContractsManager {
     _map.set(WEI_CONVERTOR, weiConvertor);
   }
 
-  static setContracts (contracts) {
+  static setRegistries (contracts) {
     if (!contracts || !contracts.length) {
       return;
     }
 
+    _contractsAddressMap.clear();
     contracts.forEach(item => {
       _contractsAddressMap.set(item.registry, item);
     });
+  }
+
+  static hasRegistry (address) {
+    return _contractsAddressMap.has(address);
   }
 
   static getRegistriesAddresses () {

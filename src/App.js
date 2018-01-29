@@ -21,6 +21,7 @@ import Header from './components/Header';
 import SideBar from './components/SideBar';
 import MainContainer from './components/MainContainer';
 import ManageRegistriesForm from './components/ManageRegistriesForm';
+import storage from './utils/CookieStorage';
 
 import './App.css';
 
@@ -38,7 +39,7 @@ class App extends Component {
     };
   }
   componentWillMount () {
-    this.props.appActions.init();
+    this.props.appActions.init(storage.get('currentRegistry'));
   }
 
   renderNotInitialized () {

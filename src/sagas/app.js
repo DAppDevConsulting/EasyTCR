@@ -2,6 +2,7 @@ import {apply, put, call, takeLatest} from 'redux-saga/effects';
 import api from '../services/BackendApi';
 import TCR, {ContractsManager} from '../TCR';
 import {updateLocalization} from '../i18n';
+import storage from '../utils/CookieStorage';
 
 export function * sendTxBatch (action) {
   yield put({ type: 'ADD_TRANSACTIONS', transactions: action.transactions });
@@ -9,6 +10,7 @@ export function * sendTxBatch (action) {
 }
 
 export function * changeRegistry (action) {
+  storage.put('currentRegistry', action.registryAddress);
   ContractsManager.selectRegistry(action.registryAddress);
   let localization = yield apply(api, 'getRegistryLocalization', [action.registryAddress]);
   updateLocalization(localization);
@@ -23,12 +25,18 @@ export function * addRegistry (action) {
 
 export function * init (action) {
   let contracts = yield apply(api, 'getRegistries', [[]]);
-  ContractsManager.setContracts(contracts);
+  ContractsManager.setRegistries(contracts);
   let addresses = ContractsManager.getRegistriesAddresses();
-  let address = action.defaultRegistry || addresses[0];
+  let address = addresses[0];
+  if (action.defaultRegistry && ContractsManager.hasRegistry(action.defaultRegistry)) {
+    address = action.defaultRegistry;
+  }
   yield call(changeRegistry, {registryAddress: address});
   yield put({ type: 'REQUEST_TOKEN_INFORMATION' });
   yield put({ type: 'UPDATE_REGISTRIES_LIST', registries: ContractsManager.getRegistriesAddresses() });
+  // TODO: hack! Fix it after sync/async question will be revolved
+  yield put({type: 'REQUEST_PUBLISHER_DOMAINS'});
+  yield put({type: 'REQUEST_ADVERTISER_DOMAINS'});
 }
 
 export default function * flow () {
