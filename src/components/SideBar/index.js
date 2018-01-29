@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'material-ui/List';
 import { NavLink, withRouter } from 'react-router-dom';
-import { ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER } from './constants/Navigation';
 import { indigoA200 } from 'material-ui/styles/colors';
-import keys from '../i18n';
-import './SideBar.css';
 import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
 import AssignmentIcon from 'material-ui/svg-icons/action/assignment';
 import TargetIcon from 'material-ui/svg-icons/device/gps-fixed';
 import FolderIcon from 'material-ui/svg-icons/file/folder';
+import './style.css';
+import keys from '../../i18n';
+import { ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER } from '../constants/Navigation';
 
 const iconStyles = {
   color: 'inherit', fill: 'currentColor', transition: 'none'
