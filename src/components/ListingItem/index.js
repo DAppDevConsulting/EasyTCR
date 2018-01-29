@@ -6,7 +6,7 @@ import Icon from './icon';
 const ListingItem = ({ listing }) => (
   <div className='listing'>
     <div className='listingHeader'>
-      <h4 className='listingTitle'>{ listing.name }</h4>
+      <h4 className='headline'>{ listing.name }</h4>
       <p className='listingMeta'>Added: { listing.added || '01-02-2017' }  |  Unchallenged for: { listing.unchallenged || '13:04:01' }</p>
     </div>
     <div className='listingContent'>

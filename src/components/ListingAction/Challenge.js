@@ -39,14 +39,6 @@ class Challenge extends Component {
     });
   }
 
-  // challengeListing (listing) {
-  //   this.setState({
-  //     isChallenging: true
-  //   });
-
-  //   // this.props.challengeHandler(listing.name)
-  // }
-
   render () {
     const { showTxQueue, txQueue, tokenHolderActions } = this.props;
     const { remainingTime } = this.state;
@@ -63,7 +55,7 @@ class Challenge extends Component {
           />
         ) : (
           <div>
-            <h4 className='actionTitle'>Challenge</h4>
+            <h4 className='headline'>Challenge</h4>
             <div className='actionData'>
               <div className='challengeTime'>
                 <p>Remaining time</p>

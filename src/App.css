@@ -12,3 +12,16 @@
   height: 100%;
   min-height: 600px;
 }
+
+/* common styles */
+.headline {
+  font-family: Montserrat;
+	font-size: 16px;
+	font-weight: 600;
+  color: #354052;
+  margin-top: 0;
+}
+
+.headline--centered {
+  text-align: center;
+}
