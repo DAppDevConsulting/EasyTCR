@@ -33,7 +33,19 @@ class ListingsList extends Component {
             return (<TableRowColumn key={key}>{data[column.propName]}</TableRowColumn>);
           }
           // TODO: view valid action state
-          return (<TableRowColumn key={key}><Link to={`listing/${data.name}`} ><RaisedButton label='VIEW' /></Link></TableRowColumn>);
+          return (
+            <TableRowColumn key={key}>
+              <Link to={`listing/${data.name}`} >
+                <RaisedButton
+                  label='View'
+                  style={{ boxShadow: 'none', borderRadius: '4px', minWidth: 'none' }}
+                  buttonStyle={{ border: '1px solid #748ffc', borderRadius: '4px' }}
+                  labelColor='#748ffc'
+                  labelStyle={{ textTransform: 'none', fontWeight: '300' }}
+                />
+              </Link>
+            </TableRowColumn>
+          );
         })}
       </TableRow>
     );
