@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
-import { EtherIcon, AdtIcon, ProfileIcon } from '../icons/Icons';
+import { EtherIcon, AdtIcon, ProfileIcon } from './Icons';
 import keys from '../../i18n';
 import './style.css';
 
