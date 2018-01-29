@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
-import TextField from 'material-ui/TextField';
+
+import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 
 class Challenge extends Component {
@@ -14,8 +18,6 @@ class Challenge extends Component {
     this.toggleChallenge = this.toggleChallenge.bind(this);
 
     this.state = {
-      depositValue: '',
-      errorText: '',
       remainingTime: null,
       isChallenging: false
     };
@@ -45,57 +47,26 @@ class Challenge extends Component {
   //   // this.props.challengeHandler(listing.name)
   // }
 
-  updateDepositValue (evt) {
-    if (!!evt.target.value && !evt.target.value.match(/^\d+$/)) {
-      this.setState({
-        depositValue: evt.target.value,
-        errorText: 'invalid input'
-      });
-    } else {
-      this.setState({
-        depositValue: evt.target.value,
-        errorText: ''
-      });
-    }
-  }
-
   render () {
-    const { listing } = this.props;
-    const { isChallenging, remainingTime, depositValue, errorText } = this.state;
+    const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { remainingTime } = this.state;
 
-    if (isChallenging) {
+    if (showTxQueue) {
       return (
-        <div className='listingAction'>
-          <h4 className='actionTitle'>You will receive two MetaMask prompts:</h4>
-          <div className='challengeTxSteps'>
-            <div className='challengeTxStep'>
-              <h4>First Prompt</h4>
-              <p>Allow Registry contract to transfer adToken deposit from your account.</p>
-              <RaisedButton
-                label='NEXT'
-                backgroundColor='#66bb6a'
-                labelColor='#fff'
-                onClick={this.toggleChallenge}
-              />
-            </div>
-            <div className='challengeTxStep'>
-              <h4>Second Prompt</h4>
-              <p>Submit challenge to the Registry contract.</p>
-              <RaisedButton
-                label='SUBMIT'
-                backgroundColor='#66bb6a'
-                labelColor='#fff'
-                onClick={this.toggleChallenge}
-              />
-            </div>
-          </div>
+        <div>
+          <TxQueue
+            queue={txQueue}
+            cancel={() => console.log('wow, canceled')}
+            title='Make an application to registry'
+            onEnd={() => console.log('ended')}
+          />
         </div>
       );
     }
 
     return (
       <div className='listingAction'>
-        <h4 className='actionTitle'>Challenge</h4>
+        <h4 className='headline'>Challenge</h4>
         <div className='actionData'>
           <div className='challengeTime'>
             <p>Remaining time</p>
@@ -105,22 +76,12 @@ class Challenge extends Component {
                 : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
             }
           </div>
-          <div className='challengeDeposit'>
-            <p>Minimum deposit required</p>
-            <TextField
-              value={depositValue}
-              id='deposit'
-              hintText='100 Token'
-              errorText={errorText}
-              onChange={evt => this.updateDepositValue(evt)}
-            />
-          </div>
         </div>
         <RaisedButton
           label='Challenge'
           backgroundColor='#66bb6a'
           labelColor='#fff'
-          onClick={this.toggleChallenge}
+          onClick={() => tokenHolderActions.challenge()}
         />
       </div>
     );
@@ -128,8 +89,19 @@ class Challenge extends Component {
 }
 
 Challenge.propTypes = {
-  // challengeHandler: PropTypes.func.isRequired,
-  listing: PropTypes.object.isRequired
+  listing: PropTypes.object.isRequired,
+  showTxQueue: PropTypes.bool.isRequired,
+  txQueue: PropTypes.object,
+  tokenHolderActions: PropTypes.object.isRequired
 };
 
-export default Challenge;
+const mapStateToProps = (state) => ({
+  showTxQueue: state.challenge.showTxQueue,
+  txQueue: state.challenge.txQueue
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Challenge);

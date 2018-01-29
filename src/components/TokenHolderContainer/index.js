@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
-import ListingsList from './ListingsList';
-import keys from '../i18n';
+import ListingsList from '../ListingsList';
+import keys from '../../i18n';
 
 class TokenHolderContainer extends Component {
   constructor (props) {
@@ -30,7 +30,6 @@ class TokenHolderContainer extends Component {
           <ListingsList
             listings={listings}
             config={this.listConfig}
-            onListingAction={() => {}}
           />
         </Card>
       </div>

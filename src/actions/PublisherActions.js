@@ -1,31 +1,41 @@
+import {
+  BUY_TOKENS,
+  REQUEST_TOKEN_INFORMATION,
+  SEND_TEST_TXS,
+  REQUEST_PUBLISHER_DOMAINS,
+  APPLY_DOMAIN,
+  HIDE_TX_QUEUE,
+  CANCEL_DOMAIN_APPLICATION
+} from '../constants/actions';
+
 export function buyTokens (tokens) {
   return {
-    type: 'BUY_TOKENS',
+    type: BUY_TOKENS,
     tokens: tokens
   };
 }
 
 export function getTokens () {
   return {
-    type: 'REQUEST_TOKEN_INFORMATION'
+    type: REQUEST_TOKEN_INFORMATION
   };
 }
 
 export function sendTestTxs () {
   return {
-    type: 'SEND_TEST_TXS'
+    type: SEND_TEST_TXS
   };
 }
 
 export function getPublisherDomains () {
   return {
-    type: 'REQUEST_PUBLISHER_DOMAINS'
+    type: REQUEST_PUBLISHER_DOMAINS
   };
 }
 
 export function applyDomain (name, tokens) {
   return {
-    type: 'APPLY_DOMAIN',
+    type: APPLY_DOMAIN,
     name,
     tokens
   };
@@ -33,12 +43,12 @@ export function applyDomain (name, tokens) {
 
 export function hideTxQueue () {
   return {
-    type: 'HIDE_TX_QUEUE'
+    type: HIDE_TX_QUEUE
   };
 }
 
 export function cancelDomainApplication () {
   return {
-    type: 'CANCEL_DOMAIN_APPLICATION'
+    type: CANCEL_DOMAIN_APPLICATION
   };
 }

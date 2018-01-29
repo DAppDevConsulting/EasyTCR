@@ -12,7 +12,7 @@ class Header extends Component {
     const { tokens, ethers, fetching, onSwitcherClick } = this.props;
     return (
       <Toolbar className='Header'>
-        <ToolbarGroup firstChild={true}>
+        <ToolbarGroup firstChild>
           <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
             <ActionHome />
           </IconButton>

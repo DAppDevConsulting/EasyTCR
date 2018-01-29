@@ -3,9 +3,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import BN from 'bn.js';
-import TCR from '../TCR';
-import keys from '../i18n';
-import './ManageTokensContainer.css';
+import TCR from '../../TCR';
+import keys from '../../i18n';
+import './style.css';
 
 class ManageTokensContainer extends Component {
   constructor (props) {

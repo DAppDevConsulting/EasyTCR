@@ -12,13 +12,11 @@
 	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.listingTitle {
-	font-family: Montserrat;
-	margin: 0 0 3px;
+.listingHeader .headline {
+	margin-bottom: 3px;
 }
 
 .listingMeta {
-	font-family: OpenSans;
 	color: #7f8fa4;
 	font-size: 12px;
 	margin: 0;
@@ -26,7 +24,6 @@
 
 .listingContent {
 	text-align: center;
-	font-family: OpenSans;
 	font-size: 14px;
 	line-height: 1.5;
 	color: #7f8fa4;
