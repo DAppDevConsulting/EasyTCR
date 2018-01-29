@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import TextField from 'material-ui/TextField';
+
+import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 
 class Challenge extends Component {
@@ -60,10 +65,22 @@ class Challenge extends Component {
   }
 
   render () {
-    const { listing } = this.props;
+    const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
     const { isChallenging, remainingTime, depositValue, errorText } = this.state;
 
-    if (isChallenging) {
+    if (showTxQueue) {
+      return (
+        <div>
+          <TxQueue
+            queue={txQueue}
+            cancel={() => console.log('wow, canceled')}
+            title='Make an application to registry'
+            onEnd={() => console.log('ended')}
+          />
+        </div>
+      );
+
+      /*
       return (
         <div className='listingAction'>
           <h4 className='actionTitle'>You will receive two MetaMask prompts:</h4>
@@ -91,6 +108,7 @@ class Challenge extends Component {
           </div>
         </div>
       );
+      */
     }
 
     return (
@@ -120,7 +138,7 @@ class Challenge extends Component {
           label='Challenge'
           backgroundColor='#66bb6a'
           labelColor='#fff'
-          onClick={this.toggleChallenge}
+          onClick={() => tokenHolderActions.challenge()}
         />
       </div>
     );
@@ -129,7 +147,19 @@ class Challenge extends Component {
 
 Challenge.propTypes = {
   // challengeHandler: PropTypes.func.isRequired,
-  listing: PropTypes.object.isRequired
+  listing: PropTypes.object.isRequired,
+  showTxQueue: PropTypes.bool.isRequired,
+  txQueue: PropTypes.object,
+  tokenHolderActions: PropTypes.object.isRequired
 };
 
-export default Challenge;
+const mapStateToProps = (state) => ({
+  showTxQueue: state.challenge.showTxQueue,
+  txQueue: state.challenge.txQueue
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Challenge);
