@@ -24,7 +24,7 @@ class Commit extends Component {
   render () {
     return (
       <div className='listingAction'>
-        <h4 className='actionTitle'>Commit Stage</h4>
+        <h4 className='headline'>Commit Stage</h4>
         <div className='actionData'>
           <p className='challengeId'>Challenge ID: {36}</p>
           <TextField

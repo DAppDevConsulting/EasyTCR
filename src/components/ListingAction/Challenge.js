@@ -66,7 +66,7 @@ class Challenge extends Component {
 
     return (
       <div className='listingAction'>
-        <h4 className='actionTitle'>Challenge</h4>
+        <h4 className='headline'>Challenge</h4>
         <div className='actionData'>
           <div className='challengeTime'>
             <p>Remaining time</p>
