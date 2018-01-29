@@ -48,41 +48,40 @@ class Challenge extends Component {
   // }
 
   render () {
-    const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { showTxQueue, txQueue, tokenHolderActions } = this.props;
     const { remainingTime } = this.state;
 
-    if (showTxQueue) {
-      return (
-        <div>
+    return (
+      <div className='listingAction'>
+        {showTxQueue ? (
           <TxQueue
+            mode='vertical'
             queue={txQueue}
             cancel={() => console.log('wow, canceled')}
             title='Make an application to registry'
             onEnd={() => console.log('ended')}
           />
-        </div>
-      );
-    }
-
-    return (
-      <div className='listingAction'>
-        <h4 className='actionTitle'>Challenge</h4>
-        <div className='actionData'>
-          <div className='challengeTime'>
-            <p>Remaining time</p>
-            {
-              remainingTime
-                ? <p>{ remainingTime }</p>
-                : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
-            }
+        ) : (
+          <div>
+            <h4 className='actionTitle'>Challenge</h4>
+            <div className='actionData'>
+              <div className='challengeTime'>
+                <p>Remaining time</p>
+                {
+                  remainingTime
+                    ? <p>{ remainingTime }</p>
+                    : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
+                }
+              </div>
+            </div>
+            <RaisedButton
+              label='Challenge'
+              backgroundColor='#66bb6a'
+              labelColor='#fff'
+              onClick={() => tokenHolderActions.challenge(this.props.listing.name)}
+            />
           </div>
-        </div>
-        <RaisedButton
-          label='Challenge'
-          backgroundColor='#66bb6a'
-          labelColor='#fff'
-          onClick={() => tokenHolderActions.challenge()}
-        />
+        )}
       </div>
     );
   }
@@ -97,7 +96,7 @@ Challenge.propTypes = {
 
 const mapStateToProps = (state) => ({
   showTxQueue: state.challenge.showTxQueue,
-  txQueue: state.challenge.txQueue
+  txQueue: state.challenge.queue
 });
 
 const mapDispatchToProps = (dispatch) => ({

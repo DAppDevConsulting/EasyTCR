@@ -1,5 +1,5 @@
 const initialState = {
-  txQueue: null,
+  queue: null,
   showTxQueue: false
 };
 
@@ -8,7 +8,6 @@ export default function challenge (state = initialState, action) {
 
   switch (action.type) {
     case prefix + 'SHOW_TX_QUEUE':
-      console.log('wow');
       return {...state, queue: action.queue, showTxQueue: true};
 
     case prefix + 'HIDE_TX_QUEUE':

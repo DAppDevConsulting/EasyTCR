@@ -12,12 +12,6 @@
     fill: #7f8fa4 !important;
 }
 
-.txQueueStepButton {
-    display: block;
-    padding-top: 5px;
-    padding-left: 50px;
-}
-
 .txHeader {
     display: table;
     width: 100%;
