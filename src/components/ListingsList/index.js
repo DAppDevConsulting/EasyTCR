@@ -28,7 +28,8 @@ class ListingsList extends Component {
     return (
       <TableRow key={index}>
         {config.columns.map((column) => {
-          const key = `${index}_${column.propName}`
+          const key = `${index}_${column.propName}`;
+
           if (column.propName !== 'action') {
             return (<TableRowColumn key={key}>{data[column.propName]}</TableRowColumn>);
           }
