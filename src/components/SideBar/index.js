@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { List, ListItem } from 'material-ui/List';
 import { NavLink, withRouter } from 'react-router-dom';
 import { indigoA200 } from 'material-ui/styles/colors';
