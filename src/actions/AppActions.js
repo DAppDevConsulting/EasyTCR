@@ -12,3 +12,12 @@ export function changeRegistry (registryAddress) {
     registryAddress
   };
 }
+
+export function addRegistry (registry, faucet, localization = '') {
+  return {
+    type: 'ADD_REGISTRY',
+    registry,
+    faucet,
+    localization
+  };
+}
