@@ -6,9 +6,10 @@ import * as publisherActions from './actions/PublisherActions';
 import * as advertiserActions from './actions/AdvertiserActions';
 import * as appActions from './actions/AppActions';
 import { BrowserRouter as Router } from 'react-router-dom';
-import {deepOrange500} from 'material-ui/styles/colors';
+import { deepOrange500, indigoA200} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import InfoIcon from 'material-ui/svg-icons/action/info';
 
 import Header from './components/Header';
 import SideBar from './components/SideBar';
@@ -37,10 +38,27 @@ class App extends Component {
 
   renderNotInitialized () {
     return (
-      <h1>Initialization...</h1>
+      <h1 style={{ color: indigoA200 }}>Initialization...</h1>
+    );
+  }
+
+  renderNoMetamaskWarning () {
+    return (
+      <Router>
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <div className='noMetamaskWarning'>
+            <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
+            Please download or unlock&nbsp;<a href='https://metamask.io/' target='_blank' rel='noopener noreferrer'>MetaMask</a>&nbsp;extension to load application and Ethereum wallet
+          </div>
+        </MuiThemeProvider>
+      </Router>
     );
   }
   render () {
+    if (!window.web3) {
+      return this.renderNoMetamaskWarning();
+    }
+
     if (!this.props.app.registry) {
       return this.renderNotInitialized();
     }

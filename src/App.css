@@ -25,3 +25,17 @@
 .headline--centered {
   text-align: center;
 }
+
+.noMetamaskWarning {
+  background-color: rgb(83, 109, 254);
+  color: #fff;
+  text-align: center;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noMetamaskWarning a {
+  text-decoration: underline;
+}
