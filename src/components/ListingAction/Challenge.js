@@ -49,9 +49,9 @@ class Challenge extends Component {
           <TxQueue
             mode='vertical'
             queue={txQueue}
-            cancel={() => console.log('wow, canceled')}
+            cancel={tokenHolderActions.hideTxQueue}
             title='Make an application to registry'
-            onEnd={() => console.log('ended')}
+            onEnd={tokenHolderActions.hideTxQueue}
           />
         ) : (
           <div>
