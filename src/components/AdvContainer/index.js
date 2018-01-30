@@ -29,7 +29,7 @@ class AdvContainer extends Component {
           { listings
             ? <ListingsList
               listings={listings}
-              config={this.listConfig}
+              config={listConfig}
             />
             : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
           }
