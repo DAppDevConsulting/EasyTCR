@@ -11,6 +11,7 @@ import './style.css';
 import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/PublisherActions';
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class PublisherContainer extends Component {
   constructor (props) {
@@ -39,6 +40,19 @@ class PublisherContainer extends Component {
     // Setting token price for further usage
     TCR.getTokenPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
     this.props.actions.getPublisherDomains();
+  }
+
+  renderLink (key) {
+    const parts = key.split('or ');
+    const parts2 = parts[1].split(' to');
+
+    return (
+      <div style={{ display: 'inline-block' }}>
+        { parts[0] }or&nbsp;
+        <Link to='manage_tokens' style={{ textDecoration: 'underline' }}>{parts2[0]}</Link>
+        &nbsp;to{ parts2[1] }
+      </div>
+    );
   }
 
   render () {
@@ -73,7 +87,7 @@ class PublisherContainer extends Component {
             />
           </div>
           <div className='formItem'>
-            <div>{keys.candidatePage_applyForm_stakeTitle}<span className='requiredIcon'>*</span></div>
+            <div>{this.renderLink(keys.candidatePage_applyForm_stakeTitle)}<span className='requiredIcon'>*</span></div>
             <TextField
               hintText={keys.formatString(keys.candidatePage_applyForm_stakeHint, minCrutch)}
               value={this.state.stake || ''}
