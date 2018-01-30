@@ -32,7 +32,7 @@ class ManageTokensContainer extends Component {
     const { tokens, ethers, fetching } = this.props.publisher;
     const balanceText = keys.formatString(
       keys.manageTokensPage_balanceText,
-      {tokens, adt: keys.adt, ethers, eth: keys.eth}
+      {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}
     );
     return (
       <div className='ContentContainer'>
@@ -40,7 +40,7 @@ class ManageTokensContainer extends Component {
         <h3> {keys.manageTokensPage_balanceHeader} </h3>
         <div>{fetching ? 'Updating...' : balanceText}</div>
         <h3> {keys.manageTokensPage_buyTokensHeader} </h3>
-        <div>{keys.formatString(keys.manageTokensPage_rate, {price: this.state.price, wei: keys.wei, adt: keys.adt})}</div>
+        <div>{keys.formatString(keys.manageTokensPage_rate, {price: this.state.price, wei: keys.wei, tokenName: keys.tokenName})}</div>
         <div className='buyTokensForm'>
           <div className='buyTokensForm_item'>
             <div className='buyTokensForm_element'>
@@ -56,7 +56,7 @@ class ManageTokensContainer extends Component {
             </div>
           </div>
         </div>
-        <div>{keys.formatString(keys.manageTokensPage_supposedTokens, this.getTokensToBuy().toString(), keys.adt)}</div>
+        <div>{keys.formatString(keys.manageTokensPage_supposedTokens, this.getTokensToBuy().toString(), keys.tokenName)}</div>
         <div>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</div>
       </div>
     );

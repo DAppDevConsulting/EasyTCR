@@ -13,14 +13,14 @@ import RegistryIcon from 'material-ui/svg-icons/av/playlist-add';
 const Header = ({ balance, onSwitcherClick }) => (
   <Toolbar className='Header'>
     <ToolbarGroup firstChild>
-      <ToolbarTitle text={keys.appHeader} className='HeaderTitle' />
+      <ToolbarTitle text={keys.registryName} className='HeaderTitle' />
     </ToolbarGroup>
     <ToolbarGroup>
       <EtherIcon />
       <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.ethers + ` ${keys.eth}`} />
       <ToolbarSeparator className='Separator' />
       <AdtIcon />
-      <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.tokens + ` ${keys.adt}`} />
+      <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.tokens + ` ${keys.tokenName}`} />
       <ToolbarSeparator className='Separator' />
       <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
         <RegistryIcon color='#fff' />
