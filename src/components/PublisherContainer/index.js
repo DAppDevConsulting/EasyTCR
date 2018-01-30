@@ -113,10 +113,13 @@ class PublisherContainer extends Component {
         </div>
         }
         <Card>
-          <ListingsList
-            listings={listings}
-            config={this.listConfig}
-          />
+          { listings
+            ? <ListingsList
+              listings={listings}
+              config={this.listConfig}
+            />
+            : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
+          }
         </Card>
       </div>
     );

@@ -26,10 +26,13 @@ class AdvContainer extends Component {
       <div className='ContentContainer'>
         <div>{keys.consumerPage_title}</div>
         <Card>
-          <ListingsList
-            listings={listings}
-            config={listConfig}
-          />
+          { listings
+            ? <ListingsList
+              listings={listings}
+              config={this.listConfig}
+            />
+            : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
+          }
         </Card>
       </div>
     );
