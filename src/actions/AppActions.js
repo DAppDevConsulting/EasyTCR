@@ -9,7 +9,7 @@ export function init () {
 export function changeRegistry (registryAddress) {
   return {
     type: CHANGE_REGISTRY,
-    registryAddress
+    defaultRegistry: registryAddress
   };
 }
 
