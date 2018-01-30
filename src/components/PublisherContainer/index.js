@@ -107,6 +107,7 @@ class PublisherContainer extends Component {
               backgroundColor='#536dfe'
               labelColor='#fff'
               disabled={!!(!this.state.domain || !this.state.stake || this.state.domainError || this.state.stakeError)}
+              style={{ marginBottom: '8px' }}
             />
           </div>
         </div>
