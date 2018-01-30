@@ -16,7 +16,7 @@ export async function applyDomain (name, tokensAmount) {
       },
       {
         label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
-        content: keys.transaction_approveTransferTokensText
+        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'Random', tokenName: 'Random' })
       }
     ).add(
       async () => {
@@ -45,13 +45,13 @@ export async function challengeListing (name, tokensAmount) {
       },
       {
         label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
-        content: keys.transaction_approveTransferTokensText
+        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'Random', tokenName: 'Random' })
       }
     ).add(
       () => listing.challenge(),
       {
-        label: 'Challenge listing',
-        content: 'Challenge listing'
+        label: keys.transaction_submitChallengeHeader,
+        content: keys.formatString(keys.transaction_submitChallengeText, { name: 'Random' })
       }
     );
 }
