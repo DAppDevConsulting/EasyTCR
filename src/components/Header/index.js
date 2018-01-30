@@ -8,7 +8,6 @@ import { EtherIcon, AdtIcon } from './Icons';
 import keys from '../../i18n';
 import './style.css';
 import IconButton from 'material-ui/IconButton';
-import ActionHome from 'material-ui/svg-icons/action/home';
 import RegistryIcon from 'material-ui/svg-icons/av/playlist-add';
 
 const Header = ({ balance, onSwitcherClick }) => (
