@@ -8,7 +8,6 @@
     display: inline-block;
     text-align: left;
     padding-right: 30px;
-    font-family: ProximaNova;
     font-size: 13px;
     font-weight: normal;
     font-style: normal;
@@ -20,7 +19,6 @@
 }
 
 .requiredIcon {
-    font-family: Heebo;
     font-size: 15px;
     color: #ff151f;
 }
