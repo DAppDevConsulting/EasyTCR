@@ -42,6 +42,7 @@ class PublisherContainer extends Component {
     this.props.actions.getPublisherDomains();
   }
 
+  // only for English
   renderLink (key) {
     const parts = key.split('or ');
     const parts2 = parts[1].split(' to');
