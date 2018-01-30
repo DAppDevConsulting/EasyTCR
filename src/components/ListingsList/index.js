@@ -36,7 +36,7 @@ class ListingsList extends Component {
           return (
             <TableRowColumn key={key}>
               <Link
-                to={`listing/${data.name}`}
+                to={`candidate/${data.name}`}
                 style={{ color: '#748ffc', fontWeight: '400', textTransform: 'uppercase' }}
               >View
               </Link>
