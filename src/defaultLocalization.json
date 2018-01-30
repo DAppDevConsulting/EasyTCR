@@ -1,9 +1,9 @@
 {
   "en": {
-    "appHeader": "TCR",
+    "registryName": "TCR",
 
     "eth": "ETH",
-    "adt": "ADT",
+    "tokenName": "TCR", 
     "wei": "WEI",
 
     "one": "one",
@@ -41,7 +41,7 @@
     "candidatePage_addListingTitle": "Publisher application",
     "candidatePage_transactionsSteps_title": "Make an application to registry",
     "candidatePage_transactionsSteps_applyCandidate": "Apply domain",
-    "candidatePage_transactionsSteps_applyCandidateText": "Submit domain application to AdChain registry.",
+    "candidatePage_transactionsSteps_applyCandidateText": "Submit domain application to Registry.",
     "candidatePage_applyForm_stakeTitle": "Bet Token or get Tokens to bet!",
     "candidatePage_applyForm_stakeHint": "Min {0}",
     "candidatePage_applyForm_stakeErrorText": "Stake less then min!",
@@ -66,9 +66,9 @@
 
     "manageTokensPage_title": "Manage Tokens",
     "manageTokensPage_balanceHeader": "Your balance",
-    "manageTokensPage_balanceText": "You have {tokens} {adt} and {ethers} {eth}",
+    "manageTokensPage_balanceText": "You have {tokens} {tokenName} and {ethers} {eth}",
     "manageTokensPage_buyTokensHeader": "Buy tokens",
-    "manageTokensPage_rate": "Current rate is {price} {wei} for 1 {adt}",
+    "manageTokensPage_rate": "Current rate is {price} {wei} for 1 {tokenName}",
     "manageTokensPage_buyTokensHint": "Enter tokens quantity",
     "manageTokensPage_supposedTokens": "You want to buy {0} {1}",
     "manageTokensPage_supposedPrice": "Total price {0}",
@@ -78,6 +78,8 @@
     "transaction_Retry": "Retry",
     "transaction_metaMaskPrompts": "You will receive {0} MetaMask prompts",
     "transaction_approveTransferTokensHeader": "Approve {0} Tokens",
-    "transaction_approveTransferTokensText": "Allow AdChain Registry contract to transfer adToken deposit from your account."
+    "transaction_approveTransferTokensText": "Allow {name} Registry contract to transfer {tokenName} token deposit from your account.",
+    "transaction_submitChallengeHeader": "Challenge listing",
+    "transaction_submitChallengeText": "Submit challenge to the {name} Registry contract."
   }
 }

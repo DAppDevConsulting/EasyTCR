@@ -8,7 +8,6 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 
 class ListingsList extends Component {
@@ -17,7 +16,7 @@ class ListingsList extends Component {
       <TableHeader adjustForCheckbox={adjustForCheckbox} displaySelectAll={selectable}>
         <TableRow>
           {config.columns.map((column, index) => (
-            <TableHeaderColumn key={index} tooltip={column.tooltip}>{column.title}</TableHeaderColumn>
+            <TableHeaderColumn key={index}>{column.title}</TableHeaderColumn>
           ))}
         </TableRow>
       </TableHeader>
@@ -36,14 +35,10 @@ class ListingsList extends Component {
           // TODO: view valid action state
           return (
             <TableRowColumn key={key}>
-              <Link to={`listing/${data.name}`} >
-                <RaisedButton
-                  label='View'
-                  style={{ boxShadow: 'none', borderRadius: '4px', minWidth: 'none' }}
-                  buttonStyle={{ border: '1px solid #748ffc', borderRadius: '4px' }}
-                  labelColor='#748ffc'
-                  labelStyle={{ textTransform: 'none', fontWeight: '300' }}
-                />
+              <Link
+                to={`listing/${data.name}`}
+                style={{ color: '#748ffc', fontWeight: '400', textTransform: 'uppercase' }}
+              >View
               </Link>
             </TableRowColumn>
           );

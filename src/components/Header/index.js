@@ -4,28 +4,27 @@ import {bindActionCreators} from 'redux';
 import * as publisherActions from '../../actions/PublisherActions';
 import {connect} from 'react-redux';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
-import { EtherIcon, AdtIcon, ProfileIcon } from './Icons';
+import { EtherIcon, AdtIcon } from './Icons';
 import keys from '../../i18n';
 import './style.css';
 import IconButton from 'material-ui/IconButton';
-import ActionHome from 'material-ui/svg-icons/action/home';
+import RegistryIcon from 'material-ui/svg-icons/av/playlist-add';
 
 const Header = ({ balance, onSwitcherClick }) => (
   <Toolbar className='Header'>
     <ToolbarGroup firstChild>
-      <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
-        <ActionHome />
-      </IconButton>
-      <ToolbarTitle text={keys.appHeader} className='HeaderTitle' />
+      <ToolbarTitle text={keys.registryName} className='HeaderTitle' />
     </ToolbarGroup>
     <ToolbarGroup>
       <EtherIcon />
       <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.ethers + ` ${keys.eth}`} />
       <ToolbarSeparator className='Separator' />
       <AdtIcon />
-      <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.tokens + ` ${keys.adt}`} />
+      <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.tokens + ` ${keys.tokenName}`} />
       <ToolbarSeparator className='Separator' />
-      <ProfileIcon />
+      <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
+        <RegistryIcon color='#fff' />
+      </IconButton>
     </ToolbarGroup>
   </Toolbar>
 );
