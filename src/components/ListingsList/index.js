@@ -8,7 +8,6 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 
 class ListingsList extends Component {
