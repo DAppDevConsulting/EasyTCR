@@ -104,6 +104,8 @@ class PublisherContainer extends Component {
             <RaisedButton
               label={keys.apply}
               onClick={() => this.addDomain()}
+              backgroundColor='#536dfe'
+              labelColor='#fff'
               disabled={!!(!this.state.domain || !this.state.stake || this.state.domainError || this.state.stakeError)}
             />
           </div>
