@@ -1,11 +1,7 @@
-import { apply, takeEvery, put, call, select } from 'redux-saga/effects';
-import { Registry } from 'ethereum-tcr-api';
+import { takeEvery, put, call, select } from 'redux-saga/effects';
 import { challengeListing as getChallengeListingTx } from '../transactions';
 
 export function * challengeListing (action) {
-  // TODO: спрятать это все за tcr-api
-  let registry = new Registry(window.contracts.registry, window.Web3);
-
   let { minDeposit } = (yield select()).parameterizer;
   let queue = yield call(getChallengeListingTx, action.listing, minDeposit);
 
