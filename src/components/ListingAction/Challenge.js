@@ -27,6 +27,10 @@ class Challenge extends Component {
     setInterval(() => this.calculateRemainingTime(), 1000);
   }
 
+  componentWillUnmount () {
+    this.props.tokenHolderActions.hideTxQueue();
+  }
+
   calculateRemainingTime () {
     this.setState({
       remainingTime: moment(new Date(this.props.listing.dueDate) - Date.now()).format('hh:mm:ss')
