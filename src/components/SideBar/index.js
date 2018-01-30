@@ -14,29 +14,6 @@ const iconStyles = {
   color: 'inherit', fill: 'currentColor', transition: 'none'
 };
 
-const navItems = [
-  {
-    key: keys.menu_tokenHolder,
-    icon: <AssessmentIcon style={iconStyles} />,
-    to: TOKEN_HOLDER
-  },
-  {
-    key: keys.menu_candidate,
-    icon: <AssignmentIcon style={iconStyles} />,
-    to: PUBLISHER
-  },
-  {
-    key: keys.menu_consumer,
-    icon: <TargetIcon style={iconStyles} />,
-    to: ADVERTISER
-  },
-  {
-    key: keys.menu_manageTokens,
-    icon: <FolderIcon style={iconStyles} />,
-    to: MANAGE_TOKENS
-  }
-];
-
 const renderNavItem = (key, to, icon) => (
   <NavLink
     key={key}
@@ -52,32 +29,56 @@ const renderNavItem = (key, to, icon) => (
   </NavLink>
 );
 
-const SideBar = () => (
-  <div className='SideBarContainer'>
-    <div>
-      <List>
-        <ListItem
-          primaryText={keys.menu_header}
-          initiallyOpen
-          primaryTogglesNestedList
-          nestedItems={navItems.map(x => renderNavItem(x.key, x.to, x.icon))}
-        />
-        <ListItem
-          primaryText='Documentation'
-          initiallyOpen={false}
-          primaryTogglesNestedList
-          nestedItems={[
-            <ListItem
-              key={1}
-              style={{ color: '#7f8fa4' }}
-              primaryText='Some documentation'
-              leftIcon={<AssessmentIcon style={iconStyles} />}
-            />
-          ]}
-        />
-      </List>
+const SideBar = () => {
+  const navItems = [
+    {
+      key: keys.menu_tokenHolder,
+      icon: <AssessmentIcon style={iconStyles} />,
+      to: TOKEN_HOLDER
+    },
+    {
+      key: keys.menu_candidate,
+      icon: <AssignmentIcon style={iconStyles} />,
+      to: PUBLISHER
+    },
+    {
+      key: keys.menu_consumer,
+      icon: <TargetIcon style={iconStyles} />,
+      to: ADVERTISER
+    },
+    {
+      key: keys.menu_manageTokens,
+      icon: <FolderIcon style={iconStyles} />,
+      to: MANAGE_TOKENS
+    }
+  ];
+  return (
+    <div className='SideBarContainer'>
+      <div>
+        <List>
+          <ListItem
+            primaryText={keys.menu_header}
+            initiallyOpen
+            primaryTogglesNestedList
+            nestedItems={navItems.map(x => renderNavItem(x.key, x.to, x.icon))}
+          />
+          <ListItem
+            primaryText='Documentation'
+            initiallyOpen={false}
+            primaryTogglesNestedList
+            nestedItems={[
+              <ListItem
+                key={1}
+                style={{color: '#7f8fa4'}}
+                primaryText='Some documentation'
+                leftIcon={<AssessmentIcon style={iconStyles} />}
+              />
+            ]}
+          />
+        </List>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default withRouter(SideBar);

@@ -1,6 +1,6 @@
 {
   "en": {
-    "appHeader": "TCR",
+    "registryName": "TCR",
 
     "eth": "ETH",
     "tokenName": "TKN", 
@@ -53,9 +53,9 @@
     "consumerPage_listingActions": "Actions",
     "manageTokensPage_title": "Manage Tokens",
     "manageTokensPage_balanceHeader": "Your balance",
-    "manageTokensPage_balanceText": "You have {tokens} {adt} and {ethers} {eth}",
+    "manageTokensPage_balanceText": "You have {tokens} {tokenName} and {ethers} {eth}",
     "manageTokensPage_buyTokensHeader": "Buy tokens",
-    "manageTokensPage_rate": "Current rate is {price} {wei} for 1 {adt}",
+    "manageTokensPage_rate": "Current rate is {price} {wei} for 1 {tokenName}",
     "manageTokensPage_buyTokensHint": "Enter tokens quantity",
     "manageTokensPage_supposedTokens": "You want to buy {0} {1}",
     "manageTokensPage_supposedPrice": "Total price {0}",

@@ -15,7 +15,7 @@
 
 /* common styles */
 .headline {
-  font-family: Montserrat;
+  font-family: Montserrat, sans-serif;
 	font-size: 16px;
 	font-weight: 600;
   color: #354052;
@@ -24,4 +24,18 @@
 
 .headline--centered {
   text-align: center;
+}
+
+.noMetamaskWarning {
+  background-color: rgb(83, 109, 254);
+  color: #fff;
+  text-align: center;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noMetamaskWarning a {
+  text-decoration: underline;
 }
