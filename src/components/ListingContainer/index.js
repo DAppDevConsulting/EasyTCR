@@ -71,7 +71,7 @@ ListingContainer.propTypes = {
 
 const mapStateToProps = state =>
   ({
-    listing: state.advertiser.listings.find(x => x.name === window.location.pathname.split('/')[2]),
+    listing: state.advertiser.listings.find(x => x.name === decodeURI(window.location.pathname.split('/')[2])),
     minDeposit: state.parameterizer.minDeposit
   });
 

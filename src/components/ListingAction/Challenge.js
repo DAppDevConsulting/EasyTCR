@@ -24,16 +24,20 @@ class Challenge extends Component {
   }
 
   componentDidMount () {
-    setInterval(() => this.calculateRemainingTime(), 1000);
+    this.setState({
+      intervalObj: setInterval(() => this.calculateRemainingTime(), 1000)
+    });
   }
 
   componentWillUnmount () {
     this.props.tokenHolderActions.hideTxQueue();
+    clearInterval(this.state.intervalObj);
   }
 
   calculateRemainingTime () {
+    let diff = moment.duration(this.props.listing.timestamp - moment().valueOf());
     this.setState({
-      remainingTime: moment(new Date(this.props.listing.dueDate) - Date.now()).format('hh:mm:ss')
+      remainingTime: diff > 0 ? diff.humanize() : 'passed'
     });
   }
 

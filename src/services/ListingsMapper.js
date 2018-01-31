@@ -1,4 +1,5 @@
 import keys from '../i18n';
+import moment from 'moment';
 
 export default class ListingsMapper {
   static async getProps (domain, registry) {
@@ -20,8 +21,11 @@ export default class ListingsMapper {
         result.status = keys.notExists;
       }
       result.dueDate = '';
+      result.timestamp = 0;
       if (!whitelisted && exists) {
-        result.dueDate = new Date(expTs * 1000).toDateString();
+        result.timestamp = expTs * 1000;
+        let dateObj = moment(result.timestamp);
+        result.dueDate = `${dateObj.format('ddd, MMM Do')} ${dateObj.format('HH:mm')}`;
       }
 
       return result;
