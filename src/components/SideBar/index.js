@@ -8,7 +8,12 @@ import TargetIcon from 'material-ui/svg-icons/device/gps-fixed';
 import FolderIcon from 'material-ui/svg-icons/file/folder';
 import './style.css';
 import keys from '../../i18n';
-import { ADVERTISER, PUBLISHER, MANAGE_TOKENS, TOKEN_HOLDER } from '../../constants/Navigation';
+import {
+  CONSUMER,
+  APPLICANT,
+  MANAGE_TOKENS,
+  TOKEN_HOLDER
+} from '../../constants/Navigation';
 
 const iconStyles = {
   color: 'inherit', fill: 'currentColor', transition: 'none'
@@ -39,12 +44,12 @@ const SideBar = () => {
     {
       key: keys.menu_candidate,
       icon: <AssignmentIcon style={iconStyles} />,
-      to: PUBLISHER
+      to: APPLICANT
     },
     {
       key: keys.menu_consumer,
       icon: <TargetIcon style={iconStyles} />,
-      to: ADVERTISER
+      to: CONSUMER
     },
     {
       key: keys.menu_manageTokens,

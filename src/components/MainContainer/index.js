@@ -4,7 +4,13 @@ import PublisherContainer from '../PublisherContainer';
 import ManageTokensContainer from '../ManageTokensContainer';
 import TokenHolderContainer from '../TokenHolderContainer';
 import ListingContainer from '../ListingContainer';
-import { ADVERTISER, LISTING, MANAGE_TOKENS, PUBLISHER, TOKEN_HOLDER } from '../../constants/Navigation';
+import {
+  CONSUMER,
+  APPLICANT,
+  CANDIDATE,
+  MANAGE_TOKENS,
+  TOKEN_HOLDER
+} from '../../constants/Navigation';
 import {
   Route,
   Switch,
@@ -16,20 +22,20 @@ class MainContainer extends Component {
     return (
       <Route>
         <Switch>
-          <Redirect path='/' to={ADVERTISER} exact />
+          <Redirect path='/' to={CONSUMER} exact />
           <Route path={MANAGE_TOKENS} render={(props) => (
             <ManageTokensContainer />
           )} />
-          <Route path={ADVERTISER} render={(props) => (
+          <Route path={CONSUMER} render={(props) => (
             <AdvContainer />
           )} />
-          <Route path={PUBLISHER} render={() => (
+          <Route path={APPLICANT} render={() => (
             <PublisherContainer />
           )} />
           <Route path={TOKEN_HOLDER} render={(props) => (
             <TokenHolderContainer />
           )} />
-          <Route path={LISTING} render={(props) => (
+          <Route path={CANDIDATE} render={(props) => (
             <ListingContainer />
           )} />
           <Route path='/' exact component={AdvContainer} />

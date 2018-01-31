@@ -1,7 +1,7 @@
 .formWrapper {
     padding-bottom: 30px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
 }
 
 .formItem {

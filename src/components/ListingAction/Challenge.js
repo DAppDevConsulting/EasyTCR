@@ -52,7 +52,7 @@ class Challenge extends Component {
   // }
 
   render () {
-    const { showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { showTxQueue, txQueue, tokenHolderActions, minDeposit } = this.props;
     const { remainingTime } = this.state;
 
     return (
@@ -78,6 +78,7 @@ class Challenge extends Component {
                 }
               </div>
             </div>
+            <p className='challengeDeposit'>{`Minimum deposit required: ${minDeposit}`}</p>
             <RaisedButton
               label='Challenge'
               backgroundColor='#66bb6a'
@@ -95,12 +96,17 @@ Challenge.propTypes = {
   listing: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object,
-  tokenHolderActions: PropTypes.object.isRequired
+  tokenHolderActions: PropTypes.object.isRequired,
+  minDeposit: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ])
 };
 
 const mapStateToProps = (state) => ({
   showTxQueue: state.challenge.showTxQueue,
-  txQueue: state.challenge.queue
+  txQueue: state.challenge.queue,
+  minDeposit: state.parameterizer.minDeposit
 });
 
 const mapDispatchToProps = (dispatch) => ({

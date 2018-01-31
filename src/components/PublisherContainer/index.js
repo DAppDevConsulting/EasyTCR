@@ -107,15 +107,19 @@ class PublisherContainer extends Component {
               backgroundColor='#536dfe'
               labelColor='#fff'
               disabled={!!(!this.state.domain || !this.state.stake || this.state.domainError || this.state.stakeError)}
+              style={{ marginBottom: '8px' }}
             />
           </div>
         </div>
         }
         <Card>
-          <ListingsList
-            listings={listings}
-            config={this.listConfig}
-          />
+          { listings
+            ? <ListingsList
+              listings={listings}
+              config={this.listConfig}
+            />
+            : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
+          }
         </Card>
       </div>
     );
