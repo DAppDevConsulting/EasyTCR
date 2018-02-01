@@ -48,6 +48,7 @@ class ManageTokensContainer extends Component {
           <div className='buyTokensForm_item'>
             <div className='buyTokensForm_element'>
               <TextField
+                style={{width: 316}}
                 floatingLabelText={labelText}
                 floatingLabelFixed
                 hintText={keys.manageTokensPage_buyTokensHint}
