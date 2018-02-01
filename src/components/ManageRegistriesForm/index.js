@@ -3,12 +3,19 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import DropZone from 'react-dropzone';
 import RaisedButton from 'material-ui/RaisedButton';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import keys from '../../i18n';
 import * as appActions from '../../actions/AppActions';
+
+const labelStyle = {
+  color: '#3f536e'
+};
 
 class ManageRegistriesForm extends Component {
   constructor (props) {
@@ -27,61 +34,85 @@ class ManageRegistriesForm extends Component {
 
     return (
       <Dialog
-        title='Switch registry'
+        title='Registry settings'
         actions={[
           <FlatButton label='Cancel' onClick={onClose} />
         ]}
         modal={false}
         open={open}
         onRequestClose={onClose}
+        contentStyle={{ width: '480px' }}
+        bodyStyle={{ minHeight: '380px' }}
       >
-        {app.registries.map((registry, index) => {
-          return (
-            <div key={index}>
-              <FlatButton
-                disabled={registry === app.registry}
+        <Tabs tabItemContainerStyle={{ backgroundColor: '#fff' }} inkBarStyle={{ backgroundColor: '#66bb6a' }}>
+          <Tab label='SWITCH REGISTRY' buttonStyle={labelStyle}>
+            <p style={{ fontSize: '12px', lineHeight: '1.33', color: '#7f8fa4' }}>Choose registry</p>
+            <RadioButtonGroup name='selectedRegistry' defaultSelected={app.registry}>
+              {
+                app.registries.map((registry, index) => {
+                  return (
+                    <RadioButton
+                      key={index}
+                      onClick={() => {
+                        changeRegistry(registry);
+                        onClose();
+                      }}
+                      label={registry}
+                      value={registry}
+                      style={{ marginBottom: '10px' }}
+                    />
+                  );
+                })
+              }
+            </RadioButtonGroup>
+          </Tab>
+          <Tab label='ADD NEW REGISTRY' buttonStyle={labelStyle}>
+            <TextField
+              floatingLabelText='Registry address:'
+              floatingLabelFixed
+              hintText='Type here'
+              value={this.state.registry}
+              onChange={(e, value) => this.setState({registry: value})}
+            />
+            <TextField
+              floatingLabelText='Faucet address:'
+              floatingLabelFixed
+              hintText='Type here'
+              value={this.state.faucet}
+              onChange={(e, value) => this.setState({faucet: value})}
+            />
+            <p style={{ fontSize: '13px', lineHeight: '22px', color: 'rgba(0, 0, 0, 0.3)' }}>Localization config:</p>
+            <DropZone
+              multiple={false}
+              accept='application/json'
+              onDrop={(files) => this.onFileSelected(files)}
+              style={{
+                border: 'dashed 1px rgba(127, 143, 164, 0.4)',
+                height: '130px',
+                textAlign: 'center',
+                padding: '20px 0',
+                boxSizing: 'border-box'
+              }}
+            >
+              <CopyIcon style={{ width: '32px', height: '40px', color: 'rgba(127, 143, 164, 0.4)', marginBottom: '5px', flex: '1 1 auto' }} />
+              <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: '#7f8fa4', margin: '0' }}>Drag files here</h2>
+              <p style={{ margin: '0' }}>or <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>browse your computer</span></p>
+            </DropZone>
+            <div>{this.state.file || ''}</div>
+            <div style={{ textAlign: 'center', paddingTop: '15px' }}>
+              <RaisedButton
+                backgroundColor='#66bb6a'
+                labelColor='#fff'
+                label='Add new Registry'
+                disabled={!this.state.registry || !this.state.faucet}
                 onClick={() => {
-                  changeRegistry(registry);
+                  console.log('in my state', this.state.localization);
+                  addRegistry(this.state.registry, this.state.faucet, this.state.localization);
                   onClose();
-                }}
-                label={registry} />
+                }} />
             </div>
-          );
-        })}
-        <h3>Add new registry</h3>
-        <div>Registry address:</div>
-        <TextField
-          hintText={keys.candidateExample}
-          value={this.state.registry}
-          onChange={(e, value) => {
-            this.setState({registry: value});
-          }}
-        />
-        <div>Faucet address:</div>
-        <TextField
-          hintText={keys.candidateExample}
-          value={this.state.faucet}
-          onChange={(e, value) => {
-            this.setState({faucet: value});
-          }}
-        />
-        <div>Localization config:</div>
-        <DropZone
-          multiple={false}
-          accept='application/json'
-          onDrop={(files) => this.onFileSelected(files)}
-        >
-          <div>Drop config file here or click to select file</div>
-        </DropZone>
-        <div>{this.state.file || ''}</div>
-        <FlatButton
-          label='Add new Registry'
-          disabled={!this.state.registry || !this.state.faucet}
-          onClick={() => {
-            console.log('in my state', this.state.localization);
-            addRegistry(this.state.registry, this.state.faucet, this.state.localization);
-            onClose();
-          }} />
+          </Tab>
+        </Tabs>
       </Dialog>
     );
   }
