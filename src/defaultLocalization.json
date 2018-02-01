@@ -33,9 +33,9 @@
     "tokenHolderPage_listingDate": "Due date",
     "tokenHolderPage_listingActions": "Actions",
 
-    "candidatePage_title": "Applicant",
-    "candidatePage_addListingTitle": "Applicant application",
-    "candidatePage_transactionsSteps_title": "Make an application to registry",
+    "candidatePage_title": "Applicant page",
+    "candidatePage_addListingTitle": "Apply candidate",
+    "candidatePage_transactionsSteps_title": "Make an application to Registry",
     "candidatePage_transactionsSteps_applyCandidate": "Apply candidate",
     "candidatePage_transactionsSteps_applyCandidateText": "Submit candidate application to Registry.",
     "candidatePage_applyForm_stakeTitle": "Bet Token or get Tokens to bet!",
