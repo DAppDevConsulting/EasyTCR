@@ -3,26 +3,36 @@
 }
 
 .buyTokensForm_item {
-    display: inline-block;
-    text-align: left;
-    padding-right: 30px;
-    font-size: 13px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.46;
-    letter-spacing: normal;
-    color: #3f536e;
+    display: flex;
+    align-items: flex-end;
 }
 
 .buyTokensForm_element {
-    height: 61px;
-    display: inline-block;
     padding-right: 10px;
-    vertical-align: bottom;
 }
 
 .buyTokensForm_multiplier {
     display: inline-block;
     padding-top: 15px;
+}
+
+.sectionTitle {
+    font-family: OpenSans;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.0;
+	color: #7f8fa4;
+}
+
+.manageTokensTitle {
+    font-family: Montserrat;
+	font-size: 23px;
+	line-height: 1.13;
+	color: #2c405a;
+}
+
+.balanceText {
+    font-size: 14px;
+	line-height: 1.36;
+	color: #3f536e;
 }
