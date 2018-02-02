@@ -9,8 +9,9 @@ import keys from '../../i18n';
 import './style.css';
 import IconButton from 'material-ui/IconButton';
 import RegistryIcon from 'material-ui/svg-icons/av/playlist-add';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
 
-const Header = ({ balance, onSwitcherClick }) => (
+const Header = ({ balance, onSwitcherClick, onSettingsClick }) => (
   <Toolbar className='Header'>
     <ToolbarGroup firstChild>
       <ToolbarTitle text={keys.registryName} className='HeaderTitle' />
@@ -22,6 +23,10 @@ const Header = ({ balance, onSwitcherClick }) => (
       <AdtIcon />
       <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.tokens + ` ${keys.tokenName}`} />
       <ToolbarSeparator className='Separator' />
+      <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
+        <SettingsIcon color='#fff' />
+      </IconButton>
+      <ToolbarSeparator className='Separator' />
       <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
         <RegistryIcon color='#fff' />
       </IconButton>
@@ -32,7 +37,8 @@ const Header = ({ balance, onSwitcherClick }) => (
 Header.propTypes = {
   // Sometimes web3 returns numbers as strings because they're greater than 2^53
   balance: PropTypes.object.isRequired,
-  onSwitcherClick: PropTypes.func.isRequired
+  onSwitcherClick: PropTypes.func.isRequired,
+  onSettingsClick: PropTypes.func.isRequired
 };
 
 function mapStateToProps (state) {

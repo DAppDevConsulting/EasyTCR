@@ -6,7 +6,7 @@ import * as publisherActions from './actions/PublisherActions';
 import * as advertiserActions from './actions/AdvertiserActions';
 import * as appActions from './actions/AppActions';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { deepOrange500, indigoA200} from 'material-ui/styles/colors';
+import { deepOrange500, indigoA200 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import InfoIcon from 'material-ui/svg-icons/action/info';
@@ -15,6 +15,7 @@ import Header from './components/Header';
 import SideBar from './components/SideBar';
 import MainContainer from './components/MainContainer';
 import ManageRegistriesForm from './components/ManageRegistriesForm';
+import SettingsPopup from './components/SettingsPopup';
 import storage from './utils/CookieStorage';
 
 import './App.css';
@@ -29,7 +30,8 @@ class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      manageRegistriesOpened: false
+      manageRegistriesOpened: false,
+      settingsPopupOpened: false
     };
   }
   componentWillMount () {
@@ -67,12 +69,18 @@ class App extends Component {
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div className='App'>
-            <Header onSwitcherClick={() => this.setState({manageRegistriesOpened: true})} />
+            <Header
+              onSettingsClick={() => this.setState({settingsPopupOpened: true})}
+              onSwitcherClick={() => this.setState({manageRegistriesOpened: true})} />
             <div>
               <SideBar />
               <ManageRegistriesForm
                 open={this.state.manageRegistriesOpened}
                 onClose={() => this.setState({manageRegistriesOpened: false})}
+              />
+              <SettingsPopup
+                open={this.state.settingsPopupOpened}
+                onClose={() => this.setState({settingsPopupOpened: false})}
               />
               <div className='MainContainerWrapper'>
                 <MainContainer />

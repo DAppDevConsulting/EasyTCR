@@ -1,6 +1,7 @@
 // app actions
 export const APP_INIT = 'APP_INIT';
 export const CHANGE_REGISTRY = 'CHANGE_REGISTRY';
+export const CHANGE_BACKEND_USAGE = 'CHANGE_BACKEND_USAGE';
 
 // advertiser
 export const REQUEST_ADVERTISER_DOMAINS = 'REQUEST_ADVERTISER_DOMAINS';

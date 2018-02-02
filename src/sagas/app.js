@@ -3,6 +3,7 @@ import api from '../services/BackendApi';
 import TCR, {ContractsManager} from '../TCR';
 import {updateLocalization} from '../i18n';
 import storage from '../utils/CookieStorage';
+import {APP_INIT, CHANGE_BACKEND_USAGE, CHANGE_REGISTRY} from '../constants/actions';
 
 export function * sendTxBatch (action) {
   yield put({ type: 'ADD_TRANSACTIONS', transactions: action.transactions });
@@ -23,6 +24,11 @@ export function * addRegistry (action) {
   yield call(init, {defaultRegistry: action.registry});
 }
 
+export function * changeBackendUsage (action) {
+  storage.put('useBackend', action.useBackend);
+  yield call(init, {defaultRegistry: ContractsManager.getCurrentRegistryAddress()});
+}
+
 export function * init (action) {
   let contracts = yield apply(api, 'getRegistries', [[]]);
   ContractsManager.setRegistries(contracts);
@@ -41,7 +47,8 @@ export function * init (action) {
 
 export default function * flow () {
   yield takeLatest('SEND_TRANSACTIONS', sendTxBatch);
-  yield takeLatest('APP_INIT', init);
+  yield takeLatest(APP_INIT, init);
   yield takeLatest('ADD_REGISTRY', addRegistry);
-  yield takeLatest('CHANGE_REGISTRY', init);
+  yield takeLatest(CHANGE_REGISTRY, init);
+  yield takeLatest(CHANGE_BACKEND_USAGE, changeBackendUsage);
 }
