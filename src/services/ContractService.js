@@ -3,6 +3,9 @@ import _ from 'lodash';
 import { Registry } from 'ethereum-tcr-api';
 
 const httpProvider = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/Dy4nhcddBU78aJPZ7TDA'));
+const SYNC_INTERVAL = 10000;
+let currentContract = '';
+let notificationHandlerCandidate = null;
 
 // TODO: in future store only one registry
 const _map = new Map();
@@ -20,14 +23,29 @@ class Storage {
     this.registry = new Registry(address, provider);
     this.lastKnownBlock = 0;
     this._listingsMap = new Map();
+    this._timeout = 0;
+    this._synchronizationRunning = false;
+    this._watcher = null;
+  }
+
+  setWatcher (watcher) {
+    this._watcher = watcher;
+  }
+
+  _callWatcher () {
+    if (typeof this._watcher === 'function') {
+      this._watcher(...arguments);
+    }
   }
 
   addListing (listing, account) {
     this._listingsMap.set(listing, {listing: listing, account});
+    this._callWatcher('add', listing);
   }
 
-  removeListing (address) {
-    this._listingsMap.delete(address);
+  removeListing (listing) {
+    this._listingsMap.delete(listing);
+    this._callWatcher('remove', listing);
   }
 
   listings () {
@@ -36,6 +54,26 @@ class Storage {
 
   clear () {
     this._listingsMap.clear();
+    this.lastKnownBlock = 0;
+    clearTimeout(this._timeout);
+    this._synchronizationRunning = false;
+    this._watcher = null;
+  }
+
+  async synchronize () {
+    if (this._synchronizationRunning) {
+      return;
+    }
+    this._synchronizationRunning = true;
+    await this._synchronizeAndUpdateActualBlock();
+  }
+
+  async _synchronizeAndUpdateActualBlock () {
+    clearInterval(this._timeout);
+    let actualBlock = await getActualBlock();
+    await this.handlePastEvents(actualBlock);
+    this.lastKnownBlock = actualBlock;
+    this._timeout = setTimeout(() => this._synchronizeAndUpdateActualBlock(), SYNC_INTERVAL);
   }
 
   async handlePastEvents (actualBlock) {
@@ -44,20 +82,16 @@ class Storage {
     }
 
     try {
-      console.time('getEvents');
       let events = await this.registry.contract.getPastEvents(
         'allEvents',
         {fromBlock: this.lastKnownBlock, toBlock: actualBlock}
       );
-      console.timeEnd('getEvents');
-      console.time('handleEvents');
       let grouped = _.groupBy(events, 'returnValues.domain');
       await Promise.all(
         _.keys(grouped)
           .map(k => grouped[k])
           .map(arr => handleEventsChain(arr, (e) => this._handleEvent(e)))
       );
-      console.timeEnd('handleEvents');
     } catch (error) {
       console.error(error);
     }
@@ -96,19 +130,35 @@ const syncronizeRegistry = async (address) => {
     _map.set(address, new Storage(address, httpProvider));
   }
   let storage = _map.get(address);
-  let actualBlock = await getActualBlock();
-  await storage.handlePastEvents(actualBlock);
-  storage.lastKnownBlock = actualBlock;
+  await storage.synchronize();
   console.timeEnd('sync');
 };
 
 const getListings = async (address) => {
   if (!_map.has(address)) {
-    await syncronizeRegistry(address);
+    _map.set(address, new Storage(address, httpProvider));
+  }
+  if (address !== currentContract && currentContract) {
+    _map.get(currentContract).clear();
+  }
+  currentContract = address;
+  let synchronizationRunning = _map.get(address)._synchronizationRunning;
+  await syncronizeRegistry(address);
+  // TODO: hack
+  if (typeof notificationHandlerCandidate === 'function' && !synchronizationRunning) {
+    _map.get(currentContract).setWatcher(notificationHandlerCandidate);
+    notificationHandlerCandidate('initial');
+    notificationHandlerCandidate = null;
   }
   return _map.get(address).listings();
 };
 
+// TODO: кривоватая схема
+const setNotificationHandler = (handler) => {
+  notificationHandlerCandidate = handler;
+};
+
 export default {
-  getListings
+  getListings,
+  setNotificationHandler
 };

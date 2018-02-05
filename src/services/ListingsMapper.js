@@ -35,13 +35,18 @@ export default class ListingsMapper {
     return {};
   }
   static async mapListings (domains, registry) {
-    console.time('listings');
+    if (!domains || !domains.length) {
+      return [];
+    }
+
     try {
+      console.time('getListings');
       let tcrListings = await Promise.all(domains.map(async (domain) => {
         let res = await this.getProps(domain.listing, registry);
         return res;
       }));
-      console.timeEnd('listings');
+      console.timeEnd('getListings');
+      console.log('i ask ' + tcrListings.length + ' listings');
       return tcrListings;
     } catch (err) {
       console.log(err);

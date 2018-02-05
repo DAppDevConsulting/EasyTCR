@@ -1,9 +1,15 @@
+import { channel } from 'redux-saga';
 import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
 import 'babel-polyfill';
 import TCR from '../TCR';
-import api from '../services/BackendApi';
 import { applyDomain as getApplyDomainQueue } from '../transactions';
-import ListingsMapper from '../services/ListingsMapper';
+import ListingsProvider from '../services/ListingsProvider';
+
+// TODO: refactor this shit
+const changeChannel = channel();
+ListingsProvider.addChangeListener(() => {
+  changeChannel.put({type: 'REQUEST_PUBLISHER_DOMAINS'});
+});
 
 export function * buyTokens (action) {
   try {
@@ -46,9 +52,7 @@ export function * getPublisherDomains (action) {
   if (!TCR.defaultAccountAddress()) {
     return;
   }
-  let domains = yield apply(api, 'getListings', [TCR.registry().address, [], TCR.defaultAccountAddress()]);
-
-  let listings = yield apply(ListingsMapper, 'mapListings', [domains, TCR.registry()]);
+  let listings = yield apply(ListingsProvider, 'getListings', [TCR.registry(), {owner: TCR.defaultAccountAddress()}]);
   yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
   yield put({ type: 'REQUEST_TOKEN_INFORMATION' });
 }
@@ -58,7 +62,8 @@ export default function * flow () {
   yield takeEvery('APPLY_DOMAIN', applyDomain);
   yield takeEvery('REQUEST_TOKEN_INFORMATION', fetchTokenInformation);
   yield takeEvery('REQUEST_PUBLISHER_DOMAINS', getPublisherDomains);
-  yield takeEvery('HIDE_TX_QUEUE', getPublisherDomains);
+  // yield takeEvery('HIDE_TX_QUEUE', getPublisherDomains);
   yield takeEvery('CANCEL_DOMAIN_APPLICATION', cancelDomainApplication);
+  yield takeEvery(changeChannel, getPublisherDomains);
 //  yield takeEvery('ADD_DOMAIN', addDomain);
 }
