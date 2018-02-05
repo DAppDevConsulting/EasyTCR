@@ -1,5 +1,8 @@
 import contractService from './ContractService';
-const TCRofTCRs = require('../secrets.json').contracts;
+const TCRofTCRs = {
+  'registry': '0x643c5883f1135cb487a8eb1ec4b3926e1607b05f',
+  'faucet': '0xb021ecd8126180f9c76fec9a1745604e92c890e5'
+};//require('../secrets.json').contracts;
 
 export default {
   getRegistries: async () => {
