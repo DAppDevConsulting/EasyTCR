@@ -31,11 +31,21 @@ class App extends Component {
     super(props);
     this.state = {
       manageRegistriesOpened: false,
-      settingsPopupOpened: false
+      settingsPopupOpened: false,
+      networkError: ''
     };
   }
+
   componentWillMount () {
-    this.props.appActions.init(storage.get('currentRegistry'));
+    window.web3.version.getNetwork((error, network) => {
+      if (network !== '4') {
+        return this.setState({
+          networkError: 'Please, switch to Rinkeby network'
+        })
+      } else {
+        this.props.appActions.init(storage.get('currentRegistry'));
+      }
+    })
   }
 
   renderNotInitialized () {
@@ -44,21 +54,32 @@ class App extends Component {
     );
   }
 
-  renderNoMetamaskWarning () {
+  renderWarning (networkError) {
     return (
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
-          <div className='noMetamaskWarning'>
+          { networkError 
+            ? <div className='noMetamaskWarning'>
+              <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
+              { networkError }
+            </div>
+            : <div className='noMetamaskWarning'>
             <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
             Please download or unlock&nbsp;<a href='https://metamask.io/' target='_blank' rel='noopener noreferrer'>MetaMask</a>&nbsp;extension to load application and Ethereum wallet
           </div>
+          }
         </MuiThemeProvider>
       </Router>
     );
   }
+
   render () {
     if (!window.web3) {
-      return this.renderNoMetamaskWarning();
+      return this.renderWarning();
+    }
+
+    if (this.state.networkError) {
+      return this.renderWarning(this.state.networkError);
     }
 
     if (!this.props.app.registry) {
