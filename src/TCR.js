@@ -118,13 +118,17 @@ class TCR {
   static async getBalance (address = null) {
     address = address || this.defaultAccountAddress();
     let account = await this.registry().getAccount(address);
-    let tokens = await account.getTokenBalance();
+    let tokens = this.formatWithDecimals(await account.getTokenBalance());
     let ethers = this.fromWei(await account.getEtherBalance());
     return {tokens, ethers};
   }
 
   static fromWei (amount) {
     return _map.get(WEI_CONVERTOR)(amount);
+  }
+
+  static formatWithDecimals (amount) {
+    return new BN(amount, 10) / 10 ** 9;
   }
 
   static async getTokenPrice (unit = 'ether') {

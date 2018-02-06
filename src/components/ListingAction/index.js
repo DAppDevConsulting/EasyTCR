@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import Challenge from './Challenge';
 import Commit from './Commit';
+import Reveal from './Reveal';
 
 const ListingAction = ({ listing, challengeHandler }) => {
   switch (listing.status) {
@@ -14,15 +15,18 @@ const ListingAction = ({ listing, challengeHandler }) => {
         />
       );
     case 'In reveal':
-      return null;
+      return <Reveal />;
     case 'In commit':
       return <Commit />;
     case 'In registry':
-      return null;
-    // case 'Pending':
-    //   return null;
+      return (
+        <Challenge
+          challengeHandler={challengeHandler}
+          listing={listing}
+        />
+      );
     default:
-      return <Commit />;
+      return null;
   }
 };
 

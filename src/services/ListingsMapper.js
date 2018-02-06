@@ -11,17 +11,21 @@ export default class ListingsMapper {
         listing.exists(),
         listing.expiresAt()
       ]);
+
       let whitelisted = props[0];
       let exists = props[1];
       let expTs = props[2];
+      let result = { name: listing.name };
 
-      let result = {name: listing.name};
       result.status = whitelisted ? keys.inRegistry : keys.inApplication;
+
       if (!exists) {
         result.status = keys.notExists;
       }
+
       result.dueDate = '';
       result.timestamp = 0;
+
       if (!whitelisted && exists) {
         result.timestamp = expTs * 1000;
         let dateObj = moment(result.timestamp);
