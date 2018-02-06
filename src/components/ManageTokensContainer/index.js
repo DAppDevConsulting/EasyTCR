@@ -16,7 +16,8 @@ class ManageTokensContainer extends Component {
     this.state = {
       value: '',
       multiplier: 1,
-      price: ''
+      price: '',
+      errorText: ''
     };
     this.weiToEthConverter = (wei) => wei; // TODO: сделать один конвертер. Кажется там константные значения везде.
     this.weiToEthLimit = new BN('1000000000000000', 10);
@@ -26,6 +27,17 @@ class ManageTokensContainer extends Component {
     // Setting token price for further usage
     this.weiToEthConverter = TCR.fromWei;
     TCR.getTokenPrice('wei').then(price => this.setState({ price: price.toString() }));
+  }
+
+  handleInput (e) {
+    const value = e.target.value;
+    const re = /^\d+$/;
+
+    if (re.test(value) || value === '') {
+      this.setState({ value, errorText: '' })
+    } else {
+      this.setState({ value, errorText: 'Input is not valid' })
+    }
   }
 
   render () {
@@ -53,16 +65,18 @@ class ManageTokensContainer extends Component {
                 floatingLabelFixed
                 hintText={keys.manageTokensPage_buyTokensHint}
                 value={this.state.value || ''}
-                onChange={(e, value) => this.setState({ value: new BN(value, 10) })} />
+                onChange={e => this.handleInput(e)}
+                errorText={this.state.errorText}
+              />
             </div>
             <div className='buyTokensForm_element'>
               <RaisedButton
                 label={keys.buy}
-                disabled={!this.state.value}
+                disabled={!this.state.value || this.state.errorText}
                 onClick={() => this.buyTokens()}
                 backgroundColor='#66bb6a'
                 labelColor='#fff'
-                style={{ marginBottom: '8px' }}
+                style={{ marginTop: '28px' }}
               />
             </div>
           </div>
@@ -90,6 +104,8 @@ class ManageTokensContainer extends Component {
   }
 
   getTotalPriceText () {
+    if (this.state.errorText) return 0;
+
     const price = this.getTotalPrice();
     if (price.lt(this.weiToEthLimit)) {
       return price.toString() + ` ${keys.wei}`;
