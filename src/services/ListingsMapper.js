@@ -18,10 +18,6 @@ export default class ListingsMapper {
       let result = { name: listing.name };
 
       result.status = whitelisted ? keys.inRegistry : keys.inApplication;
-      // class Listing
-      // hasChallenge - can be Commit or Reveal
-      // getChallenge - challenge object
-      // getPoll - getCurrentStage: commit, reveal, ended
 
       if (!exists) {
         result.status = keys.notExists;
