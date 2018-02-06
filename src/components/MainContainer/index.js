@@ -17,6 +17,12 @@ import {
   Redirect
 } from 'react-router-dom';
 
+const NoMatch = ({ location }) => (
+  <div>
+    <h3>No match for <code>{location.pathname}</code></h3>
+  </div>
+)
+
 class MainContainer extends Component {
   render () {
     return (
@@ -39,6 +45,7 @@ class MainContainer extends Component {
             <ListingContainer />
           )} />
           <Route path='/' exact component={AdvContainer} />
+          <Route component={NoMatch}/>
         </Switch>
       </Route>
     );
