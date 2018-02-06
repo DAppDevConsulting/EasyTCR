@@ -5,6 +5,18 @@ import Challenge from './Challenge';
 import Commit from './Commit';
 
 const ListingAction = ({ listing, challengeHandler }) => {
+  console.log(listing);
+  if (listing.challengeId === '0') {
+    return (
+      <Challenge
+        challengeHandler={challengeHandler}
+        listing={listing}
+      />
+    );
+  } else {
+    return <Commit listing={listing} />;
+  }
+  /*
   switch (listing.status) {
     case 'In application':
       return (
@@ -22,8 +34,9 @@ const ListingAction = ({ listing, challengeHandler }) => {
     // case 'Pending':
     //   return null;
     default:
-      return <Commit />;
+      return <Commit listing={listing} />;
   }
+  */
 };
 
 ListingAction.propTypes = {

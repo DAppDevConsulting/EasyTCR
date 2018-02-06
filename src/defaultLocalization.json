@@ -65,8 +65,12 @@
     "transaction_Retry": "Retry",
     "transaction_metaMaskPrompts": "You will receive {0} MetaMask prompts",
     "transaction_approveTransferTokensHeader": "Approve {0} Tokens",
-    "transaction_approveTransferTokensText": "Allow {name} Registry contract to transfer {tokenName} token deposit from your account.",
+    "transaction_approveTransferTokensText": "Allow {name} {contract} contract to transfer {tokenName} token deposit from your account.",
     "transaction_submitChallengeHeader": "Challenge candidate",
-    "transaction_submitChallengeText": "Submit challenge to the {name} Registry contract."
+    "transaction_submitChallengeText": "Submit challenge to the {name} Registry contract.",
+    "transaction_requestVotingRightsHeader": "Pre-request {0} voting rights",
+    "transaction_requestVotingRightsText": "Pre-requesting voting rights minimizes the number of transactions when performing commit votes. This can save gas fees if voting frequently. 1 token = 1 vote. You may convert the votes to tokens and withdraw at any time.",
+    "transaction_commitVoteHeader": "Commit a vote",
+    "transaction_commitVoteText": "Commit your vote to participate in particular Partial Lock Commit Reveal Voting poll."
   }
 }
