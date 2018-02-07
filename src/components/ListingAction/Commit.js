@@ -3,6 +3,7 @@ import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
+import crypto from 'crypto';
 
 class Commit extends Component {
   constructor (props) {
@@ -34,6 +35,8 @@ class Commit extends Component {
           <TextField
             floatingLabelText='Save Secret Phrase (salt)'
             floatingLabelFixed
+            value={crypto.randomBytes(16).toString('hex')}
+						style={{ width: '100%' }}
           />
           <div>
             <span className='groupLable'>Choose vote option</span>

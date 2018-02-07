@@ -3,6 +3,7 @@ import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
+import crypto from 'crypto';
 
 class Reveal extends Component {
 	constructor (props) {
@@ -53,6 +54,8 @@ class Reveal extends Component {
 					<TextField
 						floatingLabelText='Save Secret Phrase (salt)'
 						floatingLabelFixed
+						value={crypto.randomBytes(16).toString('hex')}
+						style={{ width: '100%' }}
 					/>
 					<div>
 						<span className='groupLable'>Choose what you commited</span>
