@@ -39,7 +39,7 @@ class Commit extends Component {
 
   resolveVoting () {
     console.log('resolved!');
-    this.props.tokenHolderActions.hideVotingTxQueue();
+    this.props.tokenHolderActions.hideVotingCommitTxQueue();
   }
 
   render () {
@@ -51,7 +51,7 @@ class Commit extends Component {
           <TxQueue
             mode='vertical'
             queue={txQueue}
-            cancel={tokenHolderActions.hideVotingTxQueue}
+            cancel={tokenHolderActions.hideVotingCommitTxQueue}
             title='Make an application to registry'
             onEnd={() => this.resolveVoting()}
           />
@@ -73,11 +73,12 @@ class Commit extends Component {
                 disabled
               />
               <div>
-                <span className='groupLable'>Choose vote option</span>
+                <span className='groupLabel'>Choose vote option</span>
                 <RadioButtonGroup
                   name='voting'
                   defaultSelected={this.state.option}
                   onChange={(e, option) => this.setState({option})}
+                  className='voteOptionsContainer'
                 >
                   <RadioButton
                     value={1}

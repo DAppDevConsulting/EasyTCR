@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import './style.css';
 import Challenge from './Challenge';
 import Commit from './Commit';
+import Reveal from './Reveal';
 
 const ListingAction = ({ listing, challengeHandler }) => {
-  console.log(listing);
+  return <Reveal listing={listing} />
+
   if (listing.challengeId === '0') {
     return (
       <Challenge
