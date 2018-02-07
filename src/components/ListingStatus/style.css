@@ -5,8 +5,21 @@
 	align-items: center;
 }
 
-.listingStatus p {
+.listingStatus > p {
 	font-size: 12px;
 	color: #7f8fa4;
 	margin-right: 40px;
+}
+
+.listingStatus > svg {
+	width: 425px;
+}
+
+.refreshStatus {
+	display: flex;
+	align-items: center;
+}
+
+.refreshStatus > p {
+	margin-left: 20px;
 }
