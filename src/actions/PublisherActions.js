@@ -35,11 +35,12 @@ export function getPublisherDomains () {
   };
 }
 
-export function applyDomain (name, tokens) {
+export function applyDomain (name, tokens, file) {
   return {
     type: APPLY_DOMAIN,
     name,
-    tokens
+    tokens,
+    file
   };
 }
 

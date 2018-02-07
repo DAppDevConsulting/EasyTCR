@@ -12,6 +12,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import keys from '../../i18n';
 import * as appActions from '../../actions/AppActions';
+import storage from '../../utils/CookieStorage';
 
 const labelStyle = {
   color: '#3f536e'
@@ -28,9 +29,14 @@ class ManageRegistriesForm extends Component {
     };
   }
 
+  getRegistryLabel (registry) {
+    return registry.name ? `${registry.name} (${registry.registry.substr(0, 10)}...)` : registry.registry;
+  }
+
   render () {
     const {open, onClose, app} = this.props;
     const {addRegistry, changeRegistry} = this.props.appActions;
+    const useBackend = !!storage.get('useBackend');
 
     return (
       <Dialog
@@ -54,11 +60,11 @@ class ManageRegistriesForm extends Component {
                     <RadioButton
                       key={index}
                       onClick={() => {
-                        changeRegistry(registry);
+                        changeRegistry(registry.registry);
                         onClose();
                       }}
-                      label={registry}
-                      value={registry}
+                      label={this.getRegistryLabel(registry)}
+                      value={registry.registry}
                       style={{ marginBottom: '10px' }}
                     />
                   );
@@ -66,6 +72,7 @@ class ManageRegistriesForm extends Component {
               }
             </RadioButtonGroup>
           </Tab>
+          {useBackend &&
           <Tab label='ADD NEW REGISTRY' buttonStyle={labelStyle}>
             <TextField
               floatingLabelText='Registry address:'
@@ -81,7 +88,7 @@ class ManageRegistriesForm extends Component {
               value={this.state.faucet}
               onChange={(e, value) => this.setState({faucet: value})}
             />
-            <p style={{ fontSize: '13px', lineHeight: '22px', color: 'rgba(0, 0, 0, 0.3)' }}>Localization config:</p>
+            <p style={{fontSize: '13px', lineHeight: '22px', color: 'rgba(0, 0, 0, 0.3)'}}>Localization config:</p>
             <DropZone
               multiple={false}
               accept='application/json'
@@ -94,12 +101,19 @@ class ManageRegistriesForm extends Component {
                 boxSizing: 'border-box'
               }}
             >
-              <CopyIcon style={{ width: '32px', height: '40px', color: 'rgba(127, 143, 164, 0.4)', marginBottom: '5px', flex: '1 1 auto' }} />
-              <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: '#7f8fa4', margin: '0' }}>Drag files here</h2>
-              <p style={{ margin: '0' }}>or <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>browse your computer</span></p>
+              <CopyIcon style={{
+                width: '32px',
+                height: '40px',
+                color: 'rgba(127, 143, 164, 0.4)',
+                marginBottom: '5px',
+                flex: '1 1 auto'
+              }}/>
+              <h2 style={{fontSize: '14px', fontWeight: 'bold', color: '#7f8fa4', margin: '0'}}>Drag files here</h2>
+              <p style={{margin: '0'}}>or <span style={{textDecoration: 'underline', cursor: 'pointer'}}>browse your computer</span>
+              </p>
             </DropZone>
             <div>{this.state.file || ''}</div>
-            <div style={{ textAlign: 'center', paddingTop: '15px' }}>
+            <div style={{textAlign: 'center', paddingTop: '15px'}}>
               <RaisedButton
                 backgroundColor='#66bb6a'
                 labelColor='#fff'
@@ -109,9 +123,10 @@ class ManageRegistriesForm extends Component {
                   console.log('in my state', this.state.localization);
                   addRegistry(this.state.registry, this.state.faucet, this.state.localization);
                   onClose();
-                }} />
+                }}/>
             </div>
           </Tab>
+          }
         </Tabs>
       </Dialog>
     );

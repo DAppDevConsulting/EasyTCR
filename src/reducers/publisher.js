@@ -4,6 +4,7 @@ const initialState = {
   listings: [],
   fetching: false,
   showTxQueue: false,
+  useIpfs: false,
   txQueue: null
 };
 
@@ -25,7 +26,7 @@ export default function publisher (state = initialState, action) {
       return {...state, tokens: action.tokens, ethers: action.ethers};
 
     case 'UPDATE_PUBLISHER_DOMAINS':
-      return {...state, listings: action.listings, showTxQueue: false};
+      return {...state, listings: action.listings, showTxQueue: false, useIpfs: action.useIpfs};
 
     default:
       return state;

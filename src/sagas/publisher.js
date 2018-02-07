@@ -4,10 +4,12 @@ import 'babel-polyfill';
 import TCR from '../TCR';
 import { applyDomain as getApplyDomainQueue } from '../transactions';
 import ListingsProvider from '../services/ListingsProvider';
+import IPFS from '../services/IPFS';
 
 // TODO: refactor this shit
 const changeChannel = channel();
 ListingsProvider.addChangeListener(() => {
+  console.log('we have changes');
   changeChannel.put({type: 'REQUEST_PUBLISHER_DOMAINS'});
 });
 
@@ -39,7 +41,11 @@ export function * applyDomain (action) {
   }
 
   let { minDeposit } = (yield select()).parameterizer;
-  let queue = yield call(getApplyDomainQueue, action.name, action.tokens, minDeposit);
+  let name = action.name;
+  if (!action.name && action.file) {
+    name = yield apply(IPFS, 'upload', [action.file]);
+  }
+  let queue = yield call(getApplyDomainQueue, name, action.tokens, minDeposit);
 
   yield put({ type: 'SHOW_TX_QUEUE', queue });
 }
@@ -53,7 +59,7 @@ export function * getPublisherDomains (action) {
     return;
   }
   let listings = yield apply(ListingsProvider, 'getListings', [TCR.registry(), {owner: TCR.defaultAccountAddress()}]);
-  yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings});
+  yield put({type: 'UPDATE_PUBLISHER_DOMAINS', listings, useIpfs: TCR.useIpfs()});
   yield put({ type: 'REQUEST_TOKEN_INFORMATION' });
 }
 
