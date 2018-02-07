@@ -17,7 +17,7 @@ export default class ListingsMapper {
       let exists = props[1];
       let expTs = props[2];
       let stagingStatus = props[3];
-      let result = { name: listing.name };
+      let result = { name: listing.name, whitelisted };
 
       if (stagingStatus) {
         result.status = keys[stagingStatus];

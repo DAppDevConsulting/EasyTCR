@@ -24,3 +24,10 @@
 	margin-left: 20px;
 	max-width: 300px;
 }
+
+.loaderContainer {
+	position: relative;
+	width: 88px;
+	height: 88px;
+	margin-left: 20px;
+}
