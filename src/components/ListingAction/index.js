@@ -4,21 +4,22 @@ import './style.css';
 import Challenge from './Challenge';
 import Commit from './Commit';
 import Reveal from './Reveal';
+import keys from '../../i18n';
 
 const ListingAction = ({ listing, challengeHandler }) => {
   switch (listing.status) {
-    case 'In application':
+    case keys.inApplication:
       return (
         <Challenge
           challengeHandler={challengeHandler}
           listing={listing}
         />
       );
-    case 'In reveal':
+    case keys.VoteReveal:
       return <Reveal />;
-    case 'In commit':
+    case keys.VoteCommit:
       return <Commit />;
-    case 'In registry':
+    case keys.inRegistry:
       return (
         <Challenge
           challengeHandler={challengeHandler}
@@ -29,6 +30,8 @@ const ListingAction = ({ listing, challengeHandler }) => {
       return null;
   }
 };
+
+// NeedRefresh
 
 ListingAction.propTypes = {
   listing: PropTypes.object.isRequired,

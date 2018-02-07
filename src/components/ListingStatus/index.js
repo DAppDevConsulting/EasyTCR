@@ -8,20 +8,23 @@ import Incommit from './Incommit';
 import Inregistry from './Inregistry';
 // import InregistryAfter from './InregistryAfter';
 import Rejected from './Rejected';
+import keys from '../../i18n';
 
 const renderStatus = status => {
   switch (status) {
-    case 'In reveal':
+    case keys.VoteReveal:
       return <Inreveal />;
-    case 'In commit':
+    case keys.VoteCommit:
       return <Incommit />;
-    case 'In registry':
+    case keys.inRegistry:
       return <Inregistry />;
-    case 'Rejected':
-      return <Rejected />;
+    // case keys:
+    //   return <Rejected />;
+    case keys.inApplication:
+      return <Inapplication />;
     // in application
     default:
-      return <Inapplication />;
+      return null;
   }
 };
 
