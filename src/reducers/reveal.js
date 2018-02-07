@@ -5,7 +5,7 @@ const initialState = {
   showTxQueue: false
 };
 
-export default function challenge (state = initialState, action) {
+export default function reveal (state = initialState, action) {
   switch (action.type) {
     case REVEAL_SHOW_TX_QUEUE:
       return {...state, queue: action.queue, showTxQueue: true};

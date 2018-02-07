@@ -6,6 +6,7 @@ import app from './app';
 import parameterizer from './parameterizer';
 import challenge from './challenge';
 import commit from './commit';
+import reveal from './reveal';
 
 const sagas = [
   app,
@@ -13,7 +14,8 @@ const sagas = [
   advertiser,
   parameterizer,
   challenge,
-  commit
+  commit,
+  reveal
 ];
 
 export default function * root () {

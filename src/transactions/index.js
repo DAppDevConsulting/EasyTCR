@@ -90,3 +90,20 @@ export async function commitVote (id, hash, stake) {
       }
     );
 }
+
+export async function revealVote (id, option, salt) {
+  const plcr = await TCR.getPLCRVoting();
+  const poll = plcr.getPoll(id);
+
+  console.log('ee');
+
+  return new PromisesQueue()
+  // Approve tokens to PLCRVoting contract
+    .add(
+      () => poll.revealVote(option, salt),
+      {
+        label: keys.transaction_revealVoteHeader,
+        content: keys.transaction_revealVoteText
+      }
+    );
+}

@@ -1,4 +1,4 @@
-import { takeEvery, put, call, select, apply } from 'redux-saga/effects';
+import { takeEvery, put, call } from 'redux-saga/effects';
 import { PLCRVoting } from 'ethereum-tcr-api';
 import { commitVote as getCommitVoteTx } from '../transactions';
 import { COMMIT_SHOW_TX_QUEUE, COMMIT_SEND } from '../constants/actions';

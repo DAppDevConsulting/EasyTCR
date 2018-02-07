@@ -119,7 +119,7 @@ class Commit extends Component {
 Commit.propTypes = {
   listing: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
-  showTxQueue: PropTypes.bool.required,
+  showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object
 };
 

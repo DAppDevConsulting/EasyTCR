@@ -71,6 +71,8 @@
     "transaction_requestVotingRightsHeader": "Pre-request {0} voting rights",
     "transaction_requestVotingRightsText": "Pre-requesting voting rights minimizes the number of transactions when performing commit votes. This can save gas fees if voting frequently. 1 token = 1 vote. You may convert the votes to tokens and withdraw at any time.",
     "transaction_commitVoteHeader": "Commit a vote",
-    "transaction_commitVoteText": "Commit your vote to participate in particular Partial Lock Commit Reveal Voting poll."
+    "transaction_commitVoteText": "Commit your vote to participate in particular Partial Lock Commit Reveal Voting poll.",
+    "transaction_revealVoteHeader": "Reveal your vote",
+    "transaction_revealVoteText": "Revealing vote is the last step in Partial Lock Commit Reveal Voting participation. Finally, the voters will be able to see the actual results of current poll."
   }
 }

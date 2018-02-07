@@ -20,13 +20,13 @@ class Reveal extends Component {
     this.state = {
       hasVoted: false,
       salt: '',
-      stake: 0,
       option: 1
     };
   }
 
   handleVote () {
     console.log('kukusik');
+    this.props.tokenHolderActions.revealVote(this.props.listing.challengeId, this.state.option, this.state.salt);
   }
 
   resolveVoting () {
@@ -124,7 +124,7 @@ class Reveal extends Component {
 Reveal.propTypes = {
   listing: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
-  showTxQueue: PropTypes.bool.required,
+  showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object
 };
 
