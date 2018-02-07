@@ -20,16 +20,18 @@ const iconStyles = {
 };
 
 const renderNavItem = (key, to, icon) => (
+  <NavLink
+    key={key}
+    to={to}
+    activeStyle={{ color: indigoA200 }}
+    style={{ color: '#7f8fa4' }}
+  >
     <ListItem
-      key={key}
-      style={{ color: '#7f8fa4' }}
+      primaryText={key}
+      style={{ color: 'inherit' }}
       leftIcon={icon}
-      primaryText={<NavLink
-        to={to}
-        activeStyle={{ color: indigoA200 }}
-        style={{ color: '#7f8fa4' }}
-      >{key}</NavLink>}
     />
+  </NavLink>
 );
 
 const SideBar = () => {
