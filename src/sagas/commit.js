@@ -1,7 +1,7 @@
 import { takeEvery, put, call, select, apply } from 'redux-saga/effects';
 import { PLCRVoting } from 'ethereum-tcr-api';
 import { commitVote as getCommitVoteTx } from '../transactions';
-import { REVEAL_SHOW_TX_QUEUE, COMMIT_SEND } from '../constants/actions';
+import { COMMIT_SHOW_TX_QUEUE, COMMIT_SEND } from '../constants/actions';
 
 export function * commitVote (action) {
   // {id: Number, salt: Number, option: Number, stake: Number}
