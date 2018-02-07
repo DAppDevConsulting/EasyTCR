@@ -26,12 +26,12 @@ const ListingAction = ({ listing, challengeHandler }) => {
           listing={listing}
         />
       );
+    // NeedRefresh
     default:
       return null;
+      // return <Reveal />;
   }
 };
-
-// NeedRefresh
 
 ListingAction.propTypes = {
   listing: PropTypes.object.isRequired,
