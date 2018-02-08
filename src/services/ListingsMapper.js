@@ -11,7 +11,7 @@ export default class ListingsMapper {
         listing.exists(),
         listing.expiresAt(),
         listing.getChallengeId(),
-        listing.getStageStatus(),
+        listing.getStageStatus()
       ]);
 
       let whitelisted = props[0];
