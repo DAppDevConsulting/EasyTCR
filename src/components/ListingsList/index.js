@@ -8,6 +8,7 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
+import LinearProgress from 'material-ui/LinearProgress';
 import PropTypes from 'prop-types';
 
 class ListingsList extends Component {
@@ -70,7 +71,7 @@ class ListingsList extends Component {
             showRowHover={showRowHover}
             stripedRows={stripedRows}
           >
-            {listings.map((row, index) => this.renderRow(config, row, index))}
+            { listings.map((row, index) => this.renderRow(config, row, index)).reverse() }
           </TableBody>
         </Table>
       </div>

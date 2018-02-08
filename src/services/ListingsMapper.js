@@ -9,15 +9,26 @@ export default class ListingsMapper {
       let props = await Promise.all([
         listing.isWhitelisted(),
         listing.exists(),
-        listing.expiresAt()
+        listing.expiresAt(),
+        listing.getChallengeId(),
+        listing.getStageStatus(),
       ]);
 
       let whitelisted = props[0];
       let exists = props[1];
       let expTs = props[2];
-      let result = { name: listing.name };
+      let challengeId = props[3];
+      let stagingStatus = props[4];
 
-      result.status = whitelisted ? keys.inRegistry : keys.inApplication;
+      let result = { name: listing.name, challengeId, whitelisted };
+
+      if (stagingStatus) {
+        result.status = keys[stagingStatus];
+      } else if (whitelisted) {
+        result.status = keys.inRegistry;
+      } else {
+        result.status = keys.inApplication;
+      }
 
       if (!exists) {
         result.status = keys.notExists;

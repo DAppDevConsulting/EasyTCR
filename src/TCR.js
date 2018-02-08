@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { Registry } from 'ethereum-tcr-api';
+import { Registry, Poll } from 'ethereum-tcr-api';
 
 const REGISTRY = 'registry';
 const CONFIG = 'config';
@@ -118,6 +118,10 @@ class TCR {
 
   static async defaultAccount () {
     return this.registry().getAccount(this.defaultAccountAddress());
+  }
+
+  static async getPLCRVoting () {
+    return this.registry().getPLCRVoting();
   }
 
   static async buyTokens (amount) {
