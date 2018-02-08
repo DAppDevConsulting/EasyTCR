@@ -7,6 +7,7 @@ import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
+import crypto from 'crypto';
 
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
@@ -19,18 +20,10 @@ class Commit extends Component {
 
     this.state = {
       hasVoted: false,
-      salt: this.generateSalt(),
+      salt: crypto.randomBytes(16).toString('hex'),
       stake: 0,
       option: 1
     };
-  }
-
-  generateSalt () {
-    // 7-digit integer
-    let max = 9999999;
-    let min = 1000000;
-
-    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   handleVote () {
@@ -47,70 +40,69 @@ class Commit extends Component {
 
     return (
       <div className='listingAction'>
-        {showTxQueue ? (
-          <TxQueue
-            mode='vertical'
-            queue={txQueue}
-            cancel={tokenHolderActions.hideVotingCommitTxQueue}
-            title='Make an application to registry'
-            onEnd={() => this.resolveVoting()}
-          />
-        ) : (
-          <div>
-            <h4 className='headline'>Commit Stage</h4>
-            <div className='actionData'>
-              <p className='challengeId'>Challenge ID: {listing.challengeId}</p>
-              <TextField
-                floatingLabelText='Enter Votes to Commit'
-                floatingLabelFixed
-                value={this.state.stake}
-                onChange={(ev, stake) => this.setState({stake})}
-              />
-              <TextField
-                floatingLabelText='Save Secret Phrase (salt)'
-                floatingLabelFixed
-                value={this.state.salt}
-                disabled
-              />
-              <div>
-                <span className='groupLabel'>Choose vote option</span>
-                <RadioButtonGroup
-                  name='voting'
-                  defaultSelected={this.state.option}
-                  onChange={(e, option) => this.setState({option})}
-                  className='voteOptionsContainer'
-                >
-                  <RadioButton
-                    value={1}
-                    label='Support'
-                  />
-                  <RadioButton
-                    value={0}
-                    label='Oppose'
-                  />
-                </RadioButtonGroup>
+        {
+          showTxQueue 
+          ? <TxQueue
+              mode='vertical'
+              queue={txQueue}
+              cancel={tokenHolderActions.hideVotingCommitTxQueue}
+              title='Make an application to registry'
+              onEnd={() => this.resolveVoting()}
+            />
+          : <div>
+              <h4 className='headline'>Commit Stage</h4>
+              <div className='actionData'>
+                { listing ? <p className='challengeId'>Challenge ID: {listing.challengeId}</p> : null }
+                <TextField
+                  floatingLabelText='Enter Votes to Commit'
+                  floatingLabelFixed
+                  value={this.state.stake}
+                  onChange={(ev, stake) => this.setState({stake})}
+                />
+                <TextField
+                  floatingLabelText='Save Secret Phrase (salt)'
+                  floatingLabelFixed
+                  value={this.state.salt}
+                />
+                <div>
+                  <span className='groupLabel'>Choose vote option</span>
+                  <RadioButtonGroup
+                    name='voting'
+                    defaultSelected={this.state.option}
+                    onChange={(e, option) => this.setState({option})}
+                    className='voteOptionsContainer'
+                  >
+                    <RadioButton
+                      value={1}
+                      label='Support'
+                    />
+                    <RadioButton
+                      value={0}
+                      label='Oppose'
+                    />
+                  </RadioButtonGroup>
+                </div>
               </div>
-            </div>
             {
               this.state.hasVoted
-                ? <RaisedButton
-                  style={{ marginTop: '20px' }}
-                  label='Download Commit'
-                  backgroundColor='#66bb6a'
-                  labelColor='#fff'
-                  labelPosition='before'
-                  icon={<DownloadIcon />}
-                />
-                : <RaisedButton
-                  style={{ marginTop: '20px' }}
-                  label='Vote'
-                  backgroundColor='#66bb6a'
-                  labelColor='#fff'
-                  onClick={() => this.handleVote()}
-                />
+              ? <RaisedButton
+                style={{ marginTop: '20px' }}
+                label='Download Commit'
+                backgroundColor='#66bb6a'
+                labelColor='#fff'
+                labelPosition='before'
+                icon={<DownloadIcon />}
+              />
+              : <RaisedButton
+                style={{ marginTop: '20px' }}
+                label='Vote'
+                backgroundColor='#66bb6a'
+                labelColor='#fff'
+                onClick={() => this.handleVote()}
+              />
             }
           </div>
-        )}
+        }
       </div>
     );
   }

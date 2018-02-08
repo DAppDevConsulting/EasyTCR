@@ -15,10 +15,11 @@
     "candidate": "Candidate",
     "candidateExample": "My candidate",
 
-    "inApplication": "In application",
-    "inRegistry": "in Registry",
-    "inVotingCommit": "in Commit",
-    "inVotingReveal": "in Reveal",
+    "inApplication": "In Application",
+    "inRegistry": "In Registry",
+    "NeedRefresh": "Need refresh",
+    "VoteCommit": "In Commit",
+    "VoteReveal": "In Reveal",
     "notExists": "Ooops... No candidate in contract",
 
     "menu_header": "Menu",

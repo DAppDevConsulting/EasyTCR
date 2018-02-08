@@ -40,6 +40,7 @@ class ListingContainer extends Component {
         <div className='ContentContainer'>
           <ListingStatus
             status={listing.status}
+            whitelisted={listing.whitelisted}
           />
           <div className='ListingContainer'>
             <ListingItem

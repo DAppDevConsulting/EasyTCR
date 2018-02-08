@@ -14,6 +14,7 @@
 
 .actionData {
 	flex: 1 1 auto;
+	width: 100%;
 }
 
 .challengeTime {
@@ -128,5 +129,30 @@
 }
 
 .voteOptionsContainer div {
-    display: block !important;
+	display: block !important;
+}
+
+.votingResults {
+	width: 100%;
+}
+
+.votingResultsItem {
+	display: flex;
+	align-items: center;
+	margin-bottom: 11px;
+}
+
+.votingResultLabel,
+.votingResultPercent {
+	display: inline-block;
+	font-size: 16px;
+	color: #354052;
+	margin-right: 14px;
+}
+
+.votingResultPercent {
+	color: #7f8fa4;
+	margin-right: 0;
+	margin-left: 12px;
+	white-space: nowrap;
 }
