@@ -38,12 +38,13 @@
 	line-height: 1.33;
 }
 
-.groupLable {
+.groupLabel {
 	display: inline-block;
 	font-family: Roboto, sans-serif;
 	font-size: 12px;
 	line-height: 1.33;
 	color: rgba(0, 0, 0, 0.3);
+    margin-bottom: 8px;
 }
 
 .challengeId {
@@ -81,4 +82,51 @@
 
 .challengeTxStep:last-child::before {
 	content: '2';
+}
+
+.revealResultsContainer {
+    margin-bottom: 8px;
+}
+
+.revealResults {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 11px;
+}
+
+.revealResultsOption {
+    flex: 6;
+}
+
+.revealResultsBarContainer {
+    display: flex;
+    flex: 20;
+    align-items: center;
+}
+
+.revealResultsBar {
+    background-color: #e2e7ee !important;
+}
+
+.revealResultsBar.support :first-child {
+    background: linear-gradient(268deg, #b4ec51, #429321) !important;
+}
+
+.revealResultsBar.oppose :first-child {
+    background: linear-gradient(93deg, #748ffc, #c86dd7) !important;
+}
+
+.revealResultsPercentage {
+    flex: 4;
+    text-align: right;
+    color: #7f8fa4;
+}
+
+.voteOptionsContainer {
+    display: flex;
+}
+
+.voteOptionsContainer div {
+    display: block !important;
 }

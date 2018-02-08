@@ -16,7 +16,7 @@ export async function applyDomain (name, tokensAmount) {
       },
       {
         label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
-        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'TCR', tokenName: 'TCR' })
+        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'TCR', type: 'Registry', tokenName: 'TCR' })
       }
     ).add(
       async () => {
@@ -45,13 +45,65 @@ export async function challengeListing (name, tokensAmount) {
       },
       {
         label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
-        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, tokenName: keys.tokenName })
+        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
       }
     ).add(
       () => listing.challenge(),
       {
         label: keys.transaction_submitChallengeHeader,
         content: keys.formatString(keys.transaction_submitChallengeText, { name: keys.registryName })
+      }
+    );
+}
+
+export async function commitVote (id, hash, stake) {
+  const registry = TCR.registry();
+  const account = await TCR.defaultAccount();
+  const plcr = await TCR.getPLCRVoting();
+  const poll = plcr.getPoll(id);
+  const manager = new TransactionManager(provider());
+
+  return new PromisesQueue()
+    // Approve tokens to PLCRVoting contract
+    .add(
+      () => {
+        return account.approveTokens(plcr.address, stake)
+          .then(ti => {
+            return manager.watchForTransaction(ti);
+          });
+      },
+      {
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, stake),
+        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'PLCR', tokenName: keys.tokenName })
+      }
+    ).add(
+      () => plcr.requestVotingRights(stake),
+      {
+        label: keys.formatString(keys.transaction_requestVotingRightsHeader, stake),
+        content: keys.transaction_requestVotingRightsText
+      }
+    ).add(
+      () => poll.commitVote(hash, stake),
+      {
+        label: keys.transaction_commitVoteHeader,
+        content: keys.transaction_commitVoteText
+      }
+    );
+}
+
+export async function revealVote (id, option, salt) {
+  const plcr = await TCR.getPLCRVoting();
+  const poll = plcr.getPoll(id);
+
+  console.log('ee');
+
+  return new PromisesQueue()
+  // Approve tokens to PLCRVoting contract
+    .add(
+      () => poll.revealVote(option, salt),
+      {
+        label: keys.transaction_revealVoteHeader,
+        content: keys.transaction_revealVoteText
       }
     );
 }

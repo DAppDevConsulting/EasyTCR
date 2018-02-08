@@ -5,7 +5,6 @@ export function * challengeListing (action) {
   let { minDeposit } = (yield select()).parameterizer;
   let queue = yield call(getChallengeListingTx, action.listing, minDeposit);
 
-  console.log({ type: 'SHOW_TX_QUEUE', queue });
   yield put({ type: 'CHALLENGE_SHOW_TX_QUEUE', queue });
 }
 

@@ -6,6 +6,19 @@ import Commit from './Commit';
 import Reveal from './Reveal';
 
 const ListingAction = ({ listing, challengeHandler }) => {
+  return <Reveal listing={listing} />;
+
+  if (listing.challengeId === '0') {
+    return (
+      <Challenge
+        challengeHandler={challengeHandler}
+        listing={listing}
+      />
+    );
+  } else {
+    return <Commit listing={listing} />;
+  }
+  /*
   switch (listing.status) {
     case 'In application':
       return (
@@ -26,8 +39,9 @@ const ListingAction = ({ listing, challengeHandler }) => {
         />
       );
     default:
-      return null;
+      return <Commit listing={listing} />;
   }
+  */
 };
 
 ListingAction.propTypes = {
