@@ -5,17 +5,17 @@ import RefreshIndicator from 'material-ui/RefreshIndicator';
 import './style.css';
 import keys from '../../i18n';
 
-import Inapplication from './Inapplication';
-import Incommit1 from './Incommit-1';
-import Incommit2 from './Incommit-2';
-import Inreveal1 from './Inreveal-1';
-import Inreveal2 from './Inreveal-2';
-import RefreshInregistry1 from './Refresh-inregistry-1';
-import RefreshInregistry2 from './Refresh-inregistry-2';
+import Inapplication from './statuses/Inapplication';
+import Incommit1 from './statuses/Incommit-1';
+import Incommit2 from './statuses/Incommit-2';
+import Inreveal1 from './statuses/Inreveal-1';
+import Inreveal2 from './statuses/Inreveal-2';
+import RefreshInregistry1 from './statuses/Refresh-inregistry-1';
+import RefreshInregistry2 from './statuses/Refresh-inregistry-2';
 // import RefreshInregistryLast1 from './Refresh-inregistry-last-1'; //
 // import RefreshRejected2 from './Refresh-rejected-2'; //
 // import RefreshRejectedLast1 from './Refresh-rejected-last-1'; //
-import Inregistry from './Inregistry';
+import Inregistry from './statuses/Inregistry';
 
 
 const renderStatus = (status, whitelisted) => {
