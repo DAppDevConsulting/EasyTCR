@@ -5,7 +5,6 @@ import {
   COMMIT_SEND,
   REVEAL_HIDE_TX_QUEUE,
   REVEAL_SEND,
-  REFRESH_LISTING_STATUS,
   REFRESH_LISTING_SEND,
 } from '../constants/actions';
 

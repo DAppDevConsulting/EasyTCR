@@ -31,9 +31,22 @@ const getListings = async (registry, condition) => {
   return listings.map(item => registryCache.get(item.listing));
 };
 
+const getListing = async (registry, condition) => {
+  // if (!currentRegistry || currentRegistry.address !== registry.address) {
+  //   registryCache.clear();
+  //   currentRegistry = registry;
+  //   api.listenNotification(notificationListener);
+  // }
+  // let listings = await api.getListings(registry.address, [], condition && condition.owner ? condition.owner : '');
+  // let toCache = await ListingsMapper.mapListings(listings.filter(item => !registryCache.has(item.listing)), registry);
+  // toCache.forEach(item => registryCache.set(item.name, item));
+  // return listings.map(item => registryCache.get(item.listing));
+};
+
 const addChangeListener = (listener) => changeListeners.push(listener);
 
 export default {
+  getListing,
   getListings,
-  addChangeListener
+  addChangeListener,
 };
