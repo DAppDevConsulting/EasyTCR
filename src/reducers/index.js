@@ -6,6 +6,7 @@ import parameterizer from './parameterizer';
 import challenge from './challenge';
 import commit from './commit';
 import reveal from './reveal';
+import refreshStatus from './refreshStatus';
 
 export default combineReducers({
   app,
@@ -14,5 +15,6 @@ export default combineReducers({
   parameterizer,
   challenge,
   commit,
-  reveal
+  reveal,
+  refreshStatus,
 });

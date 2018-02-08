@@ -7,6 +7,7 @@ import parameterizer from './parameterizer';
 import challenge from './challenge';
 import commit from './commit';
 import reveal from './reveal';
+import refreshStatus from './refreshStatus';
 
 const sagas = [
   app,
@@ -15,7 +16,8 @@ const sagas = [
   parameterizer,
   challenge,
   commit,
-  reveal
+  reveal,
+  refreshStatus,
 ];
 
 export default function * root () {

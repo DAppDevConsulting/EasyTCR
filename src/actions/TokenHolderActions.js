@@ -4,7 +4,9 @@ import {
   COMMIT_HIDE_TX_QUEUE,
   COMMIT_SEND,
   REVEAL_HIDE_TX_QUEUE,
-  REVEAL_SEND
+  REVEAL_SEND,
+  REFRESH_LISTING_STATUS,
+  REFRESH_LISTING_SEND,
 } from '../constants/actions';
 
 export function challenge (listing) {
@@ -48,5 +50,12 @@ export function revealVote (id, option, salt) {
 export function hideVotingRevealTxQueue () {
   return {
     type: REVEAL_HIDE_TX_QUEUE
+  };
+}
+
+export function refreshListingStatus (name) {
+  return {
+    type: REFRESH_LISTING_SEND,
+    name,
   };
 }
