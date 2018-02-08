@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import './style.css';
 import keys from '../../i18n';
+import * as tokenHolderActions from '../../actions/TokenHolderActions';
 
-import Inapplication from './Inapplication';
-import Incommit1 from './Incommit-1';
-import Incommit2 from './Incommit-2';
-import Inreveal1 from './Inreveal-1';
-import Inreveal2 from './Inreveal-2';
-import RefreshInregistry1 from './Refresh-inregistry-1';
-import RefreshInregistry2 from './Refresh-inregistry-2';
-// import RefreshInregistryLast1 from './Refresh-inregistry-last-1'; //
-// import RefreshRejected2 from './Refresh-rejected-2'; //
-// import RefreshRejectedLast1 from './Refresh-rejected-last-1'; //
-import Inregistry from './Inregistry';
+import Inapplication from './statuses/Inapplication';
+import Incommit1 from './statuses/Incommit-1';
+import Incommit2 from './statuses/Incommit-2';
+import Inreveal1 from './statuses/Inreveal-1';
+import Inreveal2 from './statuses/Inreveal-2';
+import RefreshInregistry1 from './statuses/Refresh-inregistry-1';
+import RefreshInregistry2 from './statuses/Refresh-inregistry-2';
+// import RefreshInregistryLast1 from './statuses/Refresh-inregistry-last-1'; //
+// import RefreshRejected2 from './statuses/Refresh-rejected-2'; //
+// import RefreshRejectedLast1 from './statuses/Refresh-rejected-last-1'; //
+import Inregistry from './statuses/Inregistry';
 
 
 const renderStatus = (status, whitelisted) => {
@@ -46,14 +49,16 @@ class ListingStatus extends Component {
     this.handleRefresh = this.handleRefresh.bind(this);
   }
 
-  handleRefresh () {
+  handleRefresh (name) {
     this.setState({
       isRefreshing: true
     });
+
+    this.props.tokenHolderActions.refreshListingStatus(name);
   }
 
   render () {
-    const { status, whitelisted } = this.props;
+    const { status, whitelisted, name } = this.props.listing;
 
     return (
       <div className='listingStatus'>
@@ -72,7 +77,7 @@ class ListingStatus extends Component {
                     buttonStyle={{ backgroundColor: 'rgba(153, 153, 153, 0.2)' }}
                     style={{ marginLeft: '20px' }}
                     labelStyle={{ textTransform: 'Capitalize', color: '#3f536e' }}
-                    onClick={this.handleRefresh}
+                    onClick={() => this.handleRefresh(name)}
                   />
               }
               <p>To update candidate’s status in TCR proceed with refresh transaction.</p>
@@ -85,8 +90,16 @@ class ListingStatus extends Component {
 }
 
 ListingStatus.propTypes = {
-  status: PropTypes.string.isRequired,
-  whitelisted: PropTypes.bool.isRequired
+  tokenHolderActions: PropTypes.object.isRequired,
+  listing: PropTypes.object.isRequired,
 };
 
-export default ListingStatus;
+const mapStateToProps = (state) => ({
+    statusRefreshed: state.refreshStatus.statusRefreshed,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListingStatus);

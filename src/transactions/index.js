@@ -107,3 +107,10 @@ export async function revealVote (id, option, salt) {
       }
     );
 }
+
+export async function refreshListingStatus (name) {
+  const registry = TCR.registry();
+  const listing = await registry.getListing(name);
+
+  return listing.updateStatus()
+}
