@@ -8,7 +8,6 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
-import LinearProgress from 'material-ui/LinearProgress';
 import PropTypes from 'prop-types';
 
 class ListingsList extends Component {
