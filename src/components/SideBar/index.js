@@ -61,12 +61,7 @@ const SideBar = () => {
     <div className='SideBarContainer'>
       <div>
         <List>
-          <ListItem
-            primaryText={keys.menu_header}
-            initiallyOpen
-            primaryTogglesNestedList
-            nestedItems={navItems.map(x => renderNavItem(x.key, x.to, x.icon))}
-          />
+          { navItems.map(x => renderNavItem(x.key, x.to, x.icon)) }
           <ListItem
             primaryText='Documentation'
             initiallyOpen={false}

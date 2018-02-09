@@ -1,7 +1,6 @@
 .formWrapper {
     padding-bottom: 30px;
     display: flex;
-    align-items: flex-end;
 }
 
 .formItem {
@@ -24,7 +23,7 @@
 }
 
 .txQueueContainer {
-    padding-bottom: 12px;
+    padding: 8px 13px 12px 25px;
     margin-bottom: 10px;
-    vertical-align: top;
+    color: #3f536e;
 }

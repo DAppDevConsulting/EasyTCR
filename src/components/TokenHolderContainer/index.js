@@ -28,7 +28,7 @@ class TokenHolderContainer extends Component {
     const { listings } = this.props.advertiser;
     return (
       <div className='ContentContainer'>
-        <div>{keys.tokenHolderPage_title}</div>
+        <h3 className='pageHeadline'>{keys.tokenHolderPage_title}</h3>
         <Card>
           <ListingsList
             listings={listings}

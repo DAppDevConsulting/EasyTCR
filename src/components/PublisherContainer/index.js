@@ -63,9 +63,9 @@ class PublisherContainer extends Component {
     const minCrutch = Math.max(this.props.parametrizer.minDeposit, 50000);
     return (
       <div className='ContentContainer'>
-        <div>{keys.candidatePage_title}</div>
+        <h3 className='pageHeadline'>{keys.candidatePage_title}</h3>
         <h3> {keys.candidatePage_addListingTitle} </h3>
-        <Card className='txqueue-container'>
+        <Card>
           {showTxQueue &&
           <TxQueue
             queue={txQueue}
@@ -107,7 +107,7 @@ class PublisherContainer extends Component {
               backgroundColor='#536dfe'
               labelColor='#fff'
               disabled={!!(!this.state.domain || !this.state.stake || this.state.domainError || this.state.stakeError)}
-              style={{ marginBottom: '8px' }}
+              style={{ marginTop: '25px' }}
             />
           </div>
         </div>

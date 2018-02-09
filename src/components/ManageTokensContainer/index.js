@@ -52,7 +52,7 @@ class ManageTokensContainer extends Component {
     );
     return (
       <div className='ContentContainer'>
-        <h4 className='sectionTitle'>{keys.manageTokensPage_title}</h4>
+        <h4 className='pageHeadline'>{keys.manageTokensPage_title}</h4>
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_balanceHeader} </h3>
         <p className='balanceText'>{tokens ? balanceText : 'Updating...' }</p>
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>

@@ -24,7 +24,7 @@ class AdvContainer extends Component {
     };
     return (
       <div className='ContentContainer'>
-        <div>{keys.consumerPage_title}</div>
+        <h3 className='pageHeadline'>{keys.consumerPage_title}</h3>
         <Card>
           { listings
             ? <ListingsList
