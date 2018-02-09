@@ -75,7 +75,7 @@ class ListingStatus extends Component {
                     onClick={this.handleRefresh}
                   />
               }
-              <p>To update candidate’s status in TCR proceed with refresh transaction.</p>
+              <p className='refreshText'>To update candidate’s status in TCR proceed with refresh transaction.</p>
             </div>
           : null
         }

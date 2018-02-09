@@ -25,6 +25,12 @@
 	max-width: 300px;
 }
 
+.refreshText {
+	opacity: 0.3;
+	font-size: 12px;
+	color: #7f8fa4;
+}
+
 .loaderContainer {
 	position: relative;
 	width: 88px;
