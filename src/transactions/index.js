@@ -2,6 +2,8 @@ import TCR, {provider} from '../TCR';
 import TransactionManager from './TransactionsManager';
 import PromisesQueue from '../utils/PromisesQueue';
 import keys from '../i18n';
+import store from '../store'
+import { getListingData } from '../actions/AdvertiserActions'
 
 export async function applyDomain (name, tokensAmount) {
   const account = await TCR.defaultAccount();
@@ -57,7 +59,7 @@ export async function challengeListing (name, tokensAmount) {
 }
 
 export async function commitVote (id, hash, stake) {
-  const registry = TCR.registry();
+  // const registry = TCR.registry();
   const account = await TCR.defaultAccount();
   const plcr = await TCR.getPLCRVoting();
   const poll = plcr.getPoll(id);
@@ -113,4 +115,6 @@ export async function refreshListingStatus (name) {
   const listing = await registry.getListing(name);
 
   return listing.updateStatus()
+    .then(() => store.dispatch(getListingData(name)))
+    .catch(error => console.error(error))
 }
