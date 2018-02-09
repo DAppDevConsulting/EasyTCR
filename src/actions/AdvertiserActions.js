@@ -7,7 +7,6 @@ export function getAdvertiserDomains () {
 }
 
 export function getListingData (listing) {
-  console.log('getListingData', listing)
   return {
     type: GET_LISTING_DATA,
     listing
