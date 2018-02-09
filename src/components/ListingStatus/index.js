@@ -7,6 +7,7 @@ import RefreshIndicator from 'material-ui/RefreshIndicator';
 import './style.css';
 import keys from '../../i18n';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
+import * as advertiserActions from '../../actions/AdvertiserActions';
 
 import Inapplication from './statuses/Inapplication';
 import Incommit1 from './statuses/Incommit-1';
@@ -54,7 +55,7 @@ class ListingStatus extends Component {
       isRefreshing: true
     });
 
-    this.props.tokenHolderActions.refreshListingStatus(name);
+    this.props.refreshListingStatus(name);
   }
 
   render () {
@@ -90,16 +91,8 @@ class ListingStatus extends Component {
 }
 
 ListingStatus.propTypes = {
-  tokenHolderActions: PropTypes.object.isRequired,
+  refreshListingStatus: PropTypes.func.isRequired,
   listing: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-    statusRefreshed: state.refreshStatus.statusRefreshed,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListingStatus);
+export default ListingStatus;

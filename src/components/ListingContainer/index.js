@@ -10,8 +10,6 @@ import ListingItem from '../ListingItem';
 import ListingAction from '../ListingAction';
 import './style.css';
 
-const listingPathName = decodeURI(window.location.pathname.split('/')[2]);
-
 class ListingContainer extends Component {
   constructor (props) {
     super();
@@ -30,18 +28,19 @@ class ListingContainer extends Component {
 
   componentDidMount () {
     if (!this.props.listing) {
-      this.props.advertiserActions.getListingData(listingPathName);
+      this.props.advertiserActions.getListingData(decodeURI(window.location.pathname.split('/')[2]));
     }
   }
 
   render () {
-    const { listing } = this.props;
+    const { listing, tokenHolderActions } = this.props;
 
     if (listing) {
       return (
         <div className='ContentContainer'>
           <ListingStatus
             listing={listing}
+            refreshListingStatus={tokenHolderActions.refreshListingStatus}
           />
           <div className='ListingContainer'>
             <ListingItem
@@ -73,7 +72,7 @@ ListingContainer.propTypes = {
 
 const mapStateToProps = state =>
   ({
-    listing: state.advertiser.listings.find(x => x.name === listingPathName),
+    listing: state.advertiser.listings.find(x => x.name === decodeURI(window.location.pathname.split('/')[2])),
     minDeposit: state.parameterizer.minDeposit
   });
 
