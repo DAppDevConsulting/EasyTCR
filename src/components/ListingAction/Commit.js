@@ -20,7 +20,7 @@ class Commit extends Component {
 
     this.state = {
       hasVoted: false,
-      salt: '666',//crypto.randomBytes(16).toString('hex'),
+      salt: crypto.randomBytes(16).toString('hex'),
       stake: 0,
       option: 1
     };
