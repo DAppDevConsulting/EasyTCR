@@ -8,9 +8,10 @@ import ClaimRewardItem from './ClaimRewardItem';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 
 class ListingsToClaimReward extends Component {
-  componentWillMount () {
+  /*componentWillMount () {
+    console.log('i will mount')
     this.props.tokenHolderActions.requestListingsToClaimReward();
-  }
+  }*/
 
   render () {
     const { listingsToClaimReward } = this.props.tokenHolder;

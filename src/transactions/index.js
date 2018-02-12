@@ -116,5 +116,12 @@ export async function refreshListingStatus (name) {
 
   return listing.updateStatus()
     .then(() => store.dispatch(getListingData(name)))
-    .catch(error => console.error(error))
+    .catch(error => console.error(error));
+}
+
+export async function claimReward (challengeId, salt) {
+  const manager = new TransactionManager(provider());
+  const challenge = TCR.registry().getChallenge(challengeId);
+  const ti = await challenge.claimReward(salt);
+  await manager.watchForTransaction(ti);
 }

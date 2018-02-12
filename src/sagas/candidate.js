@@ -13,7 +13,7 @@ import {
   UPDATE_CANDIDATE_LISTINGS,
   BUY_TOKENS,
   APPLY_LISTING,
-  CANCEL_LISTING_APPLICATION,
+  CANCEL_LISTING_APPLICATION
 } from '../constants/actions';
 
 // TODO: refactor this shit
@@ -63,7 +63,11 @@ export function * getCandidateListings (action) {
   if (!TCR.defaultAccountAddress()) {
     return;
   }
-  let listings = yield apply(ListingsProvider, 'getListings', [TCR.registry(), {owner: TCR.defaultAccountAddress()}]);
+  let listings = yield apply(
+    ListingsProvider,
+    'getListings',
+    [TCR.registry(), TCR.defaultAccountAddress(), {owner: TCR.defaultAccountAddress()}]
+  );
   yield put({type: UPDATE_CANDIDATE_LISTINGS, listings});
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }

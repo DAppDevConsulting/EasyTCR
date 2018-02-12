@@ -6,6 +6,7 @@ import parameterizer from './parameterizer';
 import challenge from './challenge';
 import commit from './commit';
 import reveal from './reveal';
+import tokenHolder from './tokenHolder';
 
 export default combineReducers({
   app,
@@ -15,4 +16,5 @@ export default combineReducers({
   challenge,
   commit,
   reveal,
+  tokenHolder
 });

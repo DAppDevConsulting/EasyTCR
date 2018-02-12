@@ -16,7 +16,7 @@ ListingsProvider.addChangeListener(() => {
 });
 
 export function * getConsumerListings (action) {
-  let listings = yield apply(ListingsProvider, 'getListings', [TCR.registry()]);
+  let listings = yield apply(ListingsProvider, 'getListings', [TCR.registry(), TCR.defaultAccountAddress()]);
   yield put({type: UPDATE_CONSUMER_LISTINGS, listings});
 }
 

@@ -8,6 +8,7 @@ import challenge from './challenge';
 import commit from './commit';
 import reveal from './reveal';
 import refreshStatus from './refreshStatus';
+import tokenHolder from './tokenHolder';
 
 const sagas = [
   app,
@@ -18,6 +19,7 @@ const sagas = [
   commit,
   reveal,
   refreshStatus,
+  tokenHolder
 ];
 
 export default function * root () {

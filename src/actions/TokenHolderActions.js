@@ -6,6 +6,8 @@ import {
   REVEAL_HIDE_TX_QUEUE,
   REVEAL_SEND,
   REFRESH_LISTING_SEND,
+  REQUEST_LISTINGS_TO_CLAIM_REWARD,
+  CLAIM_REWARD
 } from '../constants/actions';
 
 export function challenge (listing) {
@@ -55,6 +57,20 @@ export function hideVotingRevealTxQueue () {
 export function refreshListingStatus (name) {
   return {
     type: REFRESH_LISTING_SEND,
-    name,
+    name
+  };
+}
+
+export function requestListingsToClaimReward () {
+  return {
+    type: REQUEST_LISTINGS_TO_CLAIM_REWARD
+  };
+}
+
+export function claimReward (challengeId, salt) {
+  return {
+    type: CLAIM_REWARD,
+    challengeId,
+    salt
   };
 }
