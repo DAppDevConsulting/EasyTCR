@@ -41,7 +41,7 @@ class ManageTokensContainer extends Component {
   }
 
   render () {
-    const { tokens, ethers, fetching } = this.props.candidate;
+    const { tokens, ethers } = this.props.candidate;
     const balanceText = keys.formatString(
       keys.manageTokensPage_balanceText,
       {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}

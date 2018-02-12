@@ -98,18 +98,18 @@ class Storage {
   };
 
   async _handleEvent (event) {
-    const listing = event.returnValues.listing;
+    const listingName = event.returnValues.listing;
     if (event.event === '_Application') { // TODO: optimize infura queries?
-      const listing = this.registry.getListing(listing);
+      const listing = this.registry.getListing(listingName);
       const exists = await listing.exists();
       if (exists) {
         const listingOwner = await listing.getOwner();
         this.addListing(listing, listingOwner);
       }
     } else if (event.event === '_ApplicationRemoved') {
-      this.removeListing(listing);
+      this.removeListing(listingName);
     } else if (event.event === '_ListingRemoved') {
-      this.removeListing(listing);
+      this.removeListing(listingName);
     }
   }
 }

@@ -10,7 +10,7 @@ import DropZone from 'react-dropzone';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
-import keys from '../../i18n';
+// import keys from '../../i18n';
 import * as appActions from '../../actions/AppActions';
 
 const labelStyle = {
