@@ -1,5 +1,4 @@
 import config from '../apiConfig';
-import contractService from "./ContractService";
 
 export default {
   getListings: async (registry, account, filters = [], address = '') => {

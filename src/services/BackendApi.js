@@ -1,5 +1,5 @@
 import storage from '../utils/CookieStorage';
-import MetaxApi from './MetaxApi';
+// import MetaxApi from './MetaxApi';
 import TcrApi from './TcrApi';
 import Backendless from './BackendlessApi';
 

@@ -32,13 +32,13 @@ class TxQueue extends Component {
 
     switch (this.props.mode) {
       case 'vertical':
-        style = {
+        return {
           ...style,
           flexDirection: 'column'
         };
+      default:
+        return style;
     }
-
-    return style;
   }
 
   getStepLabelStyle () {
@@ -61,6 +61,8 @@ class TxQueue extends Component {
           ...style,
           marginBottom: '14px'
         };
+      default:
+        return style;
     }
   }
 
@@ -71,13 +73,13 @@ class TxQueue extends Component {
 
     switch (this.props.mode) {
       case 'vertical':
-        style = {
+        return {
           ...style,
           margin: '0'
         };
+      default:
+        return style;
     }
-
-    return style;
   }
 
   renderTxAction (step, queue) {
