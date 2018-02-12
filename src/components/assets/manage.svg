@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="13px" viewBox="0 0 15 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="06" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-30.000000, -260.000000)">
+        <g id="Left-Navigation-White" transform="translate(0.000000, -18.500000)" fill="#7F8FA4">
+            <g id="Menu" transform="translate(20.000000, 98.500000)">
+                <g id="Menu-Items" transform="translate(9.000000, 0.000000)">
+                    <g id="Icon-Copy" transform="translate(1.000000, 180.287446)">
+                        <path d="M13.2220702,1.50250798 L7.34559458,1.50250798 L5.87647566,0 L1.46911892,0 C0.661103512,0 0.00734559458,0.676128592 0.00734559458,1.50250798 L0,10.5175559 C0,11.3439353 0.661103512,12.0200639 1.46911892,12.0200639 L13.2220702,12.0200639 C14.0300856,12.0200639 14.6911892,11.3439353 14.6911892,10.5175559 L14.6911892,3.00501596 C14.6911892,2.17863657 14.0300856,1.50250798 13.2220702,1.50250798 L13.2220702,1.50250798 Z" id="Icon"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

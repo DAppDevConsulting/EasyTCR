@@ -20,7 +20,7 @@ class Commit extends Component {
 
     this.state = {
       hasVoted: false,
-      salt: crypto.randomBytes(16).toString('hex'),
+      salt: '666',//crypto.randomBytes(16).toString('hex'),
       stake: 0,
       option: 1
     };
@@ -41,7 +41,7 @@ class Commit extends Component {
     return (
       <div className='listingAction'>
         {
-          showTxQueue 
+          showTxQueue
           ? <TxQueue
               mode='vertical'
               queue={txQueue}
