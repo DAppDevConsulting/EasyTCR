@@ -3,6 +3,7 @@ import ConsumerContainer from '../ConsumerContainer';
 import CandidateContainer from '../CandidateContainer';
 import ManageTokensContainer from '../ManageTokensContainer';
 import TokenHolderContainer from '../TokenHolderContainer';
+import NoMatch from '../NoMatch';
 import ListingContainer from '../ListingContainer';
 import {
   CONSUMER,
@@ -17,11 +18,6 @@ import {
   Redirect
 } from 'react-router-dom';
 
-const NoMatch = ({ location }) => (
-  <div>
-    <h3>No match for <code>{location.pathname}</code></h3>
-  </div>
-)
 
 class MainContainer extends Component {
   render () {

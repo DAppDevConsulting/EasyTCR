@@ -74,6 +74,13 @@
     "transaction_commitVoteHeader": "Commit a vote",
     "transaction_commitVoteText": "Commit your vote to participate in particular Partial Lock Commit Reveal Voting poll.",
     "transaction_revealVoteHeader": "Reveal your vote",
-    "transaction_revealVoteText": "Revealing vote is the last step in Partial Lock Commit Reveal Voting participation. Finally, the voters will be able to see the actual results of current poll."
+    "transaction_revealVoteText": "Revealing vote is the last step in Partial Lock Commit Reveal Voting participation. Finally, the voters will be able to see the actual results of current poll.",
+
+    "notFoundTitle": "Error: 404 Page Not Found",
+    "notFoundTextFirst": "Sorry, the page you're looking for cannot be accessed.",
+    "notFoundTextSecond": "Either check the URL, {goHome}, or feel free to {reportIssue}",
+    "notFoundGoHome": "go home",
+    "notFoundReportIssue": "report this issue",
+    "email": "victor.radchenko@dappdev.org"
   }
 }
