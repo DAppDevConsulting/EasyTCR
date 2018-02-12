@@ -8,8 +8,8 @@ export default {
     if (address) {
       params.push(`account=${address}`);
     }
-    let domains = await (await window.fetch(`${config.host}registry/listings?${params.join('&')}`)).json();
-    return domains;
+    let listings = await (await window.fetch(`${config.host}registry/listings?${params.join('&')}`)).json();
+    return listings;
   },
   addListing: async (registry, listingName, ownerAddress) => {
     try {

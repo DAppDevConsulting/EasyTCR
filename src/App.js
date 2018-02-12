@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import * as publisherActions from './actions/PublisherActions';
-import * as advertiserActions from './actions/AdvertiserActions';
+import * as candidateActions from './actions/CandidateActions';
+import * as consumerActions from './actions/ConsumerActions';
 import * as appActions from './actions/AppActions';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { deepOrange500, indigoA200 } from 'material-ui/styles/colors';
@@ -117,8 +117,8 @@ class App extends Component {
 function mapStateToProps (state) {
   return {
     app: state.app,
-    publisher: state.publisher,
-    advertiser: state.advertiser,
+    candidate: state.candidate,
+    consumer: state.consumer,
     parameterizer: state.parameterizer
   };
 }
@@ -126,8 +126,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     appActions: bindActionCreators(appActions, dispatch),
-    publisherActions: bindActionCreators(publisherActions, dispatch),
-    advertiserActions: bindActionCreators(advertiserActions, dispatch)
+    candidateActions: bindActionCreators(candidateActions, dispatch),
+    consumerActions: bindActionCreators(consumerActions, dispatch)
   };
 }
 

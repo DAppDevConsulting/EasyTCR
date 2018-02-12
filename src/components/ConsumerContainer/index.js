@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import ListingsList from '../ListingsList';
 import keys from '../../i18n';
-import {bindActionCreators} from 'redux';
-import * as actions from '../../actions/AdvertiserActions';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../../actions/ConsumerActions';
+import { connect } from 'react-redux';
 
-class AdvContainer extends Component {
+class ConsumerContainer extends Component {
   componentWillMount () {
-    this.props.actions.getAdvertiserDomains();
+    this.props.actions.getConsumerListings();
   }
 
   render () {
-    const { listings } = this.props.advertiser;
+    const { listings } = this.props.consumer;
     const listConfig = {
       columns: [
         {propName: 'name', title: keys.consumerPage_listingName, tooltip: keys.consumerPage_listingTooltip},
@@ -41,7 +41,7 @@ class AdvContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    advertiser: state.advertiser
+    consumer: state.consumer
   };
 }
 
@@ -51,9 +51,9 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
-AdvContainer.propTypes = {
-  advertiser: PropTypes.object.isRequired,
+ConsumerContainer.propTypes = {
+  consumer: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdvContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ConsumerContainer);

@@ -7,12 +7,12 @@ export default {
       params.push(`account=${address}`);
       params.push(`include=applied,challenged,commited,reveled,registry`);
     }
-    let domains = await (await window.fetch(`${config.host}registry/domains?${params.join('&')}`)).json();
-    return domains.map((domain) => {
-      return {listing: domain};
+    let listings = await (await window.fetch(`${config.host}registry/listings?${params.join('&')}`)).json();
+    return listings.map((listing) => {
+      return {listing: listing};
     });
   },
-  addListing: async (domainName, ownerAddress) => {
+  addListing: async (listingName, ownerAddress) => {
     try {
       await window.fetch(
         `${config.host}applications`,
@@ -22,7 +22,7 @@ export default {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({domain: domainName, account: ownerAddress})
+          body: JSON.stringify({listing: listingName, account: ownerAddress})
         }
       );
     } catch (err) {

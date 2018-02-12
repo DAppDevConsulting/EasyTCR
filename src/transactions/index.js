@@ -3,9 +3,9 @@ import TransactionManager from './TransactionsManager';
 import PromisesQueue from '../utils/PromisesQueue';
 import keys from '../i18n';
 import store from '../store'
-import { getListingData } from '../actions/AdvertiserActions'
+import { getListingData } from '../actions/ConsumerActions'
 
-export async function applyDomain (name, tokensAmount) {
+export async function applyListing (name, tokensAmount) {
   const account = await TCR.defaultAccount();
   const manager = new TransactionManager(provider());
   return new PromisesQueue()

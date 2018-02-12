@@ -11,7 +11,7 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 
-class PublisherDomainsList extends Component {
+class CandidateListingsList extends Component {
   render () {
     const {listings} = this.props;
     const headersFixed = true;
@@ -30,7 +30,7 @@ class PublisherDomainsList extends Component {
         >
           <TableHeader adjustForCheckbox={adjustForCheckbox} displaySelectAll={selectable}>
             <TableRow>
-              <TableHeaderColumn tooltip='The Domain'>MY DOMAIN</TableHeaderColumn>
+              <TableHeaderColumn tooltip='The Listing'>MY LISTINGS</TableHeaderColumn>
               <TableHeaderColumn tooltip='The Status'>STATUS</TableHeaderColumn>
               <TableHeaderColumn tooltip='Date'>DUE DATE</TableHeaderColumn>
               <TableHeaderColumn tooltip='View'>ACTIONS</TableHeaderColumn>
@@ -57,8 +57,8 @@ class PublisherDomainsList extends Component {
   }
 }
 
-PublisherDomainsList.propTypes = {
+CandidateListingsList.propTypes = {
   listings: PropTypes.array.isRequired
 };
 
-export default PublisherDomainsList;
+export default CandidateListingsList;

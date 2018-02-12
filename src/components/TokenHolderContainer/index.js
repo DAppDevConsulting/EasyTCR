@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import ListingsList from '../ListingsList';
 import keys from '../../i18n';
-import {bindActionCreators} from 'redux';
-import * as advertiserActions from '../../actions/AdvertiserActions';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as consumerActions from '../../actions/ConsumerActions';
+import { connect } from 'react-redux';
 
 class TokenHolderContainer extends Component {
   constructor (props) {
     super(props);
+
     this.listConfig = {
       columns: [
         {propName: 'name', title: keys.tokenHolderPage_listingName, tooltip: keys.tokenHolderPage_listingTooltip},
@@ -21,11 +22,11 @@ class TokenHolderContainer extends Component {
   }
 
   componentWillMount () {
-    this.props.advertiserActions.getAdvertiserDomains();
+    this.props.consumerActions.getConsumerListings();
   }
 
   render () {
-    const { listings } = this.props.advertiser;
+    const { listings } = this.props.consumer;
     return (
       <div className='ContentContainer'>
         <h3 className='pageHeadline'>{keys.tokenHolderPage_title}</h3>
@@ -42,19 +43,19 @@ class TokenHolderContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    advertiser: state.advertiser
+    consumer: state.consumer
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    advertiserActions: bindActionCreators(advertiserActions, dispatch)
+    consumerActions: bindActionCreators(consumerActions, dispatch)
   };
 }
 
 TokenHolderContainer.propTypes = {
-  advertiser: PropTypes.object.isRequired,
-  advertiserActions: PropTypes.object.isRequired
+  consumer: PropTypes.object.isRequired,
+  consumerActions: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TokenHolderContainer);

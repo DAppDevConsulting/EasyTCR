@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import LinearProgress from 'material-ui/LinearProgress';
-import * as advertiserActions from '../../actions/AdvertiserActions';
+import * as consumerActions from '../../actions/ConsumerActions';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import ListingStatus from '../ListingStatus';
 import ListingItem from '../ListingItem';
@@ -28,7 +28,7 @@ class ListingContainer extends Component {
 
   componentDidMount () {
     if (!this.props.listing) {
-      this.props.advertiserActions.getListingData(decodeURI(window.location.pathname.split('/')[2]));
+      this.props.consumerActions.getListingData(decodeURI(window.location.pathname.split('/')[2]));
     }
   }
 
@@ -66,19 +66,19 @@ class ListingContainer extends Component {
 
 ListingContainer.propTypes = {
   listing: PropTypes.object,
-  advertiserActions: PropTypes.object.isRequired,
+  consumerActions: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state =>
   ({
-    listing: state.advertiser.listings.find(x => x.name === decodeURI(window.location.pathname.split('/')[2])),
+    listing: state.consumer.listings.find(x => x.name === decodeURI(window.location.pathname.split('/')[2])),
     minDeposit: state.parameterizer.minDeposit
   });
 
 const mapDispatchToProps = dispatch =>
   ({
-    advertiserActions: bindActionCreators(advertiserActions, dispatch),
+    consumerActions: bindActionCreators(consumerActions, dispatch),
     tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
   });
 

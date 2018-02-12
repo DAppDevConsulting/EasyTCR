@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
-import * as actions from '../../actions/PublisherActions';
+import * as actions from '../../actions/CandidateActions';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -41,7 +41,7 @@ class ManageTokensContainer extends Component {
   }
 
   render () {
-    const { tokens, ethers, fetching } = this.props.publisher;
+    const { tokens, ethers, fetching } = this.props.candidate;
     const balanceText = keys.formatString(
       keys.manageTokensPage_balanceText,
       {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}
@@ -117,7 +117,7 @@ class ManageTokensContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    publisher: state.publisher
+    candidate: state.candidate
   };
 }
 
@@ -128,7 +128,7 @@ function mapDispatchToProps (dispatch) {
 }
 
 ManageTokensContainer.propTypes = {
-  publisher: PropTypes.object.isRequired,
+  candidate: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 

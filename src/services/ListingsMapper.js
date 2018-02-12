@@ -2,8 +2,8 @@ import keys from '../i18n';
 import moment from 'moment';
 
 export default class ListingsMapper {
-  static async getProps (domain, registry) {
-    let listing = registry.getListing(domain);
+  static async getProps (listingName, registry) {
+    let listing = registry.getListing(listingName);
 
     try {
       let props = await Promise.all([
@@ -49,15 +49,15 @@ export default class ListingsMapper {
     }
     return {};
   }
-  static async mapListings (domains, registry) {
-    if (!domains || !domains.length) {
+  static async mapListings (listings, registry) {
+    if (!listings || !listings.length) {
       return [];
     }
 
     try {
       console.time('getListings');
-      let tcrListings = await Promise.all(domains.map(async (domain) => {
-        let res = await this.getProps(domain.listing, registry);
+      let tcrListings = await Promise.all(listings.map(async (listing) => {
+        let res = await this.getProps(listing.listing, registry);
         return res;
       }));
       console.timeEnd('getListings');

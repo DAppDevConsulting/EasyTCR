@@ -1,12 +1,12 @@
-import { UPDATE_ADVERTISER_DOMAINS, UPDATE_LISTING_DATA } from '../constants/actions';
+import { UPDATE_CONSUMER_LISTINGS, UPDATE_LISTING_DATA } from '../constants/actions';
 
 const initialState = {
   listings: []
 };
 
-export default function advertiser (state = initialState, action) {
+export default function consumer (state = initialState, action) {
   switch (action.type) {
-    case UPDATE_ADVERTISER_DOMAINS:
+    case UPDATE_CONSUMER_LISTINGS:
       return {...state, listings: action.listings};
     case UPDATE_LISTING_DATA:
       return {

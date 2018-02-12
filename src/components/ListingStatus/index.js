@@ -6,8 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import './style.css';
 import keys from '../../i18n';
-import * as tokenHolderActions from '../../actions/TokenHolderActions';
-import * as advertiserActions from '../../actions/AdvertiserActions';
 
 import Inapplication from './statuses/Inapplication';
 import Incommit1 from './statuses/Incommit-1';

@@ -1,7 +1,7 @@
 import { all, fork } from 'redux-saga/effects';
 
-import publisher from './publisher';
-import advertiser from './advertiser';
+import candidate from './candidate';
+import consumer from './consumer';
 import app from './app';
 import parameterizer from './parameterizer';
 import challenge from './challenge';
@@ -11,8 +11,8 @@ import refreshStatus from './refreshStatus';
 
 const sagas = [
   app,
-  publisher,
-  advertiser,
+  candidate,
+  consumer,
   parameterizer,
   challenge,
   commit,

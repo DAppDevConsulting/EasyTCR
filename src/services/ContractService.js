@@ -86,7 +86,7 @@ class Storage {
         'allEvents',
         {fromBlock: this.lastKnownBlock, toBlock: actualBlock}
       );
-      let grouped = _.groupBy(events, 'returnValues.domain');
+      let grouped = _.groupBy(events, 'returnValues.listing');
       await Promise.all(
         _.keys(grouped)
           .map(k => grouped[k])
@@ -98,18 +98,18 @@ class Storage {
   };
 
   async _handleEvent (event) {
-    const domain = event.returnValues.domain;
+    const listing = event.returnValues.listing;
     if (event.event === '_Application') { // TODO: optimize infura queries?
-      const listing = this.registry.getListing(domain);
+      const listing = this.registry.getListing(listing);
       const exists = await listing.exists();
       if (exists) {
         const listingOwner = await listing.getOwner();
-        this.addListing(domain, listingOwner);
+        this.addListing(listing, listingOwner);
       }
     } else if (event.event === '_ApplicationRemoved') {
-      this.removeListing(domain);
+      this.removeListing(listing);
     } else if (event.event === '_ListingRemoved') {
-      this.removeListing(domain);
+      this.removeListing(listing);
     }
   }
 }

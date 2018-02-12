@@ -2,10 +2,10 @@ import {
   BUY_TOKENS,
   REQUEST_TOKEN_INFORMATION,
   SEND_TEST_TXS,
-  REQUEST_PUBLISHER_DOMAINS,
-  APPLY_DOMAIN,
+  REQUEST_CANDIDATE_LISTINGS,
+  APPLY_LISTING,
   HIDE_TX_QUEUE,
-  CANCEL_DOMAIN_APPLICATION
+  CANCEL_LISTING_APPLICATION
 } from '../constants/actions';
 
 // TODO: move to TokenHolderActions
@@ -29,15 +29,15 @@ export function sendTestTxs () {
   };
 }
 
-export function getPublisherDomains () {
+export function getCandidateListings () {
   return {
-    type: REQUEST_PUBLISHER_DOMAINS
+    type: REQUEST_CANDIDATE_LISTINGS
   };
 }
 
-export function applyDomain (name, tokens) {
+export function applyListing (name, tokens) {
   return {
-    type: APPLY_DOMAIN,
+    type: APPLY_LISTING,
     name,
     tokens
   };
@@ -49,8 +49,8 @@ export function hideTxQueue () {
   };
 }
 
-export function cancelDomainApplication () {
+export function cancelListingApplication () {
   return {
-    type: CANCEL_DOMAIN_APPLICATION
+    type: CANCEL_LISTING_APPLICATION
   };
 }

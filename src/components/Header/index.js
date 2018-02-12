@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
-import * as publisherActions from '../../actions/PublisherActions';
+import * as candidateActions from '../../actions/CandidateActions';
 import {connect} from 'react-redux';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 import { EtherIcon, AdtIcon } from './Icons';
@@ -43,13 +43,13 @@ Header.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    balance: state.publisher
+    balance: state.candidate
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(publisherActions, dispatch)
+    actions: bindActionCreators(candidateActions, dispatch)
   };
 }
 

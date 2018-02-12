@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AdvContainer from '../AdvContainer';
-import PublisherContainer from '../PublisherContainer';
+import ConsumerContainer from '../ConsumerContainer';
+import CandidateContainer from '../CandidateContainer';
 import ManageTokensContainer from '../ManageTokensContainer';
 import TokenHolderContainer from '../TokenHolderContainer';
 import ListingContainer from '../ListingContainer';
@@ -33,10 +33,10 @@ class MainContainer extends Component {
             <ManageTokensContainer />
           )} />
           <Route path={CONSUMER} render={(props) => (
-            <AdvContainer />
+            <ConsumerContainer />
           )} />
           <Route path={APPLICANT} render={() => (
-            <PublisherContainer />
+            <CandidateContainer />
           )} />
           <Route path={TOKEN_HOLDER} render={(props) => (
             <TokenHolderContainer />
@@ -44,7 +44,7 @@ class MainContainer extends Component {
           <Route path={CANDIDATE} render={(props) => (
             <ListingContainer />
           )} />
-          <Route path='/' exact component={AdvContainer} />
+          <Route path='/' exact component={ConsumerContainer} />
           <Route component={NoMatch}/>
         </Switch>
       </Route>
