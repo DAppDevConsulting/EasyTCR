@@ -25,7 +25,6 @@ class Reveal extends Component {
   }
 
   handleVote () {
-    console.log('kukusik');
     this.props.tokenHolderActions.revealVote(this.props.listing.challengeId, this.state.option, this.state.salt);
   }
 

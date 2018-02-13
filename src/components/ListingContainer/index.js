@@ -22,10 +22,6 @@ class ListingContainer extends Component {
     this.props.tokenHolderActions.challenge(listing);
   }
 
-  voteListing () {
-    console.log('vote');
-  }
-
   componentDidMount () {
     if (!this.props.listing) {
       this.props.consumerActions.getListingData(decodeURI(window.location.pathname.split('/')[2]));
