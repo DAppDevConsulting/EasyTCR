@@ -1,4 +1,4 @@
-import {UPDATE_LISTINGS_TO_CLAIM_REWARD} from '../constants/actions';
+import { UPDATE_LISTINGS_TO_CLAIM_REWARD } from '../constants/actions';
 
 const initialState = {
   listingsToClaimReward: []
