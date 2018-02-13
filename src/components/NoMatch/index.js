@@ -7,7 +7,7 @@ import Image from './image';
 const NoMatch = () => (
 	<div className='notFound'>
 	  <h1 className='notFoundTitle'>{keys.notFoundTitle}</h1>
-	  <Image color={keys.noMatchImageColor} />
+	  <Image color={keys.accentColor} />
 	  <p className='notFoundText'>
 		  {keys.notFoundTextFirst}
 		  <br />

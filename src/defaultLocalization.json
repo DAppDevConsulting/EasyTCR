@@ -92,16 +92,37 @@
     "claimRewardText": "Listings to claim reward",
     "challengeIdText": "Challenge ID",
     "enterSaltText": "Enter secret phrase (salt)",
+    "saveSaltText": "Save Secret Phrase (salt)",
     "claimRewardButtonText": "Claim reward",
 
     "documentationText": "Documentation",
     "documentationItemText": "Some documentation",
 
     "backendSettingsTitle": "Backend settings",
-    "cancellLabelText": "Cancell",
+    "cancellLabelText": "Cancel",
     "useBackendQuestion": "Use backend?",
     "yes": "Yes",
     "no": "No",
+    "added": "Added",
+    "unchallenged": "Unchallenged for",
+    "contentNotAvailable": "The actual content will be available later",
+
+    "registrySettingsTitle": "Registry settings",
+    "chooseRegistry": "Choose registry",
+    "addNewRegistryUpper": "ADD NEW REGISTRY",
+    "switchRegistryUpper": "SWITCH REGISTRY",
+    "registryAddress": "Registry address",
+    "hintText": "Type here",
+    "faucetAddressLabel": "Faucet address",
+    "localizationConfig": "Localization config",
+    "dragFiles": "Drag files here",
+    "or": "or",
+    "browseForFiles": "browse your computer",
+    "addNewRegistry": "Add new Registry",
+    
+    "statusLabel": "Status",
+    "refreshLabel": "Refresh",
+    "refreshNote": "To update candidate’s status in TCR proceed with refresh transaction.",
 
     "tableHeaderListings": "MY LISTINGS",
     "tableHeaderStatus": "STATUS",
@@ -109,12 +130,26 @@
     "tableHeaderActions": "ACTIONS",
     "viewButtonLabel": "VIEW",
 
+    "txQueueTitle": "Make an application to registry",
+    "revealStage": "Reveal Stage",
+    "support": "Support",
+    "oppose": "Oppose",
+    "choosePrevVoteOption": "Choose your previous vote option",
+    "revealVote": "Reveal Vote",
+    "commitStage": "Commit Stage",
+    "enterVotes": "Enter Votes to Commit",
+    "chooseVoteOption": "Choose vote option",
+    "downloadCommit": "Download Commit",
+    "vote": "Vote",
+
     "invalidInput": "Input is not valid",
     "updating": "Updating...", 
     "buttonColor": "#536dfe",
     "buttonLabelColor": "#fff",
     "successColor": "#66bb6a",
-    "sidebarItemColor": "#7f8fa4",
-    "noMatchImageColor": "#748FFC"
+    "textColor": "#7f8fa4",
+    "accentColor": "#748FFC",
+    "tabLabelColor": "#3f536e",
+    "refreshButtonColor": "rgba(153, 153, 153, 0.2)"
   }
 }

@@ -24,7 +24,7 @@ const renderNavItem = (key, to, icon) => (
     key={key}
     to={to}
     activeStyle={{ color: indigoA200 }}
-    style={{ color: keys.sidebarItemColor }}
+    style={{ color: keys.textColor }}
   >
     <ListItem
       primaryText={key}
@@ -69,7 +69,7 @@ const SideBar = () => {
             nestedItems={[
               <ListItem
                 key={1}
-                style={{color: keys.sidebarItemColor}}
+                style={{color: keys.textColor}}
                 primaryText={keys.documentationItemText}
                 leftIcon={<AssessmentIcon style={iconStyles} />}
               />

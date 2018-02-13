@@ -31,7 +31,7 @@ const renderStatus = (status, whitelisted) => {
     case keys.NeedRefresh:
       return whitelisted ? <RefreshInregistry2 /> : <RefreshInregistry1 />;
     default:
-      return null;
+      return <p>{keys.notExists}</p>;
   }
 };
 
@@ -59,7 +59,7 @@ class ListingStatus extends Component {
 
     return (
       <div className='listingStatus'>
-        <p>Status:</p>
+        <p>{keys.statusLabel}:</p>
         { renderStatus(status, whitelisted)}
         { status === 'Need refresh'
           ? <div className='refreshStatus'>
@@ -70,14 +70,14 @@ class ListingStatus extends Component {
                     top={28}
                   /></div>
                 : <RaisedButton
-                    label='Refresh'
-                    buttonStyle={{ backgroundColor: 'rgba(153, 153, 153, 0.2)' }}
+                    label={keys.refreshLabel}
+                    buttonStyle={{ backgroundColor: keys.refreshButtonColor }}
                     style={{ marginLeft: '20px' }}
-                    labelStyle={{ textTransform: 'Capitalize', color: '#3f536e' }}
+                    labelStyle={{ textTransform: 'Capitalize', color: keys.tabLabelColor }}
                     onClick={() => this.handleRefresh(name)}
                   />
               }
-              <p className='refreshText'>To update candidate’s status in TCR proceed with refresh transaction.</p>
+              <p className='refreshText'>{keys.refreshNote}</p>
             </div>
           : null
         }

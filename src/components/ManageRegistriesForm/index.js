@@ -10,12 +10,8 @@ import DropZone from 'react-dropzone';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
-// import keys from '../../i18n';
+import keys from '../../i18n';
 import * as appActions from '../../actions/AppActions';
-
-const labelStyle = {
-  color: '#3f536e'
-};
 
 class ManageRegistriesForm extends Component {
   constructor (props) {
@@ -34,9 +30,9 @@ class ManageRegistriesForm extends Component {
 
     return (
       <Dialog
-        title='Registry settings'
+        title={keys.registrySettingsTitle}
         actions={[
-          <FlatButton label='Cancel' onClick={onClose} />
+          <FlatButton label={keys.cancellLabelText} onClick={onClose} />
         ]}
         modal={false}
         open={open}
@@ -44,9 +40,9 @@ class ManageRegistriesForm extends Component {
         contentStyle={{ width: '480px' }}
         bodyStyle={{ minHeight: '380px' }}
       >
-        <Tabs tabItemContainerStyle={{ backgroundColor: '#fff' }} inkBarStyle={{ backgroundColor: '#66bb6a' }}>
-          <Tab label='SWITCH REGISTRY' buttonStyle={labelStyle}>
-            <p style={{ fontSize: '12px', lineHeight: '1.33', color: '#7f8fa4' }}>Choose registry</p>
+        <Tabs tabItemContainerStyle={{ backgroundColor: '#fff' }} inkBarStyle={{ backgroundColor: keys.successColor }}>
+          <Tab label={keys.switchRegistryUpper} buttonStyle={{ color: keys.tabLabelColor}}>
+            <p style={{ fontSize: '12px', lineHeight: '1.33', color: keys.textColor }}>{keys.chooseRegistry}</p>
             <RadioButtonGroup name='selectedRegistry' defaultSelected={app.registry}>
               {
                 app.registries.map((registry, index) => {
@@ -66,22 +62,22 @@ class ManageRegistriesForm extends Component {
               }
             </RadioButtonGroup>
           </Tab>
-          <Tab label='ADD NEW REGISTRY' buttonStyle={labelStyle}>
+          <Tab label={keys.addNewRegistryUpper} buttonStyle={{ color: keys.tabLabelColor}}>
             <TextField
-              floatingLabelText='Registry address:'
+              floatingLabelText={`${keys.registryAddress}:`}
               floatingLabelFixed
-              hintText='Type here'
+              hintText={keys.hintText}
               value={this.state.registry}
               onChange={(e, value) => this.setState({registry: value})}
             />
             <TextField
-              floatingLabelText='Faucet address:'
+              floatingLabelText={`${keys.faucetAddressLabel}:`}
               floatingLabelFixed
-              hintText='Type here'
+              hintText={keys.hintText}
               value={this.state.faucet}
               onChange={(e, value) => this.setState({faucet: value})}
             />
-            <p style={{ fontSize: '13px', lineHeight: '22px', color: 'rgba(0, 0, 0, 0.3)' }}>Localization config:</p>
+            <p style={{ fontSize: '13px', lineHeight: '22px', color: 'rgba(0, 0, 0, 0.3)' }}>{keys.localizationConfig}:</p>
             <DropZone
               multiple={false}
               accept='application/json'
@@ -95,15 +91,15 @@ class ManageRegistriesForm extends Component {
               }}
             >
               <CopyIcon style={{ width: '32px', height: '40px', color: 'rgba(127, 143, 164, 0.4)', marginBottom: '5px', flex: '1 1 auto' }} />
-              <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: '#7f8fa4', margin: '0' }}>Drag files here</h2>
-              <p style={{ margin: '0' }}>or <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>browse your computer</span></p>
+              <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: keys.textColor, margin: '0' }}>{keys.dragFiles}</h2>
+              <p style={{ margin: '0' }}>{keys.or}&nbsp;<span style={{ textDecoration: 'underline', cursor: 'pointer' }}>{keys.browseForFiles}</span></p>
             </DropZone>
             <div>{this.state.file || ''}</div>
             <div style={{ textAlign: 'center', paddingTop: '15px' }}>
               <RaisedButton
-                backgroundColor='#66bb6a'
-                labelColor='#fff'
-                label='Add new Registry'
+                backgroundColor={keys.successColor}
+                labelColor={keys.buttonLabelColor}
+                label={keys.addNewRegistry}
                 disabled={!this.state.registry || !this.state.faucet}
                 onClick={() => {
                   console.log('in my state', this.state.localization);

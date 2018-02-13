@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
-
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
+import keys from '../../i18n';
 
 class Reveal extends Component {
   constructor (props) {
@@ -33,11 +32,9 @@ class Reveal extends Component {
   }
 
   getRadioButtonStyleForOption (option) {
-    if (this.state.option === option) {
-      return {fill: '#66bb6a'};
-    } else {
-      return {fill: '#7f8fa4'};
-    }
+    return this.state.option === option
+      ? { fill: keys.successColor }
+      : { fill: keys.textColor };
   }
 
   render () {
@@ -52,23 +49,23 @@ class Reveal extends Component {
             mode='vertical'
             queue={txQueue}
             cancel={tokenHolderActions.hideVotingRevealTxQueue}
-            title='Make an application to registry'
+            title={keys.txQueueTitle}
             onEnd={() => this.resolveVoting()}
           />
         ) : (
           <div style={{width: '100%'}}>
-            <h4 className='headline'>Reveal Stage</h4>
+            <h4 className='headline'>{keys.revealStage}</h4>
             <div className='actionData'>
               <div className='revealResultsContainer'>
                 <div className='revealResults'>
-                  <div className='revealResultsOption'>Support</div>
+                  <div className='revealResultsOption'>{keys.support}</div>
                   <div className='revealResultsBarContainer'>
                     <LinearProgress className='revealResultsBar support' mode='determinate' value={supportVotes} />
                   </div>
                   <div className='revealResultsPercentage'>{supportVotes + '%'}</div>
                 </div>
                 <div className='revealResults'>
-                  <div className='revealResultsOption'>Oppose</div>
+                  <div className='revealResultsOption'>{keys.oppose}</div>
                   <div className='revealResultsBarContainer'>
                     <LinearProgress mode='determinate' className='revealResultsBar oppose' value={opposeVotes} />
                   </div>
@@ -76,16 +73,16 @@ class Reveal extends Component {
                 </div>
               </div>
 
-              <p className='challengeId'>Challenge ID: {listing.challengeId}</p>
+              <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p>
               <TextField
-                floatingLabelText='Enter secret phrase (salt)'
+                floatingLabelText={keys.enterSaltText}
                 floatingLabelFixed
                 value={this.state.salt}
                 onChange={(e, salt) => this.setState({salt})}
               />
 
               <div style={{marginTop: 10}}>
-                <span className='groupLabel'>Choose your previous vote option</span>
+                <span className='groupLabel'>{keys.choosePrevVoteOption}</span>
                 <RadioButtonGroup
                   name='voting'
                   className='voteOptionsContainer'
@@ -94,12 +91,12 @@ class Reveal extends Component {
                 >
                   <RadioButton
                     value={1}
-                    label='Support'
+                    label={keys.support}
                     iconStyle={this.getRadioButtonStyleForOption(1)}
                   />
                   <RadioButton
                     value={0}
-                    label='Oppose'
+                    label={keys.oppose}
                     iconStyle={this.getRadioButtonStyleForOption(0)}
                   />
                 </RadioButtonGroup>
@@ -107,9 +104,9 @@ class Reveal extends Component {
 
               <RaisedButton
                 style={{ marginTop: '20px' }}
-                label='Reveal Vote'
-                backgroundColor='#66bb6a'
-                labelColor='#fff'
+                label={keys.revealVote}
+                backgroundColor={keys.successColor}
+                labelColor={keys.buttonLabelColor}
                 onClick={() => this.handleVote()}
               />
             </div>
