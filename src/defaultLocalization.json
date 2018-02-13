@@ -81,6 +81,40 @@
     "notFoundTextSecond": "Either check the URL, {goHome}, or feel free to {reportIssue}",
     "notFoundGoHome": "go home",
     "notFoundReportIssue": "report this issue",
-    "email": "victor.radchenko@dappdev.org"
+    "email": "victor.radchenko@dappdev.org",
+
+    "networkError": "Please, switch to Rinkeby network",
+    "initializationText": "Initialization...",
+    "metamaskWarningText": "Please download or unlock {metamaskLink} extension to load application and Ethereum wallet",
+    "promisesQueueErrorCurrentStep": "Unable to run next step until current step is not finished",
+    "promisesQueueErrorAlreadyComplete": "Queue already complete!",
+    
+    "claimRewardText": "Listings to claim reward",
+    "challengeIdText": "Challenge ID",
+    "enterSaltText": "Enter secret phrase (salt)",
+    "claimRewardButtonText": "Claim reward",
+
+    "documentationText": "Documentation",
+    "documentationItemText": "Some documentation",
+
+    "backendSettingsTitle": "Backend settings",
+    "cancellLabelText": "Cancell",
+    "useBackendQuestion": "Use backend?",
+    "yes": "Yes",
+    "no": "No",
+
+    "tableHeaderListings": "MY LISTINGS",
+    "tableHeaderStatus": "STATUS",
+    "tableHeaderDueDate": "DUE DATE",
+    "tableHeaderActions": "ACTIONS",
+    "viewButtonLabel": "VIEW",
+
+    "invalidInput": "Input is not valid",
+    "updating": "Updating...", 
+    "buttonColor": "#536dfe",
+    "buttonLabelColor": "#fff",
+    "successColor": "#66bb6a",
+    "sidebarItemColor": "#7f8fa4",
+    "noMatchImageColor": "#748FFC"
   }
 }

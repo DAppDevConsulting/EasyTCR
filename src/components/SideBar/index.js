@@ -24,7 +24,7 @@ const renderNavItem = (key, to, icon) => (
     key={key}
     to={to}
     activeStyle={{ color: indigoA200 }}
-    style={{ color: '#7f8fa4' }}
+    style={{ color: keys.sidebarItemColor }}
   >
     <ListItem
       primaryText={key}
@@ -63,14 +63,14 @@ const SideBar = () => {
         <List>
           { navItems.map(x => renderNavItem(x.key, x.to, x.icon)) }
           <ListItem
-            primaryText='Documentation'
+            primaryText={keys.documentationText}
             initiallyOpen={false}
             primaryTogglesNestedList
             nestedItems={[
               <ListItem
                 key={1}
-                style={{color: '#7f8fa4'}}
-                primaryText='Some documentation'
+                style={{color: keys.sidebarItemColor}}
+                primaryText={keys.documentationItemText}
                 leftIcon={<AssessmentIcon style={iconStyles} />}
               />
             ]}

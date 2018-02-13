@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
+import keys from '../../i18n';
 
 class ClaimRewardItem extends Component {
   constructor (props) {
@@ -28,18 +27,18 @@ class ClaimRewardItem extends Component {
       <div>
         <div style={{width: '270px', paddingBottom: 30}}>
           <h4 className='headline'>{listing.listing}</h4>
-          <p className='challengeId'>Challenge ID: {listing.challengeId}</p>
+          <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p>
           <TextField
-            floatingLabelText='Enter secret phrase (salt)'
+            floatingLabelText={keys.enterSaltText}
             floatingLabelFixed
             value={this.state.salt}
             onChange={(e, salt) => this.setState({salt})}
           />
           <RaisedButton
             style={{ marginTop: '20px' }}
-            label='ClaimReward'
-            backgroundColor='#66bb6a'
-            labelColor='#fff'
+            label={keys.claimRewardButtonText}
+            backgroundColor={keys.successColor}
+            labelColor={keys.buttonLabelColor}
             onClick={() => this.claimReward(listing.challengeId)}
           />
         </div>

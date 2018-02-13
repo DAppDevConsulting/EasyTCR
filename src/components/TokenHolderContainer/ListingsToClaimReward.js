@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import ClaimRewardItem from './ClaimRewardItem';
-
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
+import keys from '../../i18n';
 
 class ListingsToClaimReward extends Component {
   /*componentWillMount () {
@@ -18,10 +17,10 @@ class ListingsToClaimReward extends Component {
 
     return (
       <div>
-        <h3>Listings to claim reward</h3>
-        {listingsToClaimReward.map((item, index) => {
-          return (<ClaimRewardItem listing={item} key={index} />);
-        })}
+        <h3>{keys.claimRewardText}</h3>
+        { listingsToClaimReward.map((item, index) =>
+          <ClaimRewardItem listing={item} key={index} />)
+        }
       </div>
     );
   }

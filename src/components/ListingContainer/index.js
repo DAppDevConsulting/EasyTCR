@@ -15,7 +15,6 @@ class ListingContainer extends Component {
     super();
 
     this.challengeListing = this.challengeListing.bind(this);
-    this.voteListing = this.voteListing.bind(this);
   }
 
   challengeListing (listing) {

@@ -7,13 +7,13 @@ import Image from './image';
 const NoMatch = () => (
 	<div className='notFound'>
 	  <h1 className='notFoundTitle'>{keys.notFoundTitle}</h1>
-	  <Image color="#748FFC" />
+	  <Image color={keys.noMatchImageColor} />
 	  <p className='notFoundText'>
 		  {keys.notFoundTextFirst}
 		  <br />
 		  {keys.formatString(
 				keys.notFoundTextSecond,
-			  	{
+			  {
 				  goHome: <Link to='/'>{keys.notFoundGoHome}</Link>,
 				  reportIssue: <a href={`mailto:${keys.email}`}>{keys.notFoundReportIssue}</a>
 				}

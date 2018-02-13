@@ -36,55 +36,8 @@ class ManageTokensContainer extends Component {
     if (re.test(value) || value === '') {
       this.setState({ value, errorText: '' })
     } else {
-      this.setState({ value, errorText: 'Input is not valid' })
+      this.setState({ value, errorText: keys.invalidInput })
     }
-  }
-
-  render () {
-    const { tokens, ethers } = this.props.candidate;
-    const balanceText = keys.formatString(
-      keys.manageTokensPage_balanceText,
-      {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}
-    );
-    const labelText = keys.formatString(
-      keys.manageTokensPage_rate,
-      {price: this.state.price, wei: keys.wei, tokenName: keys.tokenName}
-    );
-    return (
-      <div className='ContentContainer'>
-        <h4 className='pageHeadline'>{keys.manageTokensPage_title}</h4>
-        <h3 className='manageTokensTitle'> {keys.manageTokensPage_balanceHeader} </h3>
-        <p className='balanceText'>{tokens ? balanceText : 'Updating...' }</p>
-        <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
-        <div className='buyTokensForm'>
-          <div className='buyTokensForm_item'>
-            <div className='buyTokensForm_element'>
-              <TextField
-                style={{width: 316}}
-                floatingLabelText={labelText}
-                floatingLabelFixed
-                hintText={keys.manageTokensPage_buyTokensHint}
-                value={this.state.value || ''}
-                onChange={e => this.handleInput(e)}
-                errorText={this.state.errorText}
-              />
-            </div>
-            <div className='buyTokensForm_element'>
-              <RaisedButton
-                label={keys.buy}
-                disabled={!this.state.value || this.state.errorText}
-                onClick={() => this.buyTokens()}
-                backgroundColor='#66bb6a'
-                labelColor='#fff'
-                style={{ marginTop: '28px' }}
-              />
-            </div>
-          </div>
-        </div>
-        {/* <div>{keys.formatString(keys.manageTokensPage_supposedTokens, this.getTokensToBuy().toString(), keys.tokenName)}</div> */}
-        <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
-      </div>
-    );
   }
 
   buyTokens () {
@@ -112,6 +65,52 @@ class ManageTokensContainer extends Component {
     }
 
     return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
+  }
+
+  render () {
+    const { tokens, ethers } = this.props.candidate;
+    const balanceText = keys.formatString(
+      keys.manageTokensPage_balanceText,
+      {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}
+    );
+    const labelText = keys.formatString(
+      keys.manageTokensPage_rate,
+      {price: this.state.price, wei: keys.wei, tokenName: keys.tokenName}
+    );
+    return (
+      <div className='ContentContainer'>
+        <h4 className='pageHeadline'>{keys.manageTokensPage_title}</h4>
+        <h3 className='manageTokensTitle'> {keys.manageTokensPage_balanceHeader} </h3>
+        <p className='balanceText'>{tokens ? balanceText : keys.updating }</p>
+        <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
+        <div className='buyTokensForm'>
+          <div className='buyTokensForm_item'>
+            <div className='buyTokensForm_element'>
+              <TextField
+                style={{width: 316}}
+                floatingLabelText={labelText}
+                floatingLabelFixed
+                hintText={keys.manageTokensPage_buyTokensHint}
+                value={this.state.value || ''}
+                onChange={e => this.handleInput(e)}
+                errorText={this.state.errorText}
+              />
+            </div>
+            <div className='buyTokensForm_element'>
+              <RaisedButton
+                label={keys.buy}
+                disabled={!this.state.value || this.state.errorText}
+                onClick={() => this.buyTokens()}
+                backgroundColor={keys.successColor}
+                labelColor={keys.buttonLabelColor}
+                style={{ marginTop: '28px' }}
+              />
+            </div>
+          </div>
+        </div>
+        <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
+      </div>
+    );
   }
 }
 

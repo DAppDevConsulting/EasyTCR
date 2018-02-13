@@ -7,6 +7,7 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import FlatButton from 'material-ui/FlatButton';
 import * as appActions from '../../actions/AppActions';
 import storage from '../../utils/CookieStorage';
+import keys from '../../i18n';
 
 class SettingsPopup extends Component {
   constructor (props) {
@@ -26,9 +27,9 @@ class SettingsPopup extends Component {
 
     return (
       <Dialog
-        title='Backend settings'
+        title={keys.backendSettingsTitle}
         actions={[
-          <FlatButton label='Cancel' onClick={onClose} />
+          <FlatButton label={keys.cancellLabelText} onClick={onClose} />
         ]}
         modal={false}
         open={open}
@@ -36,7 +37,7 @@ class SettingsPopup extends Component {
         contentStyle={{ width: '280px' }}
         bodyStyle={{ minHeight: '180px' }}
       >
-        <p style={{ fontSize: '12px', lineHeight: '1.33', color: '#7f8fa4' }}>Use backend?</p>
+        <p style={{ fontSize: '12px', lineHeight: '1.33', color: '#7f8fa4' }}>{keys.useBackendQuestion}</p>
         <RadioButtonGroup name='selectedRegistry' defaultSelected={useBackend}>
           {
             [true, false].map((value, index) => {
@@ -47,7 +48,7 @@ class SettingsPopup extends Component {
                     changeBackendUsage(value);
                     onClose();
                   }}
-                  label={value ? 'Yes' : 'No'}
+                  label={value ? keys.yes : keys.no}
                   value={value}
                   style={{ marginBottom: '10px' }}
                 />

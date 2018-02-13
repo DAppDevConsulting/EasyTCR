@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import ListingsList from '../ListingsList';
 import ListingsToClaimReward from './ListingsToClaimReward';
 import keys from '../../i18n';
-import { bindActionCreators } from 'redux';
 import * as consumerActions from '../../actions/ConsumerActions';
-import { connect } from 'react-redux';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 
 class TokenHolderContainer extends Component {
@@ -42,11 +42,12 @@ class TokenHolderContainer extends Component {
               config={this.listConfig}
             />
           </Card>
-          {showRewardsBlock
+          { showRewardsBlock
             ? <Card style={{width: 300, paddingLeft: 30, marginLeft: 30}}>
-              <ListingsToClaimReward />
-            </Card>
-            : ''}
+                <ListingsToClaimReward />
+              </Card>
+            : ''
+          }
         </div>
       </div>
     );
