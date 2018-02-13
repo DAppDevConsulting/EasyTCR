@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ConsumerContainer from '../ConsumerContainer';
 import CandidateContainer from '../CandidateContainer';
 import ManageTokensContainer from '../ManageTokensContainer';
@@ -19,33 +19,29 @@ import {
 } from 'react-router-dom';
 
 
-class MainContainer extends Component {
-  render () {
-    return (
-      <Route>
-        <Switch>
-          <Redirect path='/' to={CONSUMER} exact />
-          <Route path={MANAGE_TOKENS} render={(props) => (
-            <ManageTokensContainer />
-          )} />
-          <Route path={CONSUMER} render={(props) => (
-            <ConsumerContainer />
-          )} />
-          <Route path={APPLICANT} render={() => (
-            <CandidateContainer />
-          )} />
-          <Route path={TOKEN_HOLDER} render={(props) => (
-            <TokenHolderContainer />
-          )} />
-          <Route path={CANDIDATE} render={(props) => (
-            <ListingContainer />
-          )} />
-          <Route path='/' exact component={ConsumerContainer} />
-          <Route component={NoMatch}/>
-        </Switch>
-      </Route>
-    );
-  }
-}
+const MainContainer = props => (
+  <Route>
+    <Switch>
+      <Redirect path='/' to={CONSUMER} exact />
+      <Route path={MANAGE_TOKENS} render={(props) => (
+        <ManageTokensContainer />
+      )} />
+      <Route path={CONSUMER} render={(props) => (
+        <ConsumerContainer />
+      )} />
+      <Route path={APPLICANT} render={() => (
+        <CandidateContainer />
+      )} />
+      <Route path={TOKEN_HOLDER} render={(props) => (
+        <TokenHolderContainer />
+      )} />
+      <Route path={CANDIDATE} render={(props) => (
+        <ListingContainer />
+      )} />
+      <Route path='/' exact component={ConsumerContainer} />
+      <Route component={NoMatch}/>
+    </Switch>
+  </Route>
+);
 
 export default MainContainer;
