@@ -116,9 +116,9 @@ class TxQueue extends Component {
   }
 
   renderLoader (step) {
-    return step.started && !step.finished ? (
-      <LinearProgress style={{ width: 100, display: 'inline-block', marginBottom: '3px' }} />
-    ) : ('');
+    return step.started && !step.finished
+      ? <LinearProgress style={{ width: 100, display: 'inline-block', marginBottom: '3px' }} />
+      : ('');
   }
 
   renderTxs () {
@@ -143,15 +143,14 @@ class TxQueue extends Component {
               <div>{step.customData.content}</div>
             </div>
           </StepLabel>
-          {step === queue.actualStep() ? (
-            <div style={{
-              display: 'block',
-              paddingTop: '5px',
-              paddingLeft: '40px'
-            }}>{this.renderTxAction(step, queue)}</div>
-          ) : (
-            <span />
-          )}
+          { step === queue.actualStep()
+            ? <div style={{
+                display: 'block',
+                paddingTop: '5px',
+                paddingLeft: '40px'
+              }}>{this.renderTxAction(step, queue)}</div>
+            : <span />
+          }
         </Step>
       );
     });
