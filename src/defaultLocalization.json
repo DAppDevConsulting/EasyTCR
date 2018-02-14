@@ -27,6 +27,7 @@
     "menu_candidate": "Applicant page",
     "menu_consumer": "Consumer page",
     "menu_manageTokens": "Manage tokens",
+    "menu_parameterizer": "Governance",
 
     "tokenHolderPage_title": "Overview",
     "tokenHolderPage_listingName": "Candidate to review",
@@ -141,6 +142,11 @@
     "chooseVoteOption": "Choose vote option",
     "downloadCommit": "Download Commit",
     "vote": "Vote",
+
+    "parameterizationPage": "Parameterization page",
+    "parameterizationTitle": "Parameterization",
+    "parameterizationColumnNames": ["PARAMETER NAME", "VALUE", "PROPOSAL", "STATUS", "ACTIONS"],
+    "tableParameterNames": ["Minimum Deposit", "Apply Stage Length", "Commit Stage Length", "Reveal Stage Length", "Dispensation Percent", "Vote Quorum"],
 
     "invalidInput": "Input is not valid",
     "updating": "Updating...", 
