@@ -18,7 +18,6 @@ import {
   Redirect
 } from 'react-router-dom';
 
-
 const MainContainer = props => (
   <Route>
     <Switch>
@@ -39,7 +38,7 @@ const MainContainer = props => (
         <ListingContainer />
       )} />
       <Route path='/' exact component={ConsumerContainer} />
-      <Route component={NoMatch}/>
+      <Route component={NoMatch} />
     </Switch>
   </Route>
 );

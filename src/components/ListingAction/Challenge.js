@@ -54,6 +54,10 @@ class Challenge extends Component {
 
   //   // this.props.challengeHandler(listing.name)
   // }
+  resolveChallenge () {
+    this.props.tokenHolderActions.hideTxQueue();
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name);
+  }
 
   render () {
     const { showTxQueue, txQueue, tokenHolderActions, minDeposit } = this.props;
@@ -67,7 +71,7 @@ class Challenge extends Component {
             queue={txQueue}
             cancel={tokenHolderActions.hideTxQueue}
             title='Make an application to registry'
-            onEnd={tokenHolderActions.hideTxQueue}
+            onEnd={() => this.resolveChallenge()}
           />
         ) : (
           <div>

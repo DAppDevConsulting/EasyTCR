@@ -30,76 +30,100 @@ class Commit extends Component {
   }
 
   resolveVoting () {
+    // TODO: зачем это выносить в глобальный стейт?
     this.props.tokenHolderActions.hideVotingCommitTxQueue();
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name);
+  }
+
+  renderTxQueue () {
+    const { txQueue, tokenHolderActions } = this.props;
+    return (
+      <TxQueue
+        mode='vertical'
+        queue={txQueue}
+        cancel={tokenHolderActions.hideVotingCommitTxQueue}
+        title={keys.txQueueTitle}
+        onEnd={() => this.resolveVoting()}
+      />
+    );
+  }
+
+  renderVoteForm () {
+    const { listing } = this.props;
+    return (
+      <div>
+        <h4 className='headline'>{keys.commitStage}</h4>
+        <div className='actionData'>
+          { listing ? <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p> : null }
+          <TextField
+            floatingLabelText={keys.enterVotes}
+            floatingLabelFixed
+            value={this.state.stake}
+            onChange={(ev, stake) => this.setState({stake})}
+          />
+          <TextField
+            floatingLabelText={keys.saveSaltText}
+            floatingLabelFixed
+            value={this.state.salt}
+          />
+          <div>
+            <span className='groupLabel'>{keys.chooseVoteOption}</span>
+            <RadioButtonGroup
+              name='voting'
+              defaultSelected={this.state.option}
+              onChange={(e, option) => this.setState({option})}
+              className='voteOptionsContainer'
+            >
+              <RadioButton
+                value={1}
+                label={keys.support}
+              />
+              <RadioButton
+                value={0}
+                label={keys.oppose}
+              />
+            </RadioButtonGroup>
+          </div>
+        </div>
+        {
+          this.state.hasVoted
+            ? <RaisedButton
+              style={{ marginTop: '20px' }}
+              label={keys.downloadCommit}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              labelPosition='before'
+              icon={<DownloadIcon />}
+            />
+            : <RaisedButton
+              style={{ marginTop: '20px' }}
+              label={keys.vote}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              onClick={() => this.handleVote()}
+            />
+        }
+      </div>
+    );
+  }
+
+  renderAlreadyCommitedState () {
+    return (
+      <div>
+        <h4 className='headline'>{keys.commitStage}</h4>
+        <p>Your vote already commited</p>
+      </div>
+    );
   }
 
   render () {
-    const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { listing, showTxQueue } = this.props;
 
     return (
       <div className='listingAction'>
         {
-          showTxQueue
-          ? <TxQueue
-              mode='vertical'
-              queue={txQueue}
-              cancel={tokenHolderActions.hideVotingCommitTxQueue}
-              title={keys.txQueueTitle}
-              onEnd={() => this.resolveVoting()}
-            />
-          : <div>
-              <h4 className='headline'>{keys.commitStage}</h4>
-              <div className='actionData'>
-                { listing ? <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p> : null }
-                <TextField
-                  floatingLabelText={keys.enterVotes}
-                  floatingLabelFixed
-                  value={this.state.stake}
-                  onChange={(ev, stake) => this.setState({stake})}
-                />
-                <TextField
-                  floatingLabelText={keys.saveSaltText}
-                  floatingLabelFixed
-                  value={this.state.salt}
-                />
-                <div>
-                  <span className='groupLabel'>{keys.chooseVoteOption}</span>
-                  <RadioButtonGroup
-                    name='voting'
-                    defaultSelected={this.state.option}
-                    onChange={(e, option) => this.setState({option})}
-                    className='voteOptionsContainer'
-                  >
-                    <RadioButton
-                      value={1}
-                      label={keys.support}
-                    />
-                    <RadioButton
-                      value={0}
-                      label={keys.oppose}
-                    />
-                  </RadioButtonGroup>
-                </div>
-              </div>
-            {
-              this.state.hasVoted
-              ? <RaisedButton
-                style={{ marginTop: '20px' }}
-                label={keys.downloadCommit}
-                backgroundColor={keys.successColor}
-                labelColor={keys.buttonLabelColor}
-                labelPosition='before'
-                icon={<DownloadIcon />}
-              />
-              : <RaisedButton
-                style={{ marginTop: '20px' }}
-                label={keys.vote}
-                backgroundColor={keys.successColor}
-                labelColor={keys.buttonLabelColor}
-                onClick={() => this.handleVote()}
-              />
-            }
-          </div>
+          listing.voteCommited ? this.renderAlreadyCommitedState()
+            : (showTxQueue ? this.renderTxQueue() : this.renderVoteForm())
         }
       </div>
     );

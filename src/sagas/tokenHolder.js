@@ -4,9 +4,12 @@ import {
   REQUEST_LISTINGS_TO_CLAIM_REWARD,
   UPDATE_LISTINGS_TO_CLAIM_REWARD,
   CLAIM_REWARD,
-  REQUEST_TOKEN_INFORMATION
+  REQUEST_TOKEN_INFORMATION,
+  REQUEST_CURRENT_LISTING,
+  UPDATE_CURRENT_LISTING
 } from '../constants/actions';
 import TCR from '../TCR';
+import ListingsProvider from '../services/ListingsProvider';
 import ChallengeProvider from '../services/ChallengeProvider';
 import {claimReward as getClaimReward} from '../transactions';
 
@@ -26,8 +29,18 @@ export function * claimReward (action) {
   yield put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
 }
 
+export function * getListing (action) {
+  let listing = yield apply(
+    ListingsProvider,
+    'getListing',
+    [TCR.registry(), TCR.defaultAccountAddress(), action.listing]
+  );
+  yield put({type: UPDATE_CURRENT_LISTING, currentListing: listing});
+}
+
 export default function * flow () {
   yield takeEvery(REQUEST_LISTINGS_TO_CLAIM_REWARD, getListingsToClaimReward);
   yield takeEvery(CLAIM_REWARD, claimReward);
+  yield takeEvery(REQUEST_CURRENT_LISTING, getListing);
   yield takeEvery(changeChannel, getListingsToClaimReward);
 }

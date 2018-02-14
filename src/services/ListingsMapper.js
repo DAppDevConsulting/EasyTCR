@@ -1,7 +1,27 @@
 import keys from '../i18n';
 import moment from 'moment';
 
+const NULL_VOTE_COMMIT_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
+
 export default class ListingsMapper {
+  static async mapListing (listingName, registry, accountAddress) {
+    let listing = await this.getProps(listingName, registry);
+    let pollId = parseInt(listing.challengeId);
+    if (pollId) {
+      let plcr = await registry.getPLCRVoting();
+      let props = await Promise.all([
+        plcr.getCommitHash(accountAddress, pollId),
+        plcr.hasBeenRevealed(accountAddress, pollId)
+      ]);
+      listing.voteCommited = props[0] !== NULL_VOTE_COMMIT_HASH;
+      listing.voteRevealed = props[1];
+    } else {
+      listing.voteCommited = false;
+      listing.voteRevealed = false;
+    }
+    return listing;
+  }
+
   static async getProps (listingName, registry) {
     let listing = registry.getListing(listingName);
 

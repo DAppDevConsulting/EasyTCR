@@ -17,7 +17,6 @@ import RefreshInregistry2 from './statuses/Refresh-inregistry-2';
 // import RefreshRejectedLast1 from './statuses/Refresh-rejected-last-1'; //
 import Inregistry from './statuses/Inregistry';
 
-
 const renderStatus = (status, whitelisted) => {
   switch (status) {
     case keys.VoteReveal:

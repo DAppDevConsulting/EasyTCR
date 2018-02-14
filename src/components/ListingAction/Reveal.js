@@ -28,7 +28,9 @@ class Reveal extends Component {
   }
 
   resolveVoting () {
+    // TODO: убрать это из глобального стейта
     this.props.tokenHolderActions.hideVotingRevealTxQueue();
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name);
   }
 
   getRadioButtonStyleForOption (option) {
@@ -37,81 +39,114 @@ class Reveal extends Component {
       : { fill: keys.textColor };
   }
 
-  render () {
-    const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
+  renderTxQueue () {
+    const { txQueue, tokenHolderActions } = this.props;
+    return (
+      <TxQueue
+        mode='vertical'
+        queue={txQueue}
+        cancel={tokenHolderActions.hideVotingRevealTxQueue}
+        title={keys.txQueueTitle}
+        onEnd={() => this.resolveVoting()}
+      />
+    );
+  }
+
+  renderRevealForm () {
+    const { listing } = this.props;
     const supportVotes = 78;
     const opposeVotes = 22;
 
+    if (!listing.voteCommited) {
+      return this.renderNoCoteCommitedState();
+    }
     return (
-      <div className='listingAction'>
-        {showTxQueue ? (
-          <TxQueue
-            mode='vertical'
-            queue={txQueue}
-            cancel={tokenHolderActions.hideVotingRevealTxQueue}
-            title={keys.txQueueTitle}
-            onEnd={() => this.resolveVoting()}
-          />
-        ) : (
-          <div style={{width: '100%'}}>
-            <h4 className='headline'>{keys.revealStage}</h4>
-            <div className='actionData'>
-              <div className='revealResultsContainer'>
-                <div className='revealResults'>
-                  <div className='revealResultsOption'>{keys.support}</div>
-                  <div className='revealResultsBarContainer'>
-                    <LinearProgress className='revealResultsBar support' mode='determinate' value={supportVotes} />
-                  </div>
-                  <div className='revealResultsPercentage'>{supportVotes + '%'}</div>
-                </div>
-                <div className='revealResults'>
-                  <div className='revealResultsOption'>{keys.oppose}</div>
-                  <div className='revealResultsBarContainer'>
-                    <LinearProgress mode='determinate' className='revealResultsBar oppose' value={opposeVotes} />
-                  </div>
-                  <div className='revealResultsPercentage'>{opposeVotes + '%'}</div>
-                </div>
+      <div style={{width: '100%'}}>
+        <h4 className='headline'>{keys.revealStage}</h4>
+        <div className='actionData'>
+          <div className='revealResultsContainer'>
+            <div className='revealResults'>
+              <div className='revealResultsOption'>{keys.support}</div>
+              <div className='revealResultsBarContainer'>
+                <LinearProgress className='revealResultsBar support' mode='determinate' value={supportVotes} />
               </div>
-
-              <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p>
-              <TextField
-                floatingLabelText={keys.enterSaltText}
-                floatingLabelFixed
-                value={this.state.salt}
-                onChange={(e, salt) => this.setState({salt})}
-              />
-
-              <div style={{marginTop: 10}}>
-                <span className='groupLabel'>{keys.choosePrevVoteOption}</span>
-                <RadioButtonGroup
-                  name='voting'
-                  className='voteOptionsContainer'
-                  defaultSelected={this.state.option}
-                  onChange={(e, option) => this.setState({option})}
-                >
-                  <RadioButton
-                    value={1}
-                    label={keys.support}
-                    iconStyle={this.getRadioButtonStyleForOption(1)}
-                  />
-                  <RadioButton
-                    value={0}
-                    label={keys.oppose}
-                    iconStyle={this.getRadioButtonStyleForOption(0)}
-                  />
-                </RadioButtonGroup>
+              <div className='revealResultsPercentage'>{supportVotes + '%'}</div>
+            </div>
+            <div className='revealResults'>
+              <div className='revealResultsOption'>{keys.oppose}</div>
+              <div className='revealResultsBarContainer'>
+                <LinearProgress mode='determinate' className='revealResultsBar oppose' value={opposeVotes} />
               </div>
-
-              <RaisedButton
-                style={{ marginTop: '20px' }}
-                label={keys.revealVote}
-                backgroundColor={keys.successColor}
-                labelColor={keys.buttonLabelColor}
-                onClick={() => this.handleVote()}
-              />
+              <div className='revealResultsPercentage'>{opposeVotes + '%'}</div>
             </div>
           </div>
-        )}
+
+          <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p>
+          <TextField
+            floatingLabelText={keys.enterSaltText}
+            floatingLabelFixed
+            value={this.state.salt}
+            onChange={(e, salt) => this.setState({salt})}
+          />
+
+          <div style={{marginTop: 10}}>
+            <span className='groupLabel'>{keys.choosePrevVoteOption}</span>
+            <RadioButtonGroup
+              name='voting'
+              className='voteOptionsContainer'
+              defaultSelected={this.state.option}
+              onChange={(e, option) => this.setState({option})}
+            >
+              <RadioButton
+                value={1}
+                label={keys.support}
+                iconStyle={this.getRadioButtonStyleForOption(1)}
+              />
+              <RadioButton
+                value={0}
+                label={keys.oppose}
+                iconStyle={this.getRadioButtonStyleForOption(0)}
+              />
+            </RadioButtonGroup>
+          </div>
+
+          <RaisedButton
+            style={{ marginTop: '20px' }}
+            label={keys.revealVote}
+            backgroundColor={keys.successColor}
+            labelColor={keys.buttonLabelColor}
+            onClick={() => this.handleVote()}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  renderAlreadyRevealedState () {
+    return (
+      <div>
+        <h4 className='headline'>{keys.revealStage}</h4>
+        <p>Your vote already revealed</p>
+      </div>
+    );
+  }
+
+  renderNoCoteCommitedState () {
+    return (
+      <div>
+        <h4 className='headline'>{keys.revealStage}</h4>
+        <p>Your vote not commited</p>
+      </div>
+    );
+  }
+
+  render () {
+    const { listing, showTxQueue } = this.props;
+
+    return (
+      <div className='listingAction'>
+        {listing.voteRevealed ? this.renderAlreadyRevealedState()
+          : showTxQueue ? this.renderTxQueue() : this.renderRevealForm()}
       </div>
     );
   }

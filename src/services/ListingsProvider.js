@@ -34,8 +34,8 @@ const getListings = async (registry, accountAddress, condition) => {
   return listings.map(item => registryCache.get(item.listing));
 };
 
-const getListing = async (registry, name) => {
-  const result = await ListingsMapper.getProps(name, registry);
+const getListing = async (registry, accountAddress, name) => {
+  const result = await ListingsMapper.mapListing(name, registry, accountAddress);
   return result;
 };
 

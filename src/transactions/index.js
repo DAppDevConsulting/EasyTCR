@@ -2,8 +2,6 @@ import TCR, {provider} from '../TCR';
 import TransactionManager from './TransactionsManager';
 import PromisesQueue from '../utils/PromisesQueue';
 import keys from '../i18n';
-import store from '../store'
-import { getListingData } from '../actions/ConsumerActions'
 
 export async function applyListing (name, tokensAmount) {
   const account = await TCR.defaultAccount();
@@ -97,12 +95,10 @@ export async function revealVote (id, option, salt) {
   const plcr = await TCR.getPLCRVoting();
   const poll = plcr.getPoll(id);
 
-  console.log('ee');
-
   return new PromisesQueue()
   // Approve tokens to PLCRVoting contract
     .add(
-      () => poll.revealVote(option, salt),
+      () => poll.revealVote(option, salt).catch((err) => console.log(err)),
       {
         label: keys.transaction_revealVoteHeader,
         content: keys.transaction_revealVoteText
@@ -115,7 +111,6 @@ export async function refreshListingStatus (name) {
   const listing = await registry.getListing(name);
 
   return listing.updateStatus()
-    .then(() => store.dispatch(getListingData(name)))
     .catch(error => console.error(error));
 }
 

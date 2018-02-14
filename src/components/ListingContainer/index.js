@@ -21,10 +21,15 @@ class ListingContainer extends Component {
     this.props.tokenHolderActions.challenge(listing);
   }
 
-  componentDidMount () {
-    if (!this.props.listing) {
-      this.props.consumerActions.getListingData(decodeURI(window.location.pathname.split('/')[2]));
+  componentWillMount () {
+    const listingName = decodeURI(window.location.pathname.split('/')[2]);
+    if (!this.props.listing || this.props.listing.name !== listingName) {
+      this.props.tokenHolderActions.requestCurrentListing(listingName);
     }
+  }
+
+  componentWillUnmount () {
+    this.props.tokenHolderActions.clearCurrentListing();
   }
 
   render () {
@@ -44,7 +49,6 @@ class ListingContainer extends Component {
             <ListingAction
               listing={listing}
               challengeHandler={this.challengeListing}
-              voteHandler={this.voteHandler}
             />
           </div>
         </div>
@@ -67,7 +71,8 @@ ListingContainer.propTypes = {
 
 const mapStateToProps = state =>
   ({
-    listing: state.consumer.listings.find(x => x.name === decodeURI(window.location.pathname.split('/')[2])),
+    listing: state.tokenHolder.currentListing,
+    // state.consumer.listings.find(x => x.name === decodeURI(window.location.pathname.split('/')[2])),
     minDeposit: state.parameterizer.minDeposit
   });
 
