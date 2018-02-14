@@ -5,12 +5,14 @@ import ManageTokensContainer from '../ManageTokensContainer';
 import TokenHolderContainer from '../TokenHolderContainer';
 import NoMatch from '../NoMatch';
 import ListingContainer from '../ListingContainer';
+import ParameterizerContainer from '../ParameterizerContainer';
 import {
   CONSUMER,
   APPLICANT,
   CANDIDATE,
   MANAGE_TOKENS,
-  TOKEN_HOLDER
+  TOKEN_HOLDER,
+  PARAMETERIZER,
 } from '../../constants/Navigation';
 import {
   Route,
@@ -37,6 +39,9 @@ const MainContainer = props => (
       )} />
       <Route path={CANDIDATE} render={(props) => (
         <ListingContainer />
+      )} />
+      <Route path={PARAMETERIZER} render={(props) => (
+        <ParameterizerContainer />
       )} />
       <Route path='/' exact component={ConsumerContainer} />
       <Route component={NoMatch}/>
