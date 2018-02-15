@@ -1,8 +1,4 @@
 .parameterizerList {
-	min-width: 450px;
-	flex: 1 1 auto;
-	display: flex;
-	flex-direction: column;
 	background-color: #fff;
 	box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.14);
 }

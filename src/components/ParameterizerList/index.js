@@ -6,19 +6,20 @@ import {
 	TableHeader,
 	TableHeaderColumn,
 	TableRow,
-	TableRowColumn
 } from 'material-ui/Table';
 import Item from './Item';
 import './style.css';
 import keys from '../../i18n';
 
-const ParameterizerList = ({ parameterizer }) => (
+const ParameterizerList = ({ parameterizer, activeProposal, selectParameter }) => (
 	<div className='parameterizerList'>
 		<Table fixedHeader fixedFooter selectable={false}>
 			<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
 				<TableRow>
 				{keys.parameterizationColumnNames.map((column, index) =>
-					<TableHeaderColumn key={index}>{column}</TableHeaderColumn>)}
+					<TableHeaderColumn
+						key={index}
+					>{column}</TableHeaderColumn>)}
 				</TableRow>
 			</TableHeader>
 			<TableBody
@@ -27,12 +28,13 @@ const ParameterizerList = ({ parameterizer }) => (
 				showRowHover
 				stripedRows={false}
 			>
-            {keys.tableParameterNames.map((param, index) =>
+            {parameterizer.parameters.map((param, index) =>
 				<Item
 					key={index}
-					name={param}
 					isFetching={parameterizer.isFetching}
-					parameter={parameterizer.parameters[Object.keys(parameterizer.parameters)[index]]}
+					parameter={param}
+					isActive={activeProposal ? activeProposal.name === param.name : false}
+					selectParameter={selectParameter}
 				/>
 			)}
           	</TableBody>
@@ -42,6 +44,8 @@ const ParameterizerList = ({ parameterizer }) => (
 
 ParameterizerList.propTypes = {
 	parameterizer: PropTypes.object.isRequired,
+	activeProposal: PropTypes.object,
+	selectParameter: PropTypes.func.isRequired,
 }
 
 export default ParameterizerList;
