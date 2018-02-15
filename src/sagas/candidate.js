@@ -1,7 +1,7 @@
 import { channel } from 'redux-saga';
 import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
 import 'babel-polyfill';
-import TCR from '../TCR';
+import TCR, {ContractsManager} from '../TCR';
 import IPFS from '../services/IPFS';
 import { applyListing as getApplyListingQueue } from '../transactions';
 import ListingsProvider from '../services/ListingsProvider';
@@ -72,7 +72,7 @@ export function * getCandidateListings (action) {
     'getListings',
     [TCR.registry(), TCR.defaultAccountAddress(), {owner: TCR.defaultAccountAddress()}]
   );
-  yield put({type: UPDATE_CANDIDATE_LISTINGS, listings});
+  yield put({type: UPDATE_CANDIDATE_LISTINGS, listings, useIpfs: ContractsManager.isRegistryUseIpfs(TCR.registry().address)});
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }
 

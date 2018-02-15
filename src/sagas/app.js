@@ -28,6 +28,7 @@ export function * changeRegistry (action) {
   storage.put('currentRegistry', action.registryAddress);
   ContractsManager.selectRegistry(action.registryAddress);
   let localization = yield apply(api, 'getRegistryLocalization', [action.registryAddress]);
+  console.log(localization);
   updateLocalization(localization);
   yield put({ type: REGISTRY_CHANGED, registry: action.registryAddress });
   yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
@@ -53,7 +54,7 @@ export function * init (action) {
   }
   yield call(changeRegistry, {registryAddress: address});
   yield put({ type: REQUEST_TOKEN_INFORMATION });
-  yield put({ type: UPDATE_REGISTRIES_LIST, registries: ContractsManager.getRegistriesAddresses() });
+  yield put({ type: UPDATE_REGISTRIES_LIST, registries: ContractsManager.getRegistries() });
   // TODO: hack! Fix it after sync/async question will be revolved
   yield put({type: REQUEST_CANDIDATE_LISTINGS});
   yield put({type: REQUEST_CONSUMER_LISTINGS});

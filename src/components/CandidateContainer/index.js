@@ -83,7 +83,7 @@ class CandidateContainer extends Component {
           <div className='formItem'>
             <div>{keys.candidate}<span className='requiredIcon'>*</span></div>
             <TextField
-              hintText={keys.candidateExample}
+              hintText={keys.candidateExample.substr(0, 25)}
               value={this.state.listing}
               errorText={this.state.listingError}
               onChange={(e, value) => {

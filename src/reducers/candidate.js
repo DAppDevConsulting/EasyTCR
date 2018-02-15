@@ -34,7 +34,7 @@ export default function candidate (state = initialState, action) {
       return {...state, tokens: action.tokens, ethers: action.ethers};
 
     case UPDATE_CANDIDATE_LISTINGS:
-      return {...state, listings: action.listings, showTxQueue: false};
+      return {...state, listings: action.listings, showTxQueue: false, useIpfs: action.useIpfs};
 
     default:
       return state;
