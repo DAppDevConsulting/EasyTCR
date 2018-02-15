@@ -9,6 +9,9 @@ import {
 const initialState = {
   ethers: 0,
   tokens: 0,
+  approvedRegistry: 0,
+  approvedPLCR: 0,
+  votingRights: 0,
   listings: [],
   fetching: false,
   showTxQueue: false,
@@ -30,7 +33,14 @@ export default function candidate (state = initialState, action) {
       return {...state, fetching: false};
 
     case UPDATE_TOKEN_INFORMATION:
-      return {...state, tokens: action.tokens, ethers: action.ethers};
+      return {
+        ...state,
+        tokens: action.tokens,
+        ethers: action.ethers,
+        approvedRegistry: action.approvedRegistry,
+        approvedPLCR: action.approvedPLCR,
+        votingRights: action.votingRights
+      };
 
     case UPDATE_CANDIDATE_LISTINGS:
       return {...state, listings: action.listings, showTxQueue: false};

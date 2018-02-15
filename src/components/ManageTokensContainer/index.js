@@ -45,6 +45,10 @@ class ManageTokensContainer extends Component {
     this.setState({value: ''});
   }
 
+  approveRegistryTokens () {
+    //
+  }
+
   getTokensToBuy () {
     const tokens = new BN(this.state.value || 0, 10);
     const multiplier = new BN(this.state.multiplier, 10);
@@ -67,48 +71,80 @@ class ManageTokensContainer extends Component {
     return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
   }
 
-  render () {
-    const { tokens, ethers } = this.props.candidate;
-    const balanceText = keys.formatString(
-      keys.manageTokensPage_balanceText,
-      {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}
-    );
+  renderBuyTokensForm () {
     const labelText = keys.formatString(
       keys.manageTokensPage_rate,
       {price: this.state.price, wei: keys.wei, tokenName: keys.tokenName}
     );
+
     return (
-      <div className='ContentContainer'>
-        <h4 className='pageHeadline'>{keys.manageTokensPage_title}</h4>
-        <h3 className='manageTokensTitle'> {keys.manageTokensPage_balanceHeader} </h3>
-        <p className='balanceText'>{tokens ? balanceText : keys.updating }</p>
-        <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
-        <div className='buyTokensForm'>
-          <div className='buyTokensForm_item'>
-            <div className='buyTokensForm_element'>
-              <TextField
-                style={{width: 316}}
-                floatingLabelText={labelText}
-                floatingLabelFixed
-                hintText={keys.manageTokensPage_buyTokensHint}
-                value={this.state.value || ''}
-                onChange={e => this.handleInput(e)}
-                errorText={this.state.errorText}
-              />
-            </div>
-            <div className='buyTokensForm_element'>
-              <RaisedButton
-                label={keys.buy}
-                disabled={!this.state.value || this.state.errorText}
-                onClick={() => this.buyTokens()}
-                backgroundColor={keys.successColor}
-                labelColor={keys.buttonLabelColor}
-                style={{ marginTop: '28px' }}
-              />
-            </div>
+      <div className='buyTokensForm'>
+        <div className='buyTokensForm_item'>
+          <div className='buyTokensForm_element'>
+            <TextField
+              style={{width: 316}}
+              floatingLabelText={labelText}
+              floatingLabelFixed
+              hintText={keys.manageTokensPage_buyTokensHint}
+              value={this.state.value || ''}
+              onChange={e => this.handleInput(e)}
+              errorText={this.state.errorText}
+            />
+          </div>
+          <div className='buyTokensForm_element'>
+            <RaisedButton
+              label={keys.buy}
+              disabled={!this.state.value || this.state.errorText}
+              onClick={() => this.buyTokens()}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              style={{ marginTop: '28px' }}
+            />
           </div>
         </div>
         <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
+      </div>
+    );
+  }
+
+  renderTokensInformation () {
+    const { tokens, approvedRegistry, approvedPLCR, votingRights, ethers } = this.props.candidate;
+    const balanceText = keys.formatString(
+      keys.manageTokensPage_balanceText,
+      {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}
+    );
+
+    const registryApproveText = keys.formatString(
+      keys.manageTokensPage_approvedRegistryText,
+      {tokens: approvedRegistry, tokenName: keys.tokenName}
+    );
+    const plcrApproveText = keys.formatString(
+      keys.manageTokensPage_approvedPLCRText,
+      {tokens: approvedPLCR, tokenName: keys.tokenName}
+    );
+    const votingRightsText = keys.formatString(
+      keys.manageTokensPage_votingRightsText,
+      {rights: votingRights}
+    );
+
+    return (
+      <div>
+        <h4 className='pageHeadline'>{keys.manageTokensPage_title}</h4>
+        <h3 className='manageTokensTitle'> {keys.manageTokensPage_balanceHeader} </h3>
+        <p className='balanceText'>{tokens ? balanceText : keys.updating }</p>
+        <p className='balanceText'>{approvedRegistry ? registryApproveText : keys.updating }</p>
+        <p className='balanceText'>{approvedPLCR ? plcrApproveText : keys.updating }</p>
+        <p className='balanceText'>{votingRights ? votingRightsText : keys.updating }</p>
+      </div>
+    );
+  }
+
+  render () {
+    return (
+      <div className='ContentContainer'>
+        {this.renderTokensInformation()}
+        <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
+        {this.renderBuyTokensForm()}
       </div>
     );
   }

@@ -39,8 +39,22 @@ export function * fetchTokenInformation (action) {
   }
 
   let balance = yield apply(TCR, 'getBalance');
+  let account = yield apply(TCR, 'defaultAccount');
+  let approvedRegistry = yield apply(account, 'getApprovedTokens', [TCR.registry().address]);
+  let plcr = yield apply(TCR, 'getPLCRVoting');
+  let approvedPLCR = yield apply(account, 'getApprovedTokens', [plcr.address]);
+  let votingRights = yield apply(plcr, 'getTokenBalance', [account.owner]);
 
-  yield put({ type: UPDATE_TOKEN_INFORMATION, tokens: balance.tokens, ethers: balance.ethers });
+  console.log(approvedRegistry, approvedPLCR, votingRights);
+
+  yield put({
+    type: UPDATE_TOKEN_INFORMATION,
+    tokens: balance.tokens,
+    ethers: balance.ethers,
+    approvedRegistry,
+    approvedPLCR,
+    votingRights
+  });
 }
 
 export function * applyListing (action) {
