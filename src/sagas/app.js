@@ -28,7 +28,6 @@ export function * changeRegistry (action) {
   storage.put('currentRegistry', action.registryAddress);
   ContractsManager.selectRegistry(action.registryAddress);
   let localization = yield apply(api, 'getRegistryLocalization', [action.registryAddress]);
-  console.log(localization);
   updateLocalization(localization);
   yield put({ type: REGISTRY_CHANGED, registry: action.registryAddress });
   yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
