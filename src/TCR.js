@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { Registry, Poll } from 'ethereum-tcr-api';
+import { Registry } from 'ethereum-tcr-api';
 
 const REGISTRY = 'registry';
 const CONFIG = 'config';

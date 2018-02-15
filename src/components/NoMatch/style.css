@@ -1,0 +1,24 @@
+.notFound {
+	text-align: center;
+}
+
+.notFoundTitle {
+	font-family: Montserrat;
+	font-size: 42px;
+	font-weight: 600;
+	line-height: 1.1;
+	color: #7f8fa4;
+	margin-bottom: 96px;
+}
+
+.notFoundText {
+	font-size: 14px;
+	line-height: 1.71;
+	color: #7f8fa4;
+	margin-top: 77px;
+}
+
+.notFoundText a {
+	text-decoration: none;
+	color: #748ffc;
+}

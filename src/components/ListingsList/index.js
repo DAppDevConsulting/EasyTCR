@@ -49,26 +49,23 @@ class ListingsList extends Component {
 
   render () {
     const {listings, config} = this.props;
-    const headersFixed = true;
+
     const selectable = false;
     const adjustForCheckbox = false;
-    const displayRowCheckbox = false;
-    const deselectOnClickaway = true;
-    const showRowHover = true;
-    const stripedRows = false;
+
     return (
       <div>
         <Table
-          fixedHeader={headersFixed}
-          fixedFooter={headersFixed}
+          fixedHeader
+          fixedFooter
           selectable={selectable}
         >
           {this.renderHeader(config, adjustForCheckbox, selectable)}
           <TableBody
-            displayRowCheckbox={displayRowCheckbox}
-            deselectOnClickaway={deselectOnClickaway}
-            showRowHover={showRowHover}
-            stripedRows={stripedRows}
+            displayRowCheckbox={false}
+            deselectOnClickaway
+            showRowHover
+            stripedRows={false}
           >
             { listings.map((row, index) => this.renderRow(config, row, index)).reverse() }
           </TableBody>

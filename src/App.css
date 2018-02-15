@@ -6,9 +6,7 @@
 
 .ContentContainer {
   background-color: #f3f6f8;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 20px;
+  padding: 20px 30px;
   height: 100%;
   min-height: 600px;
 }
@@ -38,4 +36,11 @@
 
 .noMetamaskWarning a {
   text-decoration: underline;
+}
+
+.pageHeadline {
+  font-size: 14px;
+	font-weight: 600;
+	line-height: 1.0;
+	color: #7f8fa4;
 }

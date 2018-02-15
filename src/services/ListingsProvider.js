@@ -25,6 +25,9 @@ const notificationListener = async (type, listing) => {
   } else if (type === 'add') {
     let item = await ListingsMapper.getProps(listing, currentRegistry);
     await addToCache(item);
+  } else if (type === 'change') {
+    let item = await ListingsMapper.getProps(listing, currentRegistry);
+    await addToCache(item);
   }
   for (let cb of changeListeners) {
     if (typeof cb === 'function') {
@@ -33,22 +36,28 @@ const notificationListener = async (type, listing) => {
   }
 };
 
-const getListings = async (registry, condition) => {
+const getListings = async (registry, accountAddress, condition) => {
   if (!currentRegistry || currentRegistry.address !== registry.address) {
     registryCache.clear();
     currentRegistry = registry;
     useIpfs = ContractsManager.isRegistryUseIpfs(registry.address);
     api.listenNotification(notificationListener);
   }
-  let listings = await api.getListings(registry.address, [], condition && condition.owner ? condition.owner : '');
+  let listings = await api.getListings(registry.address, accountAddress, [], condition && condition.owner ? condition.owner : '');
   let toCache = await ListingsMapper.mapListings(listings.filter(item => !registryCache.has(item.listing)), registry);
   await Promise.all(toCache.map(item => addToCache(item)));
   return listings.map(item => registryCache.get(item.listing));
 };
 
+const getListing = async (registry, accountAddress, name) => {
+  const result = await ListingsMapper.mapListing(name, registry, accountAddress);
+  return result;
+};
+
 const addChangeListener = (listener) => changeListeners.push(listener);
 
 export default {
+  getListing,
   getListings,
   addChangeListener
 };

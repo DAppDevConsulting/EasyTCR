@@ -1,5 +1,6 @@
 .txQueueLabel {
     margin-top: 15px;
+    padding-left: 0;
 }
 .txQueueLabel:not(.hasAction) svg  {
     fill: #fafbfc !important;
@@ -19,21 +20,10 @@
 }
 
 .txHeader {
-    display: table;
-    width: 100%;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    vertical-align: center;
+    display: flex;
+    justify-content: space-between;
 }
 
-.txHeader-right-block {
-    display: table-cell;
-    text-align: right;
-    vertical-align: center;
-}
-
-.txHeader-left-block {
-    display: table-cell;
-    vertical-align: center;
+.txHeaderText {
+    margin-top: 12px;
 }

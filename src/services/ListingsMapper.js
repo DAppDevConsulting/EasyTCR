@@ -1,9 +1,29 @@
 import keys from '../i18n';
 import moment from 'moment';
 
+const NULL_VOTE_COMMIT_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
+
 export default class ListingsMapper {
-  static async getProps (domain, registry) {
-    let listing = registry.getListing(domain);
+  static async mapListing (listingName, registry, accountAddress) {
+    let listing = await this.getProps(listingName, registry);
+    let pollId = parseInt(listing.challengeId);
+    if (pollId) {
+      let plcr = await registry.getPLCRVoting();
+      let props = await Promise.all([
+        plcr.getCommitHash(accountAddress, pollId),
+        plcr.hasBeenRevealed(accountAddress, pollId)
+      ]);
+      listing.voteCommited = props[0] !== NULL_VOTE_COMMIT_HASH;
+      listing.voteRevealed = props[1];
+    } else {
+      listing.voteCommited = false;
+      listing.voteRevealed = false;
+    }
+    return listing;
+  }
+
+  static async getProps (listingName, registry) {
+    let listing = registry.getListing(listingName);
 
     try {
       let props = await Promise.all([
@@ -49,15 +69,15 @@ export default class ListingsMapper {
     }
     return {};
   }
-  static async mapListings (domains, registry) {
-    if (!domains || !domains.length) {
+  static async mapListings (listings, registry) {
+    if (!listings || !listings.length) {
       return [];
     }
 
     try {
       console.time('getListings');
-      let tcrListings = await Promise.all(domains.map(async (domain) => {
-        let res = await this.getProps(domain.listing, registry);
+      let tcrListings = await Promise.all(listings.map(async (listing) => {
+        let res = await this.getProps(listing.listing, registry);
         return res;
       }));
       console.timeEnd('getListings');

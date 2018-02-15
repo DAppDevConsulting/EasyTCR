@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import * as publisherActions from './actions/PublisherActions';
-import * as advertiserActions from './actions/AdvertiserActions';
+import * as candidateActions from './actions/CandidateActions';
+import * as consumerActions from './actions/ConsumerActions';
 import * as appActions from './actions/AppActions';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { deepOrange500, indigoA200 } from 'material-ui/styles/colors';
@@ -19,6 +19,7 @@ import SettingsPopup from './components/SettingsPopup';
 import storage from './utils/CookieStorage';
 
 import './App.css';
+import keys from './i18n';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -40,7 +41,7 @@ class App extends Component {
     window.web3.version.getNetwork((error, network) => {
       if (network !== '4') {
         return this.setState({
-          networkError: 'Please, switch to Rinkeby network'
+          networkError: keys.networkError
         })
       } else {
         this.props.appActions.init(storage.get('currentRegistry'));
@@ -50,7 +51,7 @@ class App extends Component {
 
   renderNotInitialized () {
     return (
-      <h1 style={{ color: indigoA200 }}>Initialization...</h1>
+      <h1 style={{ color: indigoA200, textAlign: 'center' }}>{keys.initializationText}</h1>
     );
   }
 
@@ -65,7 +66,10 @@ class App extends Component {
             </div>
             : <div className='noMetamaskWarning'>
             <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
-            Please download or unlock&nbsp;<a href='https://metamask.io/' target='_blank' rel='noopener noreferrer'>MetaMask</a>&nbsp;extension to load application and Ethereum wallet
+            { keys.formatString(
+              keys.metamaskWarningText,
+              { metamaskLink: <span>&nbsp;<a href='https://metamask.io/' target='_blank' rel='noopener noreferrer'>MetaMask</a>&nbsp;</span> }
+            )}
           </div>
           }
         </MuiThemeProvider>
@@ -117,8 +121,8 @@ class App extends Component {
 function mapStateToProps (state) {
   return {
     app: state.app,
-    publisher: state.publisher,
-    advertiser: state.advertiser,
+    candidate: state.candidate,
+    consumer: state.consumer,
     parameterizer: state.parameterizer
   };
 }
@@ -126,8 +130,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     appActions: bindActionCreators(appActions, dispatch),
-    publisherActions: bindActionCreators(publisherActions, dispatch),
-    advertiserActions: bindActionCreators(advertiserActions, dispatch)
+    candidateActions: bindActionCreators(candidateActions, dispatch),
+    consumerActions: bindActionCreators(consumerActions, dispatch)
   };
 }
 

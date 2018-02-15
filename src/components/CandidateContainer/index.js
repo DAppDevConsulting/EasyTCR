@@ -10,21 +10,21 @@ import TCR from '../../TCR';
 import ListingsList from '../ListingsList';
 import TxQueue from '../TxQueue';
 import './style.css';
-import {bindActionCreators} from 'redux';
-import * as actions from '../../actions/PublisherActions';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../../actions/CandidateActions';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-class PublisherContainer extends Component {
+class CandidateContainer extends Component {
   constructor (props) {
     super(props);
 
     this.state = {
       value: 0,
       price: 0,
+      listing: '',
+      listingError: '',
       file: null,
-      domain: '',
-      domainError: '',
       stake: 0,
       stakeError: ''
     };
@@ -42,7 +42,7 @@ class PublisherContainer extends Component {
   componentWillMount () {
     // Setting token price for further usage
     TCR.getTokenPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
-    this.props.actions.getPublisherDomains();
+    this.props.actions.getCandidateListings();
   }
 
   // only for English
@@ -60,19 +60,19 @@ class PublisherContainer extends Component {
   }
 
   render () {
-    const { listings, txQueue, showTxQueue, useIpfs } = this.props.publisher;
-    const {cancelDomainApplication} = this.props.actions;
+    const { listings, txQueue, showTxQueue, useIpfs } = this.props.candidate;
+    const { cancelListingApplication } = this.props.actions;
     // TODO: validate this value
     const minCrutch = Math.max(this.props.parametrizer.minDeposit, 50000);
     return (
       <div className='ContentContainer'>
-        <div>{keys.candidatePage_title}</div>
-        <h3> {keys.formatString(keys.candidatePage_addListingTitle, {candidate: keys.candidate})} </h3>
-        <Card className='txqueue-container'>
+        <h3 className='pageHeadline'>{keys.candidatePage_title}</h3>
+        <h3> {keys.candidatePage_addListingTitle} </h3>
+        <Card>
           {showTxQueue &&
           <TxQueue
             queue={txQueue}
-            cancel={cancelDomainApplication}
+            cancel={cancelListingApplication}
             title={keys.candidatePage_transactionsSteps_title}
             onEnd={this.props.actions.hideTxQueue} />
           }
@@ -83,11 +83,11 @@ class PublisherContainer extends Component {
           <div className='formItem'>
             <div>{keys.candidate}<span className='requiredIcon'>*</span></div>
             <TextField
-              hintText={keys.candidateExample.substr(0, 25)}
-              value={this.state.domain}
-              errorText={this.state.domainError}
+              hintText={keys.candidateExample}
+              value={this.state.listing}
+              errorText={this.state.listingError}
               onChange={(e, value) => {
-                this.setState({domain: value});
+                this.setState({listing: value});
               }}
             />
           </div>
@@ -130,11 +130,11 @@ class PublisherContainer extends Component {
           <div className='formItem'>
             <RaisedButton
               label={keys.apply}
-              onClick={() => this.addDomain()}
+              onClick={() => this.addListing()}
               backgroundColor='#536dfe'
               labelColor='#fff'
-              disabled={!!((!this.state.domain && !this.state.file) || !this.state.stake || this.state.domainError || this.state.stakeError)}
-              style={{ marginBottom: '8px' }}
+              disabled={!!((!this.state.listing && !this.state.file) || !this.state.stake || this.state.listingError || this.state.stakeError)}
+              style={{ marginTop: '25px' }}
             />
           </div>
         </div>
@@ -160,9 +160,9 @@ class PublisherContainer extends Component {
     this.props.actions.buyTokens(this.state.value, 10);
   }
 
-  addDomain () {
-    this.props.actions.applyDomain(this.state.domain, this.state.stake, this.state.file);
-    this.setState({domain: '', stake: 0, file: null});
+  addListing () {
+    this.props.actions.applyListing(this.state.listing, this.state.stake, this.state.file);
+    this.setState({listing: '', stake: 0, file:null});
   }
 
   onFileSelected (files) {
@@ -172,7 +172,7 @@ class PublisherContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    publisher: state.publisher,
+    candidate: state.candidate,
     parametrizer: state.parameterizer
   };
 }
@@ -183,10 +183,10 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
-PublisherContainer.propTypes = {
-  publisher: PropTypes.object.isRequired,
+CandidateContainer.propTypes = {
+  candidate: PropTypes.object.isRequired,
   parametrizer: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublisherContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(CandidateContainer);

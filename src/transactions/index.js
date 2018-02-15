@@ -3,7 +3,7 @@ import TransactionManager from './TransactionsManager';
 import PromisesQueue from '../utils/PromisesQueue';
 import keys from '../i18n';
 
-export async function applyDomain (name, tokensAmount) {
+export async function applyListing (name, tokensAmount) {
   const account = await TCR.defaultAccount();
   const manager = new TransactionManager(provider());
   return new PromisesQueue()
@@ -57,7 +57,7 @@ export async function challengeListing (name, tokensAmount) {
 }
 
 export async function commitVote (id, hash, stake) {
-  const registry = TCR.registry();
+  // const registry = TCR.registry();
   const account = await TCR.defaultAccount();
   const plcr = await TCR.getPLCRVoting();
   const poll = plcr.getPoll(id);
@@ -95,12 +95,10 @@ export async function revealVote (id, option, salt) {
   const plcr = await TCR.getPLCRVoting();
   const poll = plcr.getPoll(id);
 
-  console.log('ee');
-
   return new PromisesQueue()
   // Approve tokens to PLCRVoting contract
     .add(
-      () => poll.revealVote(option, salt),
+      () => poll.revealVote(option, salt).catch((err) => console.log(err)),
       {
         label: keys.transaction_revealVoteHeader,
         content: keys.transaction_revealVoteText
@@ -113,4 +111,12 @@ export async function refreshListingStatus (name) {
   const listing = await registry.getListing(name);
 
   return listing.updateStatus()
+    .catch(error => console.error(error));
+}
+
+export async function claimReward (challengeId, salt) {
+  const manager = new TransactionManager(provider());
+  const challenge = TCR.registry().getChallenge(challengeId);
+  const ti = await challenge.claimReward(salt);
+  await manager.watchForTransaction(ti);
 }

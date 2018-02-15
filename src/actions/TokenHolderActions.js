@@ -5,8 +5,11 @@ import {
   COMMIT_SEND,
   REVEAL_HIDE_TX_QUEUE,
   REVEAL_SEND,
-  REFRESH_LISTING_STATUS,
   REFRESH_LISTING_SEND,
+  REQUEST_LISTINGS_TO_CLAIM_REWARD,
+  CLAIM_REWARD,
+  REQUEST_CURRENT_LISTING,
+  CLEAR_CURRENT_LISTING
 } from '../constants/actions';
 
 export function challenge (listing) {
@@ -32,6 +35,7 @@ export function commitVote (id, option, salt, stake) {
   };
 }
 
+// TODO: we really need this action?
 export function hideVotingCommitTxQueue () {
   return {
     type: COMMIT_HIDE_TX_QUEUE
@@ -56,6 +60,33 @@ export function hideVotingRevealTxQueue () {
 export function refreshListingStatus (name) {
   return {
     type: REFRESH_LISTING_SEND,
-    name,
+    name
+  };
+}
+
+export function requestListingsToClaimReward () {
+  return {
+    type: REQUEST_LISTINGS_TO_CLAIM_REWARD
+  };
+}
+
+export function claimReward (challengeId, salt) {
+  return {
+    type: CLAIM_REWARD,
+    challengeId,
+    salt
+  };
+}
+
+export function requestCurrentListing (listing) {
+  return {
+    type: REQUEST_CURRENT_LISTING,
+    listing
+  };
+}
+
+export function clearCurrentListing () {
+  return {
+    type: CLEAR_CURRENT_LISTING
   };
 }

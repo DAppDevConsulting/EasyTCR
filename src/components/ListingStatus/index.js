@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import './style.css';
 import keys from '../../i18n';
-import * as tokenHolderActions from '../../actions/TokenHolderActions';
 
 import Inapplication from './statuses/Inapplication';
 import Incommit1 from './statuses/Incommit-1';
@@ -19,7 +16,6 @@ import RefreshInregistry2 from './statuses/Refresh-inregistry-2';
 // import RefreshRejected2 from './statuses/Refresh-rejected-2'; //
 // import RefreshRejectedLast1 from './statuses/Refresh-rejected-last-1'; //
 import Inregistry from './statuses/Inregistry';
-
 
 const renderStatus = (status, whitelisted) => {
   switch (status) {
@@ -34,7 +30,7 @@ const renderStatus = (status, whitelisted) => {
     case keys.NeedRefresh:
       return whitelisted ? <RefreshInregistry2 /> : <RefreshInregistry1 />;
     default:
-      return null;
+      return <p>{keys.notExists}</p>;
   }
 };
 
@@ -54,7 +50,7 @@ class ListingStatus extends Component {
       isRefreshing: true
     });
 
-    this.props.tokenHolderActions.refreshListingStatus(name);
+    this.props.refreshListingStatus(name);
   }
 
   render () {
@@ -62,7 +58,7 @@ class ListingStatus extends Component {
 
     return (
       <div className='listingStatus'>
-        <p>Status:</p>
+        <p>{keys.statusLabel}:</p>
         { renderStatus(status, whitelisted)}
         { status === 'Need refresh'
           ? <div className='refreshStatus'>
@@ -73,14 +69,14 @@ class ListingStatus extends Component {
                     top={28}
                   /></div>
                 : <RaisedButton
-                    label='Refresh'
-                    buttonStyle={{ backgroundColor: 'rgba(153, 153, 153, 0.2)' }}
+                    label={keys.refreshLabel}
+                    buttonStyle={{ backgroundColor: keys.refreshButtonColor }}
                     style={{ marginLeft: '20px' }}
-                    labelStyle={{ textTransform: 'Capitalize', color: '#3f536e' }}
+                    labelStyle={{ textTransform: 'Capitalize', color: keys.tabLabelColor }}
                     onClick={() => this.handleRefresh(name)}
                   />
               }
-              <p>To update candidate’s status in TCR proceed with refresh transaction.</p>
+              <p className='refreshText'>{keys.refreshNote}</p>
             </div>
           : null
         }
@@ -90,16 +86,8 @@ class ListingStatus extends Component {
 }
 
 ListingStatus.propTypes = {
-  tokenHolderActions: PropTypes.object.isRequired,
+  refreshListingStatus: PropTypes.func.isRequired,
   listing: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-    statusRefreshed: state.refreshStatus.statusRefreshed,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListingStatus);
+export default ListingStatus;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="06" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-31.000000, -129.000000)">
+        <g id="Left-Navigation-White" transform="translate(0.000000, -18.500000)" fill="#7F8FA4">
+            <g id="Menu" transform="translate(20.000000, 98.500000)">
+                <g id="Menu-Items" transform="translate(9.000000, 0.000000)">
+                    <g id="Icon" transform="translate(2.000000, 49.000000)">
+                        <path d="M9.33333333,10.8888889 L10.8888889,10.8888889 L10.8888889,7.77777778 L9.33333333,7.77777778 L9.33333333,10.8888889 Z M6.22222222,10.8888889 L7.77777778,10.8888889 L7.77777778,3.11111111 L6.22222222,3.11111111 L6.22222222,10.8888889 Z M3.11111111,10.8888889 L4.66666667,10.8888889 L4.66666667,5.44444444 L3.11111111,5.44444444 L3.11111111,10.8888889 Z M12.4444444,0 L1.55555556,0 C0.7,0 0,0.7 0,1.55555556 L0,12.4444444 C0,13.3 0.7,14 1.55555556,14 L12.4444444,14 C13.3,14 14,13.3 14,12.4444444 L14,1.55555556 C14,0.7 13.3,0 12.4444444,0 L12.4444444,0 Z"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,15 +1,14 @@
 import config from '../apiConfig';
-import contractService from "./ContractService";
 
 export default {
-  getListings: async (registry, filters = [], address = '') => {
+  getListings: async (registry, account, filters = [], address = '') => {
     let params = filters.length ? [`filter=${filters.join(',')}`] : [];
     params.push(`registry=${registry}`);
     if (address) {
       params.push(`account=${address}`);
     }
-    let domains = await (await window.fetch(`${config.host}registry/listings?${params.join('&')}`)).json();
-    return domains;
+    let listings = await (await window.fetch(`${config.host}registry/listings?${params.join('&')}`)).json();
+    return listings;
   },
   addListing: async (registry, listingName, ownerAddress) => {
     try {
@@ -54,5 +53,7 @@ export default {
       console.log(err);
     }
   },
-  listenNotification: (handler) => {}
+  listenNotification: (handler) => {},
+  listenRewordsNotification: (handler) => {}
+
 };

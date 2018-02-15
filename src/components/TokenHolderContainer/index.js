@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import ListingsList from '../ListingsList';
+import ListingsToClaimReward from './ListingsToClaimReward';
 import keys from '../../i18n';
-import {bindActionCreators} from 'redux';
-import * as advertiserActions from '../../actions/AdvertiserActions';
-import {connect} from 'react-redux';
+import * as consumerActions from '../../actions/ConsumerActions';
+import * as tokenHolderActions from '../../actions/TokenHolderActions';
 
 class TokenHolderContainer extends Component {
   constructor (props) {
     super(props);
+
     this.listConfig = {
       columns: [
         {propName: 'label', title: keys.tokenHolderPage_listingName, tooltip: keys.tokenHolderPage_listingTooltip},
@@ -21,20 +24,31 @@ class TokenHolderContainer extends Component {
   }
 
   componentWillMount () {
-    this.props.advertiserActions.getAdvertiserDomains();
+    this.props.consumerActions.getConsumerListings();
+    this.props.tokenHolderActions.requestListingsToClaimReward();
   }
 
   render () {
-    const { listings } = this.props.advertiser;
+    const { listings } = this.props.consumer;
+    const { listingsToClaimReward } = this.props.tokenHolder;
+    const showRewardsBlock = listingsToClaimReward && listingsToClaimReward.length;
     return (
       <div className='ContentContainer'>
         <div>{keys.tokenHolderPage_title}</div>
-        <Card>
-          <ListingsList
-            listings={listings}
-            config={this.listConfig}
-          />
-        </Card>
+        <div className='ListingContainer'>
+          <Card>
+            <ListingsList
+              listings={listings}
+              config={this.listConfig}
+            />
+          </Card>
+          { showRewardsBlock
+            ? <Card style={{width: 300, paddingLeft: 30, marginLeft: 30}}>
+                <ListingsToClaimReward />
+              </Card>
+            : ''
+          }
+        </div>
       </div>
     );
   }
@@ -42,19 +56,23 @@ class TokenHolderContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    advertiser: state.advertiser
+    consumer: state.consumer,
+    tokenHolder: state.tokenHolder
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    advertiserActions: bindActionCreators(advertiserActions, dispatch)
+    consumerActions: bindActionCreators(consumerActions, dispatch),
+    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
   };
 }
 
 TokenHolderContainer.propTypes = {
-  advertiser: PropTypes.object.isRequired,
-  advertiserActions: PropTypes.object.isRequired
+  consumer: PropTypes.object.isRequired,
+  tokenHolder: PropTypes.object.isRequired,
+  consumerActions: PropTypes.object.isRequired,
+  tokenHolderActions: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TokenHolderContainer);
