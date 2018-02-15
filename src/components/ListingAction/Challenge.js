@@ -9,6 +9,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
+import keys from '../../i18n';
 
 class Challenge extends Component {
   constructor (props) {
@@ -47,14 +48,6 @@ class Challenge extends Component {
     });
   }
 
-  // challengeListing (listing) {
-  //   this.setState({
-  //     isChallenging: true
-  //   });
-
-  //   // this.props.challengeHandler(listing.name)
-  // }
-
   render () {
     const { showTxQueue, txQueue, tokenHolderActions, minDeposit } = this.props;
     const { remainingTime } = this.state;
@@ -71,10 +64,10 @@ class Challenge extends Component {
           />
         ) : (
           <div>
-            <h4 className='actionTitle'>Challenge</h4>
+            <h4 className='actionTitle'>{keys.challenge}</h4>
             <div className='actionData'>
               <div className='challengeTime'>
-                <p>Remaining time</p>
+                <p>{keys.remainingTimeText}</p>
                 {
                   remainingTime
                     ? <p>{ remainingTime }</p>
@@ -82,11 +75,11 @@ class Challenge extends Component {
                 }
               </div>
             </div>
-            <p className='challengeDeposit'>{`Minimum deposit required: ${minDeposit}`}</p>
+            <p className='challengeDeposit'>{`${keys.minDepositRequired}: ${minDeposit}`}</p>
             <RaisedButton
-              label='Challenge'
-              backgroundColor='#66bb6a'
-              labelColor='#fff'
+              label={keys.challenge}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
               onClick={() => tokenHolderActions.challenge(this.props.listing.name)}
             />
           </div>
