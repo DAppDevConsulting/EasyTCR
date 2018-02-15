@@ -59,7 +59,7 @@ class App extends Component {
     return (
       <Router>
         <MuiThemeProvider muiTheme={muiTheme}>
-          { networkError 
+          { networkError
             ? <div className='noMetamaskWarning'>
               <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
               { networkError }
@@ -89,6 +89,7 @@ class App extends Component {
     if (!this.props.app.registry) {
       return this.renderNotInitialized();
     }
+    const {changeRegistry} = this.props.appActions;
 
     return (
       <Router>
@@ -96,7 +97,9 @@ class App extends Component {
           <div className='App'>
             <Header
               onSettingsClick={() => this.setState({settingsPopupOpened: true})}
-              onSwitcherClick={() => this.setState({manageRegistriesOpened: true})} />
+              onSwitcherClick={() => this.setState({manageRegistriesOpened: true})}
+              onTCRofTCRsClick={() => changeRegistry('0x643c5883f1135cb487a8eb1ec4b3926e1607b05f')}
+            />
             <div>
               <SideBar />
               <ManageRegistriesForm
