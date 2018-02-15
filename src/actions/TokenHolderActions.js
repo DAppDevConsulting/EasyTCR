@@ -7,7 +7,8 @@ import {
   REVEAL_SEND,
   REFRESH_LISTING_SEND,
   REQUEST_LISTINGS_TO_CLAIM_REWARD,
-  CLAIM_REWARD
+  CLAIM_REWARD,
+  PROPOSE_NEW_PARAMETER_VALUE,
 } from '../constants/actions';
 
 export function challenge (listing) {
@@ -72,5 +73,13 @@ export function claimReward (challengeId, salt) {
     type: CLAIM_REWARD,
     challengeId,
     salt
+  };
+}
+
+export function proposeNewValue (parameter, value) {
+  return {
+    type: PROPOSE_NEW_PARAMETER_VALUE,
+    parameter,
+    value
   };
 }
