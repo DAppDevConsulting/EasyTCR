@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Card from 'material-ui/Card';
+import {Card, CardHeader} from 'material-ui/Card';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ListingsList from '../ListingsList';
@@ -21,6 +21,13 @@ class TokenHolderContainer extends Component {
         {propName: 'action', title: keys.tokenHolderPage_listingActions, tooltip: keys.tokenHolderPage_listingActionsTooltip}
       ]
     };
+    this.rewardsListingConfig = {
+      columns: [
+        {propName: 'listing', title: keys.tokenHolderPage_listingName, tooltip: keys.tokenHolderPage_listingTooltip},
+        {propName: 'challengeId', title: keys.challengeIdText},
+        {propName: 'action', title: keys.claimRewardButtonText}
+      ]
+    };
   }
 
   componentWillMount () {
@@ -32,22 +39,29 @@ class TokenHolderContainer extends Component {
     const { listings } = this.props.consumer;
     const { listingsToClaimReward } = this.props.tokenHolder;
     const showRewardsBlock = listingsToClaimReward && listingsToClaimReward.length;
+
     return (
       <div className='ContentContainer'>
-        <div>{keys.tokenHolderPage_title}</div>
-        <div className='ListingContainer'>
+        <h3>{keys.tokenHolderPage_title}</h3>
+        <div>
+          {showRewardsBlock
+            ? <Card style={{marginBottom: 30}}>
+              <CardHeader
+                title={keys.listingsToClaimReward}
+              />
+              <ListingsToClaimReward config={this.rewardsListingConfig} />
+            </Card>
+            : ''
+          }
           <Card>
+            <CardHeader
+              title={keys.listings}
+            />
             <ListingsList
               listings={listings}
               config={this.listConfig}
             />
           </Card>
-          { showRewardsBlock
-            ? <Card style={{width: 300, paddingLeft: 30, marginLeft: 30}}>
-                <ListingsToClaimReward />
-              </Card>
-            : ''
-          }
         </div>
       </div>
     );

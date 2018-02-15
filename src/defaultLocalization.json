@@ -3,7 +3,7 @@
     "registryName": "TCR",
 
     "eth": "ETH",
-    "tokenName": "TKN", 
+    "tokenName": "TKN",
     "wei": "WEI",
 
     "one": "one",
@@ -14,6 +14,9 @@
 
     "candidate": "Candidate",
     "candidateExample": "My candidate",
+
+    "listings": "Listings in registry",
+    "listingsToClaimReward": "Claim your reward for Listings",
 
     "inApplication": "In Application",
     "inRegistry": "In Registry",
@@ -88,12 +91,13 @@
     "metamaskWarningText": "Please download or unlock {metamaskLink} extension to load application and Ethereum wallet",
     "promisesQueueErrorCurrentStep": "Unable to run next step until current step is not finished",
     "promisesQueueErrorAlreadyComplete": "Queue already complete!",
-    
+
     "claimRewardText": "Listings to claim reward",
     "challengeIdText": "Challenge ID",
     "enterSaltText": "Enter secret phrase (salt)",
     "saveSaltText": "Save Secret Phrase (salt)",
     "claimRewardButtonText": "Claim reward",
+    "claimRewardTitle": "Claim reward!",
 
     "documentationText": "Documentation",
     "documentationItemText": "Some documentation",
@@ -119,7 +123,7 @@
     "or": "or",
     "browseForFiles": "browse your computer",
     "addNewRegistry": "Add new Registry",
-    
+
     "statusLabel": "Status",
     "refreshLabel": "Refresh",
     "refreshNote": "To update candidate’s status in TCR proceed with refresh transaction.",
@@ -143,7 +147,7 @@
     "vote": "Vote",
 
     "invalidInput": "Input is not valid",
-    "updating": "Updating...", 
+    "updating": "Updating...",
     "buttonColor": "#536dfe",
     "buttonLabelColor": "#fff",
     "successColor": "#66bb6a",
