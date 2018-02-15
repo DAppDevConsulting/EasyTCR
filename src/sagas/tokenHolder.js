@@ -1,5 +1,6 @@
 import {apply, call, put, takeEvery} from 'redux-saga/effects';
 import { channel } from 'redux-saga';
+import BN from 'bn.js';
 import {
   REQUEST_LISTINGS_TO_CLAIM_REWARD,
   UPDATE_LISTINGS_TO_CLAIM_REWARD,
@@ -24,7 +25,7 @@ export function * getListingsToClaimReward (action) {
 }
 
 export function * claimReward (action) {
-  yield call(getClaimReward, action.challengeId, action.salt);
+  yield call(getClaimReward, action.challengeId, new BN(action.salt, 16));
   yield put({type: REQUEST_TOKEN_INFORMATION});
   yield put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
 }
