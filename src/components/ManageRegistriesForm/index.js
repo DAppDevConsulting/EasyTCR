@@ -33,7 +33,7 @@ class ManageRegistriesForm extends Component {
     const {open, onClose, app} = this.props;
     const {addRegistry, changeRegistry} = this.props.appActions;
     const useBackend = !!storage.get('useBackend');
-    const registries = app.registries.filter(item => item !== '0x81e1269708582ae17560b6acc0f45d0416df8d68');
+    const registries = app.registries.filter(item => item.registry !== '0x81e1269708582ae17560b6acc0f45d0416df8d68');
 
     return (
       <Dialog
