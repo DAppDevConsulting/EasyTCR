@@ -103,7 +103,7 @@ Challenge.propTypes = {
 const mapStateToProps = (state) => ({
   showTxQueue: state.challenge.showTxQueue,
   txQueue: state.challenge.queue,
-  minDeposit: state.parameterizer.minDeposit
+  minDeposit: state.parameterizer.parameters[0].value,
 });
 
 const mapDispatchToProps = (dispatch) => ({
