@@ -140,7 +140,7 @@ Commit.propTypes = {
 const mapStateToProps = (state) => ({
   showTxQueue: state.commit.showTxQueue,
   txQueue: state.commit.queue,
-  minDeposit: state.parameterizer.minDeposit
+  minDeposit: state.parameterizer.parameters[0].value,
 });
 
 const mapDispatchToProps = (dispatch) => ({

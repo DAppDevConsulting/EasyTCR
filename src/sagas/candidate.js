@@ -1,5 +1,5 @@
 import { channel } from 'redux-saga';
-import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
+import { put, takeEvery, apply, call } from 'redux-saga/effects';
 import 'babel-polyfill';
 import TCR from '../TCR';
 import { applyListing as getApplyListingQueue } from '../transactions';
@@ -49,7 +49,8 @@ export function * applyListing (action) {
     return;
   }
 
-  let { minDeposit } = (yield select()).parameterizer;
+  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+  let minDeposit = yield apply(parameterizer, 'get', ['minDeposit']);
   let queue = yield call(getApplyListingQueue, action.name, action.tokens, minDeposit);
 
   yield put({ type: SHOW_TX_QUEUE, queue });

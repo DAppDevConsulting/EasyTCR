@@ -9,6 +9,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
+import keys from '../../i18n';
 
 class Challenge extends Component {
   constructor (props) {
@@ -75,10 +76,10 @@ class Challenge extends Component {
           />
         ) : (
           <div>
-            <h4 className='actionTitle'>Challenge</h4>
+            <h4 className='actionTitle'>{keys.challenge}</h4>
             <div className='actionData'>
               <div className='challengeTime'>
-                <p>Remaining time</p>
+                <p>{keys.remainingTimeText}</p>
                 {
                   remainingTime
                     ? <p>{ remainingTime }</p>
@@ -86,11 +87,11 @@ class Challenge extends Component {
                 }
               </div>
             </div>
-            <p className='challengeDeposit'>{`Minimum deposit required: ${minDeposit}`}</p>
+            <p className='challengeDeposit'>{`${keys.minDepositRequired}: ${minDeposit}`}</p>
             <RaisedButton
-              label='Challenge'
-              backgroundColor='#66bb6a'
-              labelColor='#fff'
+              label={keys.challenge}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
               onClick={() => tokenHolderActions.challenge(this.props.listing.name)}
             />
           </div>
@@ -114,7 +115,7 @@ Challenge.propTypes = {
 const mapStateToProps = (state) => ({
   showTxQueue: state.challenge.showTxQueue,
   txQueue: state.challenge.queue,
-  minDeposit: state.parameterizer.minDeposit
+  minDeposit: state.parameterizer.parameters[0].value,
 });
 
 const mapDispatchToProps = (dispatch) => ({
