@@ -33,7 +33,7 @@ const Header = ({ balance, onSwitcherClick, onSettingsClick, onTCRofTCRsClick, i
         </IconButton>
         <ToolbarSeparator className='Separator' />
         {!useBackend &&
-        <IconButton tooltip='Use TCR of TCRs' onClick={onTCRofTCRsClick}>
+        <IconButton tooltip='Switch to TCR of TCRs' onClick={onTCRofTCRsClick}>
           <GlobalIcon color={isTCRofTCRsActive ? yellow500 : '#fff'} />
         </IconButton>
         }
