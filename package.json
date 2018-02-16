@@ -11,6 +11,7 @@
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
+    "random-int": "^1.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.7",
