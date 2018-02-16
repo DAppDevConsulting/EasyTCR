@@ -1,5 +1,5 @@
 import { channel } from 'redux-saga';
-import { put, takeEvery, apply, call, select } from 'redux-saga/effects';
+import { put, takeEvery, apply, call } from 'redux-saga/effects';
 import 'babel-polyfill';
 import TCR, {ContractsManager} from '../TCR';
 import IPFS from '../services/IPFS';
@@ -53,8 +53,10 @@ export function * applyListing (action) {
   if (!action.name && action.file) {
     name = yield apply(IPFS, 'upload', [action.file]);
   }
-  let { minDeposit } = (yield select()).parameterizer;
-  let queue = yield call(getApplyListingQueue, name, action.tokens, minDeposit);
+
+  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+  let minDeposit = yield apply(parameterizer, 'get', ['minDeposit']);
+  let queue = yield call(getApplyListingQueue, action.name, action.tokens, minDeposit);
 
   yield put({ type: SHOW_TX_QUEUE, queue });
 }

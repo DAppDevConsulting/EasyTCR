@@ -33,6 +33,7 @@ class ManageRegistriesForm extends Component {
     const {open, onClose, app} = this.props;
     const {addRegistry, changeRegistry} = this.props.appActions;
     const useBackend = !!storage.get('useBackend');
+    const registries = app.registries.filter(item => item !== '0x643c5883f1135cb487a8eb1ec4b3926e1607b05f');
 
     return (
       <Dialog
@@ -47,11 +48,11 @@ class ManageRegistriesForm extends Component {
         bodyStyle={{ minHeight: '380px' }}
       >
         <Tabs tabItemContainerStyle={{ backgroundColor: '#fff' }} inkBarStyle={{ backgroundColor: keys.successColor }}>
-          <Tab label={keys.switchRegistryUpper} buttonStyle={{ color: keys.tabLabelColor}}>
+          <Tab label={keys.switchRegistryUpper} buttonStyle={{ color: keys.tabLabelColor }}>
             <p style={{ fontSize: '12px', lineHeight: '1.33', color: keys.textColor }}>{keys.chooseRegistry}</p>
             <RadioButtonGroup name='selectedRegistry' defaultSelected={app.registry}>
               {
-                app.registries.map((registry, index) => {
+                registries.map((registry, index) => {
                   return (
                     <RadioButton
                       key={index}
@@ -69,7 +70,7 @@ class ManageRegistriesForm extends Component {
             </RadioButtonGroup>
           </Tab>
           {useBackend &&
-          <Tab label={keys.addNewRegistryUpper} buttonStyle={{ color: keys.tabLabelColor}}>
+          <Tab label={keys.addNewRegistryUpper} buttonStyle={{color: keys.tabLabelColor}}>
             <TextField
               floatingLabelText={`${keys.registryAddress}:`}
               floatingLabelFixed
@@ -84,7 +85,8 @@ class ManageRegistriesForm extends Component {
               value={this.state.faucet}
               onChange={(e, value) => this.setState({faucet: value})}
             />
-            <p style={{ fontSize: '13px', lineHeight: '22px', color: 'rgba(0, 0, 0, 0.3)' }}>{keys.localizationConfig}:</p>
+            <p
+              style={{fontSize: '13px', lineHeight: '22px', color: 'rgba(0, 0, 0, 0.3)'}}>{keys.localizationConfig}:</p>
             <DropZone
               multiple={false}
               accept='application/json'
@@ -97,9 +99,17 @@ class ManageRegistriesForm extends Component {
                 boxSizing: 'border-box'
               }}
             >
-              <CopyIcon style={{ width: '32px', height: '40px', color: 'rgba(127, 143, 164, 0.4)', marginBottom: '5px', flex: '1 1 auto' }} />
-              <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: keys.textColor, margin: '0' }}>{keys.dragFiles}</h2>
-              <p style={{ margin: '0' }}>{keys.or}&nbsp;<span style={{ textDecoration: 'underline', cursor: 'pointer' }}>{keys.browseForFiles}</span></p>
+              <CopyIcon style={{
+                width: '32px',
+                height: '40px',
+                color: 'rgba(127, 143, 164, 0.4)',
+                marginBottom: '5px',
+                flex: '1 1 auto'
+              }} />
+              <h2
+                style={{fontSize: '14px', fontWeight: 'bold', color: keys.textColor, margin: '0'}}>{keys.dragFiles}</h2>
+              <p style={{margin: '0'}}>{keys.or}&nbsp;<span
+                style={{textDecoration: 'underline', cursor: 'pointer'}}>{keys.browseForFiles}</span></p>
             </DropZone>
             <div>{this.state.file || ''}</div>
             <div style={{textAlign: 'center', paddingTop: '15px'}}>

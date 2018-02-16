@@ -25,7 +25,7 @@ export function * getListingsToClaimReward (action) {
 }
 
 export function * claimReward (action) {
-  yield call(getClaimReward, action.challengeId, new BN(action.salt, 16));
+  yield call(getClaimReward, action.challengeId, action.salt);
   yield put({type: REQUEST_TOKEN_INFORMATION});
   yield put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
 }

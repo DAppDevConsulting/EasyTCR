@@ -1,4 +1,5 @@
 import config from '../apiConfig';
+import contractService from "./ContractService";
 
 export default {
   getListings: async (registry, account, filters = [], address = '') => {
@@ -52,6 +53,9 @@ export default {
     } catch (err) {
       console.log(err);
     }
+  },
+  getListingsToClaimReward: async (registry, account) => {
+    return [];
   },
   listenNotification: (handler) => {},
   listenRewordsNotification: (handler) => {}

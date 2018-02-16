@@ -63,7 +63,7 @@ class CandidateContainer extends Component {
     const { listings, txQueue, showTxQueue, useIpfs } = this.props.candidate;
     const { cancelListingApplication } = this.props.actions;
     // TODO: validate this value
-    const minCrutch = Math.max(this.props.parametrizer.minDeposit, 50000);
+    const minCrutch = Math.max(this.props.parameterizer.parameters[0].value, 50000);
     return (
       <div className='ContentContainer'>
         <h3 className='pageHeadline'>{keys.candidatePage_title}</h3>
@@ -173,7 +173,7 @@ class CandidateContainer extends Component {
 function mapStateToProps (state) {
   return {
     candidate: state.candidate,
-    parametrizer: state.parameterizer
+    parameterizer: state.parameterizer
   };
 }
 
@@ -185,7 +185,7 @@ function mapDispatchToProps (dispatch) {
 
 CandidateContainer.propTypes = {
   candidate: PropTypes.object.isRequired,
-  parametrizer: PropTypes.object.isRequired,
+  parameterizer: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
