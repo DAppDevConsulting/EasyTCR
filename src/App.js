@@ -98,7 +98,7 @@ class App extends Component {
             <Header
               onSettingsClick={() => this.setState({settingsPopupOpened: true})}
               onSwitcherClick={() => this.setState({manageRegistriesOpened: true})}
-              onTCRofTCRsClick={() => changeRegistry('0x643c5883f1135cb487a8eb1ec4b3926e1607b05f')}
+              onTCRofTCRsClick={() => changeRegistry('0x81e1269708582ae17560b6acc0f45d0416df8d68')}
             />
             <div>
               <SideBar />
