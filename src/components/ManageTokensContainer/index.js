@@ -17,7 +17,11 @@ class ManageTokensContainer extends Component {
       value: '',
       multiplier: 1,
       price: '',
-      errorText: ''
+      errorText: '',
+      registryTokens: '',
+      plcrTokens: '',
+      requestVotingRights: '',
+      withdrawVotingRights: ''
     };
     this.weiToEthConverter = (wei) => wei; // TODO: сделать один конвертер. Кажется там константные значения везде.
     this.weiToEthLimit = new BN('1000000000000000', 10);
@@ -46,7 +50,23 @@ class ManageTokensContainer extends Component {
   }
 
   approveRegistryTokens () {
-    //
+    this.props.actions.approveRegistryTokens(this.state.registryTokens);
+    this.setState({registryTokens: ''});
+  }
+
+  approvePLCRTokens () {
+    this.props.actions.approvePLCRTokens(this.state.plcrTokens);
+    this.setState({plcrTokens: ''});
+  }
+
+  requestVotingRights () {
+    this.props.actions.requestVotingRights(this.state.requestVotingRights);
+    this.setState({requestVotingRights: ''});
+  }
+
+  withdrawVotingRights () {
+    this.props.actions.withdrawVotingRights(this.state.withdrawVotingRights);
+    this.setState({withdrawVotingRights: ''});
   }
 
   getTokensToBuy () {
@@ -71,6 +91,122 @@ class ManageTokensContainer extends Component {
     return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
   }
 
+  renderApproveRegistryTokensForm () {
+    return (
+      <div className='buyTokensForm'>
+        <div className='buyTokensForm_item'>
+          <div className='buyTokensForm_element'>
+            <TextField
+              style={{width: 316}}
+              floatingLabelText={keys.manageTokensPage_approvedRegistryLabel}
+              floatingLabelFixed
+              hintText={keys.manageTokensPage_buyTokensHint}
+              value={this.state.registryTokens || ''}
+              onChange={(e, registryTokens) => this.setState({registryTokens})}
+            />
+          </div>
+          <div className='buyTokensForm_element'>
+            <RaisedButton
+              label={keys.approve}
+              disabled={!this.state.registryTokens}
+              onClick={() => this.approveRegistryTokens()}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              style={{ marginTop: '28px' }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderApprovePLCRTokensForm () {
+    return (
+      <div className='buyTokensForm'>
+        <div className='buyTokensForm_item'>
+          <div className='buyTokensForm_element'>
+            <TextField
+              style={{width: 316}}
+              floatingLabelText={keys.manageTokensPage_approvedPLCRLabel}
+              floatingLabelFixed
+              hintText={keys.manageTokensPage_buyTokensHint}
+              value={this.state.plcrTokens || ''}
+              onChange={(e, plcrTokens) => this.setState({plcrTokens})}
+            />
+          </div>
+          <div className='buyTokensForm_element'>
+            <RaisedButton
+              label={keys.approve}
+              disabled={!this.state.plcrTokens}
+              onClick={() => this.approvePLCRTokens()}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              style={{ marginTop: '28px' }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderRequestVotingRightsForm () {
+    return (
+      <div className='buyTokensForm'>
+        <div className='buyTokensForm_item'>
+          <div className='buyTokensForm_element'>
+            <TextField
+              style={{width: 316}}
+              floatingLabelText={keys.manageTokensPage_requestVotingRightsLabel}
+              floatingLabelFixed
+              hintText={keys.manageTokensPage_votingRightsHint}
+              value={this.state.requestVotingRights || ''}
+              onChange={(e, requestVotingRights) => this.setState({requestVotingRights})}
+            />
+          </div>
+          <div className='buyTokensForm_element'>
+            <RaisedButton
+              label={keys.request}
+              disabled={!this.state.requestVotingRights}
+              onClick={() => this.requestVotingRights()}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              style={{ marginTop: '28px' }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderWithdrawVotingRightsForm () {
+    return (
+      <div className='buyTokensForm'>
+        <div className='buyTokensForm_item'>
+          <div className='buyTokensForm_element'>
+            <TextField
+              style={{width: 316}}
+              floatingLabelText={keys.manageTokensPage_withdrawVotingRightsLabel}
+              floatingLabelFixed
+              hintText={keys.manageTokensPage_votingRightsHint}
+              value={this.state.withdrawVotingRights || ''}
+              onChange={(e, withdrawVotingRights) => this.setState({withdrawVotingRights})}
+            />
+          </div>
+          <div className='buyTokensForm_element'>
+            <RaisedButton
+              label={keys.withdraw}
+              disabled={!this.state.withdrawVotingRights}
+              onClick={() => this.withdrawVotingRights()}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              style={{ marginTop: '28px' }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderBuyTokensForm () {
     const labelText = keys.formatString(
       keys.manageTokensPage_rate,
@@ -78,31 +214,34 @@ class ManageTokensContainer extends Component {
     );
 
     return (
-      <div className='buyTokensForm'>
-        <div className='buyTokensForm_item'>
-          <div className='buyTokensForm_element'>
-            <TextField
-              style={{width: 316}}
-              floatingLabelText={labelText}
-              floatingLabelFixed
-              hintText={keys.manageTokensPage_buyTokensHint}
-              value={this.state.value || ''}
-              onChange={e => this.handleInput(e)}
-              errorText={this.state.errorText}
-            />
+      <div>
+        <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
+        <div className='buyTokensForm'>
+          <div className='buyTokensForm_item'>
+            <div className='buyTokensForm_element'>
+              <TextField
+                style={{width: 316}}
+                floatingLabelText={labelText}
+                floatingLabelFixed
+                hintText={keys.manageTokensPage_buyTokensHint}
+                value={this.state.value || ''}
+                onChange={e => this.handleInput(e)}
+                errorText={this.state.errorText}
+              />
+            </div>
+            <div className='buyTokensForm_element'>
+              <RaisedButton
+                label={keys.buy}
+                disabled={!this.state.value || this.state.errorText}
+                onClick={() => this.buyTokens()}
+                backgroundColor={keys.successColor}
+                labelColor={keys.buttonLabelColor}
+                style={{ marginTop: '28px' }}
+              />
+            </div>
           </div>
-          <div className='buyTokensForm_element'>
-            <RaisedButton
-              label={keys.buy}
-              disabled={!this.state.value || this.state.errorText}
-              onClick={() => this.buyTokens()}
-              backgroundColor={keys.successColor}
-              labelColor={keys.buttonLabelColor}
-              style={{ marginTop: '28px' }}
-            />
-          </div>
+          <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
         </div>
-        <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
       </div>
     );
   }
@@ -143,8 +282,14 @@ class ManageTokensContainer extends Component {
     return (
       <div className='ContentContainer'>
         {this.renderTokensInformation()}
-        <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
+
         {this.renderBuyTokensForm()}
+
+        <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
+        {this.renderApproveRegistryTokensForm()}
+        {this.renderApprovePLCRTokensForm()}
+        {this.renderRequestVotingRightsForm()}
+        {this.renderWithdrawVotingRightsForm()}
       </div>
     );
   }

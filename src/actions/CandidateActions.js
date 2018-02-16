@@ -37,18 +37,18 @@ export function approvePLCRTokens (tokens) {
 }
 
 // TODO: move to TokenHolderActions
-export function requestVotingRights (tokens) {
+export function requestVotingRights (rights) {
   return {
     type: REQUEST_VOTING_RIGHTS,
-    tokens
+    rights
   };
 }
 
 // TODO: move to TokenHolderActions
-export function withdrawVotingRights (tokens) {
+export function withdrawVotingRights (rights) {
   return {
     type: WITHDRAW_VOTING_RIGHTS,
-    tokens
+    rights
   };
 }
 
