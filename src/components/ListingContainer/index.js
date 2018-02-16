@@ -69,17 +69,14 @@ ListingContainer.propTypes = {
   tokenHolderActions: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state =>
-  ({
-    listing: state.tokenHolder.currentListing,
-    // state.consumer.listings.find(x => x.name === decodeURI(window.location.pathname.split('/')[2])),
-    minDeposit: state.parameterizer.minDeposit
-  });
+const mapStateToProps = state => ({
+  listing: state.tokenHolder.currentListing,
+  minDeposit: state.parameterizer.parameters[0].value,
+});
 
-const mapDispatchToProps = dispatch =>
-  ({
-    consumerActions: bindActionCreators(consumerActions, dispatch),
-    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
-  });
+const mapDispatchToProps = dispatch => ({
+  consumerActions: bindActionCreators(consumerActions, dispatch),
+  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListingContainer);

@@ -6,7 +6,7 @@ import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
-import crypto from 'crypto';
+import randomInt from 'random-int';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
@@ -19,7 +19,7 @@ class Commit extends Component {
 
     this.state = {
       hasVoted: false,
-      salt: crypto.randomBytes(16).toString('hex'),
+      salt: randomInt(1e6, 1e8),
       stake: 1,
       option: 1
     };
@@ -140,7 +140,7 @@ Commit.propTypes = {
 const mapStateToProps = (state) => ({
   showTxQueue: state.commit.showTxQueue,
   txQueue: state.commit.queue,
-  minDeposit: state.parameterizer.minDeposit
+  minDeposit: state.parameterizer.parameters[0].value,
 });
 
 const mapDispatchToProps = (dispatch) => ({

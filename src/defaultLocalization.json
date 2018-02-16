@@ -27,12 +27,15 @@
     "VoteCommit": "In Commit",
     "VoteReveal": "In Reveal",
     "notExists": "Ooops... No candidate in contract",
+    "inChallenge": "In Challenge",
+    "endOfVoting": "End of voting",
 
     "menu_header": "Menu",
     "menu_tokenHolder": "Token Holder",
     "menu_candidate": "Applicant page",
     "menu_consumer": "Consumer page",
     "menu_manageTokens": "Manage tokens",
+    "menu_parameterizer": "Governance",
 
     "tokenHolderPage_title": "Overview",
     "tokenHolderPage_listingName": "Candidate to review",
@@ -157,6 +160,22 @@
     "chooseVoteOption": "Choose vote option",
     "downloadCommit": "Download Commit",
     "vote": "Vote",
+    "challenge": "Challenge",
+    "remainingTimeText": "Remaining time",
+    "minDepositRequired": "Minimum deposit required",
+
+    "parameterizationPage": "Parameterization page",
+    "parameterizationTitle": "Parameterization",
+    "parameterizationColumnNames": ["PARAMETER NAME", "VALUE", "PROPOSAL", "STATUS", "ACTIONS"],
+    "tableParameterNames": ["Minimum Deposit", "Apply Stage Length", "Commit Stage Length", "Reveal Stage Length", "Dispensation Percent", "Vote Quorum"],
+    "parameterizerNote": "Parameterization component is used for crowd-controlling the global variables of any Token Curated Registry via Voting process",
+    "currentValueText": "Current value",
+    "proposalValueText": "Proposal value",
+    "proposeValueChange": "PROPOSE A VALUE CHANGE ",
+
+    "actionEdit": "Edit",
+    "actionVote": "Vote",
+    "actionReveal": "Reveal",
 
     "invalidInput": "Input is not valid",
     "updating": "Updating...",
@@ -166,6 +185,7 @@
     "textColor": "#7f8fa4",
     "accentColor": "#748FFC",
     "tabLabelColor": "#3f536e",
-    "refreshButtonColor": "rgba(153, 153, 153, 0.2)"
+    "refreshButtonColor": "rgba(153, 153, 153, 0.2)",
+    "inChallengeColor": "#f7bf47"
   }
 }
