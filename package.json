@@ -6,7 +6,7 @@
     "babel-polyfill": "^6.26.0",
     "bn.js": "^4.11.8",
     "crypto": "^1.0.1",
-    "ethereum-tcr-api": "git+ssh://git@gitlab.com:ethereum-tcr/ethereum-tcr-api.git#0.2.8",
+    "ethereum-tcr-api": "git+ssh://git@gitlab.com:ethereum-tcr/ethereum-tcr-api.git#0.3.0",
     "lodash": "^4.17.4",
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
