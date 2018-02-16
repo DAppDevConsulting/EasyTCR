@@ -13,37 +13,37 @@ export function * fetchParameters (action) {
     {
       name: keys.tableParameterNames[0],
       value: yield apply(parameterizer, 'get', ['minDeposit']),
-      status: 'In Registry',
+      status: keys.inRegistry,
       proposal: null,
     },
     {
       name: keys.tableParameterNames[1],
       value: yield apply(parameterizer, 'get', ['applyStageLen']),
-      status: 'In Registry',
+      status: keys.inRegistry,
       proposal: null,
     },
     {
       name: keys.tableParameterNames[2],
       value: yield apply(parameterizer, 'get', ['commitStageLen']),
-      status: 'In Challenge',
+      status: keys.inChallenge,
       proposal: null,
     },
     {
       name: keys.tableParameterNames[3],
       value: yield apply(parameterizer, 'get', ['revealStageLen']),
-      status: 'In Challenge',
+      status: keys.inChallenge,
       proposal: null,
     },
     {
       name: keys.tableParameterNames[4],
       value: yield apply(parameterizer, 'get', ['dispensationPct']),
-      status: 'End of voting',
+      status: keys.endOfVoting,
       proposal: null,
     },
     {
       name: keys.tableParameterNames[5],
       value: yield apply(parameterizer, 'get', ['voteQuorum']),
-      status: 'In Registry',
+      status: keys.inRegistry,
       proposal: null,
     },
   ];
