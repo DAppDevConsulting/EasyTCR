@@ -56,7 +56,7 @@ export function * applyListing (action) {
 
   let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
   let minDeposit = yield apply(parameterizer, 'get', ['minDeposit']);
-  let queue = yield call(getApplyListingQueue, action.name, action.tokens, minDeposit);
+  let queue = yield call(getApplyListingQueue, name, action.tokens, minDeposit);
 
   yield put({ type: SHOW_TX_QUEUE, queue });
 }
