@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import keys from '../../i18n';
 
 class ClaimRewardItem extends Component {
@@ -17,7 +14,7 @@ class ClaimRewardItem extends Component {
   }
 
   claimReward (challengeId) {
-    this.props.tokenHolderActions.claimReward(challengeId, this.state.salt);
+    this.props.claimReward(challengeId, this.state.salt);
   }
 
   render () {
@@ -49,14 +46,7 @@ class ClaimRewardItem extends Component {
 
 ClaimRewardItem.propTypes = {
   listing: PropTypes.object.isRequired,
-  tokenHolderActions: PropTypes.object.isRequired
+  claimReward: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ClaimRewardItem);
+export default ClaimRewardItem;

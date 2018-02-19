@@ -32,9 +32,10 @@ class TokenHolderContainer extends Component {
     const { listings } = this.props.consumer;
     const { listingsToClaimReward } = this.props.tokenHolder;
     const showRewardsBlock = listingsToClaimReward && listingsToClaimReward.length;
+    
     return (
       <div className='ContentContainer'>
-        <div>{keys.tokenHolderPage_title}</div>
+        <h4 className='pageHeadline'>{keys.tokenHolderPage_title}</h4>
         <div className='ListingContainer'>
           <Card>
             <ListingsList
@@ -44,7 +45,10 @@ class TokenHolderContainer extends Component {
           </Card>
           { showRewardsBlock
             ? <Card style={{width: 300, paddingLeft: 30, marginLeft: 30}}>
-                <ListingsToClaimReward />
+                <ListingsToClaimReward
+                  claimReward={this.props.tokenHolderActions.claimReward}
+                  listingsToClaimReward={this.props.tokenHolder.listingsToClaimReward}
+                />
               </Card>
             : ''
           }
@@ -57,14 +61,14 @@ class TokenHolderContainer extends Component {
 function mapStateToProps (state) {
   return {
     consumer: state.consumer,
-    tokenHolder: state.tokenHolder
+    tokenHolder: state.tokenHolder,
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     consumerActions: bindActionCreators(consumerActions, dispatch),
-    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch),
   };
 }
 
@@ -72,7 +76,7 @@ TokenHolderContainer.propTypes = {
   consumer: PropTypes.object.isRequired,
   tokenHolder: PropTypes.object.isRequired,
   consumerActions: PropTypes.object.isRequired,
-  tokenHolderActions: PropTypes.object.isRequired
+  tokenHolderActions: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TokenHolderContainer);
