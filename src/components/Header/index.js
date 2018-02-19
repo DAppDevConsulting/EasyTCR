@@ -18,10 +18,10 @@ const Header = ({ balance, onSwitcherClick, onSettingsClick }) => (
     </ToolbarGroup>
     <ToolbarGroup>
       <EtherIcon />
-      <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.ethers + ` ${keys.eth}`} />
+      <ToolbarTitle className='HeaderText' text={balance.isFetchingBalance ? '...' : balance.ethers + ` ${keys.eth}`} />
       <ToolbarSeparator className='Separator' />
       <AdtIcon />
-      <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.tokens + ` ${keys.tokenName}`} />
+      <ToolbarTitle className='HeaderText' text={balance.isFetchingBalance ? '...' : balance.tokens + ` ${keys.tokenName}`} />
       <ToolbarSeparator className='Separator' />
       <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
         <SettingsIcon color='#fff' />
