@@ -30,6 +30,7 @@ const muiTheme = getMuiTheme({
 class App extends Component {
   constructor (props) {
     super(props);
+
     this.state = {
       manageRegistriesOpened: false,
       settingsPopupOpened: false,
@@ -78,7 +79,7 @@ class App extends Component {
   }
 
   render () {
-    if (!window.web3) {
+    if (typeof window.web3 === 'undefined') {
       return this.renderWarning();
     }
 
