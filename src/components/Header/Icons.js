@@ -24,14 +24,3 @@ export const AdtIcon = (props) => (
     </g>
   </SvgIcon>
 );
-
-export const ProfileIcon = (props) => (
-  <SvgIcon {...props}>
-    <g id='Top-Bars-/-#04' stroke='none' strokeWidth='1' fill='none' fillRule='evenodd' transform='translate(-1397.000000, -21.000000)'>
-      <g id='Group' transform='translate(1397.000000, 21.000000)' fill='#FFFFFF'>
-        <path d='M10,3.5 C10,1.56333333 8.4457429,0 6.50584307,0 C4.56594324,0 3,1.56333333 3,3.5 C3,5.43666667 4.56594324,7 6.50584307,7 C8.4457429,7 10,5.43666667 10,3.5 Z' id='Path' />
-        <path d='M0.0227272727,14.0823945 L0.0227272727,18 L12.9772727,18 L12.9772727,14.0823945 C12.9772727,10.4311862 8.65600649,8.59774682 6.5,8.59774682 C4.34399351,8.59774682 0.0227272727,10.4311862 0.0227272727,14.0823945 Z' id='Path' />
-      </g>
-    </g>
-  </SvgIcon>
-);

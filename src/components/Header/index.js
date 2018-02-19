@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import * as candidateActions from '../../actions/CandidateActions';
 import {connect} from 'react-redux';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import CircularProgress from 'material-ui/CircularProgress';
 import { EtherIcon, AdtIcon } from './Icons';
 import keys from '../../i18n';
 import './style.css';
@@ -18,10 +19,16 @@ const Header = ({ balance, onSwitcherClick, onSettingsClick }) => (
     </ToolbarGroup>
     <ToolbarGroup>
       <EtherIcon />
-      <ToolbarTitle className='HeaderText' text={balance.isFetchingBalance ? '...' : balance.ethers + ` ${keys.eth}`} />
+      { balance.isFetchingBalance 
+        ? <CircularProgress color='#fff' size={25}/>
+        : <ToolbarTitle className='HeaderText' text={balance.ethers + ` ${keys.eth}`} />
+      }
       <ToolbarSeparator className='Separator' />
       <AdtIcon />
-      <ToolbarTitle className='HeaderText' text={balance.isFetchingBalance ? '...' : balance.tokens + ` ${keys.tokenName}`} />
+      { balance.isFetchingBalance
+        ? <CircularProgress color='#fff' size={25}/>
+        : <ToolbarTitle className='HeaderText' text={balance.tokens + ` ${keys.tokenName}`} />
+      }
       <ToolbarSeparator className='Separator' />
       <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
         <SettingsIcon color='#fff' />
