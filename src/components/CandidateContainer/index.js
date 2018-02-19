@@ -59,7 +59,6 @@ class CandidateContainer extends Component {
 
   render () {
     const { listings, txQueue, showTxQueue, isFetching } = this.props.candidate;
-    console.log('isFetching', isFetching)
     const { cancelListingApplication } = this.props.actions;
     // TODO: validate this value
     const minCrutch = Math.max(this.props.parameterizer.parameters[0].value, 50000);

@@ -34,16 +34,23 @@ class App extends Component {
     this.state = {
       manageRegistriesOpened: false,
       settingsPopupOpened: false,
-      networkError: ''
+      networkError: '',
+      metamaskNotAvailable: false,
     };
   }
 
   componentWillMount () {
+    // check if Metamask is unlocked
+    window.web3.eth.getAccounts((error, result) => {
+      if (result.length === 0) {
+        return this.setState({ metamaskNotAvailable: true })
+      }
+    })
+
+    // check if Metamask is in Rinkeby network
     window.web3.version.getNetwork((error, network) => {
       if (network !== '4') {
-        return this.setState({
-          networkError: keys.networkError
-        })
+        return this.setState({ networkError: keys.networkError })
       } else {
         this.props.appActions.init(storage.get('currentRegistry'));
       }
@@ -83,7 +90,7 @@ class App extends Component {
       return this.renderWarning();
     }
 
-    if (this.state.networkError) {
+    if (this.state.networkError || this.state.metamaskNotAvailable) {
       return this.renderWarning(this.state.networkError);
     }
 
