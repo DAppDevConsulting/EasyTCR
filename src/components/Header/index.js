@@ -15,34 +15,37 @@ import GlobalIcon from 'material-ui/svg-icons/av/new-releases';
 import { yellow500 } from 'material-ui/styles/colors';
 import storage from '../../utils/CookieStorage';
 
-const Header = ({ balance, onSwitcherClick, onSettingsClick }) => (
-  <Toolbar className='Header'>
-    <ToolbarGroup firstChild>
-      <ToolbarTitle text={keys.registryName} className='HeaderTitle' />
-    </ToolbarGroup>
-    <ToolbarGroup>
-      <EtherIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
-      { balance.isFetchingBalance 
-        ? <CircularProgress color={keys.headerTextColor} size={25}/>
-        : <ToolbarTitle className='HeaderText' text={balance.ethers + ` ${keys.eth}`} />
-      }
-      <ToolbarSeparator className='Separator' />
-      <AdtIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
-      { balance.isFetchingBalance
-        ? <CircularProgress color={keys.headerTextColor} size={25}/>
-        : <ToolbarTitle className='HeaderText' text={balance.tokens + ` ${keys.tokenName}`} />
-      }
-      <ToolbarSeparator className='Separator' />
-      <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
-        <SettingsIcon color={keys.headerTextColor} />
-      </IconButton>
-      <ToolbarSeparator className='Separator' />
-      <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
-        <RegistryIcon color={keys.headerTextColor} />
-      </IconButton>
-    </ToolbarGroup>
-  </Toolbar>
-);
+const Header = ({ balance, onSwitcherClick, onSettingsClick, onTCRofTCRsClick, isTCRofTCRsActive }) => {
+  const useBackend = !!storage.get('useBackend');
+  return (
+    <Toolbar className='Header'>
+      <ToolbarGroup firstChild>
+        <ToolbarTitle text={keys.registryName} className='HeaderTitle' />
+      </ToolbarGroup>
+      <ToolbarGroup>
+        <EtherIcon />
+        <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.ethers + ` ${keys.eth}`} />
+        <ToolbarSeparator className='Separator' />
+        <AdtIcon />
+        <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.tokens + ` ${keys.tokenName}`} />
+        <ToolbarSeparator className='Separator' />
+        <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
+          <SettingsIcon color='#fff' />
+        </IconButton>
+        <ToolbarSeparator className='Separator' />
+        {!useBackend &&
+        <IconButton tooltip='Switch to TCR of TCRs' onClick={onTCRofTCRsClick}>
+          <GlobalIcon color={isTCRofTCRsActive ? yellow500 : '#fff'} />
+        </IconButton>
+        }
+        <ToolbarSeparator className='Separator' />
+        <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
+          <RegistryIcon color='#fff' />
+        </IconButton>
+      </ToolbarGroup>
+    </Toolbar>
+  );
+};
 
 Header.propTypes = {
   // Sometimes web3 returns numbers as strings because they're greater than 2^53

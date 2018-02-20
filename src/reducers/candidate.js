@@ -12,6 +12,9 @@ const initialState = {
   ethers: 0,
   tokens: 0,
   isFetchingBalance: false,
+  approvedRegistry: 0,
+  approvedPLCR: 0,
+  votingRights: 0,
   listings: [],
   isFetching: false,
   showTxQueue: false,
@@ -33,8 +36,16 @@ export default function candidate (state = initialState, action) {
       return {...state};
 
     case UPDATE_TOKEN_INFORMATION:
-      return {...state, tokens: action.tokens, ethers: action.ethers, isFetchingBalance: false};
-    
+      return {
+        ...state,
+        tokens: action.tokens,
+        ethers: action.ethers,
+        approvedRegistry: action.approvedRegistry,
+        approvedPLCR: action.approvedPLCR,
+        votingRights: action.votingRights,
+        isFetchingBalance: false
+      };
+
     case UPDATE_CANDIDATE_LISTINGS:
       return {...state, listings: action.listings, showTxQueue: false, isFetching: false};
 
