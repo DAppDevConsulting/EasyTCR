@@ -71,14 +71,14 @@ class TokenHolderContainer extends Component {
 function mapStateToProps (state) {
   return {
     consumer: state.consumer,
-    tokenHolder: state.tokenHolder
+    tokenHolder: state.tokenHolder,
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     consumerActions: bindActionCreators(consumerActions, dispatch),
-    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch),
   };
 }
 
@@ -86,7 +86,7 @@ TokenHolderContainer.propTypes = {
   consumer: PropTypes.object.isRequired,
   tokenHolder: PropTypes.object.isRequired,
   consumerActions: PropTypes.object.isRequired,
-  tokenHolderActions: PropTypes.object.isRequired
+  tokenHolderActions: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TokenHolderContainer);

@@ -90,7 +90,8 @@ class TxQueue extends Component {
   }
 
   renderTxs () {
-    const queue = this.props.queue;
+    const { queue } = this.props;
+
     return queue.steps.map((step) => {
       let icon = this.getIconForTransaction(step);
       let warningClass = icon ? 'hasAction' : '';

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
+import LinearProgress from 'material-ui/LinearProgress';
 import ListingsList from '../ListingsList';
 import keys from '../../i18n';
 import { bindActionCreators } from 'redux';
@@ -13,7 +14,7 @@ class ConsumerContainer extends Component {
   }
 
   render () {
-    const { listings } = this.props.consumer;
+    const { listings, isFetching } = this.props.consumer;
     const listConfig = {
       columns: [
         {propName: 'name', title: keys.consumerPage_listingName, tooltip: keys.consumerPage_listingTooltip},
@@ -26,12 +27,14 @@ class ConsumerContainer extends Component {
       <div className='ContentContainer'>
         <h3 className='pageHeadline'>{keys.consumerPage_title}</h3>
         <Card>
-          { listings
-            ? <ListingsList
-              listings={listings}
-              config={listConfig}
-            />
-            : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
+          { isFetching
+            ? <LinearProgress mode="indeterminate" />
+            : listings
+              ? <ListingsList
+                listings={listings}
+                config={listConfig}
+              />
+              : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
           }
         </Card>
       </div>

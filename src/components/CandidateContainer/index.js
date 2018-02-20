@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Card from 'material-ui/Card';
+import LinearProgress from 'material-ui/LinearProgress';
 import keys from '../../i18n';
 import TCR from '../../TCR';
 import ListingsList from '../ListingsList';
@@ -57,7 +58,7 @@ class CandidateContainer extends Component {
   }
 
   render () {
-    const { listings, txQueue, showTxQueue } = this.props.candidate;
+    const { listings, txQueue, showTxQueue, isFetching } = this.props.candidate;
     const { cancelListingApplication } = this.props.actions;
     // TODO: validate this value
     const minCrutch = Math.max(this.props.parameterizer.parameters[0].value, 50000);
@@ -113,12 +114,14 @@ class CandidateContainer extends Component {
         </div>
         }
         <Card>
-          { listings
-            ? <ListingsList
-              listings={listings}
-              config={this.listConfig}
-            />
-            : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
+          { isFetching 
+            ? <LinearProgress mode="indeterminate" />
+            : listings
+              ? <ListingsList
+                listings={listings}
+                config={this.listConfig}
+              />
+              : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
           }
         </Card>
       </div>
