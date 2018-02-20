@@ -1,5 +1,4 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
-import BN from 'bn.js';
 import { revealVote as getRevealVoteTx } from '../transactions';
 import { REVEAL_SHOW_TX_QUEUE, REVEAL_SEND } from '../constants/actions';
 

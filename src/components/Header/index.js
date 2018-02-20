@@ -23,24 +23,30 @@ const Header = ({ balance, onSwitcherClick, onSettingsClick, onTCRofTCRsClick, i
         <ToolbarTitle text={keys.registryName} className='HeaderTitle' />
       </ToolbarGroup>
       <ToolbarGroup>
-        <EtherIcon />
-        <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.ethers + ` ${keys.eth}`} />
+        <EtherIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
+        { balance.isFetchingBalance 
+          ? <CircularProgress color={keys.headerTextColor} size={25}/>
+          : <ToolbarTitle className='HeaderText' text={balance.ethers + ` ${keys.eth}`} />
+        }
         <ToolbarSeparator className='Separator' />
-        <AdtIcon />
-        <ToolbarTitle className='HeaderText' text={balance.fetching ? '...' : balance.tokens + ` ${keys.tokenName}`} />
+        <AdtIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
+        { balance.isFetchingBalance
+          ? <CircularProgress color={keys.headerTextColor} size={25}/>
+          : <ToolbarTitle className='HeaderText' text={balance.tokens + ` ${keys.tokenName}`} />
+        }
         <ToolbarSeparator className='Separator' />
         <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
-          <SettingsIcon color='#fff' />
+          <SettingsIcon color={keys.headerTextColor} />
         </IconButton>
         <ToolbarSeparator className='Separator' />
         {!useBackend &&
         <IconButton tooltip='Switch to TCR of TCRs' onClick={onTCRofTCRsClick}>
-          <GlobalIcon color={isTCRofTCRsActive ? yellow500 : '#fff'} />
+          <GlobalIcon color={isTCRofTCRsActive ? yellow500 : keys.headerTextColor} />
         </IconButton>
         }
         <ToolbarSeparator className='Separator' />
         <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
-          <RegistryIcon color='#fff' />
+          <RegistryIcon color={keys.headerTextColor} />
         </IconButton>
       </ToolbarGroup>
     </Toolbar>

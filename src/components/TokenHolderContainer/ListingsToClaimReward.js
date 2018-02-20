@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -97,4 +97,12 @@ ListingsToClaimReward.propTypes = {
   tokenHolderActions: PropTypes.object.isRequired
 };
 
-export default ListingsToClaimReward;
+const mapStateToProps = (state) => ({
+  tokenHolder: state.tokenHolder
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListingsToClaimReward);

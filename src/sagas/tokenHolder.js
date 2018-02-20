@@ -1,6 +1,5 @@
 import {apply, call, put, takeEvery} from 'redux-saga/effects';
 import { channel } from 'redux-saga';
-import BN from 'bn.js';
 import {
   REQUEST_LISTINGS_TO_CLAIM_REWARD,
   UPDATE_LISTINGS_TO_CLAIM_REWARD,
