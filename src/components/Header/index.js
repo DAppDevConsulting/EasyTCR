@@ -18,24 +18,24 @@ const Header = ({ balance, onSwitcherClick, onSettingsClick }) => (
       <ToolbarTitle text={keys.registryName} className='HeaderTitle' />
     </ToolbarGroup>
     <ToolbarGroup>
-      <EtherIcon />
+      <EtherIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
       { balance.isFetchingBalance 
-        ? <CircularProgress color='#fff' size={25}/>
+        ? <CircularProgress color={keys.headerTextColor} size={25}/>
         : <ToolbarTitle className='HeaderText' text={balance.ethers + ` ${keys.eth}`} />
       }
       <ToolbarSeparator className='Separator' />
-      <AdtIcon />
+      <AdtIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
       { balance.isFetchingBalance
-        ? <CircularProgress color='#fff' size={25}/>
+        ? <CircularProgress color={keys.headerTextColor} size={25}/>
         : <ToolbarTitle className='HeaderText' text={balance.tokens + ` ${keys.tokenName}`} />
       }
       <ToolbarSeparator className='Separator' />
       <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
-        <SettingsIcon color='#fff' />
+        <SettingsIcon color={keys.headerTextColor} />
       </IconButton>
       <ToolbarSeparator className='Separator' />
       <IconButton tooltip='Switch registry' onClick={onSwitcherClick}>
-        <RegistryIcon color='#fff' />
+        <RegistryIcon color={keys.headerTextColor} />
       </IconButton>
     </ToolbarGroup>
   </Toolbar>
