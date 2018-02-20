@@ -42,7 +42,7 @@ class TokenHolderContainer extends Component {
 
     return (
       <div className='ContentContainer'>
-        <h3>{keys.tokenHolderPage_title}</h3>
+        <h4 className='pageHeadline'>{keys.tokenHolderPage_title}</h4>
         <div>
           {showRewardsBlock
             ? <Card style={{marginBottom: 30}}>
