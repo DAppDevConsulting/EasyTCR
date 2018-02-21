@@ -25,84 +25,37 @@ class TxQueue extends Component {
   }
 
   getStepperStyle () {
-    // Default
-    let style = {
-      alignItems: 'top'
-    };
-
-    switch (this.props.mode) {
-      case 'vertical':
-        style = {
-          ...style,
-          flexDirection: 'column'
-        };
-    }
-
-    return style;
+    return this.props.mode === 'vertical'
+      ? { alignItems: 'top', flexDirection: 'column' }
+      : { alignItems: 'top' };
   }
 
   getStepLabelStyle () {
     let style = {
       alignItems: 'top',
-      height: 'auto'
+      height: 'auto',
+      paddingLeft: '0',
+      fontFamily: 'Open Sans, sans-serif',
+      color: 'inherit',
     };
 
-    switch (this.props.mode) {
-      case 'vertical':
-        return {
-          ...style,
-          marginBottom: '10px'
-        };
-      case 'horizontal':
-        return {
-          ...style,
-          marginBottom: '14px'
-        };
-    }
+    return this.props.mode === 'vertical'
+      ? { ...style, marginBottom: '10px' }
+      : { ...style, marginBottom: '14px' }
   }
 
   getStepStyle () {
-    let style = {
-      flex: 1
-    };
-
-    switch (this.props.mode) {
-      case 'vertical':
-        style = {
-          ...style,
-          margin: '0'
-        };
-    }
-
-    return style;
-  }
-
-  getButtonContainerStyle () {
-    let style = {
-      display: 'block',
-      paddingTop: '5px'
-    };
-
-    switch (this.props.mode) {
-      case 'vertical':
-        return {
-          ...style,
-          paddingLeft: '48px'
-        };
-      case 'horizontal':
-        return {
-          ...style,
-          paddingLeft: '49px'
-        };
-    }
+    return this.props.mode === 'vertical'
+      ? { flex: 1, margin: '0' }
+      : { flex: 1 };
   }
 
   renderTxAction (step, queue) {
     return (
       <RaisedButton
         label={step.failed ? keys.transaction_Retry : keys.transaction_Approve}
-        backgroundColor='#536dfe'
-        labelColor='#fff'
+        backgroundColor={keys.buttonColor}
+        labelColor={keys.buttonLabelColor}
         disabled={step.started}
         onClick={() => this.handleTxAction(queue)}
       />
@@ -124,27 +77,31 @@ class TxQueue extends Component {
     if (step.failed) {
       return <WarningIcon color={red500} />;
     } else if (step.finished) {
-      return <SuccessIcon color='#66bb6a' />;
+      return <SuccessIcon color={keys.successColor} />;
     } else {
       return null;
     }
   }
 
   renderLoader (step) {
-    return step.started && !step.finished ? (
-      <LinearProgress style={{width: 100, display: 'inline-block'}} />
-    ) : ('');
+    return step.started && !step.finished
+      ? <LinearProgress style={{ width: 100, display: 'inline-block', marginBottom: '3px' }} />
+      : ('');
   }
 
   renderTxs () {
-    const queue = this.props.queue;
+    const { queue } = this.props;
+
     return queue.steps.map((step) => {
       let icon = this.getIconForTransaction(step);
       let warningClass = icon ? 'hasAction' : '';
 
       return (
         <Step key={step.customData.label} completed={step.finished} style={this.getStepStyle()}>
-          <StepLabel className={`txQueueLabel ${warningClass}`} style={this.getStepLabelStyle()}
+          <StepLabel
+            className={`txQueueLabel ${warningClass}`}
+            style={this.getStepLabelStyle()}
+            iconContainerStyle={{ paddingRight: '14px' }}
             {...(icon && {icon})}
           >
             <div style={{flexDirection: 'column', justifyContent: 'space-between', fontSize: '13px'}}>
@@ -155,11 +112,14 @@ class TxQueue extends Component {
               <div>{step.customData.content}</div>
             </div>
           </StepLabel>
-          {step === queue.actualStep() ? (
-            <div style={this.getButtonContainerStyle()}>{this.renderTxAction(step, queue)}</div>
-          ) : (
-            <span />
-          )}
+          { step === queue.actualStep()
+            ? <div style={{
+                display: 'block',
+                paddingTop: '5px',
+                paddingLeft: '40px'
+              }}>{this.renderTxAction(step, queue)}</div>
+            : <span />
+          }
         </Step>
       );
     });
@@ -170,10 +130,10 @@ class TxQueue extends Component {
     return (
       <div className='txQueueContainer'>
         <div className='txHeader'>
-          <div className='txHeader-left-block'>{keys.formatString(keys.transaction_metaMaskPrompts, keys.two)}:</div>
-          <div className='txHeader-right-block'>
-            <IconButton onClick={() => this.props.cancel()}><ClearIcon /></IconButton>
-          </div>
+          <p className='txHeaderText'>{keys.formatString(keys.transaction_metaMaskPrompts, keys.two)}:</p>
+          <IconButton
+            onClick={() => this.props.cancel()}
+          ><ClearIcon /></IconButton>
         </div>
         <Stepper activeStep={index} connector={<span />} style={this.getStepperStyle()}>
           {this.renderTxs()}

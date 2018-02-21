@@ -4,7 +4,6 @@
 
 .buyTokensForm_item {
     display: flex;
-    align-items: flex-end;
 }
 
 .buyTokensForm_element {
@@ -14,14 +13,6 @@
 .buyTokensForm_multiplier {
     display: inline-block;
     padding-top: 15px;
-}
-
-.sectionTitle {
-    font-family: OpenSans;
-	font-size: 14px;
-	font-weight: 600;
-	line-height: 1.0;
-	color: #7f8fa4;
 }
 
 .manageTokensTitle {

@@ -9,6 +9,7 @@ import {
   TableRowColumn
 } from 'material-ui/Table';
 import PropTypes from 'prop-types';
+import keys from '../../i18n';
 
 class ListingsList extends Component {
   renderHeader (config, adjustForCheckbox, selectable) {
@@ -29,9 +30,18 @@ class ListingsList extends Component {
         {config.columns.map((column) => {
           const key = `${index}_${column.propName}`;
 
-          if (column.propName !== 'action') {
+          if (column.propName === 'status') {
+            return (
+              <TableRowColumn key={key}>{
+                data[column.propName] === keys.WillBeWhitelisted || data[column.propName] === keys.WillBeRejected
+                ? keys.needRefresh
+                : data[column.propName]
+              }</TableRowColumn>
+            );
+          } else if (column.propName !== 'action') {
             return (<TableRowColumn key={key}>{data[column.propName]}</TableRowColumn>);
-          }
+          } 
+
           // TODO: view valid action state
           return (
             <TableRowColumn key={key}>
@@ -49,28 +59,25 @@ class ListingsList extends Component {
 
   render () {
     const {listings, config} = this.props;
-    const headersFixed = true;
+
     const selectable = false;
     const adjustForCheckbox = false;
-    const displayRowCheckbox = false;
-    const deselectOnClickaway = true;
-    const showRowHover = true;
-    const stripedRows = false;
+
     return (
       <div>
         <Table
-          fixedHeader={headersFixed}
-          fixedFooter={headersFixed}
+          fixedHeader
+          fixedFooter
           selectable={selectable}
         >
           {this.renderHeader(config, adjustForCheckbox, selectable)}
           <TableBody
-            displayRowCheckbox={displayRowCheckbox}
-            deselectOnClickaway={deselectOnClickaway}
-            showRowHover={showRowHover}
-            stripedRows={stripedRows}
+            displayRowCheckbox={false}
+            deselectOnClickaway
+            showRowHover
+            stripedRows={false}
           >
-            {listings.map((row, index) => this.renderRow(config, row, index))}
+            { listings.map((row, index) => this.renderRow(config, row, index)).reverse() }
           </TableBody>
         </Table>
       </div>

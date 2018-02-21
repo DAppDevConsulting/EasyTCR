@@ -1,14 +1,19 @@
-import { takeEvery, put, call, select } from 'redux-saga/effects';
+import { takeEvery, put, call, apply } from 'redux-saga/effects';
+import TCR from '../TCR';
 import { challengeListing as getChallengeListingTx } from '../transactions';
+import {
+  CHALLENGE_SHOW_TX_QUEUE,
+  CHALLENGE_START,
+} from '../constants/actions';
 
 export function * challengeListing (action) {
-  let { minDeposit } = (yield select()).parameterizer;
+  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+  let minDeposit = yield apply(parameterizer, 'get', ['minDeposit']);
   let queue = yield call(getChallengeListingTx, action.listing, minDeposit);
 
-  console.log({ type: 'SHOW_TX_QUEUE', queue });
-  yield put({ type: 'CHALLENGE_SHOW_TX_QUEUE', queue });
+  yield put({ type: CHALLENGE_SHOW_TX_QUEUE, queue });
 }
 
 export default function * flow () {
-  yield takeEvery('CHALLENGE_START', challengeListing);
+  yield takeEvery(CHALLENGE_START, challengeListing);
 };

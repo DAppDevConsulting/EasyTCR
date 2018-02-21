@@ -10,55 +10,44 @@ import {
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
+import keys from '../../i18n';
 
-class PublisherDomainsList extends Component {
-  render () {
-    const {listings} = this.props;
-    const headersFixed = true;
-    const selectable = false;
-    const adjustForCheckbox = false;
-    const displayRowCheckbox = false;
-    const deselectOnClickaway = true;
-    const showRowHover = false;
-    const stripedRows = false;
-    return (
-      <div>
-        <Table
-          fixedHeader={headersFixed}
-          fixedFooter={headersFixed}
-          selectable={selectable}
-        >
-          <TableHeader adjustForCheckbox={adjustForCheckbox} displaySelectAll={selectable}>
-            <TableRow>
-              <TableHeaderColumn tooltip='The Domain'>MY DOMAIN</TableHeaderColumn>
-              <TableHeaderColumn tooltip='The Status'>STATUS</TableHeaderColumn>
-              <TableHeaderColumn tooltip='Date'>DUE DATE</TableHeaderColumn>
-              <TableHeaderColumn tooltip='View'>ACTIONS</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody
-            displayRowCheckbox={displayRowCheckbox}
-            deselectOnClickaway={deselectOnClickaway}
-            showRowHover={showRowHover}
-            stripedRows={stripedRows}
-          >
-            {listings.map((row, index) => (
-              <TableRow key={index}>
-                <TableRowColumn>{row.name}</TableRowColumn>
-                <TableRowColumn>{row.status}</TableRowColumn>
-                <TableRowColumn>{row.dueDate}</TableRowColumn>
-                <TableRowColumn><Link to={`/listing/${row.name}`}><RaisedButton label='VIEW' /></Link></TableRowColumn>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    );
-  }
-}
+const CandidateListingsList = ({listings}) => (
+  <div>
+    <Table
+      fixedHeader
+      fixedFooter
+      selectable={false}
+    >
+      <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+        <TableRow>
+          <TableHeaderColumn>{keys.tableHeaderListings}</TableHeaderColumn>
+          <TableHeaderColumn>{keys.tableHeaderStatus}</TableHeaderColumn>
+          <TableHeaderColumn>{keys.tableHeaderDueDate}</TableHeaderColumn>
+          <TableHeaderColumn>{keys.tableHeaderActions}</TableHeaderColumn>
+        </TableRow>
+      </TableHeader>
+      <TableBody
+        displayRowCheckbox={false}
+        deselectOnClickaway
+        showRowHover={false}
+        stripedRows={false}
+      >
+        {listings.map((row, index) => (
+          <TableRow key={index}>
+            <TableRowColumn>{row.name}</TableRowColumn>
+            <TableRowColumn>{row.status}</TableRowColumn>
+            <TableRowColumn>{row.dueDate}</TableRowColumn>
+            <TableRowColumn><Link to={`/listing/${row.name}`}><RaisedButton label={keys.viewButtonLabel} /></Link></TableRowColumn>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </div>
+);
 
-PublisherDomainsList.propTypes = {
+CandidateListingsList.propTypes = {
   listings: PropTypes.array.isRequired
 };
 
-export default PublisherDomainsList;
+export default CandidateListingsList;

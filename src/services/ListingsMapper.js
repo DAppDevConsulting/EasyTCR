@@ -1,27 +1,62 @@
 import keys from '../i18n';
 import moment from 'moment';
 
+const NULL_VOTE_COMMIT_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
+
 export default class ListingsMapper {
-  static async getProps (domain, registry) {
-    let listing = registry.getListing(domain);
+  static async mapListing (listingName, registry, accountAddress) {
+    let listing = await this.getProps(listingName, registry);
+    let pollId = parseInt(listing.challengeId);
+    if (pollId) {
+      let plcr = await registry.getPLCRVoting();
+      let props = await Promise.all([
+        plcr.getCommitHash(accountAddress, pollId),
+        plcr.hasBeenRevealed(accountAddress, pollId)
+      ]);
+      listing.voteCommited = props[0] !== NULL_VOTE_COMMIT_HASH;
+      listing.voteRevealed = props[1];
+    } else {
+      listing.voteCommited = false;
+      listing.voteRevealed = false;
+    }
+    return listing;
+  }
+
+  static async getProps (listingName, registry) {
+    let listing = registry.getListing(listingName);
 
     try {
       let props = await Promise.all([
         listing.isWhitelisted(),
         listing.exists(),
-        listing.expiresAt()
+        listing.expiresAt(),
+        listing.getChallengeId(),
+        listing.getStageStatus()
       ]);
+
       let whitelisted = props[0];
       let exists = props[1];
       let expTs = props[2];
+      let challengeId = props[3];
+      let stagingStatus = props[4];
 
-      let result = {name: listing.name};
-      result.status = whitelisted ? keys.inRegistry : keys.inApplication;
+      let result = { name: listing.name, challengeId, whitelisted };
+
+      if (stagingStatus) {
+        result.status = keys[stagingStatus];
+      } else if (whitelisted) {
+        result.status = keys.inRegistry;
+      } else {
+        result.status = keys.inApplication;
+      }
+
       if (!exists) {
         result.status = keys.notExists;
       }
+
       result.dueDate = '';
       result.timestamp = 0;
+
       if (!whitelisted && exists) {
         result.timestamp = expTs * 1000;
         let dateObj = moment(result.timestamp);
@@ -34,14 +69,19 @@ export default class ListingsMapper {
     }
     return {};
   }
-  static async mapListings (domains, registry) {
-    console.time('listings');
+  static async mapListings (listings, registry) {
+    if (!listings || !listings.length) {
+      return [];
+    }
+
     try {
-      let tcrListings = await Promise.all(domains.map(async (domain) => {
-        let res = await this.getProps(domain.listing, registry);
+      console.time('getListings');
+      let tcrListings = await Promise.all(listings.map(async (listing) => {
+        let res = await this.getProps(listing.listing, registry);
         return res;
       }));
-      console.timeEnd('listings');
+      console.timeEnd('getListings');
+      console.log('i ask ' + tcrListings.length + ' listings');
       return tcrListings;
     } catch (err) {
       console.log(err);

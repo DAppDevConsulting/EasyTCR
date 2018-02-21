@@ -1,3 +1,5 @@
+import keys from '../i18n';
+
 export class PromisesQueueStep {
   constructor (source, customData) {
     this.promiseSource = source;
@@ -38,10 +40,10 @@ export default class PromisesQueue {
 
   next () {
     if (this.currentStep() && !this.currentStep().finished) {
-      throw new Error('Unable to run next step until current step is not finished');
+      throw new Error(keys.promisesQueueErrorCurrentStep);
     }
     if (this.complete()) {
-      throw new Error('queue already complete!');
+      throw new Error(keys.promisesQueueErrorAlreadyComplete);
     }
     if (this.steps.length) {
       this._currentStepIndex++;

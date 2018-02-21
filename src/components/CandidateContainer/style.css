@@ -1,0 +1,29 @@
+.formWrapper {
+    padding-bottom: 30px;
+    display: flex;
+}
+
+.formItem {
+    display: inline-block;
+    text-align: left;
+    padding-right: 30px;
+    font-size: 13px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.46;
+    letter-spacing: normal;
+    vertical-align: top;
+    color: #3f536e;
+}
+
+.requiredIcon {
+    font-size: 15px;
+    color: #ff151f;
+}
+
+.txQueueContainer {
+    padding: 8px 13px 12px 25px;
+    margin-bottom: 10px;
+    color: #3f536e;
+}

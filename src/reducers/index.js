@@ -1,14 +1,20 @@
 import { combineReducers } from 'redux';
-import publisher from './publisher';
-import advertiser from './advertiser';
+import candidate from './candidate';
+import consumer from './consumer';
 import app from './app';
 import parameterizer from './parameterizer';
 import challenge from './challenge';
+import commit from './commit';
+import reveal from './reveal';
+import tokenHolder from './tokenHolder';
 
 export default combineReducers({
   app,
-  publisher,
-  advertiser,
+  candidate,
+  consumer,
   parameterizer,
-  challenge
+  challenge,
+  commit,
+  reveal,
+  tokenHolder
 });
