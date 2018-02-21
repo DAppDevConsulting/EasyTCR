@@ -91,6 +91,7 @@ class ListingsToClaimReward extends Component {
     );
   }
 }
+
 ListingsToClaimReward.propTypes = {
   config: PropTypes.object.isRequired,
   tokenHolder: PropTypes.object.isRequired,
