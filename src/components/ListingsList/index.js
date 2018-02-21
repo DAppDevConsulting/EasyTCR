@@ -9,6 +9,7 @@ import {
   TableRowColumn
 } from 'material-ui/Table';
 import PropTypes from 'prop-types';
+import keys from '../../i18n';
 
 class ListingsList extends Component {
   renderHeader (config, adjustForCheckbox, selectable) {
@@ -29,9 +30,18 @@ class ListingsList extends Component {
         {config.columns.map((column) => {
           const key = `${index}_${column.propName}`;
 
-          if (column.propName !== 'action') {
+          if (column.propName === 'status') {
+            return (
+              <TableRowColumn key={key}>{
+                data[column.propName] === keys.WillBeWhitelisted || data[column.propName] === keys.WillBeRejected
+                ? keys.needRefresh
+                : data[column.propName]
+              }</TableRowColumn>
+            );
+          } else if (column.propName !== 'action') {
             return (<TableRowColumn key={key}>{data[column.propName]}</TableRowColumn>);
-          }
+          } 
+
           // TODO: view valid action state
           return (
             <TableRowColumn key={key}>

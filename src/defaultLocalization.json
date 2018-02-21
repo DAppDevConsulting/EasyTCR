@@ -23,8 +23,9 @@
 
     "inApplication": "In Application",
     "inRegistry": "In Registry",
-    "willBeWhitelisted": "Will be rejected",
-    "willBeRejected": "Will be whitelisted",
+    "needRefresh": "Need refresh",
+    "WillBeWhitelisted": "Will be whitelisted",
+    "WillBeRejected": "Will be rejected",
     "VoteCommit": "In Commit",
     "VoteReveal": "In Reveal",
     "notExists": "Ooops... No candidate in contract",

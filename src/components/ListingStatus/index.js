@@ -27,9 +27,9 @@ const renderStatus = (status, whitelisted) => {
       return <Inregistry />;
     case keys.inApplication:
       return <Inapplication />;
-    case keys.willBeWhitelisted:
+    case keys.WillBeWhitelisted:
       return whitelisted ? <RefreshInregistry2 /> : <RefreshInregistry1 />;
-    case keys.willBeRejected:
+    case keys.WillBeRejected:
       return whitelisted ? <RefreshRejected2 /> : <RefreshRejectedLast1 />;
     default:
       return <p>{keys.notExists}</p>;
@@ -62,7 +62,7 @@ class ListingStatus extends Component {
       <div className='listingStatus'>
         <p>{keys.statusLabel}:</p>
         { renderStatus(status, whitelisted)}
-        { status === keys.willBeWhitelisted || status === keys.willBeRejected
+        { status === keys.WillBeWhitelisted || status === keys.WillBeRejected
           ? <div className='refreshStatus'>
               { this.state.isRefreshing
                 ? <div className='loaderContainer'><RefreshIndicator
