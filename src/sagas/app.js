@@ -53,7 +53,7 @@ export function * init (action) {
   }
   yield call(changeRegistry, {registryAddress: address});
   yield put({ type: REQUEST_TOKEN_INFORMATION });
-  yield put({ type: UPDATE_REGISTRIES_LIST, registries: ContractsManager.getRegistriesAddresses() });
+  yield put({ type: UPDATE_REGISTRIES_LIST, registries: ContractsManager.getRegistries() });
   // TODO: hack! Fix it after sync/async question will be revolved
   yield put({type: REQUEST_CANDIDATE_LISTINGS});
   yield put({type: REQUEST_CONSUMER_LISTINGS});

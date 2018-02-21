@@ -25,11 +25,15 @@ class ManageRegistriesForm extends Component {
     };
   }
 
+  getRegistryLabel (registry) {
+    return registry.name ? `${registry.name} (${registry.registry.substr(0, 10)}...)` : registry.registry;
+  }
+
   render () {
     const {open, onClose, app} = this.props;
     const {addRegistry, changeRegistry} = this.props.appActions;
     const useBackend = !!storage.get('useBackend');
-    const registries = app.registries.filter(item => item !== '0x643c5883f1135cb487a8eb1ec4b3926e1607b05f');
+    const registries = app.registries.filter(item => item.registry !== '0x81e1269708582ae17560b6acc0f45d0416df8d68');
 
     return (
       <Dialog
@@ -53,11 +57,11 @@ class ManageRegistriesForm extends Component {
                     <RadioButton
                       key={index}
                       onClick={() => {
-                        changeRegistry(registry);
+                        changeRegistry(registry.registry);
                         onClose();
                       }}
-                      label={registry}
-                      value={registry}
+                      label={this.getRegistryLabel(registry)}
+                      value={registry.registry}
                       style={{ marginBottom: '10px' }}
                     />
                   );
@@ -118,7 +122,7 @@ class ManageRegistriesForm extends Component {
                   console.log('in my state', this.state.localization);
                   addRegistry(this.state.registry, this.state.faucet, this.state.localization);
                   onClose();
-                }} />
+                }}/>
             </div>
           </Tab>
           }

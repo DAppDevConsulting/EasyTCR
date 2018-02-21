@@ -17,7 +17,7 @@ class ConsumerContainer extends Component {
     const { listings, isFetching } = this.props.consumer;
     const listConfig = {
       columns: [
-        {propName: 'name', title: keys.consumerPage_listingName, tooltip: keys.consumerPage_listingTooltip},
+        {propName: 'label', title: keys.consumerPage_listingName, tooltip: keys.consumerPage_listingTooltip},
         {propName: 'status', title: keys.consumerPage_listingStatus, tooltip: keys.consumerPage_listingStatusTooltip},
         {propName: 'dueDate', title: keys.consumerPage_listingDate, tooltip: keys.consumerPage_listingDateTooltip},
         {propName: 'action', title: keys.consumerPage_listingActions, tooltip: keys.consumerPage_listingActionsTooltip}

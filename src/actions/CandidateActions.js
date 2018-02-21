@@ -71,11 +71,12 @@ export function getCandidateListings () {
   };
 }
 
-export function applyListing (name, tokens) {
+export function applyListing (name, tokens, file) {
   return {
     type: APPLY_LISTING,
     name,
-    tokens
+    tokens,
+    file
   };
 }
 

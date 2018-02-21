@@ -4,6 +4,8 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Card from 'material-ui/Card';
 import LinearProgress from 'material-ui/LinearProgress';
+import CopyIcon from 'material-ui/svg-icons/content/content-copy';
+import DropZone from 'react-dropzone';
 import keys from '../../i18n';
 import TCR from '../../TCR';
 import ListingsList from '../ListingsList';
@@ -23,13 +25,14 @@ class CandidateContainer extends Component {
       price: 0,
       listing: '',
       listingError: '',
+      file: null,
       stake: 0,
       stakeError: ''
     };
 
     this.listConfig = {
       columns: [
-        {propName: 'name', title: keys.candidatePage_listingName, tooltip: keys.candidatePage_listingTooltip},
+        {propName: 'label', title: keys.candidatePage_listingName, tooltip: keys.candidatePage_listingTooltip},
         {propName: 'status', title: keys.candidatePage_listingStatus, tooltip: keys.candidatePage_listingStatusTooltip},
         {propName: 'dueDate', title: keys.candidatePage_listingDate, tooltip: keys.candidatePage_listingDateTooltip},
         {propName: 'action', title: keys.candidatePage_listingActions, tooltip: keys.candidatePage_listingActionsTooltip}
@@ -58,7 +61,7 @@ class CandidateContainer extends Component {
   }
 
   render () {
-    const { listings, txQueue, showTxQueue, isFetching } = this.props.candidate;
+    const { listings, txQueue, showTxQueue, useIpfs, isFetching } = this.props.candidate;
     const { cancelListingApplication } = this.props.actions;
     // TODO: validate this value
     const minCrutch = Math.max(this.props.parameterizer.parameters[0].value, 50000);
@@ -77,10 +80,11 @@ class CandidateContainer extends Component {
         </Card>
         {!showTxQueue &&
         <div className='formWrapper'>
+          {!useIpfs &&
           <div className='formItem'>
             <div>{keys.candidate}<span className='requiredIcon'>*</span></div>
             <TextField
-              hintText={keys.candidateExample}
+              hintText={keys.candidateExample.substr(0, 25)}
               value={this.state.listing}
               errorText={this.state.listingError}
               onChange={(e, value) => {
@@ -88,6 +92,29 @@ class CandidateContainer extends Component {
               }}
             />
           </div>
+          }
+          {useIpfs &&
+          <div className='formItem'>
+            <div>{keys.candidate_configFile}<span className='requiredIcon'>*</span></div>
+            <DropZone
+              multiple={false}
+              accept='application/json'
+              onDrop={(files) => this.onFileSelected(files)}
+              style={{
+                border: 'dashed 1px rgba(127, 143, 164, 0.4)',
+                height: '130px',
+                textAlign: 'center',
+                padding: '20px 0',
+                boxSizing: 'border-box'
+              }}
+            >
+              <CopyIcon style={{ width: '32px', height: '40px', color: 'rgba(127, 143, 164, 0.4)', marginBottom: '5px', flex: '1 1 auto' }} />
+              <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: '#7f8fa4', margin: '0' }}>Drag files here</h2>
+              <p style={{ margin: '0' }}>or <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>browse your computer</span></p>
+            </DropZone>
+            <div>{this.state.file ? this.state.file.name : ''}</div>
+          </div>
+          }
           <div className='formItem'>
             <div>{this.renderLink(keys.candidatePage_applyForm_stakeTitle)}<span className='requiredIcon'>*</span></div>
             <TextField
@@ -107,14 +134,14 @@ class CandidateContainer extends Component {
               onClick={() => this.addListing()}
               backgroundColor='#536dfe'
               labelColor='#fff'
-              disabled={!!(!this.state.listing || !this.state.stake || this.state.listingError || this.state.stakeError)}
+              disabled={!!((!this.state.listing && !this.state.file) || !this.state.stake || this.state.listingError || this.state.stakeError)}
               style={{ marginTop: '25px' }}
             />
           </div>
         </div>
         }
         <Card>
-          { isFetching 
+          { isFetching
             ? <LinearProgress mode="indeterminate" />
             : listings
               ? <ListingsList
@@ -137,8 +164,12 @@ class CandidateContainer extends Component {
   }
 
   addListing () {
-    this.props.actions.applyListing(this.state.listing, this.state.stake);
-    this.setState({listing: '', stake: 0});
+    this.props.actions.applyListing(this.state.listing, this.state.stake, this.state.file);
+    this.setState({listing: '', stake: 0, file:null});
+  }
+
+  onFileSelected (files) {
+    this.setState({file: files[0]});
   }
 }
 

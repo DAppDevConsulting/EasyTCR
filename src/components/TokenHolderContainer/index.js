@@ -15,7 +15,7 @@ class TokenHolderContainer extends Component {
 
     this.listConfig = {
       columns: [
-        {propName: 'name', title: keys.tokenHolderPage_listingName, tooltip: keys.tokenHolderPage_listingTooltip},
+        {propName: 'label', title: keys.tokenHolderPage_listingName, tooltip: keys.tokenHolderPage_listingTooltip},
         {propName: 'status', title: keys.tokenHolderPage_listingStatus, tooltip: keys.tokenHolderPage_listingStatusTooltip},
         {propName: 'dueDate', title: keys.tokenHolderPage_listingDate, tooltip: keys.tokenHolderPage_listingDateTooltip},
         {propName: 'action', title: keys.tokenHolderPage_listingActions, tooltip: keys.tokenHolderPage_listingActionsTooltip}

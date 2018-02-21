@@ -1,7 +1,8 @@
 import { channel } from 'redux-saga';
 import { put, takeEvery, apply, call } from 'redux-saga/effects';
 import 'babel-polyfill';
-import TCR from '../TCR';
+import TCR, {ContractsManager} from '../TCR';
+import IPFS from '../services/IPFS';
 import { applyListing as getApplyListingQueue } from '../transactions';
 import ListingsProvider from '../services/ListingsProvider';
 import {
@@ -64,10 +65,14 @@ export function * applyListing (action) {
   if (!TCR.defaultAccountAddress()) {
     return;
   }
+  let name = action.name;
+  if (!action.name && action.file) {
+    name = yield apply(IPFS, 'upload', [action.file]);
+  }
 
   let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
   let minDeposit = yield apply(parameterizer, 'get', ['minDeposit']);
-  let queue = yield call(getApplyListingQueue, action.name, action.tokens, minDeposit);
+  let queue = yield call(getApplyListingQueue, name, action.tokens, minDeposit);
 
   yield put({ type: SHOW_TX_QUEUE, queue });
 }
@@ -85,7 +90,7 @@ export function * getCandidateListings (action) {
     'getListings',
     [TCR.registry(), TCR.defaultAccountAddress(), {owner: TCR.defaultAccountAddress()}]
   );
-  yield put({type: UPDATE_CANDIDATE_LISTINGS, listings});
+  yield put({type: UPDATE_CANDIDATE_LISTINGS, listings, useIpfs: ContractsManager.isRegistryUseIpfs(TCR.registry().address)});
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }
 
