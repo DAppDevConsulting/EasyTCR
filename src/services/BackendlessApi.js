@@ -1,26 +1,32 @@
 import contractService from './ContractService';
+import IPFS from './IPFS';
 const TCRofTCRs = {
-  'registry': '0x643c5883f1135cb487a8eb1ec4b3926e1607b05f',
-  'faucet': '0xb021ecd8126180f9c76fec9a1745604e92c890e5'
-};//require('../secrets.json').contracts;
+  'registry': '0x81e1269708582ae17560b6acc0f45d0416df8d68',
+  'faucet': '0x94a2ecef046adf0a5a44fc80a0685b16a30b1170'
+};
+//require('../secrets.json').contracts;
+
+const registriesCache = new Map();
 
 export default {
   getRegistries: async () => {
-    let registries = await contractService.getListings(TCRofTCRs.registry);
+    registriesCache.clear();
+    let listings = await contractService.getListings(TCRofTCRs.registry);
+    let registries = await Promise.all(
+      // TODO: filter to remove mistake in contract. remove this shit.
+      listings.filter(item => item.listing !== 'QmWqzxG4aff4htBi4sEeQiK42L8oPTRE6cbk44HRxgJvLZ')
+        .map(item => IPFS.get(item.listing))
+    );
+    registries.forEach(item => registriesCache.set(item.id, item));
     return registries.map(item => {
-      try {
-        return JSON.parse(item.listing);
-      } catch (err) {
-        console.error(err);
-        return '';
-      }
-    }).filter(item => item !== '')
-      .sort((a, b) => {
-        return a.registry > b.registry ? 1 : -1;
-      });
+      item.registry = item.id;
+      return item;
+    }).sort((a, b) => {
+      return a.id > b.id ? 1 : -1;
+    });
   },
   getRegistryLocalization: async (registry) => {
-    return '';
+    return registriesCache.has(registry) ? registriesCache.get(registry).localization : '';
   },
   getListings: async (registry, account, filters = [], address = '') => {
     let listings = await contractService.getListings(registry, account);

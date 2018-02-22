@@ -18,6 +18,7 @@ const initialState = {
   listings: [],
   isFetching: false,
   showTxQueue: false,
+  useIpfs: false,
   txQueue: null
 };
 
@@ -47,7 +48,7 @@ export default function candidate (state = initialState, action) {
       };
 
     case UPDATE_CANDIDATE_LISTINGS:
-      return {...state, listings: action.listings, showTxQueue: false, isFetching: false};
+      return {...state, listings: action.listings, showTxQueue: false, useIpfs: action.useIpfs, isFetching: false};
 
     case REQUEST_CANDIDATE_LISTINGS:
       return {...state, isFetching: true};

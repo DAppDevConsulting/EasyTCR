@@ -1,0 +1,90 @@
+{
+  "id": "0x81e1269708582ae17560b6acc0f45d0416df8d68",
+  "name": "TCR of TCRs",
+  "faucet": "0x94a2ecef046adf0a5a44fc80a0685b16a30b1170",
+  "localization": {
+    "en": {
+      "registryName": "TCR of TCRs",
+
+      "eth": "ETH",
+      "tokenName": "TKN",
+      "wei": "WEI",
+
+      "one": "one",
+      "two": "two",
+
+      "apply": "Apply",
+      "buy": "Buy",
+
+      "candidate": "TCR",
+      "candidateExample": "QmWqzxG4aff4htBi4sEeQiK42L8oPTRE6cbk44HRxgJvLZ",
+
+      "candidate_name": "TCR name",
+      "candidate_faucet": "faucet",
+      "candidate_localization": "localization config file",
+      "candidate_listingFields": "Registry listing fields",
+      "candidate_configFile": "Registry config",
+
+      "inApplication": "in Application",
+      "inRegistry": "in Registry",
+      "inVotingCommit": "in Commit",
+      "inVotingReveal": "in Reveal",
+      "notExists": "Ooops... No {candidate} in contract",
+
+      "menu_header": "Menu",
+      "menu_tokenHolder": "Token Holder",
+      "menu_candidate": "Applicant page",
+      "menu_consumer": "Consumer page",
+      "menu_manageTokens": "Manage tokens",
+
+      "tokenHolderPage_title": "Overview",
+      "tokenHolderPage_listingName": "{candidate} to review",
+      "tokenHolderPage_listingStatus": "Status",
+      "tokenHolderPage_listingDate": "Due date",
+      "tokenHolderPage_listingActions": "Actions",
+
+      "candidatePage_title": "Applicant page",
+      "candidatePage_addListingTitle": "Apply candidate",
+      "candidatePage_transactionsSteps_title": "Make an application to Registry",
+      "candidatePage_transactionsSteps_applyCandidate": "Apply candidate",
+      "candidatePage_transactionsSteps_applyCandidateText": "Submit candidate application to Registry.",
+      "candidatePage_applyForm_stakeTitle": "Bet Token or get Tokens to bet!",
+      "candidatePage_applyForm_stakeHint": "Min {0}",
+      "candidatePage_applyForm_stakeErrorText": "Stake less then min!",
+      "candidatePage_listingName": "My TCR contract",
+      "candidatePage_listingStatus": "Status",
+      "candidatePage_listingDate": "Due date",
+      "candidatePage_listingActions": "Actions",
+
+      "consumerPage_title": "Consumer page",
+      "consumerPage_listingName": "Candidate",
+      "consumerPage_listingStatus": "Status",
+      "consumerPage_listingDate": "Due date",
+      "consumerPage_listingActions": "Actions",
+      "manageTokensPage_title": "Manage Tokens",
+      "manageTokensPage_balanceHeader": "Your balance",
+      "manageTokensPage_balanceText": "You have {tokens} {tokenName} and {ethers} {eth}",
+      "manageTokensPage_buyTokensHeader": "Buy tokens",
+      "manageTokensPage_rate": "Current rate is {price} {wei} for 1 {tokenName}",
+      "manageTokensPage_buyTokensHint": "Enter tokens quantity",
+      "manageTokensPage_supposedTokens": "You want to buy {0} {1}",
+      "manageTokensPage_supposedPrice": "Total price {0}",
+
+
+      "transaction_Approve": "Approve",
+      "transaction_Retry": "Retry",
+      "transaction_metaMaskPrompts": "You will receive {0} MetaMask prompts",
+      "transaction_approveTransferTokensHeader": "Approve {0} Tokens",
+      "transaction_approveTransferTokensText": "Allow {name} Registry contract to transfer {tokenName} token deposit from your account.",
+      "transaction_submitChallengeHeader": "Challenge candidate",
+      "transaction_submitChallengeText": "Submit challenge to the {name} Registry contract."
+    }
+  },
+  "listingFields": [
+    {"name": "id", "type": "String", "required": true},
+    {"name": "name", "type": "String"},
+    {"name": "faucet", "type": "String", "required": true},
+    {"name": "localization", "type": "JSON"},
+    {"name": "listingFields", "type": "FieldsList"}
+  ]
+}
