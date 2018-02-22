@@ -33,7 +33,7 @@ const renderRow = (config, data, index) => (
             <Link
               to={`candidate/${data.name}`}
               style={{
-                color: key.accentColor,
+                color: keys.accentColor,
                 fontWeight: "400",
                 textTransform: "uppercase"
               }}
