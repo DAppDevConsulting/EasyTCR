@@ -13,8 +13,8 @@ import Inreveal2 from './statuses/Inreveal-2';
 import RefreshInregistry1 from './statuses/Refresh-inregistry-1';
 import RefreshInregistry2 from './statuses/Refresh-inregistry-2';
 // import RefreshInregistryLast1 from './statuses/Refresh-inregistry-last-1'; //
-import RefreshRejected2 from './statuses/Refresh-rejected-2'; //
-import RefreshRejectedLast1 from './statuses/Refresh-rejected-last-1'; //
+import RefreshRejected2 from './statuses/Refresh-rejected-2';
+import RefreshRejectedLast1 from './statuses/Refresh-rejected-last-1';
 import Inregistry from './statuses/Inregistry';
 
 const renderStatus = (status, whitelisted) => {
