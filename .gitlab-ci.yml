@@ -24,10 +24,7 @@ deploy_staging:
   tags: 
   - deploy
   script:
-  - dpl --provider=script --script=./deploy.sh &
-  environment:
-    name: staging
-    url: https://freakspace.xyz:3333
+  - dpl --provider=script --script=./deploy.sh
   only:
   - master
   - ci-cd
