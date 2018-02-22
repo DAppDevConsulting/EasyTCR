@@ -67,8 +67,8 @@ class ListingStatus extends Component {
               { this.state.isRefreshing
                 ? <div className='loaderContainer'><RefreshIndicator
                     status="loading"
-                    left={38}
-                    top={28}
+                    left={25}
+                    top={25}
                   /></div>
                 : <RaisedButton
                     label={keys.refreshLabel}
