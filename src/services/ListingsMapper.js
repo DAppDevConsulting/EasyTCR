@@ -54,14 +54,24 @@ export default class ListingsMapper {
         result.status = keys.notExists;
       }
 
-      result.dueDate = '';
-      result.timestamp = 0;
+      // get current stage remaining time
+      const challenge = await listing.getChallenge();
+      const poll = await challenge.getPoll();
+      const stage = await poll.getCurrentStage(); // commit, reveal, ended
 
-      if (!whitelisted && exists) {
-        result.timestamp = expTs * 1000;
-        let dateObj = moment(result.timestamp);
-        result.dueDate = `${dateObj.format('ddd, MMM Do')} ${dateObj.format('HH:mm')}`;
+      result.dueDate = '';
+      result.timestamp = expTs * 1000;
+
+      if (!whitelisted && exists && stage) {
+        if (stage === 'commit') {
+          result.timestamp = await poll.getCommitEndDate() * 1000;
+        } else if (stage === 'reveal') {
+          result.timestamp = await poll.getRevealEndDate() * 1000;
+        }
       }
+
+      let dateObj = moment(result.timestamp);
+      result.dueDate = `${dateObj.format("ddd, MMM Do")} ${dateObj.format("HH:mm")}`;
 
       return result;
     } catch (err) {
