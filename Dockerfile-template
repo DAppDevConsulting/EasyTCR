@@ -31,11 +31,11 @@ WORKDIR /ethereum-tcr-ui
 
 ADD . /ethereum-tcr-ui
 
-COPY secrets.json /ethereum-tcr-ui/src
-COPY apiConfig.js /ethereum-tcr-ui/src
+COPY _DIR/secrets.json /ethereum-tcr-ui/src
+COPY _DIR/apiConfig.js /ethereum-tcr-ui/src
 
-RUN npm install 
+RUN npm install
 RUN npm run build
 
-EXPOSE 3333
-CMD serve -p 3333 -s build
+EXPOSE _PORT
+CMD serve -p _PORT -s build
