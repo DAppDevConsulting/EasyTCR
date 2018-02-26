@@ -19,12 +19,31 @@ build:
   #- npm install
   #- npm run build
 
-deploy_staging:
+deploy_dev1:
   stage: deploy
   tags: 
   - deploy
   script:
-  - dpl --provider=script --script=./deploy.sh
+  - dpl --provider=script --script=./deploy.sh tcr-develop-app
   only:
-  - master
   - ci-cd
+  - develop
+
+deploy_dev2:
+  stage: deploy
+  tags: 
+  - deploy
+  script:
+  - dpl --provider=script --script=./deploy.sh tcr-dev2-app
+  only:
+  - ci-cd
+  - ipfs-integration
+
+deploy_production:
+  stage: deploy
+  tags: 
+  - deploy
+  script:
+  - dpl --provider=script --script=./deploy.sh tcr-app
+  only:
+  - ipfs-integration

@@ -1,12 +1,8 @@
 #!/bin/bash
 
-for i in $(ls ~gitlab-runner/tcr-ui-apps)
-do
-    docker stop ethereum-tcr-ui-deploy-$i
-    docker rm ethereum-tcr-ui-deploy-$i
-    cat Dockerfile-template | sed s/_DIR/$i/ | sed s/_PORT/$(cat ~gitlab-runner/tcr-ui-apps/$i/port)/ > Dockerfile-$i
-    cp -rf ~gitlab-runner/tcr-ui-apps/* .
-    docker build -f Dockerfile-$i . -t ethereum-tcr-ui-deploy-$i
-    #docker run -p 127.0.0.1:8989:8989 -t ethereum-tcr-backend-deploy
-    docker run -d --name ethereum-tcr-ui-deploy-$i --network host -t ethereum-tcr-ui-deploy-$i
-done
+docker stop ethereum-tcr-ui-deploy-$1
+docker rm ethereum-tcr-ui-deploy-$1
+cat Dockerfile-template | sed s/_DIR/$1/ | sed s/_PORT/$(cat ~gitlab-runner/tcr-ui-apps/$1/port)/ > Dockerfile-$1
+cp -rf ~gitlab-runner/tcr-ui-apps/* .
+docker build -f Dockerfile-$1 . -t ethereum-tcr-ui-deploy-$1
+docker run -d --name ethereum-tcr-ui-deploy-$1 --network host -t ethereum-tcr-ui-deploy-$1
