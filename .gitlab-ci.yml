@@ -46,4 +46,4 @@ deploy_production:
   script:
   - dpl --provider=script --script="./deploy.sh tcr-app"
   only:
-  - ipfs-integration
+  - master
