@@ -11,12 +11,12 @@ import {
 import PropTypes from 'prop-types';
 import keys from '../../i18n';
 
-const renderRow = (config, data, index) => (
+const renderRow = (config, data, registry, index) => (
   <TableRow key={index}>
     {config.columns.map(column => {
       const key = `${index}_${column.propName}`;
 
-      if (column.propName === "status") {
+      if (column.propName === 'status') {
         // check for WillBeWhitelisted and WillBeRejected statuses and render Need refresh
         return (
           <TableRowColumn key={key}>
@@ -26,16 +26,16 @@ const renderRow = (config, data, index) => (
               : data[column.propName]}
           </TableRowColumn>
         );
-      } else if (column.propName === "action") {
+      } else if (column.propName === 'action') {
         // TODO: view valid action state
         return (
           <TableRowColumn key={key}>
             <Link
-              to={`candidate/${data.name}`}
+              to={`candidate/${registry}/${data.name}`}
               style={{
                 color: keys.accentColor,
-                fontWeight: "400",
-                textTransform: "uppercase"
+                fontWeight: '400',
+                textTransform: 'uppercase'
               }}
             >View
             </Link>
@@ -50,7 +50,7 @@ const renderRow = (config, data, index) => (
   </TableRow>
 );
 
-const ListingsList = ({ listings, config }) => {
+const ListingsList = ({ listings, config, registry }) => {
   return (
     <div>
       <Table fixedHeader fixedFooter selectable={false}>
@@ -67,7 +67,7 @@ const ListingsList = ({ listings, config }) => {
           showRowHover
           stripedRows={false}
         >
-          {listings.reverse().map((row, index) => renderRow(config, row, index))}
+          {listings.reverse().map((row, index) => renderRow(config, row, registry, index))}
         </TableBody>
       </Table>
     </div>
@@ -77,6 +77,7 @@ const ListingsList = ({ listings, config }) => {
 ListingsList.propTypes = {
   listings: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired
 };
 
 export default ListingsList;

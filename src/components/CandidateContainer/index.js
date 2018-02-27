@@ -142,10 +142,11 @@ class CandidateContainer extends Component {
         }
         <Card>
           { isFetching
-            ? <LinearProgress mode="indeterminate" />
+            ? <LinearProgress mode='indeterminate' />
             : listings
               ? <ListingsList
                 listings={listings}
+                registry={this.props.registry}
                 config={this.listConfig}
               />
               : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
@@ -165,7 +166,7 @@ class CandidateContainer extends Component {
 
   addListing () {
     this.props.actions.applyListing(this.state.listing, this.state.stake, this.state.file);
-    this.setState({listing: '', stake: 0, file:null});
+    this.setState({listing: '', stake: 0, file: null});
   }
 
   onFileSelected (files) {
@@ -176,6 +177,7 @@ class CandidateContainer extends Component {
 function mapStateToProps (state) {
   return {
     candidate: state.candidate,
+    registry: state.app.registry,
     parameterizer: state.parameterizer
   };
 }
@@ -188,6 +190,7 @@ function mapDispatchToProps (dispatch) {
 
 CandidateContainer.propTypes = {
   candidate: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired,
   parameterizer: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };

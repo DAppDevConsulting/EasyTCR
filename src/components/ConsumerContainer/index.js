@@ -28,10 +28,11 @@ class ConsumerContainer extends Component {
         <h3 className='pageHeadline'>{keys.consumerPage_title}</h3>
         <Card>
           { isFetching
-            ? <LinearProgress mode="indeterminate" />
+            ? <LinearProgress mode='indeterminate' />
             : listings
               ? <ListingsList
                 listings={listings}
+                registry={this.props.registry}
                 config={listConfig}
               />
               : <div style={{ padding: '10px', textAlign: 'center' }}>{`No ${keys.candidate}s yet`}</div>
@@ -44,7 +45,8 @@ class ConsumerContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    consumer: state.consumer
+    consumer: state.consumer,
+    registry: state.app.registry
   };
 }
 
@@ -56,6 +58,7 @@ function mapDispatchToProps (dispatch) {
 
 ConsumerContainer.propTypes = {
   consumer: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired,
   actions: PropTypes.object.isRequired
 };
 

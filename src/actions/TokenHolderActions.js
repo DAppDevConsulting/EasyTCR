@@ -79,10 +79,11 @@ export function claimReward (challengeId, salt) {
   };
 }
 
-export function requestCurrentListing (listing) {
+export function requestCurrentListing (listing, registry) {
   return {
     type: REQUEST_CURRENT_LISTING,
-    listing
+    listing,
+    registry
   };
 }
 

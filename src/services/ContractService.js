@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import _ from 'lodash';
 import { Registry } from 'ethereum-tcr-api';
+import PromisesQueueWatcher from '../utils/PromisesQueueWatcher';
 
 const httpProvider = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/Dy4nhcddBU78aJPZ7TDA'));
 const SYNC_INTERVAL = 10000;
@@ -10,6 +11,8 @@ let rewardNotificationCandidate = null;
 
 // TODO: in future store only one registry
 const _map = new Map();
+
+const queueWatcher = new PromisesQueueWatcher();
 
 const handleEventsChain = async (events, handler) => {
   for (let event of events) {
@@ -267,23 +270,35 @@ const prepareSynchronizers = async (address, accountAddress) => {
   // TODO: hack
   if (typeof registryNotificationCandidate === 'function' && !synchronizationRunning) {
     _map.get(currentContract).setRegistryWatcher(registryNotificationCandidate);
-    registryNotificationCandidate('initial');
     registryNotificationCandidate = null;
   }
   if (typeof rewardNotificationCandidate === 'function' && !synchronizationRunning) {
     _map.get(currentContract).setRewardWatcher(rewardNotificationCandidate);
-    rewardNotificationCandidate('initial');
     rewardNotificationCandidate = null;
   }
 };
 
+// TODO: Добавить отмену, т.к. сейчас дожидаемся пока отработает прошлый запрос.
+const getPromiseFromQueue = (address, accountAddress) => {
+  return new Promise((resolve, reject) => {
+    queueWatcher.add(async () => {
+      try {
+        await prepareSynchronizers(address, accountAddress);
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  });
+};
+
 const getListings = async (address, accountAddress) => {
-  await prepareSynchronizers(address, accountAddress);
+  await getPromiseFromQueue(address, accountAddress);
   return _map.get(address).listings();
 };
 
 const getListingsToClaimReward = async (address, accountAddress) => {
-  await prepareSynchronizers(address, accountAddress);
+  await getPromiseFromQueue(address, accountAddress);
   return _map.get(address).listingsToClaimReward();
 };
 

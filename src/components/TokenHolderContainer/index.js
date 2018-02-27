@@ -59,6 +59,7 @@ class TokenHolderContainer extends Component {
             />
             <ListingsList
               listings={listings}
+              registry={this.props.registry}
               config={this.listConfig}
             />
           </Card>
@@ -71,6 +72,7 @@ class TokenHolderContainer extends Component {
 function mapStateToProps (state) {
   return {
     consumer: state.consumer,
+    registry: state.app.registry,
     tokenHolder: state.tokenHolder
   };
 }
@@ -84,6 +86,7 @@ function mapDispatchToProps (dispatch) {
 
 TokenHolderContainer.propTypes = {
   consumer: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired,
   tokenHolder: PropTypes.object.isRequired,
   consumerActions: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired

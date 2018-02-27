@@ -6,9 +6,11 @@ import {
   CLAIM_REWARD,
   REQUEST_TOKEN_INFORMATION,
   REQUEST_CURRENT_LISTING,
-  UPDATE_CURRENT_LISTING
+  UPDATE_CURRENT_LISTING,
+  CHANGE_REGISTRY
 } from '../constants/actions';
 import TCR from '../TCR';
+import RegistrySwitcher from '../services/RegistrySwitcher';
 import ListingsProvider from '../services/ListingsProvider';
 import ChallengeProvider from '../services/ChallengeProvider';
 import {claimReward as getClaimReward} from '../transactions';
@@ -30,6 +32,10 @@ export function * claimReward (action) {
 }
 
 export function * getListing (action) {
+  if (action.registry !== TCR.registry().address) {
+    yield put({type: CHANGE_REGISTRY, defaultRegistry: action.registry});
+  }
+  yield apply(RegistrySwitcher, 'switchToRegistry', [action.registry]);
   let listing = yield apply(
     ListingsProvider,
     'getListing',
