@@ -24,7 +24,7 @@ deploy_dev1:
   tags: 
   - deploy
   script:
-  - dpl --provider=script --script=./deploy.sh tcr-develop-app
+  - dpl --provider=script --script="./deploy.sh tcr-develop-app"
   only:
   - ci-cd
   - develop
@@ -34,7 +34,7 @@ deploy_dev2:
   tags: 
   - deploy
   script:
-  - dpl --provider=script --script=./deploy.sh tcr-dev2-app
+  - dpl --provider=script --script="./deploy.sh tcr-dev2-app"
   only:
   - ci-cd
   - ipfs-integration
@@ -44,6 +44,6 @@ deploy_production:
   tags: 
   - deploy
   script:
-  - dpl --provider=script --script=./deploy.sh tcr-app
+  - dpl --provider=script --script="./deploy.sh tcr-app"
   only:
   - ipfs-integration
