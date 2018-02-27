@@ -6,8 +6,11 @@ import keys from '../i18n';
 export async function applyListing (name, tokensAmount) {
   const account = await TCR.defaultAccount();
   const manager = new TransactionManager(provider());
-  return new PromisesQueue()
-    .add(
+  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const queue = new PromisesQueue();
+
+  if (approvedRegistryTokens < tokensAmount) {
+    queue.add(
       () => {
         return account.approveTokens(TCR.registry().address, tokensAmount)
           .then(ti => {
@@ -18,15 +21,20 @@ export async function applyListing (name, tokensAmount) {
         label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'TCR', type: 'Registry', tokenName: 'TCR' })
       }
-    ).add(
-      async () => {
-        return TCR.registry().createListing(name, tokensAmount); // TODO: следить за статусом транзакции
-      },
-      {
-        label: keys.candidatePage_transactionsSteps_applyCandidate,
-        content: keys.candidatePage_transactionsSteps_applyCandidateText
-      }
     );
+  }
+
+  queue.add(
+    async () => {
+      return TCR.registry().createListing(name, tokensAmount); // TODO: следить за статусом транзакции
+    },
+    {
+      label: keys.candidatePage_transactionsSteps_applyCandidate,
+      content: keys.candidatePage_transactionsSteps_applyCandidateText
+    }
+  );
+
+  return queue;
 }
 
 export async function challengeListing (name, tokensAmount) {
@@ -34,9 +42,11 @@ export async function challengeListing (name, tokensAmount) {
   const account = await TCR.defaultAccount();
   const listing = await registry.getListing(name);
   const manager = new TransactionManager(provider());
-  // TODO: здесь оставить только данные и идентификаторы транзакций. Сами тексты унести на уровень ui-компонентов
-  return new PromisesQueue()
-    .add(
+  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const queue = new PromisesQueue();
+
+  if (approvedRegistryTokens < parseInt(tokensAmount)) {
+    queue.add(
       () => {
         return account.approveTokens(TCR.registry().address, tokensAmount)
           .then(ti => {
@@ -47,13 +57,20 @@ export async function challengeListing (name, tokensAmount) {
         label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
       }
-    ).add(
-      () => listing.challenge(),
-      {
-        label: keys.transaction_submitChallengeHeader,
-        content: keys.formatString(keys.transaction_submitChallengeText, { name: keys.registryName })
-      }
     );
+  }
+
+  // TODO: здесь оставить только данные и идентификаторы транзакций. Сами тексты унести на уровень ui-компонентов
+
+  queue.add(
+    () => listing.challenge(),
+    {
+      label: keys.transaction_submitChallengeHeader,
+      content: keys.formatString(keys.transaction_submitChallengeText, { name: keys.registryName })
+    }
+  );
+
+  return queue;
 }
 
 export async function commitVote (id, hash, stake) {
@@ -62,33 +79,47 @@ export async function commitVote (id, hash, stake) {
   const plcr = await TCR.getPLCRVoting();
   const poll = plcr.getPoll(id);
   const manager = new TransactionManager(provider());
+  const approvedPlcrTokens = (await TCR.getApprovedTokens()).plcr;
+  const votingRights = await TCR.getVotingRights();
+  const queue = new PromisesQueue();
 
-  return new PromisesQueue()
-    // Approve tokens to PLCRVoting contract
-    .add(
-      () => {
-        return account.approveTokens(plcr.address, stake)
-          .then(ti => {
-            return manager.watchForTransaction(ti);
-          });
-      },
-      {
-        label: keys.formatString(keys.transaction_approveTransferTokensHeader, stake),
-        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'PLCR', tokenName: keys.tokenName })
-      }
-    ).add(
+  if (votingRights < stake) {
+    stake = stake - votingRights; // Just to buy the necessary amount
+
+    if (parseInt(approvedPlcrTokens) < stake) {
+      queue.add(
+        () => {
+          return account.approveTokens(plcr.address, stake)
+            .then(ti => {
+              return manager.watchForTransaction(ti);
+            });
+        },
+        {
+          label: keys.formatString(keys.transaction_approveTransferTokensHeader, stake),
+          content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'PLCR', tokenName: keys.tokenName })
+        }
+      );
+    }
+
+    queue.add(
       () => plcr.requestVotingRights(stake),
       {
         label: keys.formatString(keys.transaction_requestVotingRightsHeader, stake),
         content: keys.transaction_requestVotingRightsText
       }
-    ).add(
-      () => poll.commitVote(hash, stake),
-      {
-        label: keys.transaction_commitVoteHeader,
-        content: keys.transaction_commitVoteText
-      }
     );
+  }
+
+  // Approve tokens to PLCRVoting contract
+  queue.add(
+    () => poll.commitVote(hash, stake),
+    {
+      label: keys.transaction_commitVoteHeader,
+      content: keys.transaction_commitVoteText
+    }
+  );
+
+  return queue;
 }
 
 export async function revealVote (id, option, salt) {
