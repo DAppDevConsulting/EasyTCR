@@ -124,6 +124,10 @@ class TCR {
     return this.registry().getPLCRVoting();
   }
 
+  static async getParameterizer () {
+    return this.registry().getParameterizer();
+  }
+
   static async buyTokens (amount) {
     let account = await this.defaultAccount();
     let prevTokensBalance = new BN(await account.getTokenBalance(), 10);
@@ -143,6 +147,29 @@ class TCR {
     let tokens = this.formatWithDecimals(await account.getTokenBalance());
     let ethers = this.fromWei(await account.getEtherBalance());
     return {tokens, ethers};
+  }
+
+  static async getApprovedTokens (address = null) {
+    let account = await this.registry().getAccount(address || this.defaultAccountAddress());
+    let plcr = await TCR.getPLCRVoting();
+    let parameterizer = await TCR.getParameterizer();
+
+    let registryTokens = await account.getApprovedTokens(this.registry().address);
+    let plcrTokens = await account.getApprovedTokens(plcr.address);
+    let parameterizerTokens = await account.getApprovedTokens(parameterizer.address);
+
+    // @TODO: fix it with BN
+    return {
+      registry: parseInt(registryTokens),
+      plcr: parseInt(plcrTokens),
+      parameterizer: parseInt(parameterizerTokens)
+    };
+  }
+
+  static async getVotingRights (address = null) {
+    let plcr = await TCR.getPLCRVoting();
+
+    return plcr.getTokenBalance(address || this.defaultAccountAddress());
   }
 
   static fromWei (amount) {
