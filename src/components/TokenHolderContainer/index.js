@@ -8,6 +8,8 @@ import ListingsToClaimReward from './ListingsToClaimReward';
 import keys from '../../i18n';
 import * as consumerActions from '../../actions/ConsumerActions';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
+import * as appActions from '../../actions/AppActions';
+import UrlUtils from "../../utils/UrlUtils";
 
 class TokenHolderContainer extends Component {
   constructor (props) {
@@ -31,6 +33,11 @@ class TokenHolderContainer extends Component {
   }
 
   componentWillMount () {
+    const registry = UrlUtils.getRegistryAddressByLink();
+    if (registry && registry !== this.props.registry) {
+      this.props.appActions.changeRegistry(registry);
+      return;
+    }
     this.props.consumerActions.getConsumerListings();
     this.props.tokenHolderActions.requestListingsToClaimReward();
   }
@@ -80,7 +87,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     consumerActions: bindActionCreators(consumerActions, dispatch),
-    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch),
+    appActions: bindActionCreators(appActions, dispatch)
   };
 }
 
@@ -89,7 +97,8 @@ TokenHolderContainer.propTypes = {
   registry: PropTypes.string.isRequired,
   tokenHolder: PropTypes.object.isRequired,
   consumerActions: PropTypes.object.isRequired,
-  tokenHolderActions: PropTypes.object.isRequired
+  tokenHolderActions: PropTypes.object.isRequired,
+  appActions: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TokenHolderContainer);

@@ -6,10 +6,17 @@ import ListingsList from '../ListingsList';
 import keys from '../../i18n';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/ConsumerActions';
+import * as appActions from '../../actions/AppActions';
 import { connect } from 'react-redux';
+import UrlUtils from '../../utils/UrlUtils';
 
 class ConsumerContainer extends Component {
   componentWillMount () {
+    const registry = UrlUtils.getRegistryAddressByLink();
+    if (registry && registry !== this.props.registry) {
+      this.props.appActions.changeRegistry(registry);
+      return;
+    }
     this.props.actions.getConsumerListings();
   }
 
@@ -52,14 +59,16 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
+    appActions: bindActionCreators(appActions, dispatch)
   };
 }
 
 ConsumerContainer.propTypes = {
   consumer: PropTypes.object.isRequired,
   registry: PropTypes.string.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  appActions: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConsumerContainer);

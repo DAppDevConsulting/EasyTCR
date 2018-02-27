@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { List, ListItem } from 'material-ui/List';
 import { NavLink, withRouter } from 'react-router-dom';
 import { indigoA200 } from 'material-ui/styles/colors';
@@ -10,21 +12,21 @@ import TuneIcon from 'material-ui/svg-icons/image/tune';
 import './style.css';
 import keys from '../../i18n';
 import {
-  CONSUMER,
-  APPLICANT,
-  MANAGE_TOKENS,
-  TOKEN_HOLDER,
-  PARAMETERIZER,
+  LINK_TO_CONSUMER,
+  LINK_TO_APPLICANT,
+  LINK_TO_MANAGE_TOKENS,
+  LINK_TO_TOKEN_HOLDER,
+  LINK_TO_PARAMETERIZER
 } from '../../constants/Navigation';
 
 const iconStyles = {
   color: 'inherit', fill: 'currentColor', transition: 'none'
 };
 
-const renderNavItem = (key, to, icon) => (
+const renderNavItem = (key, to, icon, registry) => (
   <NavLink
     key={key}
-    to={to}
+    to={`${to}${registry}`}
     activeStyle={{ color: indigoA200 }}
     style={{ color: keys.textColor }}
   >
@@ -36,39 +38,39 @@ const renderNavItem = (key, to, icon) => (
   </NavLink>
 );
 
-const SideBar = () => {
+const SideBar = (props) => {
   const navItems = [
     {
       key: keys.menu_tokenHolder,
       icon: <AssessmentIcon style={iconStyles} />,
-      to: TOKEN_HOLDER
+      to: LINK_TO_TOKEN_HOLDER
     },
     {
       key: keys.menu_candidate,
       icon: <AssignmentIcon style={iconStyles} />,
-      to: APPLICANT
+      to: LINK_TO_APPLICANT
     },
     {
       key: keys.menu_consumer,
       icon: <WebIcon style={iconStyles} />,
-      to: CONSUMER
+      to: LINK_TO_CONSUMER
     },
     {
       key: keys.menu_manageTokens,
       icon: <FolderIcon style={iconStyles} />,
-      to: MANAGE_TOKENS
+      to: LINK_TO_MANAGE_TOKENS
     },
     {
       key: keys.menu_parameterizer,
       icon: <TuneIcon style={iconStyles} />,
-      to: PARAMETERIZER
+      to: LINK_TO_PARAMETERIZER
     }
   ];
   return (
     <div className='SideBarContainer'>
       <div>
         <List>
-          { navItems.map(x => renderNavItem(x.key, x.to, x.icon)) }
+          { navItems.map(x => renderNavItem(x.key, x.to, x.icon, props.registry)) }
           <ListItem
             primaryText={keys.documentationText}
             initiallyOpen={false}
@@ -88,4 +90,15 @@ const SideBar = () => {
   );
 };
 
-export default withRouter(SideBar);
+SideBar.propTypes = {
+  registry: PropTypes.string
+};
+
+const mapStateToProps = state => ({
+  registry: state.app.registry
+});
+
+const mapDispatchToProps = dispatch => ({
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SideBar));

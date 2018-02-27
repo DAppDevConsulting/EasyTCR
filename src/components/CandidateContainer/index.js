@@ -9,10 +9,12 @@ import DropZone from 'react-dropzone';
 import keys from '../../i18n';
 import TCR from '../../TCR';
 import ListingsList from '../ListingsList';
+import UrlUtils from '../../utils/UrlUtils';
 import TxQueue from '../TxQueue';
 import './style.css';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/CandidateActions';
+import * as appActions from '../../actions/AppActions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -41,6 +43,11 @@ class CandidateContainer extends Component {
   }
 
   componentWillMount () {
+    const registry = UrlUtils.getRegistryAddressByLink();
+    if (registry && registry !== this.props.registry) {
+      this.props.appActions.changeRegistry(registry);
+      return;
+    }
     // Setting token price for further usage
     TCR.getTokenPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
     this.props.actions.getCandidateListings();
@@ -184,7 +191,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
+    appActions: bindActionCreators(appActions, dispatch)
   };
 }
 
@@ -192,7 +200,8 @@ CandidateContainer.propTypes = {
   candidate: PropTypes.object.isRequired,
   registry: PropTypes.string.isRequired,
   parameterizer: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  appActions: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CandidateContainer);

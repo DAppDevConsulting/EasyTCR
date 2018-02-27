@@ -14,7 +14,7 @@ const switchToRegistry = async (registryAddress) => {
   if (registryAddress && ContractsManager.hasRegistry(registryAddress)) {
     address = registryAddress;
   }
-  storage.put('currentRegistry', address);
+  //storage.put('currentRegistry', address);
   ContractsManager.selectRegistry(address);
   let localization = await api.getRegistryLocalization(address);
   updateLocalization(localization);

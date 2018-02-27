@@ -16,7 +16,7 @@ import {
   SEND_TRANSACTIONS,
   ADD_REGISTRY,
   REQUEST_CANDIDATE_LISTINGS,
-  REQUEST_CONSUMER_LISTINGS,
+  REQUEST_CONSUMER_LISTINGS
 } from '../constants/actions';
 
 export function * sendTxBatch (action) {
@@ -36,7 +36,7 @@ export function * changeBackendUsage (action) {
 
 export function * init (action) {
   yield apply(RegistrySwitcher, 'switchToRegistry', [action.defaultRegistry]);
-  yield put({ type: REGISTRY_CHANGED, registry: action.defaultRegistry });
+  yield put({ type: REGISTRY_CHANGED, registry: TCR.registry().address });
   yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
   yield put({ type: REQUEST_TOKEN_INFORMATION });
   yield put({ type: UPDATE_REGISTRIES_LIST, registries: ContractsManager.getRegistries() });

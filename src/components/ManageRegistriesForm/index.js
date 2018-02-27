@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import { NavLink, withRouter } from 'react-router-dom';
 import Dialog from 'material-ui/Dialog';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
@@ -13,6 +14,7 @@ import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import keys from '../../i18n';
 import * as appActions from '../../actions/AppActions';
 import storage from '../../utils/CookieStorage';
+import {LINK_TO_TOKEN_HOLDER} from '../../constants/Navigation';
 
 class ManageRegistriesForm extends Component {
   constructor (props) {
@@ -30,7 +32,7 @@ class ManageRegistriesForm extends Component {
   }
 
   render () {
-    const {open, onClose, app} = this.props;
+    const {open, onClose, app, history} = this.props;
     const {addRegistry, changeRegistry} = this.props.appActions;
     const useBackend = !!storage.get('useBackend');
     const registries = app.registries.filter(item => item.registry !== '0x81e1269708582ae17560b6acc0f45d0416df8d68');
@@ -57,6 +59,9 @@ class ManageRegistriesForm extends Component {
                     <RadioButton
                       key={index}
                       onClick={() => {
+                        const newLink = `${LINK_TO_TOKEN_HOLDER}${registry.registry}`;
+                        // TODO: другие способы?
+                        history.push(newLink);
                         changeRegistry(registry.registry);
                         onClose();
                       }}
@@ -161,7 +166,10 @@ ManageRegistriesForm.propTypes = {
   appActions: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  app: PropTypes.object.isRequired
+  app: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageRegistriesForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ManageRegistriesForm));

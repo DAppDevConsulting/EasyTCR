@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/CandidateActions';
+import * as appActions from '../../actions/AppActions';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -9,6 +10,7 @@ import BN from 'bn.js';
 import TCR from '../../TCR';
 import keys from '../../i18n';
 import './style.css';
+import UrlUtils from '../../utils/UrlUtils';
 
 class ManageTokensContainer extends Component {
   constructor (props) {
@@ -28,6 +30,11 @@ class ManageTokensContainer extends Component {
   }
 
   componentWillMount () {
+    const registry = UrlUtils.getRegistryAddressByLink();
+    if (registry && registry !== this.props.registry) {
+      this.props.appActions.changeRegistry(registry);
+      return;
+    }
     // Setting token price for further usage
     this.weiToEthConverter = TCR.fromWei;
     TCR.getTokenPrice('wei').then(price => this.setState({ price: price.toString() }));
@@ -38,9 +45,9 @@ class ManageTokensContainer extends Component {
     const re = /^\d+$/;
 
     if (re.test(value) || value === '') {
-      this.setState({ value, errorText: '' })
+      this.setState({ value, errorText: '' });
     } else {
-      this.setState({ value, errorText: keys.invalidInput })
+      this.setState({ value, errorText: keys.invalidInput });
     }
   }
 
@@ -297,19 +304,23 @@ class ManageTokensContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    candidate: state.candidate
+    candidate: state.candidate,
+    registry: state.app.registry
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
+    appActions: bindActionCreators(appActions, dispatch)
   };
 }
 
 ManageTokensContainer.propTypes = {
   candidate: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  appActions: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageTokensContainer);
