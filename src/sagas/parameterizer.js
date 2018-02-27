@@ -25,19 +25,19 @@ export function * fetchParameters (action) {
     {
       name: keys.tableParameterNames[2],
       value: yield apply(parameterizer, 'get', ['commitStageLen']),
-      status: keys.inChallenge,
+      status: keys.inRegistry,
       proposal: null,
     },
     {
       name: keys.tableParameterNames[3],
       value: yield apply(parameterizer, 'get', ['revealStageLen']),
-      status: keys.inChallenge,
+      status: keys.inRegistry,
       proposal: null,
     },
     {
       name: keys.tableParameterNames[4],
       value: yield apply(parameterizer, 'get', ['dispensationPct']),
-      status: keys.endOfVoting,
+      status: keys.inRegistry,
       proposal: null,
     },
     {
