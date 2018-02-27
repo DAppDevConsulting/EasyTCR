@@ -1,0 +1,49 @@
+stages:
+  - build
+  - deploy
+
+build:
+  image: node:latest
+  stage: build
+  tags:
+  - build
+  script: 
+  - apt-get update
+  #- apt-get install -y git
+  #- mkdir /root/.ssh/
+  #- cp id_rsa /root/.ssh/id_rsa
+  #- chmod 600 /root/.ssh/id_rsa
+  #- touch /root/.ssh/known_hosts
+  #- ssh-keyscan gitlab.com >> /root/.ssh/known_hosts
+  #- npm install -g serve
+  #- npm install
+  #- npm run build
+
+deploy_dev1:
+  stage: deploy
+  tags: 
+  - deploy
+  script:
+  - dpl --provider=script --script="./deploy.sh tcr-develop-app"
+  only:
+  - ci-cd
+  - develop
+
+deploy_dev2:
+  stage: deploy
+  tags: 
+  - deploy
+  script:
+  - dpl --provider=script --script="./deploy.sh tcr-dev2-app"
+  only:
+  - ci-cd
+  - ipfs-integration
+
+deploy_production:
+  stage: deploy
+  tags: 
+  - deploy
+  script:
+  - dpl --provider=script --script="./deploy.sh tcr-app"
+  only:
+  - master
