@@ -14,5 +14,4 @@ docker build -f Dockerfile-$1 . -t ethereum-tcr-ui-deploy-"$1"-$INC
 docker stop ethereum-tcr-ui-deploy-"$1"-$COUNTER
 docker rm ethereum-tcr-ui-deploy-"$1"-$COUNTER
 docker run -d --name ethereum-tcr-ui-deploy-"$1"-$INC --network host -t ethereum-tcr-ui-deploy-"$1"-$INC
-
 echo "$INC" > ~gitlab-runner/tcr-ui-apps/$1/counter
