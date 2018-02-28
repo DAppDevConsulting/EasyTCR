@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import './style.css';
 import keys from '../../i18n';
+import TxQueue from "../TxQueue";
 
 class ParameterizerEdit extends Component {
 	constructor (props) {
@@ -36,11 +37,30 @@ class ParameterizerEdit extends Component {
 		}
 	}
 
+	resolveReparameterization() {
+		this.props.tokenHolderActions.hideTxQueue();
+		this.props.tokenHolderActions.requestParameterizerInformation();
+	}
+
 	render () {
-		const { activeProposal, tokenHolderActions } = this.props;
+		const {
+			activeProposal,
+			tokenHolderActions,
+			showTxQueue,
+			txQueue
+		} = this.props;
 
 		return (
 			<div className='parameterizerAction'>
+				{ showTxQueue ? (
+					<TxQueue
+						mode='vertical'
+						queue={txQueue}
+						cancel={tokenHolderActions.hideTxQueue}
+						title='Make an application to registry'
+						onEnd={() => this.resolveReparameterization()}
+					/>
+				) : (
 				<div>
 					<h3 className='parameterName'>{activeProposal.name}</h3>
 					<p>{keys.currentValueText}: {activeProposal.value}</p>
@@ -61,6 +81,7 @@ class ParameterizerEdit extends Component {
 						disabled={!this.state.newValue || !!this.state.error}
 					/>
 				</div>
+				)}
 			</div>
 		)
 	}
@@ -69,12 +90,19 @@ class ParameterizerEdit extends Component {
 ParameterizerEdit.propTypes = {
 	activeProposal: PropTypes.object.isRequired,
 	tokenHolderActions: PropTypes.object.isRequired,
+	showTxQueue: PropTypes.bool.isRequired,
+	txQueue: PropTypes.object,
+	minDeposit: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+	])
 };
 
-const mapStateToProps = (state) => ({
-	// showTxQueue: state.reveal.showTxQueue,
-	// txQueue: state.reveal.queue
-});
+const mapStateToProps = state => ({
+	showTxQueue: state.parameterizer.showTxQueue,
+	txQueue: state.parameterizer.queue,
+	minDeposit: state.parameterizer.parameters[0].value,
+})
   
 const mapDispatchToProps = (dispatch) => ({
 	tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)

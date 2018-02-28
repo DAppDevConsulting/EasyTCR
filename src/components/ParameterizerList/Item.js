@@ -58,7 +58,7 @@ const Item = ({ isFetching, parameter, isActive, selectParameter }) => {
 	return (
 		<TableRow>
 			<TableRowColumn style={{ whiteSpace: 'wrap' }}>
-				{parameter.name}
+				{parameter.displayName}
 			</TableRowColumn>
 			<TableRowColumn>
 				{parameter.value}
