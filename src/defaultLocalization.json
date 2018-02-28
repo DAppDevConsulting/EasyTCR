@@ -28,6 +28,7 @@
     "WillBeRejected": "Will be rejected",
     "VoteCommit": "In Commit",
     "VoteReveal": "In Reveal",
+    "NeedProcess": "Need process",
     "notExists": "Ooops... No candidate in contract",
     "inChallenge": "In Challenge",
     "endOfVoting": "End of voting",
