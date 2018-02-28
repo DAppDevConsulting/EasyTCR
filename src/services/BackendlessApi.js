@@ -39,11 +39,8 @@ export default {
     let listings = await contractService.getListingsToClaimReward(registry, account);
     return listings;
   },
-  getParameterizerProposals: async (registry, account) => {
-    console.log("getParameterizerProposals in backendless api", registry, account);
-    let parameterizerProposals = await contractService.getParameterizerProposals(registry, account);
-    return parameterizerProposals;
-  },
+  getParameterizerProposals: async (registry, account) =>
+    await contractService.getParameterizerProposals(registry, account),
   listenNotification: (handler) => {
     contractService.setRegistryNotificationHandler(handler);
   },
