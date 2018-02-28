@@ -9,6 +9,7 @@ import {
 import api from '../services/BackendApi'
 import { proposeNewParameterizerValue as getProposeNewParameterizerValue } from '../transactions'
 import keys from '../i18n';
+import { getProposalValue, getReadableStatus } from '../utils/Parameterizer'
 
 const paramsList = [
 	{
@@ -37,25 +38,6 @@ const paramsList = [
 	},
 ]
 
-const getProposalValue = (proposals, parameterName) =>
-	proposals.find(x => x.name === parameterName)
-		? proposals.find(x => x.name === parameterName).value
-    : null
-
-const getReadableStatus = status => {
-	switch (status) {
-		case 'NeedProcess':
-			return keys.NeedProcess
-		case 'VoteCommit':
-			return keys.VoteCommit
-		case 'VoteReveal':
-			return keys.VoteReveal
-		default:
-			return keys.inRegistry
-	}
-}
-
-
 export function * fetchParameters (action) {
   const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
 
@@ -81,12 +63,7 @@ export function * fetchParameters (action) {
       status = getReadableStatus(statusFromContract)
     }
 
-    return {
-      ...p,
-      proposal,
-      status,
-      value,
-    } 
+    return { ...p, proposal, status, value } 
   })
 
   yield put({ type: UPDATE_PARAMETERIZER_INFORMATION, params });
