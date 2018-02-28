@@ -42,6 +42,20 @@ const getProposalValue = (proposals, parameterName) =>
 		? proposals.find(x => x.name === parameterName).value
     : null
 
+const getReadableStatus = status => {
+	switch (status) {
+		case 'NeedProcess':
+			return keys.NeedProcess
+		case 'VoteCommit':
+			return keys.VoteCommit
+		case 'VoteReveal':
+			return keys.VoteReveal
+		default:
+			return keys.inRegistry
+	}
+}
+
+
 export function * fetchParameters (action) {
   const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
 
@@ -59,12 +73,12 @@ export function * fetchParameters (action) {
   const params = yield paramsList.map(function * (p) {
     const proposal = getProposalValue(proposals, p.contractName)
     const value = yield apply(parameterizer, 'get', [p.contractName])
-
     let status = keys.inRegistry
 
     if (proposal) {
       const proposalInstance = yield apply(parameterizer, 'getProposal', [p.contractName, proposal])
-      status = yield apply(proposalInstance, 'getStageStatus')
+      const statusFromContract = yield apply(proposalInstance, 'getStageStatus')
+      status = getReadableStatus(statusFromContract)
     }
 
     return {
