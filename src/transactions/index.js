@@ -151,3 +151,39 @@ export async function claimReward (challengeId, salt) {
   const ti = await challenge.claimReward(salt);
   await manager.watchForTransaction(ti);
 }
+
+export async function proposeNewParameterizerValue (parameterName, newParameterValue, tokensAmount) {
+  const registry = TCR.registry();
+  const account = await TCR.defaultAccount();
+  const parameterizer = await registry.getParameterizer();
+  const manager = new TransactionManager(provider());
+
+  return new PromisesQueue()
+    .add(
+      () => {
+        return account
+          .approveTokens(parameterizer.address, tokensAmount)
+          .then(ti => {
+            return manager.watchForTransaction(ti);
+          });
+      },
+      {
+        label: keys.formatString(
+          keys.transaction_approveTransferTokensHeader,
+          tokensAmount
+        ),
+        content: keys.formatString(
+          keys.transaction_approveTransferTokensText,
+          {
+            name: keys.registryName,
+            type: "Registry",
+            tokenName: keys.tokenName
+          }
+        )
+      }
+    )
+    .add(() => parameterizer.createProposal(parameterName, newParameterValue), {
+      label: keys.transaction_submitReparameterizationHeader,
+      content: keys.transaction_submitReparameterizationText
+    })
+}
