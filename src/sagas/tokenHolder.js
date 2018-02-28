@@ -1,4 +1,4 @@
-import {apply, call, put, takeEvery} from 'redux-saga/effects';
+import {apply, call, put, takeEvery, select} from 'redux-saga/effects';
 import { channel } from 'redux-saga';
 import {
   REQUEST_LISTINGS_TO_CLAIM_REWARD,
@@ -19,6 +19,8 @@ const changeChannel = channel();
 ChallengeProvider.addChangeListener(() => {
   changeChannel.put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
 });
+
+const getCurrentListing = (state) => state.tokenHolder.currentListing;
 
 export function * getListingsToClaimReward (action) {
   let listings = yield apply(ChallengeProvider, 'getListingsToClaimReward', [TCR.registry(), TCR.defaultAccountAddress()]);
@@ -41,12 +43,19 @@ export function * getListing (action) {
     'getListing',
     [TCR.registry(), TCR.defaultAccountAddress(), action.listing]
   );
+  console.log(listing);
   yield put({type: UPDATE_CURRENT_LISTING, currentListing: listing});
+}
+
+export function * updateListingsState () {
+  const currentListing = select(getCurrentListing);
+  yield put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
+  yield put({type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: currentListing});
 }
 
 export default function * flow () {
   yield takeEvery(REQUEST_LISTINGS_TO_CLAIM_REWARD, getListingsToClaimReward);
   yield takeEvery(CLAIM_REWARD, claimReward);
   yield takeEvery(REQUEST_CURRENT_LISTING, getListing);
-  yield takeEvery(changeChannel, getListingsToClaimReward);
+  yield takeEvery(changeChannel, updateListingsState);
 }
