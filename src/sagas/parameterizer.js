@@ -38,7 +38,7 @@ const paramsList = [
 	},
 ]
 
-export function * fetchParameters (action) {
+export function * fetchParameters () {
   const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
 
   const proposalEvents = yield apply(
@@ -55,15 +55,17 @@ export function * fetchParameters (action) {
   const params = yield paramsList.map(function * (p) {
     const proposal = getProposalValue(proposals, p.contractName)
     const value = yield apply(parameterizer, 'get', [p.contractName])
-    let status = keys.inRegistry
+    let status = keys.inChallenge
+    let challengeId = null
 
     if (proposal) {
       const proposalInstance = yield apply(parameterizer, 'getProposal', [p.contractName, proposal])
       const statusFromContract = yield apply(proposalInstance, 'getStageStatus')
+      challengeId = yield apply(proposalInstance, 'getChallengeId')
       status = getReadableStatus(statusFromContract)
     }
 
-    return { ...p, proposal, status, value } 
+    return { ...p, proposal, status, value, challengeId } 
   })
 
   yield put({ type: UPDATE_PARAMETERIZER_INFORMATION, params });
