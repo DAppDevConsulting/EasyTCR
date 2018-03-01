@@ -24,7 +24,7 @@ const Header = ({ balance, onSwitcherClick, onSettingsClick, onTCRofTCRsClick, i
       </ToolbarGroup>
       <ToolbarGroup>
         <EtherIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
-        { balance.isFetchingBalance 
+        { balance.isFetchingBalance
           ? <CircularProgress color={keys.headerTextColor} size={25}/>
           : <ToolbarTitle className='HeaderText' text={balance.ethers + ` ${keys.eth}`} />
         }
@@ -34,10 +34,6 @@ const Header = ({ balance, onSwitcherClick, onSettingsClick, onTCRofTCRsClick, i
           ? <CircularProgress color={keys.headerTextColor} size={25}/>
           : <ToolbarTitle className='HeaderText' text={balance.tokens + ` ${keys.tokenName}`} />
         }
-        <ToolbarSeparator className='Separator' />
-        <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
-          <SettingsIcon color={keys.headerTextColor} />
-        </IconButton>
         <ToolbarSeparator className='Separator' />
         {!useBackend &&
         <IconButton tooltip='Switch to TCR of TCRs' onClick={onTCRofTCRsClick}>
