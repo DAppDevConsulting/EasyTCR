@@ -17,9 +17,7 @@ const ParameterizerList = ({ parameterizer, activeProposal, selectParameter }) =
 			<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
 				<TableRow>
 				{keys.parameterizationColumnNames.map((column, index) =>
-					<TableHeaderColumn
-						key={index}
-					>{column}</TableHeaderColumn>)}
+					<TableHeaderColumn key={index}>{column}</TableHeaderColumn>)}
 				</TableRow>
 			</TableHeader>
 			<TableBody

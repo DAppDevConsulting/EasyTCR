@@ -62,7 +62,7 @@ class ParameterizerEdit extends Component {
 					/>
 				) : (
 				<div>
-					<h3 className='parameterName'>{activeProposal.name}</h3>
+					<h3 className='parameterName'>{activeProposal.displayName}</h3>
 					<p>{keys.currentValueText}: {activeProposal.value}</p>
 					<TextField
 						hintText={keys.hintText}

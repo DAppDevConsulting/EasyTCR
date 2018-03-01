@@ -30,8 +30,6 @@
     "VoteReveal": "In Reveal",
     "NeedProcess": "Need process",
     "notExists": "Ooops... No candidate in contract",
-    "inChallenge": "In Challenge",
-    "endOfVoting": "End of voting",
 
     "menu_header": "Menu",
     "menu_tokenHolder": "Token Holder",
@@ -182,6 +180,7 @@
     "actionEdit": "Edit",
     "actionVote": "Vote",
     "actionReveal": "Reveal",
+    "actionProcess": "Process",
 
     "invalidInput": "Input is not valid",
     "updating": "Updating...",

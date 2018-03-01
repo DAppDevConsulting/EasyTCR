@@ -6,10 +6,10 @@ import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
-import crypto from 'crypto';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
+import randomInt from 'random-int'
 
 class ParameterizerVote extends Component {
   constructor (props) {
@@ -19,7 +19,7 @@ class ParameterizerVote extends Component {
 
     this.state = {
       hasVoted: false,
-      salt: crypto.randomBytes(16).toString('hex'),
+      salt: randomInt(1e6, 1e8),
       stake: 0,
       option: 1
     };
@@ -29,7 +29,7 @@ class ParameterizerVote extends Component {
 		if (newProps !== this.props) {
 			this.setState({
         hasVoted: false,
-        salt: crypto.randomBytes(16).toString('hex'),
+        salt: randomInt(1e6, 1e8),
         stake: 0,
         option: 1
       })
@@ -37,7 +37,7 @@ class ParameterizerVote extends Component {
 	}
 
   handleVote () {
-    this.props.tokenHolderActions.commitVote(this.props.listing.challengeId, this.state.option, this.state.salt, this.state.stake);
+    this.props.tokenHolderActions.commitVote(this.props.activeProposal.challengeId, this.state.option, this.state.salt, this.state.stake);
   }
 
   resolveVoting () {
@@ -45,7 +45,7 @@ class ParameterizerVote extends Component {
   }
 
   render () {
-    const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { activeProposal, showTxQueue, txQueue, tokenHolderActions } = this.props;
 
     return (
       <div className='parameterizerAction'>
@@ -61,7 +61,7 @@ class ParameterizerVote extends Component {
           : <div>
               <h4 className='headline'>{keys.commitStage}</h4>
               <div className='actionData'>
-                { listing ? <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p> : null }
+                <p className='challengeId'>{keys.challengeIdText}: {activeProposal.challengeId}</p>
                 <TextField
                   floatingLabelText={keys.enterVotes}
                   floatingLabelFixed
