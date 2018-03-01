@@ -6,10 +6,10 @@ import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
-import crypto from 'crypto';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
+import randomInt from 'random-int'
 
 class ParameterizerVote extends Component {
   constructor (props) {
@@ -19,7 +19,7 @@ class ParameterizerVote extends Component {
 
     this.state = {
       hasVoted: false,
-      salt: crypto.randomBytes(16).toString('hex'),
+      salt: randomInt(1e6, 1e8),
       stake: 0,
       option: 1
     };
@@ -29,7 +29,7 @@ class ParameterizerVote extends Component {
 		if (newProps !== this.props) {
 			this.setState({
         hasVoted: false,
-        salt: crypto.randomBytes(16).toString('hex'),
+        salt: randomInt(1e6, 1e8),
         stake: 0,
         option: 1
       })
