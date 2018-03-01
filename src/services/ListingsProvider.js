@@ -21,6 +21,8 @@ class ListingWatcher {
         },
         this.listing.timestamp - now
       );
+    } else if (listing.dueDate) { // TODO: hack
+      refreshCandidates.add(this.listing.name);
     }
   }
 
