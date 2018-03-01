@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery, apply } from 'redux-saga/effects'
+import { call, put, takeEvery, apply } from 'redux-saga/effects'
 import TCR from '../TCR';
 import {
 	UPDATE_PARAMETERIZER_INFORMATION,
@@ -55,7 +55,7 @@ export function * fetchParameters () {
   const params = yield paramsList.map(function * (p) {
     const proposal = getProposalValue(proposals, p.contractName)
     const value = yield apply(parameterizer, 'get', [p.contractName])
-    let status = keys.VoteReveal
+    let status = keys.inRegistry
     let challengeId = null
     let voteResults = {
       votesFor: 0,
