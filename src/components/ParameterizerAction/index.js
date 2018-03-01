@@ -4,6 +4,7 @@ import './style.css';
 import ParameterizerEdit from './ParameterizerEdit';
 import ParameterizerVote from './ParameterizerVote';
 import ParameterizerReveal from './ParameterizerReveal';
+import ParameterizerNeedProcess from './ParameterizerNeedProcess';
 import keys from '../../i18n';
 
 const ParameterizerAction = ({ activeProposal }) => {
@@ -17,26 +18,17 @@ const ParameterizerAction = ({ activeProposal }) => {
 
 	switch (activeProposal.status) {
 		case keys.inRegistry:
-			return (
-				<ParameterizerEdit
-					activeProposal={activeProposal}
-				/>
-			);
-		case keys.inChallenge:
-			return (
-				<ParameterizerVote
-					activeProposal={activeProposal}
-				/>
-			);
-		case keys.endOfVoting:
-			return (
-				<ParameterizerReveal
-					activeProposal={activeProposal}
-				/>
-			);
-		// todo: process case
+			return <ParameterizerEdit activeProposal={activeProposal} />
+		case keys.VoteCommit:
+			return <ParameterizerVote activeProposal={activeProposal} />
+		case keys.VoteReveal:
+			return <ParameterizerReveal activeProposal={activeProposal} />
+		case keys.NeedProcess:
+			return <ParameterizerNeedProcess activeProposal={activeProposal} />
 		default:
-			return <p>Unhandled status</p>;
+			return <div className="parameterizerAction">
+					<p className="parameterizerNote">Unhandled status</p>
+				</div>
 	}
 };
 

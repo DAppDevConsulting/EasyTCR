@@ -24,7 +24,7 @@ class ParameterizerReveal extends Component {
   }
 
   handleVote () {
-    this.props.tokenHolderActions.revealVote(this.props.listing.challengeId, this.state.option, this.state.salt);
+    this.props.tokenHolderActions.revealVote(this.props.activeProposal.challengeId, this.state.option, this.state.salt);
   }
 
   resolveVoting () {
@@ -37,11 +37,21 @@ class ParameterizerReveal extends Component {
       : { fill: keys.textColor };
   }
 
+  calculateVotes (voteResults) {
+    const { votesFor, votesAgaints } = voteResults
+    const sum = votesFor + votesAgaints
+    const getPercentage = (votes, sum) => sum === 0 ? 0 : (votes / sum * 100).toFixed()
+
+    return {
+      supportVotes: +getPercentage(votesFor, sum),
+      opposeVotes: +getPercentage(votesAgaints, sum)
+    }
+  }
+
   render () {
     const { activeProposal, showTxQueue, txQueue, tokenHolderActions } = this.props;
-    const supportVotes = 78;
-    const opposeVotes = 22;
-
+    const { supportVotes, opposeVotes } = this.calculateVotes(activeProposal.voteResults);
+    
     return (
       <div className='parameterizerAction'>
         {showTxQueue ? (
@@ -73,7 +83,7 @@ class ParameterizerReveal extends Component {
                 </div>
               </div>
 
-              <p className='challengeId'>{keys.challengeIdText}: listing.challengeId</p>
+              <p className='challengeId'>{keys.challengeIdText}: {activeProposal.challengeId}</p>
               <TextField
                 floatingLabelText={keys.enterSaltText}
                 floatingLabelFixed
