@@ -46,5 +46,8 @@ export default {
   },
   listenRewordsNotification: (handler) => {
     contractService.setRewardNotificationHandler(handler);
+  },
+  onNewBlock: (handler) => {
+    contractService.onNewBlock(handler);
   }
 };

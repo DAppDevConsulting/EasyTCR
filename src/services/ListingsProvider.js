@@ -7,6 +7,7 @@ const registryCache = new Map();
 let currentRegistry = null;
 let useIpfs = false;
 let changeListeners = [];
+const refreshCandidates = new Set();
 
 class ListingWatcher {
   constructor (listing) {
@@ -16,10 +17,9 @@ class ListingWatcher {
     if (listing.timestamp > now) {
       this._timer = setTimeout(
         () => {
-          console.log('changed ', this.listing);
-          notificationListener('change', this.listing.name);
+          refreshCandidates.add(this.listing.name);
         },
-        this.listing.timestamp - now + 1000
+        this.listing.timestamp - now
       );
     }
   }
@@ -70,12 +70,24 @@ const callChangeListeners = () => {
   }
 };
 
+const newBlockListener = async (block) => {
+  const blockTs = block.timestamp * 1000;
+  const iterator = refreshCandidates.keys();
+  for (let key of iterator) {
+    if (getFromCache(key).timestamp < blockTs) {
+      refreshCandidates.delete(key);
+      await notificationListener('change', key);
+    }
+  }
+};
+
 const getListings = async (registry, accountAddress, condition) => {
   if (!currentRegistry || currentRegistry.address !== registry.address) {
     registryCache.clear();
     currentRegistry = registry;
     useIpfs = ContractsManager.isRegistryUseIpfs(registry.address);
     api.listenNotification(notificationListener);
+    api.onNewBlock(newBlockListener);
   }
   let listings = await api.getListings(registry.address, accountAddress, [], condition && condition.owner ? condition.owner : '');
   let toCache = await ListingsMapper.mapListings(listings.filter(item => !registryCache.has(item.listing)), registry);

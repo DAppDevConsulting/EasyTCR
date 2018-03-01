@@ -62,7 +62,7 @@ export default class ListingsMapper {
       result.dueDate = '';
       result.timestamp = expTs * 1000;
 
-      if (!whitelisted && exists && stage) {
+      if (exists && stage) {
         if (stage === 'commit') {
           result.timestamp = await poll.getCommitEndDate() * 1000;
         } else if (stage === 'reveal') {
@@ -70,8 +70,10 @@ export default class ListingsMapper {
         }
       }
 
-      let dateObj = moment(result.timestamp);
-      result.dueDate = `${dateObj.format("ddd, MMM Do")} ${dateObj.format("HH:mm")}`;
+      if (stage === 'commit' || stage === 'reveal' || result.status === keys.inApplication) {
+        let dateObj = moment(result.timestamp);
+        result.dueDate = `${dateObj.format('ddd, MMM Do')} ${dateObj.format('HH:mm')}`;
+      }
 
       return result;
     } catch (err) {
