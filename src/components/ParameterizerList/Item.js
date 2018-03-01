@@ -17,30 +17,26 @@ const getStatusStyle = status => {
 
 	switch (status) {
 		case keys.inRegistry:
-			return {
-				...style,
-				backgroundColor: keys.successColor,
-			}
-		case keys.inChallenge:
-			return {
-				...style,
-				backgroundColor: keys.inChallengeColor,
-			}
+			return { ...style, backgroundColor: keys.successColor }
+		case keys.VoteCommit:
+			return { ...style, backgroundColor: keys.inChallengeColor }
 		default:
-			return style;
+			return style
 	}
 }
 
 const getActionButtonLabel = status => {
 	switch (status) {
 		case keys.inRegistry:
-			return keys.actionEdit;
-		case keys.inChallenge:
-			return keys.actionVote;
-		case keys.endOfVoting:
-			return keys.actionReveal;
+			return keys.actionEdit
+		case keys.VoteCommit:
+			return keys.actionVote
+		case keys.VoteReveal:
+			return keys.actionReveal
+		case keys.NeedProcess:
+			return keys.actionProcess
 		default:
-			return 'Action';
+			return 'Action'
 	}
 }
 
