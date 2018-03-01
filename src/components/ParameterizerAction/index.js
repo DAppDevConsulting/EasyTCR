@@ -17,26 +17,14 @@ const ParameterizerAction = ({ activeProposal }) => {
 
 	switch (activeProposal.status) {
 		case keys.inRegistry:
-			return (
-				<ParameterizerEdit
-					activeProposal={activeProposal}
-				/>
-			);
-		case keys.inChallenge:
-			return (
-				<ParameterizerVote
-					activeProposal={activeProposal}
-				/>
-			);
-		case keys.endOfVoting:
-			return (
-				<ParameterizerReveal
-					activeProposal={activeProposal}
-				/>
-			);
+			return <ParameterizerEdit activeProposal={activeProposal} />
+		case keys.VoteCommit:
+			return <ParameterizerVote activeProposal={activeProposal} />
+		case keys.VoteReveal:
+			return <ParameterizerReveal activeProposal={activeProposal} />
 		// todo: process case
 		default:
-			return <p>Unhandled status</p>;
+			return <p>Unhandled status</p>
 	}
 };
 
