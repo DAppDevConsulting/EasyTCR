@@ -30,7 +30,7 @@ class ListingWatcher {
 }
 
 const getFromCache = (itemName) => {
-  return registryCache.get(itemName).listing;
+  return registryCache.has(itemName) ? registryCache.get(itemName).listing : null;
 };
 
 const addToCache = async (item) => {
@@ -74,7 +74,7 @@ const newBlockListener = async (block) => {
   const blockTs = block.timestamp * 1000;
   const iterator = refreshCandidates.keys();
   for (let key of iterator) {
-    if (getFromCache(key).timestamp < blockTs) {
+    if (getFromCache(key) && getFromCache(key).timestamp < blockTs) {
       refreshCandidates.delete(key);
       await notificationListener('change', key);
     }
