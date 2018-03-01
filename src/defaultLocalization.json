@@ -180,6 +180,7 @@
     "actionEdit": "Edit",
     "actionVote": "Vote",
     "actionReveal": "Reveal",
+    "actionProcess": "Process",
 
     "invalidInput": "Input is not valid",
     "updating": "Updating...",
