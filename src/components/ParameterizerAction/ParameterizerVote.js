@@ -37,7 +37,7 @@ class ParameterizerVote extends Component {
 	}
 
   handleVote () {
-    this.props.tokenHolderActions.commitVote(this.props.listing.challengeId, this.state.option, this.state.salt, this.state.stake);
+    this.props.tokenHolderActions.commitVote(this.props.activeProposal.challengeId, this.state.option, this.state.salt, this.state.stake);
   }
 
   resolveVoting () {
@@ -45,7 +45,7 @@ class ParameterizerVote extends Component {
   }
 
   render () {
-    const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { activeProposal, showTxQueue, txQueue, tokenHolderActions } = this.props;
 
     return (
       <div className='parameterizerAction'>
@@ -61,7 +61,7 @@ class ParameterizerVote extends Component {
           : <div>
               <h4 className='headline'>{keys.commitStage}</h4>
               <div className='actionData'>
-                { listing ? <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p> : null }
+                <p className='challengeId'>{keys.challengeIdText}: {activeProposal.challengeId}</p>
                 <TextField
                   floatingLabelText={keys.enterVotes}
                   floatingLabelFixed
