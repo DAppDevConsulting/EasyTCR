@@ -67,7 +67,7 @@ const ListingsList = ({ listings, config, registry }) => {
           showRowHover
           stripedRows={false}
         >
-          {listings.reverse().map((row, index) => renderRow(config, row, registry, index))}
+          {listings.map((row, index) => renderRow(config, row, registry, index))}
         </TableBody>
       </Table>
     </div>
