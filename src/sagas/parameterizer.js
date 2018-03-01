@@ -55,17 +55,31 @@ export function * fetchParameters () {
   const params = yield paramsList.map(function * (p) {
     const proposal = getProposalValue(proposals, p.contractName)
     const value = yield apply(parameterizer, 'get', [p.contractName])
-    let status = keys.inChallenge
+    let status = keys.VoteReveal
     let challengeId = null
-
-    if (proposal) {
-      const proposalInstance = yield apply(parameterizer, 'getProposal', [p.contractName, proposal])
-      const statusFromContract = yield apply(proposalInstance, 'getStageStatus')
-      challengeId = yield apply(proposalInstance, 'getChallengeId')
-      status = getReadableStatus(statusFromContract)
+    let voteResults = {
+      votesFor: 0,
+      votesAgaints: 0
     }
 
-    return { ...p, proposal, status, value, challengeId } 
+    if (proposal) {
+      // get status & challengeId
+      const proposalInstance = yield apply(parameterizer, 'getProposal', [p.contractName, proposal])
+      const statusFromContract = yield apply(proposalInstance, 'getStageStatus')
+      status = getReadableStatus(statusFromContract)
+      challengeId = yield apply(proposalInstance, 'getChallengeId')
+      console.log('challengeId', challengeId)
+
+      // get vote results
+      const plcr = yield apply(TCR, 'getPLCRVoting')
+      const poll = yield apply(plcr, 'getPoll', [challengeId])
+      voteResults = {
+        votesFor: yield apply(poll, 'getVotesFor'),
+        votesAgaints: yield apply(poll, 'getVotesAgainst')
+      }
+    }
+
+    return { ...p, proposal, status, value, challengeId, voteResults } 
   })
 
   yield put({ type: UPDATE_PARAMETERIZER_INFORMATION, params });
