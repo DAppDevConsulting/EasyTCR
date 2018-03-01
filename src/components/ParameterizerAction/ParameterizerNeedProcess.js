@@ -31,7 +31,7 @@ const ParameterizerNeedProcess = ({ activeProposal, tokenHolderActions, showTxQu
 					label={keys.actionProcess}
 					backgroundColor={keys.successColor}
 					labelColor={keys.buttonLabelColor}
-					onClick={() => tokenHolderActions.proposeNewValue(activeProposal, this.state.newValue)}
+					onClick={() => tokenHolderActions.processProposal(activeProposal)}
 				/>
 			</div>
 			}
