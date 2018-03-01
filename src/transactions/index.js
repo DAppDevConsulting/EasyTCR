@@ -145,6 +145,15 @@ export async function refreshListingStatus (name) {
     .catch(error => console.error(error));
 }
 
+export async function processProposal (name) {
+  // const registry = TCR.registry();
+  // const listing = await registry.getListing(name);
+
+  // return listing.updateStatus()
+  //   .catch(error => console.error(error));
+  console.log('processProposal transaction to be implemented', name)
+}
+
 export async function claimReward (challengeId, salt) {
   const manager = new TransactionManager(provider());
   const challenge = TCR.registry().getChallenge(challengeId);

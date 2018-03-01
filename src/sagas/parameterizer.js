@@ -4,10 +4,14 @@ import {
 	UPDATE_PARAMETERIZER_INFORMATION,
 	REQUEST_PARAMETERIZER_INFORMATION,
 	PROPOSE_NEW_PARAMETER_VALUE,
-	PARAMETERIZER_SHOW_TX_QUEUE,
+  PARAMETERIZER_SHOW_TX_QUEUE,
+  PROCESS_PROPOSAL
 } from '../constants/actions'
 import api from '../services/BackendApi'
-import { proposeNewParameterizerValue as getProposeNewParameterizerValue } from '../transactions'
+import {
+	proposeNewParameterizerValue as getProposeNewParameterizerValue,
+	processProposal as getProcessProposal,
+} from '../transactions'
 import keys from '../i18n';
 import { getProposalValue, getReadableStatus } from '../utils/Parameterizer'
 
@@ -93,7 +97,18 @@ export function* proposeNewParameterizerValue(action) {
   yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
 }
 
+export function* processProposal(action) {
+  console.log('processProposal to be implemented', action)
+  // const { contractName, proposal } = action.proposal
+  // const proposalInstance = yield apply(parameterizer, 'getProposal', [contractName, proposal])
+  // // const queue = 
+  // yield apply(proposalInstance, 'process');
+
+  // // yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
+}
+
 export default function * flow () {
   yield takeEvery(REQUEST_PARAMETERIZER_INFORMATION, fetchParameters);
   yield takeEvery(PROPOSE_NEW_PARAMETER_VALUE, proposeNewParameterizerValue);
+  yield takeEvery(PROCESS_PROPOSAL, processProposal);
 }
