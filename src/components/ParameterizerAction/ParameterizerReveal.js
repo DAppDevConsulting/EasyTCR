@@ -39,7 +39,6 @@ class ParameterizerReveal extends Component {
 
   calculateVotes (voteResults) {
     const { votesFor, votesAgaints } = voteResults
-    console.log({ votesFor, votesAgaints })
     const sum = votesFor + votesAgaints
     const getPercentage = (votes, sum) => sum === 0 ? 0 : (votes / sum * 100).toFixed()
 
