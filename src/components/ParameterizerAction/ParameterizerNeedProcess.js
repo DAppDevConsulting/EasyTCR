@@ -1,101 +1,42 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import * as tokenHolderActions from '../../actions/TokenHolderActions'
 import './style.css'
 import keys from '../../i18n'
 import TxQueue from '../TxQueue'
 
-class ParameterizerNeedProcess extends Component {
-	constructor(props) {
-		super()
-
-		this.handleValueChange = this.handleValueChange.bind(this)
-
-		this.state = {
-			newValue: '',
-			error: '',
-		}
+const ParameterizerNeedProcess = ({ activeProposal, tokenHolderActions, showTxQueue, txQueue }) => {
+	const resolveReparameterization = () => {
+		tokenHolderActions.hideTxQueue()
+		tokenHolderActions.requestParameterizerInformation()
 	}
 
-	componentWillReceiveProps(newProps) {
-		if (newProps !== this.props) {
-			this.setState({ newValue: '', error: '' })
-		}
-	}
-
-	handleValueChange(value) {
-		const re = /^\d+$/
-
-		if (re.test(value) && value !== '') {
-			this.setState({ newValue: value, error: '' })
-		} else {
-			this.setState({ newValue: value, error: keys.invalidInput })
-		}
-	}
-
-	resolveReparameterization() {
-		this.props.tokenHolderActions.hideTxQueue()
-		this.props.tokenHolderActions.requestParameterizerInformation()
-	}
-
-	render() {
-		const {
-			activeProposal,
-			tokenHolderActions,
-			showTxQueue,
-			txQueue,
-		} = this.props
-
-		return (
-			<div className="parameterizerAction">
-				{showTxQueue ? (
-					<TxQueue
-						mode="vertical"
-						queue={txQueue}
-						cancel={tokenHolderActions.hideTxQueue}
-						title="Make an application to registry"
-						onEnd={() => this.resolveReparameterization()}
-					/>
-				) : (
-					<div>
-						<h3 className="parameterName">{activeProposal.name}</h3>
-						<p>
-							{keys.currentValueText}: {activeProposal.value}
-						</p>
-						<TextField
-							hintText={keys.hintText}
-							errorText={this.state.error}
-							floatingLabelText={keys.proposalValueText}
-							floatingLabelFixed
-							style={{ marginBottom: 30 }}
-							onChange={e =>
-								this.handleValueChange(e.target.value)
-							}
-							value={this.state.newValue}
-						/>
-						<RaisedButton
-							label={keys.proposeValueChange}
-							backgroundColor={keys.successColor}
-							labelColor={keys.buttonLabelColor}
-							onClick={() =>
-								tokenHolderActions.proposeNewValue(
-									activeProposal,
-									this.state.newValue,
-								)
-							}
-							disabled={
-								!this.state.newValue || !!this.state.error
-							}
-						/>
-					</div>
-				)}
+	return (
+		<div className="parameterizerAction">
+			{ showTxQueue
+			? <TxQueue
+				mode="vertical"
+				queue={txQueue}
+				cancel={tokenHolderActions.hideTxQueue}
+				title="Make an application to registry"
+				onEnd={() => resolveReparameterization()}
+			/>
+			: <div>
+				<h3 className="parameterName">{activeProposal.displayName}</h3>
+				<p>To update parameter’s status, proceed with Process transaction</p>
+				<RaisedButton
+					label={keys.actionProcess}
+					backgroundColor={keys.successColor}
+					labelColor={keys.buttonLabelColor}
+					onClick={() => tokenHolderActions.proposeNewValue(activeProposal, this.state.newValue)}
+				/>
 			</div>
-		)
-	}
+			}
+		</div>
+	)
 }
 
 ParameterizerNeedProcess.propTypes = {
