@@ -148,9 +148,9 @@ export async function refreshListingStatus (name) {
 export async function processProposal (proposalObj) {
   const registry = TCR.registry();
   const parameterizer = await registry.getParameterizer();
-  const { contractName, proposal } = proposalObj
-  const proposalInstance = parameterizer.getProposal(contractName, proposal)
-  return proposalInstance.process()
+  const { contractName, proposal } = proposalObj;
+  const proposalInstance = parameterizer.getProposal(contractName, proposal);
+  return proposalInstance.process();
 }
 
 export async function claimReward (challengeId, salt) {
@@ -184,7 +184,7 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
           keys.transaction_approveTransferTokensText,
           {
             name: keys.registryName,
-            type: "Registry",
+            type: 'Registry',
             tokenName: keys.tokenName
           }
         )
@@ -193,5 +193,5 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
     .add(() => parameterizer.createProposal(parameterName, newParameterValue), {
       label: keys.transaction_submitReparameterizationHeader,
       content: keys.transaction_submitReparameterizationText
-    })
+    });
 }
