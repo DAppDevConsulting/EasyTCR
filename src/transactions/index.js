@@ -195,3 +195,33 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
       content: keys.transaction_submitReparameterizationText
     });
 }
+
+export async function challengeProposalTx (proposal, tokensAmount) {
+  const account = await TCR.defaultAccount();
+  const registry = TCR.registry();
+  const parameterizer = await registry.getParameterizer();
+  const proposalInstance = parameterizer.getProposal(proposal.contractName, proposal.proposal);
+  console.log('proposalInstance', proposalInstance);
+  const manager = new TransactionManager(provider());
+  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const queue = new PromisesQueue();
+
+  if (approvedRegistryTokens < parseInt(tokensAmount)) {
+    queue.add(
+      () => account.approveTokens(parameterizer.address, tokensAmount).then(ti => manager.watchForTransaction(ti)),
+      {
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
+        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
+      }
+    );
+  }
+  queue.add(
+    () => proposalInstance.challenge(),
+    {
+      label: keys.transaction_submitChallengeHeader,
+      content: keys.formatString(keys.transaction_submitChallengeText, { name: keys.registryName })
+    }
+  );
+
+  return queue;
+}
