@@ -53,11 +53,11 @@ class ParameterizerChallenge extends Component {
   }
 
   render () {
-    const { showTxQueue, txQueue, tokenHolderActions, minDeposit, activeProposal } = this.props;
+    const { showTxQueue, txQueue, tokenHolderActions, pMinDeposit, activeProposal } = this.props;
     const { remainingTime } = this.state;
 
     return (
-      <div className='listingAction'>
+      <div className='parameterizerAction'>
         {showTxQueue ? (
           <TxQueue
             mode='vertical'
@@ -83,7 +83,7 @@ class ParameterizerChallenge extends Component {
                   />}
               </div>
             </div>
-            <p className='challengeDeposit'>{`${keys.minDepositRequired}: ${minDeposit}`}</p>
+            <p className='challengeDeposit'>{`${keys.minDepositRequired}: ${pMinDeposit}`}</p>
             <RaisedButton
               label={keys.challenge}
               backgroundColor={keys.successColor}
@@ -102,13 +102,13 @@ ParameterizerChallenge.propTypes = {
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object,
   tokenHolderActions: PropTypes.object.isRequired,
-  minDeposit: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  pMinDeposit: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 const mapStateToProps = state => ({
   showTxQueue: state.challenge.showTxQueue,
   txQueue: state.challenge.queue,
-  minDeposit: state.parameterizer.parameters[0].value
+  pMinDeposit: state.parameterizer.pMinDeposit
 });
 
 const mapDispatchToProps = dispatch => ({
