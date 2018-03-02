@@ -206,15 +206,15 @@ export async function challengeProposalTx (proposal, tokensAmount) {
   const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
   const queue = new PromisesQueue();
 
-  if (approvedRegistryTokens < parseInt(tokensAmount)) {
-    queue.add(
-      () => account.approveTokens(parameterizer.address, tokensAmount).then(ti => manager.watchForTransaction(ti)),
-      {
-        label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
-        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
-      }
-    );
-  }
+  // if (approvedRegistryTokens < parseInt(tokensAmount)) {
+  queue.add(
+    () => account.approveTokens(parameterizer.address, tokensAmount).then(ti => manager.watchForTransaction(ti)),
+    {
+      label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
+      content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
+    }
+  );
+  // }
   queue.add(
     () => proposalInstance.challenge(),
     {
