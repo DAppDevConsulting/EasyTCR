@@ -44,14 +44,13 @@ const paramsList = [
 
 export function * fetchParameters () {
   const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
-
   const proposalEvents = yield apply(
     api,
     'getParameterizerProposals',
     [parameterizer.address, TCR.defaultAccountAddress()]
   );
-
-  const proposals = proposalEvents.map(p => ({
+  // reverse to get new proposals first
+  const proposals = proposalEvents.reverse().map(p => ({
     name: p.returnValues.name,
     value: p.returnValues.value
   }));
@@ -102,16 +101,14 @@ export function * fetchParameters () {
 }
 
 export function * proposeNewParameterizerValue (action) {
-  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
-  let pMinDeposit = yield apply(parameterizer, 'get', ['pMinDeposit']);
-  let queue = yield call(getProposeNewParameterizerValue, action.parameter.contractName, action.value, pMinDeposit);
-
+  const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+  const pMinDeposit = yield apply(parameterizer, 'get', ['pMinDeposit']);
+  const queue = yield call(getProposeNewParameterizerValue, action.parameter.contractName, action.value, pMinDeposit);
   yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
 }
 
 export function * processProposal (action) {
   yield call(getProcessProposal, action.proposal);
-
   yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
 }
 
