@@ -5,7 +5,8 @@ import {
   REQUEST_PARAMETERIZER_INFORMATION,
   PROPOSE_NEW_PARAMETER_VALUE,
   PARAMETERIZER_SHOW_TX_QUEUE,
-  PROCESS_PROPOSAL
+  PROCESS_PROPOSAL,
+  CHALLENGE_PROPOSAL
 } from '../constants/actions';
 import api from '../services/BackendApi';
 import {
@@ -114,9 +115,10 @@ export function * processProposal (action) {
 }
 
 export function * challengeProposal (action) {
+  console.log('action', action);
   const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
   const pMinDeposit = yield apply(parameterizer, 'get', ['pMinDeposit']);
-  const queue = yield call(getChallengeProposalTx, action.parameter.contractName, pMinDeposit);
+  const queue = yield call(getChallengeProposalTx, action.proposal, pMinDeposit);
 
   yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
 }
@@ -125,4 +127,5 @@ export default function * flow () {
   yield takeEvery(REQUEST_PARAMETERIZER_INFORMATION, fetchParameters);
   yield takeEvery(PROPOSE_NEW_PARAMETER_VALUE, proposeNewParameterizerValue);
   yield takeEvery(PROCESS_PROPOSAL, processProposal);
+  yield takeEvery(CHALLENGE_PROPOSAL, challengeProposal);
 }

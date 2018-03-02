@@ -89,7 +89,7 @@ class ParameterizerChallenge extends Component {
               label={keys.challenge}
               backgroundColor={keys.successColor}
               labelColor={keys.buttonLabelColor}
-              onClick={() => tokenHolderActions.challenge(activeProposal.contractName)}
+              onClick={() => tokenHolderActions.challengeProposal(activeProposal)}
             />
           </div>
         )}
@@ -107,8 +107,8 @@ ParameterizerChallenge.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  showTxQueue: state.challenge.showTxQueue,
-  txQueue: state.challenge.queue,
+  showTxQueue: state.parameterizer.showTxQueue,
+  txQueue: state.parameterizer.queue,
   pMinDeposit: state.parameterizer.pMinDeposit
 });
 
