@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,36 +7,63 @@ import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import './style.css';
 import keys from '../../i18n';
 import TxQueue from '../TxQueue';
+import LinearProgress from 'material-ui/LinearProgress';
 
-const ParameterizerNeedProcess = ({ activeProposal, tokenHolderActions, showTxQueue, txQueue }) => {
-  const resolveReparameterization = () => {
-    tokenHolderActions.hideTxQueue();
-    tokenHolderActions.requestParameterizerInformation();
-  };
+class ParameterizerNeedProcess extends Component {
+  constructor () {
+    super();
 
-  return (
-    <div className='parameterizerAction'>
-      { showTxQueue
-        ? <TxQueue
-          mode='vertical'
-          queue={txQueue}
-          cancel={tokenHolderActions.hideTxQueue}
-          title='Make an application to registry'
-          onEnd={() => resolveReparameterization()}
-        />
-        : <div>
-          <h3 className='parameterName'>{activeProposal.displayName}</h3>
-          <p>To update parameter’s status, proceed with Process transaction</p>
-          <RaisedButton
-            label={keys.actionProcess}
-            backgroundColor={keys.successColor}
-            labelColor={keys.buttonLabelColor}
-            onClick={() => tokenHolderActions.processProposal(activeProposal)}
+    this.resolveReparameterization = this.resolveReparameterization.bind(this);
+    this.handleProposalProcess = this.handleProposalProcess.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+
+    this.state = {
+      isFetching: false
+    };
+  }
+
+  resolveReparameterization () {
+    this.props.tokenHolderActions.hideTxQueue();
+    this.props.tokenHolderActions.requestParameterizerInformation();
+  }
+
+  handleProposalProcess (activeProposal) {
+    this.setState({ isFetching: true });
+    this.props.tokenHolderActions.processProposal(activeProposal);
+  }
+
+  handleCancel () {
+    this.props.tokenHolderActions.hideTxQueue();
+  }
+
+  render () {
+    const { activeProposal, showTxQueue, txQueue } = this.props;
+
+    return (
+      <div className='parameterizerAction'>
+        {showTxQueue
+          ? <TxQueue
+            mode='vertical'
+            queue={txQueue}
+            cancel={() => this.handleCancel()}
+            title='Make an application to registry'
+            onEnd={() => this.resolveReparameterization()}
           />
-        </div>
-      }
-    </div>
-  );
+          : <div>
+            <h3 className='parameterName'>{activeProposal.displayName}</h3>
+            <p>To update parameter’s status, proceed with Process transaction</p>
+            { this.state.isFetching && <LinearProgress mode='indeterminate' style={{ marginBottom: 15 }} /> }
+            <RaisedButton
+              label={keys.actionProcess}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              onClick={() => this.handleProposalProcess(activeProposal)}
+              disabled={this.state.isFetching}
+            />
+          </div>}
+      </div>
+    );
+  }
 };
 
 ParameterizerNeedProcess.propTypes = {
