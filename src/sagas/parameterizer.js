@@ -57,8 +57,9 @@ export function * fetchParameters () {
   }))
 
   const params = yield paramsList.map(function * (p) {
-    const proposal = getProposalValue(proposals, p.contractName)
     const value = yield apply(parameterizer, 'get', [p.contractName])
+    const proposalValueFromContract = getProposalValue(proposals, p.contractName)
+    const proposal = value !== proposalValueFromContract ? proposalValueFromContract : null
     let status = keys.inRegistry
     let challengeId = null
     let voteResults = {
@@ -72,7 +73,12 @@ export function * fetchParameters () {
       const statusFromContract = yield apply(proposalInstance, 'getStageStatus')
       status = getReadableStatus(statusFromContract)
       challengeId = yield apply(proposalInstance, 'getChallengeId')
+      console.log('p.contractName', p.contractName)
+      console.log('proposal', proposal)
+      console.log('value', value)
       console.log('challengeId', challengeId)
+      console.log('statusFromContract', statusFromContract)
+      console.log('status', status)
 
       // get vote results
       const plcr = yield apply(TCR, 'getPLCRVoting')
@@ -98,13 +104,7 @@ export function* proposeNewParameterizerValue(action) {
 }
 
 export function* processProposal(action) {
-  console.log('processProposal to be implemented', action)
-  // const { contractName, proposal } = action.proposal
-  // const proposalInstance = yield apply(parameterizer, 'getProposal', [contractName, proposal])
-  // // const queue = 
-  // yield apply(proposalInstance, 'process');
-
-  // // yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
+  yield call(getProcessProposal, action.proposal)
 }
 
 export default function * flow () {
