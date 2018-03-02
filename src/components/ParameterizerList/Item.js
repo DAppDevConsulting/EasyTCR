@@ -26,7 +26,7 @@ const Item = ({ isFetching, parameter, isActive, selectParameter }) => {
         {numberWithSpaces(parameter.value)}
       </TableRowColumn>
       <TableRowColumn>
-        {parameter.proposal}
+        {parameter.proposal && numberWithSpaces(parameter.proposal)}
       </TableRowColumn>
       <TableRowColumn>
         {<span style={getStatusStyle(parameter.status)}>{parameter.status}</span>}
