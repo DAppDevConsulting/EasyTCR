@@ -145,13 +145,12 @@ export async function refreshListingStatus (name) {
     .catch(error => console.error(error));
 }
 
-export async function processProposal (name) {
-  // const registry = TCR.registry();
-  // const listing = await registry.getListing(name);
-
-  // return listing.updateStatus()
-  //   .catch(error => console.error(error));
-  console.log('processProposal transaction to be implemented', name)
+export async function processProposal (proposalObj) {
+  const registry = TCR.registry();
+  const parameterizer = await registry.getParameterizer();
+  const { contractName, proposal } = proposalObj
+  const proposalInstance = parameterizer.getProposal(contractName, proposal)
+  return proposalInstance.process()
 }
 
 export async function claimReward (challengeId, salt) {
