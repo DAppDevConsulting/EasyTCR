@@ -23,6 +23,7 @@
 
     "inApplication": "In Application",
     "inRegistry": "In Registry",
+    "inChallenge": "In Challenge",
     "needRefresh": "Need refresh",
     "WillBeWhitelisted": "Will be whitelisted",
     "WillBeRejected": "Will be rejected",
