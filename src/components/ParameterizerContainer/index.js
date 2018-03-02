@@ -27,6 +27,12 @@ class ParameterizerContainer extends Component {
     }
   }
 
+  componentWillReceiveProps (newProps) {
+    if (newProps.parameterizer.parameters !== this.props.parameterizer.parameters) {
+      this.setState({ activeProposal: null });
+    }
+  }
+
   selectParameter (parameter) {
     this.setState({
       activeProposal: parameter
@@ -37,7 +43,9 @@ class ParameterizerContainer extends Component {
     return (
       <div className='ContentContainer'>
         <h4 className='pageHeadline'>{keys.parameterizationPage}</h4>
-        <h3 className='manageTokensTitle'>{keys.parameterizationTitle}</h3>
+        <h3 className='manageTokensTitle'>
+          {keys.parameterizationTitle}
+        </h3>
         <div className='ParameterizerContainer'>
           <ParameterizerList
             parameterizer={this.props.parameterizer}
