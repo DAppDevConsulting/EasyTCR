@@ -52,3 +52,6 @@ export const getActionButtonLabel = status => {
       return 'Action';
   }
 };
+
+export const numberWithSpaces = (x) =>
+  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

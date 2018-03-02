@@ -8,6 +8,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
+import { numberWithSpaces } from '../../utils/Parameterizer';
 
 class ParameterizerChallenge extends Component {
   constructor (props) {
@@ -83,7 +84,7 @@ class ParameterizerChallenge extends Component {
                   />}
               </div>
             </div>
-            <p className='challengeDeposit'>{`${keys.minDepositRequired}: ${pMinDeposit}`}</p>
+            <p className='challengeDeposit'>{`${keys.minDepositRequired}: ${numberWithSpaces(pMinDeposit)}`}</p>
             <RaisedButton
               label={keys.challenge}
               backgroundColor={keys.successColor}
