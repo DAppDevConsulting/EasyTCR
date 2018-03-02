@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 import ParameterizerEdit from './ParameterizerEdit';
+import ParameterizerChallenge from './ParameterizerChallenge'
 import ParameterizerVote from './ParameterizerVote';
 import ParameterizerReveal from './ParameterizerReveal';
 import ParameterizerNeedProcess from './ParameterizerNeedProcess';
@@ -9,18 +10,16 @@ import keys from '../../i18n';
 
 const ParameterizerAction = ({ activeProposal }) => {
 	if (!activeProposal) {
-		return (
-			<div className='parameterizerAction'>
+		return <div className='parameterizerAction'>
 				<p className='parameterizerNote'>{keys.parameterizerNote}</p>
-			</div>
-		)		
+			</div>	
 	}
 
 	switch (activeProposal.status) {
 		case keys.inRegistry:
 			return <ParameterizerEdit activeProposal={activeProposal} />
 		case keys.inChallenge:
-			return <ParameterizerEdit activeProposal={activeProposal} />
+			return <ParameterizerChallenge activeProposal={activeProposal} />
 		case keys.VoteCommit:
 			return <ParameterizerVote activeProposal={activeProposal} />
 		case keys.VoteReveal:
