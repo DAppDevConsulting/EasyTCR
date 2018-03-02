@@ -9,7 +9,7 @@ import DownloadIcon from 'material-ui/svg-icons/file/file-download';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
-import randomInt from 'random-int'
+import randomInt from 'random-int';
 
 class ParameterizerVote extends Component {
   constructor (props) {
@@ -26,15 +26,15 @@ class ParameterizerVote extends Component {
   }
 
   componentWillReceiveProps (newProps) {
-		if (newProps !== this.props) {
-			this.setState({
+    if (newProps !== this.props) {
+      this.setState({
         hasVoted: false,
         salt: randomInt(1e6, 1e8),
         stake: 0,
         option: 1
-      })
-		}
-	}
+      });
+    }
+  }
 
   handleVote () {
     this.props.tokenHolderActions.commitVote(this.props.activeProposal.challengeId, this.state.option, this.state.salt, this.state.stake);
@@ -51,14 +51,14 @@ class ParameterizerVote extends Component {
       <div className='parameterizerAction'>
         {
           showTxQueue
-          ? <TxQueue
+            ? <TxQueue
               mode='vertical'
               queue={txQueue}
               cancel={tokenHolderActions.hideVotingCommitTxQueue}
               title={keys.txQueueTitle}
               onEnd={() => this.resolveVoting()}
             />
-          : <div>
+            : <div>
               <h4 className='headline'>{keys.commitStage}</h4>
               <div className='actionData'>
                 <p className='challengeId'>{keys.challengeIdText}: {activeProposal.challengeId}</p>
@@ -92,25 +92,25 @@ class ParameterizerVote extends Component {
                   </RadioButtonGroup>
                 </div>
               </div>
-            {
-              this.state.hasVoted
-                ? <RaisedButton
+              {
+                this.state.hasVoted
+                  ? <RaisedButton
                     style={{ marginTop: '20px' }}
                     label={keys.downloadCommit}
                     backgroundColor={keys.successColor}
                     labelColor={keys.buttonLabelColor}
                     labelPosition='before'
                     icon={<DownloadIcon />}
-                />
-                : <RaisedButton
+                  />
+                  : <RaisedButton
                     style={{ marginTop: '20px' }}
                     label={keys.vote}
                     backgroundColor={keys.successColor}
                     labelColor={keys.buttonLabelColor}
                     onClick={() => this.handleVote()}
-                />
-            }
-          </div>
+                  />
+              }
+            </div>
         }
       </div>
     );
@@ -126,8 +126,7 @@ ParameterizerVote.propTypes = {
 
 const mapStateToProps = (state) => ({
   showTxQueue: state.commit.showTxQueue,
-  txQueue: state.commit.queue,
-  minDeposit: state.parameterizer.parameters[0].value,
+  txQueue: state.commit.queue
 });
 
 const mapDispatchToProps = (dispatch) => ({
