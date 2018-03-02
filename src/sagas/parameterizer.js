@@ -57,9 +57,13 @@ export function * fetchParameters () {
   }))
 
   const params = yield paramsList.map(function * (p) {
+    // current parameter value
     const value = yield apply(parameterizer, 'get', [p.contractName])
     const proposalValueFromContract = getProposalValue(proposals, p.contractName)
+    // new proposal cannot be the same as current value
     const proposal = value !== proposalValueFromContract ? proposalValueFromContract : null
+    
+    // mutable variables
     let status = keys.inRegistry
     let challengeId = null
     let voteResults = {

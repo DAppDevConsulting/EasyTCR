@@ -13,9 +13,7 @@ export const getReadableStatus = status => {
 			return keys.VoteCommit
 		case 'VoteReveal':
 			return keys.VoteReveal
-		case null:
-			return keys.inChallenge
 		default:
-			return keys.inRegistry
+			return keys.inChallenge
 	}
 }
