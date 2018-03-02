@@ -54,7 +54,7 @@ class Commit extends Component {
   resolveVoting () {
     // TODO: зачем это выносить в глобальный стейт?
     this.props.tokenHolderActions.hideVotingCommitTxQueue();
-    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name);
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name, this.props.registry);
   }
 
   renderTxQueue () {
@@ -163,12 +163,14 @@ class Commit extends Component {
 
 Commit.propTypes = {
   listing: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object
 };
 
 const mapStateToProps = (state) => ({
+  registry: state.app.registry,
   showTxQueue: state.commit.showTxQueue,
   txQueue: state.commit.queue,
   minDeposit: state.parameterizer.parameters[0].value,

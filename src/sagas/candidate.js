@@ -1,5 +1,5 @@
 import { channel } from 'redux-saga';
-import { put, takeEvery, apply, call } from 'redux-saga/effects';
+import {put, takeEvery, apply, call, select} from 'redux-saga/effects';
 import 'babel-polyfill';
 import TCR, {ContractsManager} from '../TCR';
 import IPFS from '../services/IPFS';
@@ -18,7 +18,8 @@ import {
   APPROVE_REGISTRY_TOKENS,
   APPROVE_PLCR_TOKENS,
   REQUEST_VOTING_RIGHTS,
-  WITHDRAW_VOTING_RIGHTS
+  WITHDRAW_VOTING_RIGHTS,
+  REQUEST_CURRENT_LISTING
 } from '../constants/actions';
 
 // TODO: refactor this shit
@@ -26,6 +27,8 @@ const changeChannel = channel();
 ListingsProvider.addChangeListener(() => {
   changeChannel.put({type: REQUEST_CANDIDATE_LISTINGS});
 });
+
+const getCurrentListing = (state) => state.tokenHolder.currentListing;
 
 export function * buyTokens (action) {
   try {
@@ -147,6 +150,14 @@ export function * withdrawVotingRights (action) {
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }
 
+export function * updateListingsState () {
+  const currentListing = yield select(getCurrentListing);
+  yield put({type: REQUEST_CANDIDATE_LISTINGS});
+  if (currentListing) {
+    yield put({type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: currentListing.name});
+  }
+}
+
 export default function * flow () {
   yield takeEvery(BUY_TOKENS, buyTokens);
   yield takeEvery(APPLY_LISTING, applyListing);
@@ -154,8 +165,8 @@ export default function * flow () {
   yield takeEvery(REQUEST_CANDIDATE_LISTINGS, getCandidateListings);
   // yield takeEvery('HIDE_TX_QUEUE', getCandidateListings);
   yield takeEvery(CANCEL_LISTING_APPLICATION, cancelListingApplication);
-  yield takeEvery(changeChannel, getCandidateListings);
-  // yield takeEvery('ADD_LISTING', addListing);
+  yield takeEvery(changeChannel, updateListingsState);
+  // yield takeEvery('ADD_LISTING', addListing);getCandidateListings
   yield takeEvery(APPROVE_REGISTRY_TOKENS, approveRegistryTokens);
   yield takeEvery(APPROVE_PLCR_TOKENS, approvePLCRTokens);
   yield takeEvery(REQUEST_VOTING_RIGHTS, requestVotingRights);

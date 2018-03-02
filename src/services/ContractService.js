@@ -8,6 +8,7 @@ const SYNC_INTERVAL = 10000;
 let currentContract = '';
 let registryNotificationCandidate = null;
 let rewardNotificationCandidate = null;
+let onNewBlockHandler = null;
 
 // TODO: in future store only one registry
 const _map = new Map();
@@ -74,6 +75,7 @@ class SyncManager {
     map.set('_Application', (e) => this._onApplication(e));
     map.set('_ApplicationRemoved', (e) => this._onRemove(e));
     map.set('_ListingRemoved', (e) => this._onRemove(e));
+    map.set('_NewDomainWhitelisted', (e) => this._onNewDomainWhitelisted(e));
     map.set('_Challenge', (e) => this._onChallenge(e));
     map.set('_ChallengeFailed', (e) => this._onChallengeResolved(e, false));
     map.set('_ChallengeSucceeded', (e) => this._onChallengeResolved(e, true));
@@ -83,7 +85,8 @@ class SyncManager {
       map,
       (events) => {
         let parts = _.partition(events, (e) => {
-          return e.event === '_Application' || e.event === '_ApplicationRemoved' || e.event === '_ListingRemoved';
+          return e.event === '_Application' || e.event === '_ApplicationRemoved' ||
+            e.event === '_ListingRemoved' || e.event === '_NewDomainWhitelisted';
         });
         let grouped = _.groupBy(parts[0], 'returnValues.domain');
         parts[1].forEach(e => {
@@ -154,9 +157,13 @@ class SyncManager {
     clearInterval(this._timeout);
     let actualBlock = await getActualBlock();
     // TODO: сейчас последовательность важна. Подумать как унифицировать.
-    await this.votingSynchronizer.handlePastEvents(this.lastKnownBlock, actualBlock);
-    await this.regisrtySynchronizer.handlePastEvents(this.lastKnownBlock, actualBlock);
-    this.lastKnownBlock = actualBlock;
+    await this.votingSynchronizer.handlePastEvents(this.lastKnownBlock, actualBlock.number);
+    await this.regisrtySynchronizer.handlePastEvents(this.lastKnownBlock, actualBlock.number);
+    this.lastKnownBlock = actualBlock.number;
+    // TODO: вынести в более подходящее место
+    if (typeof onNewBlockHandler === 'function') {
+      onNewBlockHandler(actualBlock);
+    }
     this._timeout = setTimeout(() => this._synchronizeAndUpdateActualBlock(), SYNC_INTERVAL);
   }
 
@@ -184,6 +191,10 @@ class SyncManager {
     this.removeListing(event.returnValues.domain);
   }
 
+  _onNewDomainWhitelisted (event) {
+    this._callWatcher('change', event.returnValues.domain);
+  }
+
   _onChallenge (event) {
     this._poolIdToListing.set(event.returnValues.pollID, {
       challengeId: event.returnValues.pollID,
@@ -194,6 +205,11 @@ class SyncManager {
 
   _onChallengeResolved (event, isSucceeded) {
     let challengeId = event.returnValues.challengeID;
+    // if listing status updated we need to refresh it on client
+    if (!isSucceeded && this._poolIdToListing.has(challengeId)) {
+      let changed = this._poolIdToListing.get(challengeId);
+      this._callWatcher('change', changed.listing);
+    }
     if (this._unclaimedPools.has(challengeId)) {
       let pool = this._unclaimedPools.get(challengeId);
       if (pool.choice === isSucceeded) { // TODO: убедиться что это правильно
@@ -248,7 +264,7 @@ class SyncManager {
 const getActualBlock = async () => {
   try {
     let block = await httpProvider.eth.getBlock('latest');
-    return block.number;
+    return block;
   } catch (err) {
     console.error(err);
   }
@@ -310,23 +326,29 @@ const setRewardNotificationHandler = (handler) => {
   rewardNotificationCandidate = handler;
 };
 
+const onNewBlock = (handler) => {
+  console.log('add new block handler');
+  onNewBlockHandler = handler;
+};
+
 const getParameterizerProposals = async (address, accountAddress) => {
-  const registry = TCR.registry()
+  const registry = TCR.registry();
   const parameterizer = await registry.getParameterizer()
 
-  const lastKnownBlock = 0
-  const actualBlock = await getActualBlock()
+  const lastKnownBlock = 0;
+  const actualBlock = await getActualBlock();
 
   return parameterizer.contract.getPastEvents('_ReparameterizationProposal', {
-		fromBlock: lastKnownBlock,
-		toBlock: actualBlock,
-	})
-}
+    fromBlock: lastKnownBlock,
+    toBlock: actualBlock.number
+  });
+};
 
 export default {
   getListings,
   getListingsToClaimReward,
   getParameterizerProposals,
   setRegistryNotificationHandler,
-  setRewardNotificationHandler
+  setRewardNotificationHandler,
+  onNewBlock
 };

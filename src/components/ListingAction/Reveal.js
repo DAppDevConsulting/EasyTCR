@@ -51,7 +51,7 @@ class Reveal extends Component {
   resolveVoting () {
     // TODO: убрать это из глобального стейта
     this.props.tokenHolderActions.hideVotingRevealTxQueue();
-    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name);
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name, this.props.registry);
   }
 
   getRadioButtonStyleForOption (option) {
@@ -184,12 +184,14 @@ class Reveal extends Component {
 
 Reveal.propTypes = {
   listing: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object
 };
 
 const mapStateToProps = (state) => ({
+  registry: state.app.registry,
   showTxQueue: state.reveal.showTxQueue,
   txQueue: state.reveal.queue
 });

@@ -7,6 +7,33 @@ const registryCache = new Map();
 let currentRegistry = null;
 let useIpfs = false;
 let changeListeners = [];
+const refreshCandidates = new Set();
+
+class ListingWatcher {
+  constructor (listing) {
+    this.listing = listing;
+    const now = new Date().getTime();
+    // TODO: нужен более надежный механизм.
+    if (listing.timestamp > now) {
+      this._timer = setTimeout(
+        () => {
+          refreshCandidates.add(this.listing.name);
+        },
+        this.listing.timestamp - now
+      );
+    } else if (listing.dueDate) { // TODO: hack
+      refreshCandidates.add(this.listing.name);
+    }
+  }
+
+  destroy () {
+    clearTimeout(this._timer);
+  }
+}
+
+const getFromCache = (itemName) => {
+  return registryCache.has(itemName) ? registryCache.get(itemName).listing : null;
+};
 
 const addToCache = async (item) => {
   if (useIpfs) {
@@ -16,22 +43,42 @@ const addToCache = async (item) => {
   } else {
     item.label = item.name;
   }
-  registryCache.set(item.name, item);
+  deleteFromCache(item.name);
+  registryCache.set(item.name, new ListingWatcher(item));
+};
+
+const deleteFromCache = (itemName) => {
+  if (registryCache.has(itemName)) {
+    registryCache.get(itemName).destroy();
+    registryCache.delete(itemName);
+  }
 };
 
 const notificationListener = async (type, listing) => {
   if (type === 'remove') {
-    registryCache.delete(listing);
-  } else if (type === 'add') {
-    let item = await ListingsMapper.getProps(listing, currentRegistry);
-    await addToCache(item);
-  } else if (type === 'change') {
+    deleteFromCache(listing);
+  } else if (type === 'add' || type === 'change') {
     let item = await ListingsMapper.getProps(listing, currentRegistry);
     await addToCache(item);
   }
+  callChangeListeners();
+};
+
+const callChangeListeners = () => {
   for (let cb of changeListeners) {
     if (typeof cb === 'function') {
       cb();
+    }
+  }
+};
+
+const newBlockListener = async (block) => {
+  const blockTs = block.timestamp * 1000;
+  const iterator = refreshCandidates.keys();
+  for (let key of iterator) {
+    if (getFromCache(key) && getFromCache(key).timestamp < blockTs) {
+      refreshCandidates.delete(key);
+      await notificationListener('change', key);
     }
   }
 };
@@ -42,11 +89,12 @@ const getListings = async (registry, accountAddress, condition) => {
     currentRegistry = registry;
     useIpfs = ContractsManager.isRegistryUseIpfs(registry.address);
     api.listenNotification(notificationListener);
+    api.onNewBlock(newBlockListener);
   }
   let listings = await api.getListings(registry.address, accountAddress, [], condition && condition.owner ? condition.owner : '');
   let toCache = await ListingsMapper.mapListings(listings.filter(item => !registryCache.has(item.listing)), registry);
   await Promise.all(toCache.map(item => addToCache(item)));
-  return listings.map(item => registryCache.get(item.listing));
+  return listings.map(item => getFromCache(item.listing));
 };
 
 const getListing = async (registry, accountAddress, name) => {

@@ -58,6 +58,7 @@ export default {
     return [];
   },
   listenNotification: (handler) => {},
-  listenRewordsNotification: (handler) => {}
+  listenRewordsNotification: (handler) => {},
+  onNewBlock: () => {}
 
 };

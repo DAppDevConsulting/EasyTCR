@@ -44,9 +44,13 @@ export function * getListing (action) {
   yield put({type: UPDATE_CURRENT_LISTING, currentListing: listing});
 }
 
+export function * updateListingsState () {
+  yield put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
+}
+
 export default function * flow () {
   yield takeEvery(REQUEST_LISTINGS_TO_CLAIM_REWARD, getListingsToClaimReward);
   yield takeEvery(CLAIM_REWARD, claimReward);
   yield takeEvery(REQUEST_CURRENT_LISTING, getListing);
-  yield takeEvery(changeChannel, getListingsToClaimReward);
+  yield takeEvery(changeChannel, updateListingsState);
 }
