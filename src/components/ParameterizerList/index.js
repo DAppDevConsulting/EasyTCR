@@ -31,7 +31,7 @@ const ParameterizerList = ({ parameterizer, activeProposal, selectParameter }) =
             key={index}
             isFetching={parameterizer.isFetching}
             parameter={param}
-            isActive={activeProposal ? activeProposal.name === param.displayName : false}
+            isActive={activeProposal ? activeProposal.displayName === param.displayName : false}
             selectParameter={selectParameter}
           />
         )}
