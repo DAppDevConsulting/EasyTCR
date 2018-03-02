@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import _ from 'lodash';
 import { Registry } from 'ethereum-tcr-api';
 import PromisesQueueWatcher from '../utils/PromisesQueueWatcher';
-
+import TCR from '../TCR'
 const httpProvider = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/Dy4nhcddBU78aJPZ7TDA'));
 const SYNC_INTERVAL = 10000;
 let currentContract = '';
@@ -310,9 +310,23 @@ const setRewardNotificationHandler = (handler) => {
   rewardNotificationCandidate = handler;
 };
 
+const getParameterizerProposals = async (address, accountAddress) => {
+  const registry = TCR.registry()
+  const parameterizer = await registry.getParameterizer()
+
+  const lastKnownBlock = 0
+  const actualBlock = await getActualBlock()
+
+  return parameterizer.contract.getPastEvents('_ReparameterizationProposal', {
+		fromBlock: lastKnownBlock,
+		toBlock: actualBlock,
+	})
+}
+
 export default {
   getListings,
   getListingsToClaimReward,
+  getParameterizerProposals,
   setRegistryNotificationHandler,
   setRewardNotificationHandler
 };

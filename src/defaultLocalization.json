@@ -23,14 +23,14 @@
 
     "inApplication": "In Application",
     "inRegistry": "In Registry",
+    "inChallenge": "In Challenge",
     "needRefresh": "Need refresh",
     "WillBeWhitelisted": "Will be whitelisted",
     "WillBeRejected": "Will be rejected",
     "VoteCommit": "In Commit",
     "VoteReveal": "In Reveal",
+    "NeedProcess": "Need process",
     "notExists": "Ooops... No candidate in contract",
-    "inChallenge": "In Challenge",
-    "endOfVoting": "End of voting",
 
     "menu_header": "Menu",
     "menu_tokenHolder": "Token Holder",
@@ -95,6 +95,8 @@
     "transaction_commitVoteText": "Commit your vote to participate in particular Partial Lock Commit Reveal Voting poll.",
     "transaction_revealVoteHeader": "Reveal your vote",
     "transaction_revealVoteText": "Revealing vote is the last step in Partial Lock Commit Reveal Voting participation. Finally, the voters will be able to see the actual results of current poll.",
+    "transaction_submitReparameterizationHeader": "Propose reparameterization",
+    "transaction_submitReparameterizationText": "Submit new parameterizer value",
 
     "notFoundTitle": "Error: 404 Page Not Found",
     "notFoundTextFirst": "Sorry, the page you're looking for cannot be accessed.",
@@ -170,6 +172,7 @@
     "parameterizationTitle": "Parameterization",
     "parameterizationColumnNames": ["PARAMETER NAME", "VALUE", "PROPOSAL", "STATUS", "ACTIONS"],
     "tableParameterNames": ["Minimum Deposit", "Apply Stage Length", "Commit Stage Length", "Reveal Stage Length", "Dispensation Percent", "Vote Quorum"],
+    "contractParameterNames": ["minDeposit", "applyStageLen", "commitStageLen", "revealStageLen", "dispensationPct", "voteQuorum"],
     "parameterizerNote": "Parameterization component is used for crowd-controlling the global variables of any Token Curated Registry via Voting process",
     "currentValueText": "Current value",
     "proposalValueText": "Proposal value",
@@ -178,6 +181,7 @@
     "actionEdit": "Edit",
     "actionVote": "Vote",
     "actionReveal": "Reveal",
+    "actionProcess": "Process",
 
     "invalidInput": "Input is not valid",
     "updating": "Updating...",

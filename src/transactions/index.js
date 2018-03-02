@@ -145,9 +145,83 @@ export async function refreshListingStatus (name) {
     .catch(error => console.error(error));
 }
 
+export async function processProposal (proposalObj) {
+  const registry = TCR.registry();
+  const parameterizer = await registry.getParameterizer();
+  const { contractName, proposal } = proposalObj;
+  const proposalInstance = parameterizer.getProposal(contractName, proposal);
+  return proposalInstance.process();
+}
+
 export async function claimReward (challengeId, salt) {
   const manager = new TransactionManager(provider());
   const challenge = TCR.registry().getChallenge(challengeId);
   const ti = await challenge.claimReward(salt);
   await manager.watchForTransaction(ti);
+}
+
+export async function proposeNewParameterizerValue (parameterName, newParameterValue, tokensAmount) {
+  const registry = TCR.registry();
+  const account = await TCR.defaultAccount();
+  const parameterizer = await registry.getParameterizer();
+  const manager = new TransactionManager(provider());
+
+  return new PromisesQueue()
+    .add(
+      () => {
+        return account
+          .approveTokens(parameterizer.address, tokensAmount)
+          .then(ti => {
+            return manager.watchForTransaction(ti);
+          });
+      },
+      {
+        label: keys.formatString(
+          keys.transaction_approveTransferTokensHeader,
+          tokensAmount
+        ),
+        content: keys.formatString(
+          keys.transaction_approveTransferTokensText,
+          {
+            name: keys.registryName,
+            type: 'Registry',
+            tokenName: keys.tokenName
+          }
+        )
+      }
+    )
+    .add(() => parameterizer.createProposal(parameterName, newParameterValue), {
+      label: keys.transaction_submitReparameterizationHeader,
+      content: keys.transaction_submitReparameterizationText
+    });
+}
+
+export async function challengeProposalTx (proposal, tokensAmount) {
+  const account = await TCR.defaultAccount();
+  const registry = TCR.registry();
+  const parameterizer = await registry.getParameterizer();
+  const proposalInstance = parameterizer.getProposal(proposal.contractName, proposal.proposal);
+  console.log('proposalInstance', proposalInstance);
+  const manager = new TransactionManager(provider());
+  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const queue = new PromisesQueue();
+
+  // if (approvedRegistryTokens < parseInt(tokensAmount)) {
+  queue.add(
+    () => account.approveTokens(parameterizer.address, tokensAmount).then(ti => manager.watchForTransaction(ti)),
+    {
+      label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
+      content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
+    }
+  );
+  // }
+  queue.add(
+    () => proposalInstance.challenge(),
+    {
+      label: keys.transaction_submitChallengeHeader,
+      content: keys.formatString(keys.transaction_submitChallengeText, { name: keys.registryName })
+    }
+  );
+
+  return queue;
 }

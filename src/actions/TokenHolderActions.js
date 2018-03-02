@@ -11,6 +11,9 @@ import {
   REQUEST_CURRENT_LISTING,
   CLEAR_CURRENT_LISTING,
   PROPOSE_NEW_PARAMETER_VALUE,
+  REQUEST_PARAMETERIZER_INFORMATION,
+  PROCESS_PROPOSAL,
+  CHALLENGE_PROPOSAL
 } from '../constants/actions';
 
 export function challenge (listing) {
@@ -99,4 +102,18 @@ export function proposeNewValue (parameter, value) {
     parameter,
     value
   };
+}
+
+export function requestParameterizerInformation () {
+  return {
+    type: REQUEST_PARAMETERIZER_INFORMATION
+  };
+}
+
+export function processProposal (proposal) {
+  return { type: PROCESS_PROPOSAL, proposal };
+}
+
+export function challengeProposal (proposal) {
+  return { type: CHALLENGE_PROPOSAL, proposal };
 }
