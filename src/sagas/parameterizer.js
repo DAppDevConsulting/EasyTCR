@@ -111,6 +111,8 @@ export function * proposeNewParameterizerValue (action) {
 
 export function * processProposal (action) {
   yield call(getProcessProposal, action.proposal);
+
+  yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
 }
 
 export default function * flow () {

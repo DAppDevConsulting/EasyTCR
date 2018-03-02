@@ -16,10 +16,6 @@ class ParameterizerNeedProcess extends Component {
     this.resolveReparameterization = this.resolveReparameterization.bind(this);
     this.handleProposalProcess = this.handleProposalProcess.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-
-    this.state = {
-      isFetching: false
-    };
   }
 
   resolveReparameterization () {
@@ -28,7 +24,6 @@ class ParameterizerNeedProcess extends Component {
   }
 
   handleProposalProcess (activeProposal) {
-    this.setState({ isFetching: true });
     this.props.tokenHolderActions.processProposal(activeProposal);
   }
 
@@ -37,7 +32,7 @@ class ParameterizerNeedProcess extends Component {
   }
 
   render () {
-    const { activeProposal, showTxQueue, txQueue } = this.props;
+    const { activeProposal, showTxQueue, txQueue, isProcessing } = this.props;
 
     return (
       <div className='parameterizerAction'>
@@ -52,13 +47,13 @@ class ParameterizerNeedProcess extends Component {
           : <div>
             <h3 className='parameterName'>{activeProposal.displayName}</h3>
             <p>To update parameter’s status, proceed with Process transaction</p>
-            { this.state.isFetching && <LinearProgress mode='indeterminate' style={{ marginBottom: 15 }} /> }
+            { isProcessing && <LinearProgress mode='indeterminate' style={{ marginBottom: 15 }} /> }
             <RaisedButton
               label={keys.actionProcess}
               backgroundColor={keys.successColor}
               labelColor={keys.buttonLabelColor}
               onClick={() => this.handleProposalProcess(activeProposal)}
-              disabled={this.state.isFetching}
+              disabled={isProcessing}
             />
           </div>}
       </div>
@@ -70,12 +65,14 @@ ParameterizerNeedProcess.propTypes = {
   activeProposal: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
-  txQueue: PropTypes.object
+  txQueue: PropTypes.object,
+  isProcessing: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   showTxQueue: state.parameterizer.showTxQueue,
-  txQueue: state.parameterizer.queue
+  txQueue: state.parameterizer.queue,
+  isProcessing: state.parameterizer.isProcessing
 });
 
 const mapDispatchToProps = dispatch => ({

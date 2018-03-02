@@ -2,7 +2,8 @@ import {
   UPDATE_PARAMETERIZER_INFORMATION,
   REQUEST_PARAMETERIZER_INFORMATION,
   PARAMETERIZER_SHOW_TX_QUEUE,
-  PARAMETERIZER_HIDE_TX_QUEUE
+  PARAMETERIZER_HIDE_TX_QUEUE,
+  PROCESS_PROPOSAL
 } from '../constants/actions';
 import keys from '../i18n';
 
@@ -54,18 +55,29 @@ const initialState = {
   pMinDeposit: 0,
   isFetching: false,
   showTxQueue: false,
-  queue: null
+  queue: null,
+  isProcessing: false
 };
 
 export default function parameterizer (state = initialState, action) {
   switch (action.type) {
     case UPDATE_PARAMETERIZER_INFORMATION:
-      return { ...state, parameters: action.params, pMinDeposit: action.pMinDeposit, isFetching: false, showTxQueue: false };
+      return {
+        ...state,
+        parameters: action.params,
+        pMinDeposit: action.pMinDeposit,
+        isFetching: false,
+        showTxQueue: false,
+        isProcessing: false
+      };
     case REQUEST_PARAMETERIZER_INFORMATION:
       return { ...state, isFetching: true };
     case PARAMETERIZER_SHOW_TX_QUEUE:
       return { ...state, queue: action.queue, showTxQueue: true };
     case PARAMETERIZER_HIDE_TX_QUEUE:
+      return { ...state, showTxQueue: false };
+    case PROCESS_PROPOSAL:
+      return { ...state, isProcessing: true };
     default:
       return state;
   }
