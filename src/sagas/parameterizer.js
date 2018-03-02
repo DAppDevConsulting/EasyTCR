@@ -10,7 +10,8 @@ import {
 import api from '../services/BackendApi';
 import {
   proposeNewParameterizerValue as getProposeNewParameterizerValue,
-  processProposal as getProcessProposal
+  processProposal as getProcessProposal,
+  challengeProposalTx as getChallengeProposalTx
 } from '../transactions';
 import keys from '../i18n';
 import { getProposalValue, getReadableStatus } from '../utils/Parameterizer';
@@ -110,6 +111,14 @@ export function * proposeNewParameterizerValue (action) {
 export function * processProposal (action) {
   yield call(getProcessProposal, action.proposal);
   yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
+}
+
+export function * challengeProposal (action) {
+  const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+  const pMinDeposit = yield apply(parameterizer, 'get', ['pMinDeposit']);
+  const queue = yield call(getChallengeProposalTx, action.parameter.contractName, pMinDeposit);
+
+  yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
 }
 
 export default function * flow () {
