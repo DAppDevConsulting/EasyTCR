@@ -4,7 +4,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import { TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import keys from '../../i18n';
-import { getStatusStyle, getActionButtonLabel } from '../../utils/Parameterizer';
+import { getStatusStyle, getActionButtonLabel, numberWithSpaces } from '../../utils/Parameterizer';
 
 const Item = ({ isFetching, parameter, isActive, selectParameter }) => {
   if (isFetching) {
@@ -23,7 +23,7 @@ const Item = ({ isFetching, parameter, isActive, selectParameter }) => {
         {parameter.displayName}
       </TableRowColumn>
       <TableRowColumn>
-        {parameter.value}
+        {numberWithSpaces(parameter.value)}
       </TableRowColumn>
       <TableRowColumn>
         {parameter.proposal}

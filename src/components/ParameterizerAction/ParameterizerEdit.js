@@ -8,6 +8,7 @@ import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import './style.css';
 import keys from '../../i18n';
 import TxQueue from '../TxQueue';
+import { numberWithSpaces } from '../../utils/Parameterizer';
 
 class ParameterizerEdit extends Component {
   constructor (props) {
@@ -63,7 +64,7 @@ class ParameterizerEdit extends Component {
         ) : (
           <div>
             <h3 className='parameterName'>{activeProposal.displayName}</h3>
-            <p>{keys.currentValueText}: {activeProposal.value}</p>
+            <p>{keys.currentValueText}: {numberWithSpaces(activeProposal.value)}</p>
             <TextField
               hintText={keys.hintText}
               errorText={this.state.error}
