@@ -11,6 +11,8 @@ import TCR from '../../TCR';
 import keys from '../../i18n';
 import './style.css';
 import UrlUtils from '../../utils/UrlUtils';
+import ApproveForm from './approveForm';
+import TokensInformation from './tokensInformation';
 
 class ManageTokensContainer extends Component {
   constructor (props) {
@@ -26,8 +28,20 @@ class ManageTokensContainer extends Component {
       requestVotingRights: '',
       withdrawVotingRights: ''
     };
+
     this.weiToEthConverter = (wei) => wei; // TODO: сделать один конвертер. Кажется там константные значения везде.
     this.weiToEthLimit = new BN('1000000000000000', 10);
+    this.changeRegistryTokens = this.changeRegistryTokens.bind(this);
+    this.changePLCRTokens = this.changePLCRTokens.bind(this);
+    this.changeParameterizerTokens = this.changeParameterizerTokens.bind(this);
+    this.changeVotingRights = this.changeVotingRights.bind(this);
+    this.changeWithdrawVotingRights = this.changeWithdrawVotingRights.bind(this);
+    this.approveRegistryTokens = this.approveRegistryTokens.bind(this);
+    this.approveRegistryTokens = this.approveRegistryTokens.bind(this);
+    this.approvePLCRTokens = this.approvePLCRTokens.bind(this);
+    this.approveParameterizerTokens = this.approveParameterizerTokens.bind(this);
+    this.requestVotingRights = this.requestVotingRights.bind(this);
+    this.withdrawVotingRights = this.withdrawVotingRights.bind(this);
   }
 
   componentWillMount () {
@@ -104,149 +118,24 @@ class ManageTokensContainer extends Component {
     return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
   }
 
-  renderApproveRegistryTokensForm () {
-    return (
-      <div className='buyTokensForm'>
-        <div className='buyTokensForm_item'>
-          <div className='buyTokensForm_element'>
-            <TextField
-              style={{width: 316}}
-              floatingLabelText={keys.manageTokensPage_approvedRegistryLabel}
-              floatingLabelFixed
-              hintText={keys.manageTokensPage_buyTokensHint}
-              value={this.state.registryTokens || ''}
-              onChange={(e, registryTokens) => this.setState({registryTokens})}
-            />
-          </div>
-          <div className='buyTokensForm_element'>
-            <RaisedButton
-              label={keys.approve}
-              disabled={!this.state.registryTokens}
-              onClick={() => this.approveRegistryTokens()}
-              backgroundColor={keys.successColor}
-              labelColor={keys.buttonLabelColor}
-              style={{ marginTop: '28px' }}
-            />
-          </div>
-        </div>
-      </div>
-    );
+  changeRegistryTokens (registryTokens) {
+    this.setState({registryTokens});
   }
 
-  renderApprovePLCRTokensForm () {
-    return (
-      <div className='buyTokensForm'>
-        <div className='buyTokensForm_item'>
-          <div className='buyTokensForm_element'>
-            <TextField
-              style={{width: 316}}
-              floatingLabelText={keys.manageTokensPage_approvedPLCRLabel}
-              floatingLabelFixed
-              hintText={keys.manageTokensPage_buyTokensHint}
-              value={this.state.plcrTokens || ''}
-              onChange={(e, plcrTokens) => this.setState({plcrTokens})}
-            />
-          </div>
-          <div className='buyTokensForm_element'>
-            <RaisedButton
-              label={keys.approve}
-              disabled={!this.state.plcrTokens}
-              onClick={() => this.approvePLCRTokens()}
-              backgroundColor={keys.successColor}
-              labelColor={keys.buttonLabelColor}
-              style={{ marginTop: '28px' }}
-            />
-          </div>
-        </div>
-      </div>
-    );
+  changePLCRTokens (plcrTokens) {
+    this.setState({plcrTokens});
   }
 
-  renderApproveParameterizerForm () {
-    return (
-      <div className='buyTokensForm'>
-        <div className='buyTokensForm_item'>
-          <div className='buyTokensForm_element'>
-            <TextField
-              style={{width: 316}}
-              floatingLabelText={keys.manageTokensPage_approvedParameterizerLabel}
-              floatingLabelFixed
-              hintText={keys.manageTokensPage_buyTokensHint}
-              value={this.state.parameterizerTokens || ''}
-              onChange={(e, parameterizerTokens) => this.setState({parameterizerTokens})}
-            />
-          </div>
-          <div className='buyTokensForm_element'>
-            <RaisedButton
-              label={keys.approve}
-              disabled={!this.state.parameterizerTokens}
-              onClick={() => this.approveParameterizerTokens()}
-              backgroundColor={keys.successColor}
-              labelColor={keys.buttonLabelColor}
-              style={{ marginTop: '28px' }}
-            />
-          </div>
-        </div>
-      </div>
-    );
+  changeParameterizerTokens (parameterizerTokens) {
+    this.setState({parameterizerTokens});
   }
 
-  renderRequestVotingRightsForm () {
-    return (
-      <div className='buyTokensForm'>
-        <div className='buyTokensForm_item'>
-          <div className='buyTokensForm_element'>
-            <TextField
-              style={{width: 316}}
-              floatingLabelText={keys.manageTokensPage_requestVotingRightsLabel}
-              floatingLabelFixed
-              hintText={keys.manageTokensPage_votingRightsHint}
-              value={this.state.requestVotingRights || ''}
-              onChange={(e, requestVotingRights) => this.setState({requestVotingRights})}
-            />
-          </div>
-          <div className='buyTokensForm_element'>
-            <RaisedButton
-              label={keys.request}
-              disabled={!this.state.requestVotingRights}
-              onClick={() => this.requestVotingRights()}
-              backgroundColor={keys.successColor}
-              labelColor={keys.buttonLabelColor}
-              style={{ marginTop: '28px' }}
-            />
-          </div>
-        </div>
-      </div>
-    );
+  changeVotingRights (requestVotingRights) {
+    this.setState({requestVotingRights});
   }
 
-  renderWithdrawVotingRightsForm () {
-    return (
-      <div className='buyTokensForm'>
-        <div className='buyTokensForm_item'>
-          <div className='buyTokensForm_element'>
-            <TextField
-              style={{width: 316}}
-              floatingLabelText={keys.manageTokensPage_withdrawVotingRightsLabel}
-              floatingLabelFixed
-              hintText={keys.manageTokensPage_votingRightsHint}
-              value={this.state.withdrawVotingRights || ''}
-              onChange={(e, withdrawVotingRights) => this.setState({withdrawVotingRights})}
-            />
-          </div>
-          <div className='buyTokensForm_element'>
-            <RaisedButton
-              label={keys.withdraw}
-              disabled={!this.state.withdrawVotingRights}
-              onClick={() => this.withdrawVotingRights()}
-              backgroundColor={keys.successColor}
-              labelColor={keys.buttonLabelColor}
-              style={{ marginTop: '28px' }}
-            />
-          </div>
-        </div>
-      </div>
-    );
+  changeWithdrawVotingRights (withdrawVotingRights) {
+    this.setState({withdrawVotingRights});
   }
 
   renderBuyTokensForm () {
@@ -288,55 +177,54 @@ class ManageTokensContainer extends Component {
     );
   }
 
-  renderTokensInformation () {
-    const { tokens, approvedRegistry, approvedPLCR, approvedParameterizer, votingRights, ethers } = this.props.candidate;
-
-    const balanceText = keys.formatString(
-      keys.manageTokensPage_balanceText,
-      {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}
-    );
-
-    const registryApproveText = keys.formatString(
-      keys.manageTokensPage_approvedRegistryText,
-      {tokens: approvedRegistry, tokenName: keys.tokenName}
-    );
-    const plcrApproveText = keys.formatString(
-      keys.manageTokensPage_approvedPLCRText,
-      {tokens: approvedPLCR, tokenName: keys.tokenName}
-    );
-    const parameterizerText = keys.formatString(
-      keys.manageTokensPage_approvedParameterizerText,
-      {tokens: approvedParameterizer, tokenName: keys.tokenName}
-    );
-    const votingRightsText = keys.formatString(
-      keys.manageTokensPage_votingRightsText,
-      {rights: votingRights}
-    );
-
-    return (
-      <div>
-        <h4 className='pageHeadline'>{keys.manageTokensPage_title}</h4>
-        <h3 className='manageTokensTitle'> {keys.manageTokensPage_balanceHeader} </h3>
-        <p className='balanceText'>{tokens ? balanceText : keys.updating }</p>
-        <p className='balanceText'>{approvedRegistry ? registryApproveText : keys.updating }</p>
-        <p className='balanceText'>{approvedPLCR ? plcrApproveText : keys.updating }</p>
-        <p className='balanceText'>{approvedParameterizer ? parameterizerText : keys.updating }</p>
-        <p className='balanceText'>{votingRights ? votingRightsText : keys.updating }</p>
-      </div>
-    );
-  }
-
   render () {
     return (
       <div className='ContentContainer'>
-        {this.renderTokensInformation()}
+        <TokensInformation
+          {...this.props.candidate}
+        />
         {this.renderBuyTokensForm()}
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
-        {this.renderApproveRegistryTokensForm()}
-        {this.renderApprovePLCRTokensForm()}
-        {this.renderApproveParameterizerForm()}
-        {this.renderRequestVotingRightsForm()}
-        {this.renderWithdrawVotingRightsForm()}
+        <ApproveForm
+          textFieldLabel={keys.manageTokensPage_approvedRegistryLabel}
+          textFieldHint={keys.manageTokensPage_buyTokensHint}
+          buttonLabel={keys.approve}
+          tokens={this.state.registryTokens}
+          approveTokens={this.approveRegistryTokens}
+          changeHandler={this.changeRegistryTokens}
+        />
+        <ApproveForm
+          textFieldLabel={keys.manageTokensPage_approvedPLCRLabel}
+          textFieldHint={keys.manageTokensPage_buyTokensHint}
+          buttonLabel={keys.approve}
+          tokens={this.state.plcrTokens}
+          approveTokens={this.approvePLCRTokens}
+          changeHandler={this.changePLCRTokens}
+        />
+        <ApproveForm
+          textFieldLabel={keys.manageTokensPage_approvedParameterizerLabel}
+          textFieldHint={keys.manageTokensPage_buyTokensHint}
+          buttonLabel={keys.approve}
+          tokens={this.state.parameterizerTokens}
+          approveTokens={this.approveParameterizerTokens}
+          changeHandler={this.changeParameterizerTokens}
+        />
+        <ApproveForm
+          textFieldLabel={keys.manageTokensPage_requestVotingRightsLabel}
+          textFieldHint={keys.manageTokensPage_votingRightsHint}
+          buttonLabel={keys.request}
+          tokens={this.state.requestVotingRights}
+          approveTokens={this.requestVotingRights}
+          changeHandler={this.changeVotingRights}
+        />
+        <ApproveForm
+          textFieldLabel={keys.manageTokensPage_withdrawVotingRightsLabel}
+          textFieldHint={keys.manageTokensPage_votingRightsHint}
+          buttonLabel={keys.withdraw}
+          tokens={this.state.withdrawVotingRights}
+          approveTokens={this.withdrawVotingRights}
+          changeHandler={this.changeWithdrawVotingRights}
+        />
       </div>
     );
   }
