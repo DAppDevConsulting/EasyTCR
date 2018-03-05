@@ -165,9 +165,8 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
   const account = await TCR.defaultAccount();
   const parameterizer = await registry.getParameterizer();
   const manager = new TransactionManager(provider());
-  const queue = new PromisesQueue();
   const approvedRegistryTokens = (await TCR.getApprovedTokens()).parameterizer;
-  console.log('approvedRegistryTokens', approvedRegistryTokens);
+  const queue = new PromisesQueue();
 
   if (approvedRegistryTokens < parseInt(tokensAmount)) {
     queue.add(
@@ -216,7 +215,6 @@ export async function challengeProposalTx (proposal, tokensAmount) {
   const proposalInstance = parameterizer.getProposal(proposal.contractName, proposal.proposal);
   const manager = new TransactionManager(provider());
   const approvedRegistryTokens = (await TCR.getApprovedTokens()).parameterizer;
-  console.log('approvedRegistryTokens', approvedRegistryTokens);
   const queue = new PromisesQueue();
 
   if (approvedRegistryTokens < parseInt(tokensAmount)) {
