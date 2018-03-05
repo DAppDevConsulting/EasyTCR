@@ -6,7 +6,8 @@ import {
   PROPOSE_NEW_PARAMETER_VALUE,
   PARAMETERIZER_SHOW_TX_QUEUE,
   PROCESS_PROPOSAL,
-  CHALLENGE_PROPOSAL
+  CHALLENGE_PROPOSAL,
+  CANCELL_PARAMETERIZER_TX
 } from '../constants/actions';
 import api from '../services/BackendApi';
 import {
@@ -110,8 +111,12 @@ export function * proposeNewParameterizerValue (action) {
 }
 
 export function * processProposal (action) {
-  yield call(getProcessProposal, action.proposal);
-  yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
+  try {
+    yield call(getProcessProposal, action.proposal);
+    yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
+  } catch (error) {
+    yield put({ type: CANCELL_PARAMETERIZER_TX });
+  }
 }
 
 export function * challengeProposal (action) {
