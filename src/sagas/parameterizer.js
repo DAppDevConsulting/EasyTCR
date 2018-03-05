@@ -7,7 +7,7 @@ import {
   PARAMETERIZER_SHOW_TX_QUEUE,
   PROCESS_PROPOSAL,
   CHALLENGE_PROPOSAL,
-  CANCELL_PARAMETERIZER_TX
+  CANCEL_PARAMETERIZER_TX
 } from '../constants/actions';
 import api from '../services/BackendApi';
 import {
@@ -112,7 +112,7 @@ export function * processProposal (action) {
     yield call(getProcessProposal, action.proposal);
     yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
   } catch (error) {
-    yield put({ type: CANCELL_PARAMETERIZER_TX });
+    yield put({ type: CANCEL_PARAMETERIZER_TX });
   }
 }
 

@@ -4,7 +4,7 @@ import {
   PARAMETERIZER_SHOW_TX_QUEUE,
   PARAMETERIZER_HIDE_TX_QUEUE,
   PROCESS_PROPOSAL,
-  CANCELL_PARAMETERIZER_TX
+  CANCEL_PARAMETERIZER_TX
 } from '../constants/actions';
 import keys from '../i18n';
 
@@ -79,7 +79,7 @@ export default function parameterizer (state = initialState, action) {
       return { ...state, showTxQueue: false };
     case PROCESS_PROPOSAL:
       return { ...state, isProcessing: true };
-    case CANCELL_PARAMETERIZER_TX:
+    case CANCEL_PARAMETERIZER_TX:
       return { ...state, isProcessing: false };
     default:
       return state;
