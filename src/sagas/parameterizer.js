@@ -68,6 +68,7 @@ export function * fetchParameters () {
     // mutable variables
     let status = keys.inRegistry;
     let challengeId = null;
+    let timestamp;
     let voteResults = {
       votesFor: 0,
       votesAgaints: 0
@@ -79,12 +80,8 @@ export function * fetchParameters () {
       const statusFromContract = yield apply(proposalInstance, 'getStageStatus');
       status = getReadableStatus(statusFromContract);
       challengeId = yield apply(proposalInstance, 'getChallengeId');
-      console.log('p.contractName', p.contractName);
-      console.log('proposal', proposal);
-      console.log('value', value);
-      console.log('challengeId', challengeId);
-      console.log('statusFromContract', statusFromContract);
-      console.log('status', status);
+      timestamp = yield apply(proposalInstance, 'expiresAt');
+      timestamp *= 1000;
 
       // get vote results
       const plcr = yield apply(TCR, 'getPLCRVoting');
@@ -95,7 +92,7 @@ export function * fetchParameters () {
       };
     }
 
-    return { ...p, proposal, status, value, challengeId, voteResults };
+    return { ...p, proposal, status, value, challengeId, voteResults, timestamp };
   });
 
   const pMinDeposit = yield apply(parameterizer, 'get', ['pMinDeposit']);
@@ -120,7 +117,6 @@ export function * processProposal (action) {
 }
 
 export function * challengeProposal (action) {
-  console.log('action', action);
   const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
   const pMinDeposit = yield apply(parameterizer, 'get', ['pMinDeposit']);
   const queue = yield call(getChallengeProposalTx, action.proposal, pMinDeposit);
