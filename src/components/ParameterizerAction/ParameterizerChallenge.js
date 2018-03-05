@@ -36,7 +36,6 @@ class ParameterizerChallenge extends Component {
 
   calculateRemainingTime () {
     let diff = moment.duration(this.props.activeProposal.timestamp - moment().valueOf());
-
     this.setState({
       remainingTime: diff > 0 ? diff.humanize() : 'passed'
     });

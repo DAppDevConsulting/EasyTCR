@@ -6,7 +6,8 @@ import {
   PROPOSE_NEW_PARAMETER_VALUE,
   PARAMETERIZER_SHOW_TX_QUEUE,
   PROCESS_PROPOSAL,
-  CHALLENGE_PROPOSAL
+  CHALLENGE_PROPOSAL,
+  CANCEL_PARAMETERIZER_TX
 } from '../constants/actions';
 import api from '../services/BackendApi';
 import {
@@ -67,6 +68,7 @@ export function * fetchParameters () {
     // mutable variables
     let status = keys.inRegistry;
     let challengeId = null;
+    let timestamp;
     let voteResults = {
       votesFor: 0,
       votesAgaints: 0
@@ -78,12 +80,8 @@ export function * fetchParameters () {
       const statusFromContract = yield apply(proposalInstance, 'getStageStatus');
       status = getReadableStatus(statusFromContract);
       challengeId = yield apply(proposalInstance, 'getChallengeId');
-      console.log('p.contractName', p.contractName);
-      console.log('proposal', proposal);
-      console.log('value', value);
-      console.log('challengeId', challengeId);
-      console.log('statusFromContract', statusFromContract);
-      console.log('status', status);
+      timestamp = yield apply(proposalInstance, 'expiresAt');
+      timestamp *= 1000;
 
       // get vote results
       const plcr = yield apply(TCR, 'getPLCRVoting');
@@ -94,7 +92,7 @@ export function * fetchParameters () {
       };
     }
 
-    return { ...p, proposal, status, value, challengeId, voteResults };
+    return { ...p, proposal, status, value, challengeId, voteResults, timestamp };
   });
 
   const pMinDeposit = yield apply(parameterizer, 'get', ['pMinDeposit']);
@@ -110,12 +108,15 @@ export function * proposeNewParameterizerValue (action) {
 }
 
 export function * processProposal (action) {
-  yield call(getProcessProposal, action.proposal);
-  yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
+  try {
+    yield call(getProcessProposal, action.proposal);
+    yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
+  } catch (error) {
+    yield put({ type: CANCEL_PARAMETERIZER_TX });
+  }
 }
 
 export function * challengeProposal (action) {
-  console.log('action', action);
   const parameterizer = yield apply(TCR.registry(), 'getParameterizer');
   const pMinDeposit = yield apply(parameterizer, 'get', ['pMinDeposit']);
   const queue = yield call(getChallengeProposalTx, action.proposal, pMinDeposit);

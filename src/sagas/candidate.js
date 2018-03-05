@@ -17,6 +17,7 @@ import {
   CANCEL_LISTING_APPLICATION,
   APPROVE_REGISTRY_TOKENS,
   APPROVE_PLCR_TOKENS,
+  APPROVE_PARAMETERIZER_TOKENS,
   REQUEST_VOTING_RIGHTS,
   WITHDRAW_VOTING_RIGHTS,
   REQUEST_CURRENT_LISTING
@@ -51,6 +52,9 @@ export function * fetchTokenInformation (action) {
   let approvedRegistry = yield apply(account, 'getApprovedTokens', [TCR.registry().address]);
   let plcr = yield apply(TCR, 'getPLCRVoting');
   let approvedPLCR = yield apply(account, 'getApprovedTokens', [plcr.address]);
+  // get parameterizer approved tokens
+  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+  let approvedParameterizer = yield apply(account, 'getApprovedTokens', [parameterizer.address]);
   let votingRights = yield apply(plcr, 'getTokenBalance', [account.owner]);
 
   yield put({
@@ -59,6 +63,7 @@ export function * fetchTokenInformation (action) {
     ethers: balance.ethers,
     approvedRegistry,
     approvedPLCR,
+    approvedParameterizer,
     votingRights: votingRights.toString()
   });
 }
@@ -124,6 +129,20 @@ export function * approvePLCRTokens (action) {
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }
 
+export function * approveParameterizerTokens (action) {
+  let account = yield apply(TCR, 'defaultAccount');
+  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+
+  try {
+    yield apply(account, 'approveTokens', [parameterizer.address, action.tokens]);
+  } catch (err) {
+    // TODO: update UI
+    console.log(err);
+  }
+
+  yield put({ type: REQUEST_TOKEN_INFORMATION });
+}
+
 export function * requestVotingRights (action) {
   let plcr = yield apply(TCR, 'getPLCRVoting');
 
@@ -169,6 +188,7 @@ export default function * flow () {
   // yield takeEvery('ADD_LISTING', addListing);getCandidateListings
   yield takeEvery(APPROVE_REGISTRY_TOKENS, approveRegistryTokens);
   yield takeEvery(APPROVE_PLCR_TOKENS, approvePLCRTokens);
+  yield takeEvery(APPROVE_PARAMETERIZER_TOKENS, approveParameterizerTokens);
   yield takeEvery(REQUEST_VOTING_RIGHTS, requestVotingRights);
   yield takeEvery(WITHDRAW_VOTING_RIGHTS, withdrawVotingRights);
 }

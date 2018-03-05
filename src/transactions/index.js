@@ -165,9 +165,11 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
   const account = await TCR.defaultAccount();
   const parameterizer = await registry.getParameterizer();
   const manager = new TransactionManager(provider());
+  const approvedRegistryTokens = (await TCR.getApprovedTokens()).parameterizer;
+  const queue = new PromisesQueue();
 
-  return new PromisesQueue()
-    .add(
+  if (approvedRegistryTokens < parseInt(tokensAmount)) {
+    queue.add(
       () => {
         return account
           .approveTokens(parameterizer.address, tokensAmount)
@@ -189,11 +191,21 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
           }
         )
       }
-    )
-    .add(() => parameterizer.createProposal(parameterName, newParameterValue), {
+    );
+  }
+  queue.add(
+    () =>
+      parameterizer.createProposal(
+        parameterName,
+        newParameterValue
+      ),
+    {
       label: keys.transaction_submitReparameterizationHeader,
       content: keys.transaction_submitReparameterizationText
-    });
+    }
+  );
+
+  return queue;
 }
 
 export async function challengeProposalTx (proposal, tokensAmount) {
@@ -201,20 +213,19 @@ export async function challengeProposalTx (proposal, tokensAmount) {
   const registry = TCR.registry();
   const parameterizer = await registry.getParameterizer();
   const proposalInstance = parameterizer.getProposal(proposal.contractName, proposal.proposal);
-  console.log('proposalInstance', proposalInstance);
   const manager = new TransactionManager(provider());
-  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const approvedRegistryTokens = (await TCR.getApprovedTokens()).parameterizer;
   const queue = new PromisesQueue();
 
-  // if (approvedRegistryTokens < parseInt(tokensAmount)) {
-  queue.add(
-    () => account.approveTokens(parameterizer.address, tokensAmount).then(ti => manager.watchForTransaction(ti)),
-    {
-      label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
-      content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
-    }
-  );
-  // }
+  if (approvedRegistryTokens < parseInt(tokensAmount)) {
+    queue.add(
+      () => account.approveTokens(parameterizer.address, tokensAmount).then(ti => manager.watchForTransaction(ti)),
+      {
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
+        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
+      }
+    );
+  }
   queue.add(
     () => proposalInstance.challenge(),
     {

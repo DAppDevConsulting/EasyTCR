@@ -8,6 +8,7 @@ import {
   CANCEL_LISTING_APPLICATION,
   APPROVE_REGISTRY_TOKENS,
   APPROVE_PLCR_TOKENS,
+  APPROVE_PARAMETERIZER_TOKENS,
   REQUEST_VOTING_RIGHTS,
   WITHDRAW_VOTING_RIGHTS
 } from '../constants/actions';
@@ -32,6 +33,13 @@ export function approveRegistryTokens (tokens) {
 export function approvePLCRTokens (tokens) {
   return {
     type: APPROVE_PLCR_TOKENS,
+    tokens
+  };
+}
+
+export function approveParameterizerTokens (tokens) {
+  return {
+    type: APPROVE_PARAMETERIZER_TOKENS,
     tokens
   };
 }

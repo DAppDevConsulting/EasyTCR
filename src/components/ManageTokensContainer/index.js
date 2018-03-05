@@ -22,6 +22,7 @@ class ManageTokensContainer extends Component {
       errorText: '',
       registryTokens: '',
       plcrTokens: '',
+      parameterizerTokens: '',
       requestVotingRights: '',
       withdrawVotingRights: ''
     };
@@ -64,6 +65,11 @@ class ManageTokensContainer extends Component {
   approvePLCRTokens () {
     this.props.actions.approvePLCRTokens(this.state.plcrTokens);
     this.setState({plcrTokens: ''});
+  }
+
+  approveParameterizerTokens () {
+    this.props.actions.approveParameterizerTokens(this.state.parameterizerTokens);
+    this.setState({parameterizerTokens: ''});
   }
 
   requestVotingRights () {
@@ -146,6 +152,35 @@ class ManageTokensContainer extends Component {
               label={keys.approve}
               disabled={!this.state.plcrTokens}
               onClick={() => this.approvePLCRTokens()}
+              backgroundColor={keys.successColor}
+              labelColor={keys.buttonLabelColor}
+              style={{ marginTop: '28px' }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderApproveParameterizerForm () {
+    return (
+      <div className='buyTokensForm'>
+        <div className='buyTokensForm_item'>
+          <div className='buyTokensForm_element'>
+            <TextField
+              style={{width: 316}}
+              floatingLabelText={keys.manageTokensPage_approvedParameterizerLabel}
+              floatingLabelFixed
+              hintText={keys.manageTokensPage_buyTokensHint}
+              value={this.state.parameterizerTokens || ''}
+              onChange={(e, parameterizerTokens) => this.setState({parameterizerTokens})}
+            />
+          </div>
+          <div className='buyTokensForm_element'>
+            <RaisedButton
+              label={keys.approve}
+              disabled={!this.state.parameterizerTokens}
+              onClick={() => this.approveParameterizerTokens()}
               backgroundColor={keys.successColor}
               labelColor={keys.buttonLabelColor}
               style={{ marginTop: '28px' }}
@@ -254,7 +289,8 @@ class ManageTokensContainer extends Component {
   }
 
   renderTokensInformation () {
-    const { tokens, approvedRegistry, approvedPLCR, votingRights, ethers } = this.props.candidate;
+    const { tokens, approvedRegistry, approvedPLCR, approvedParameterizer, votingRights, ethers } = this.props.candidate;
+
     const balanceText = keys.formatString(
       keys.manageTokensPage_balanceText,
       {tokens, tokenName: keys.tokenName, ethers, eth: keys.eth}
@@ -268,6 +304,10 @@ class ManageTokensContainer extends Component {
       keys.manageTokensPage_approvedPLCRText,
       {tokens: approvedPLCR, tokenName: keys.tokenName}
     );
+    const parameterizerText = keys.formatString(
+      keys.manageTokensPage_approvedParameterizerText,
+      {tokens: approvedParameterizer, tokenName: keys.tokenName}
+    );
     const votingRightsText = keys.formatString(
       keys.manageTokensPage_votingRightsText,
       {rights: votingRights}
@@ -280,6 +320,7 @@ class ManageTokensContainer extends Component {
         <p className='balanceText'>{tokens ? balanceText : keys.updating }</p>
         <p className='balanceText'>{approvedRegistry ? registryApproveText : keys.updating }</p>
         <p className='balanceText'>{approvedPLCR ? plcrApproveText : keys.updating }</p>
+        <p className='balanceText'>{approvedParameterizer ? parameterizerText : keys.updating }</p>
         <p className='balanceText'>{votingRights ? votingRightsText : keys.updating }</p>
       </div>
     );
@@ -289,12 +330,11 @@ class ManageTokensContainer extends Component {
     return (
       <div className='ContentContainer'>
         {this.renderTokensInformation()}
-
         {this.renderBuyTokensForm()}
-
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
         {this.renderApproveRegistryTokensForm()}
         {this.renderApprovePLCRTokensForm()}
+        {this.renderApproveParameterizerForm()}
         {this.renderRequestVotingRightsForm()}
         {this.renderWithdrawVotingRightsForm()}
       </div>
