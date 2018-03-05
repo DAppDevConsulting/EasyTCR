@@ -330,9 +330,7 @@ class ManageTokensContainer extends Component {
     return (
       <div className='ContentContainer'>
         {this.renderTokensInformation()}
-
         {this.renderBuyTokensForm()}
-
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
         {this.renderApproveRegistryTokensForm()}
         {this.renderApprovePLCRTokensForm()}
