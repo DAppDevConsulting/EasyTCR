@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Dialog from 'material-ui/Dialog';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
@@ -127,7 +127,7 @@ class ManageRegistriesForm extends Component {
                   console.log('in my state', this.state.localization);
                   addRegistry(this.state.registry, this.state.faucet, this.state.localization);
                   onClose();
-                }}/>
+                }} />
             </div>
           </Tab>
           }

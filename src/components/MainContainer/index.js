@@ -12,7 +12,7 @@ import {
   CANDIDATE,
   MANAGE_TOKENS,
   TOKEN_HOLDER,
-  PARAMETERIZER,
+  PARAMETERIZER
 } from '../../constants/Navigation';
 import {
   Route,

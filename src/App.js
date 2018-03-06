@@ -16,8 +16,6 @@ import SideBar from './components/SideBar';
 import MainContainer from './components/MainContainer';
 import ManageRegistriesForm from './components/ManageRegistriesForm';
 import SettingsPopup from './components/SettingsPopup';
-import storage from './utils/CookieStorage';
-
 import './App.css';
 import keys from './i18n';
 
@@ -52,7 +50,7 @@ class App extends Component {
       if (network !== '4') {
         return this.setState({ networkError: keys.networkError });
       } else {
-        this.props.appActions.init(UtlUtils.getRegistryAddressByLink()/*storage.get('currentRegistry')*/);
+        this.props.appActions.init(UtlUtils.getRegistryAddressByLink());
       }
     });
   }
@@ -73,12 +71,12 @@ class App extends Component {
               { networkError }
             </div>
             : <div className='noMetamaskWarning'>
-            <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
-            { keys.formatString(
-              keys.metamaskWarningText,
-              { metamaskLink: <span>&nbsp;<a href='https://metamask.io/' target='_blank' rel='noopener noreferrer'>MetaMask</a>&nbsp;</span> }
-            )}
-          </div>
+              <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
+              { keys.formatString(
+                keys.metamaskWarningText,
+                { metamaskLink: <span>&nbsp;<a href='https://metamask.io/' target='_blank' rel='noopener noreferrer'>MetaMask</a>&nbsp;</span> }
+              )}
+            </div>
           }
         </MuiThemeProvider>
       </Router>
@@ -148,7 +146,7 @@ function mapDispatchToProps (dispatch) {
 
 App.propTypes = {
   appActions: PropTypes.object.isRequired,
-  app: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from "moment";
+import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
@@ -22,7 +22,7 @@ class Reveal extends Component {
       hasVoted: false,
       salt: '',
       option: 1,
-      remainingTime: null,
+      remainingTime: null
     };
   }
 

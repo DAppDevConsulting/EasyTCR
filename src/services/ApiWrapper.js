@@ -16,10 +16,10 @@ export default {
     const proposals = await contractService.getParameterizerProposals(registry, account);
     return proposals;
   },
-  listenNotification: (handler) => {
+  onListingsChange: (handler) => {
     contractService.setRegistryNotificationHandler(handler);
   },
-  listenRewordsNotification: (handler) => {
+  onListingsRewordsChange: (handler) => {
     contractService.setRewardNotificationHandler(handler);
   },
   onNewBlock: (handler) => {

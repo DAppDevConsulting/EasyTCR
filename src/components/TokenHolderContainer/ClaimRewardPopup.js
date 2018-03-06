@@ -64,9 +64,7 @@ class ClaimRewardPopup extends Component {
 }
 
 function mapStateToProps (state) {
-  return {
-    //app: state.app
-  };
+  return {};
 }
 
 const mapDispatchToProps = (dispatch) => ({

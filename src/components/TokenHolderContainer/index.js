@@ -9,7 +9,7 @@ import keys from '../../i18n';
 import * as consumerActions from '../../actions/ConsumerActions';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import * as appActions from '../../actions/AppActions';
-import UrlUtils from "../../utils/UrlUtils";
+import UrlUtils from '../../utils/UrlUtils';
 
 class TokenHolderContainer extends Component {
   constructor (props) {

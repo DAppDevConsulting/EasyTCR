@@ -1,7 +1,5 @@
-
-const geatway = 'https://ipfs.infura.io';//'http://localhost:8080';
-// 'https://mainnet.infura.io/Dy4nhcddBU78aJPZ7TDA';
-const apiServer = 'https://ipfs.infura.io:5001';//'http://localhost:5001';
+const geatway = 'https://ipfs.infura.io';
+const apiServer = 'https://ipfs.infura.io:5001';
 
 const get = async (hash) => {
   let cfg = await (await window.fetch(

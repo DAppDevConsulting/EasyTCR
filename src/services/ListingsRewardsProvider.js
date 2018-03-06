@@ -14,7 +14,7 @@ const notificationListener = async () => {
 const get = async (registry, accountAddress) => {
   if (!currentRegistry || currentRegistry.address !== registry.address) {
     currentRegistry = registry;
-    api.listenRewordsNotification(notificationListener);
+    api.onListingsRewordsChange(notificationListener);
   }
   let result = await api.getListingsToClaimReward(registry.address, accountAddress);
   return result;

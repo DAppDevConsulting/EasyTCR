@@ -64,22 +64,24 @@ class ListingStatus extends Component {
         { renderStatus(status, whitelisted)}
         { status === keys.WillBeWhitelisted || status === keys.WillBeRejected
           ? <div className='refreshStatus'>
-              { this.state.isRefreshing
-                ? <div className='loaderContainer'><RefreshIndicator
-                    status="loading"
-                    left={25}
-                    top={25}
-                  /></div>
-                : <RaisedButton
-                    label={keys.refreshLabel}
-                    buttonStyle={{ backgroundColor: keys.refreshButtonColor }}
-                    style={{ marginLeft: '20px' }}
-                    labelStyle={{ textTransform: 'Capitalize', color: keys.tabLabelColor }}
-                    onClick={() => this.handleRefresh(name)}
-                  />
-              }
-              <p className='refreshText'>{keys.refreshNote}</p>
-            </div>
+            { this.state.isRefreshing
+              ? <div className='loaderContainer'>
+                <RefreshIndicator
+                  status='loading'
+                  left={25}
+                  top={25}
+                />
+              </div>
+              : <RaisedButton
+                label={keys.refreshLabel}
+                buttonStyle={{ backgroundColor: keys.refreshButtonColor }}
+                style={{ marginLeft: '20px' }}
+                labelStyle={{ textTransform: 'Capitalize', color: keys.tabLabelColor }}
+                onClick={() => this.handleRefresh(name)}
+              />
+            }
+            <p className='refreshText'>{keys.refreshNote}</p>
+          </div>
           : null
         }
       </div>
@@ -89,7 +91,7 @@ class ListingStatus extends Component {
 
 ListingStatus.propTypes = {
   refreshListingStatus: PropTypes.func.isRequired,
-  listing: PropTypes.object.isRequired,
+  listing: PropTypes.object.isRequired
 };
 
 export default ListingStatus;

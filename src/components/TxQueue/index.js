@@ -114,10 +114,10 @@ class TxQueue extends Component {
           </StepLabel>
           { step === queue.actualStep()
             ? <div style={{
-                display: 'block',
-                paddingTop: '5px',
-                paddingLeft: '40px'
-              }}>{this.renderTxAction(step, queue)}</div>
+              display: 'block',
+              paddingTop: '5px',
+              paddingLeft: '40px'
+            }}>{this.renderTxAction(step, queue)}</div>
             : <span />
           }
         </Step>

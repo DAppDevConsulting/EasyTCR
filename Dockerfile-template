@@ -3,7 +3,7 @@ FROM node:latest
 # Update aptitude with new repo
 RUN apt-get update
 
-# Install software 
+# Install software
 RUN apt-get install -y git
 
 # Make ssh dir
@@ -32,7 +32,6 @@ WORKDIR /ethereum-tcr-ui
 ADD . /ethereum-tcr-ui
 
 COPY _DIR/secrets.json /ethereum-tcr-ui/src
-COPY _DIR/apiConfig.js /ethereum-tcr-ui/src
 
 RUN npm install
 RUN npm run build

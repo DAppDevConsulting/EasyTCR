@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from "moment";
+import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
-import LinearProgress from "material-ui/LinearProgress";
+import LinearProgress from 'material-ui/LinearProgress';
 import randomInt from 'random-int';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
@@ -25,7 +25,7 @@ class Commit extends Component {
       salt: randomInt(1e6, 1e8),
       stake: 1,
       option: 1,
-      remainingTime: null,
+      remainingTime: null
     };
   }
 
@@ -173,7 +173,7 @@ const mapStateToProps = (state) => ({
   registry: state.app.registry,
   showTxQueue: state.commit.showTxQueue,
   txQueue: state.commit.queue,
-  minDeposit: state.parameterizer.parameters[0].value,
+  minDeposit: state.parameterizer.parameters[0].value
 });
 
 const mapDispatchToProps = (dispatch) => ({

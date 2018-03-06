@@ -62,7 +62,7 @@ const get = async (registry, accountAddress, condition) => {
   if (!currentRegistry || currentRegistry.address !== registry.address) {
     cache = createCache(registry);
     currentRegistry = registry;
-    api.listenNotification(notificationListener);
+    api.onListingsChange(notificationListener);
     api.onNewBlock(newBlockListener);
   }
   let listings = await api.getListings(registry.address, accountAddress, condition && condition.owner ? condition.owner : '');
