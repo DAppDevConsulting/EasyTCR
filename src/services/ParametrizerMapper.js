@@ -8,7 +8,7 @@ const map = async (name, localization, parametrizer, proposals) => {
   const proposal = value !== proposalValueFromContract ? proposalValueFromContract : null;
 
   // mutable variables
-  let status = keys.inRegistry;
+  let status = keys.Actual;
   let challengeId = null;
   let timestamp;
   let voteResults = {
