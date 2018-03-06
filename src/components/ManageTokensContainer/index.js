@@ -16,8 +16,7 @@ class ManageTokensContainer extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // value: '',
-      multiplier: 1,
+      // multiplier: 1,
       price: ''
     };
 
@@ -67,27 +66,27 @@ class ManageTokensContainer extends Component {
     this.props.actions.withdrawVotingRights(value);
   }
 
-  getTokensToBuy () {
-    const tokens = new BN(this.state.value || 0, 10);
-    const multiplier = new BN(this.state.multiplier, 10);
-    return tokens.mul(multiplier);
-  }
+  // getTokensToBuy () {
+  //   const tokens = new BN(this.state.value || 0, 10);
+  //   const multiplier = new BN(this.state.multiplier, 10);
+  //   return tokens.mul(multiplier);
+  // }
 
-  getTotalPrice () {
-    const price = new BN(this.state.price, 10);
-    return this.getTokensToBuy().mul(price);
-  }
+  // getTotalPrice () {
+  //   const price = new BN(this.state.price, 10);
+  //   return this.getTokensToBuy().mul(price);
+  // }
 
-  getTotalPriceText () {
-    if (this.state.errorText) return 0;
+  // getTotalPriceText () {
+  //   if (this.state.errorText) return 0;
 
-    const price = this.getTotalPrice();
-    if (price.lt(this.weiToEthLimit)) {
-      return price.toString() + ` ${keys.wei}`;
-    }
+  //   const price = this.getTotalPrice();
+  //   if (price.lt(this.weiToEthLimit)) {
+  //     return price.toString() + ` ${keys.wei}`;
+  //   }
 
-    return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
-  }
+  //   return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
+  // }
 
   render () {
     const buyLabelText = keys.formatString(
@@ -105,8 +104,8 @@ class ManageTokensContainer extends Component {
             textFieldHint={keys.manageTokensPage_buyTokensHint}
             buttonLabel={keys.buy}
             approveTokens={this.buyTokens}
+            price={this.state.price}
           />
-          <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
         </div>
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
         <ApproveForm

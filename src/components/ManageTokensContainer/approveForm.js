@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import LinearProgress from 'material-ui/LinearProgress';
 import keys from '../../i18n';
+import { numberWithSpaces } from '../../utils/Parameterizer';
 
 class ApproveForm extends Component {
   constructor (props) {
     super(props);
     this.state = {
       value: '',
-      errorText: ''
+      errorText: '',
+      isSendingTx: false
     };
-
     this.handleInput = this.handleInput.bind(this);
     this.handleApprove = this.handleApprove.bind(this);
   }
@@ -28,15 +30,22 @@ class ApproveForm extends Component {
   }
 
   handleApprove (value) {
-    console.log('handleApprove', value);
+    this.setState({ isSendingTx: true });
     this.props.approveTokens(value);
+  }
+
+  componentWillReceiveProps (newProps) {
+    if (newProps !== this.props) {
+      this.setState({ value: '', errorText: '', isSendingTx: false });
+    }
   }
 
   render () {
     const {
       textFieldLabel,
       textFieldHint,
-      buttonLabel
+      buttonLabel,
+      price
     } = this.props;
 
     return (
@@ -56,7 +65,7 @@ class ApproveForm extends Component {
           <div className='buyTokensForm_element'>
             <RaisedButton
               label={buttonLabel || keys.approve}
-              disabled={!this.state.value || this.state.errorText}
+              disabled={!this.state.value || !!this.state.errorText || this.state.isSendingTx}
               onClick={() => this.handleApprove(this.state.value)}
               backgroundColor={keys.successColor}
               labelColor={keys.buttonLabelColor}
@@ -64,6 +73,16 @@ class ApproveForm extends Component {
             />
           </div>
         </div>
+        { price && this.state.value && !this.state.errorText &&
+          <p className='balanceText'>
+            {keys.formatString(
+              keys.manageTokensPage_supposedPrice,
+              numberWithSpaces(price * this.state.value)
+            )}
+            &nbsp;{keys.wei}
+          </p>
+        }
+        { this.state.isSendingTx && <LinearProgress mode='indeterminate' style={{ width: 316 }} /> }
       </div>
     );
   }
@@ -73,7 +92,8 @@ ApproveForm.propTypes = {
   textFieldLabel: PropTypes.string.isRequired,
   textFieldHint: PropTypes.string,
   buttonLabel: PropTypes.string,
-  approveTokens: PropTypes.func.isRequired
+  approveTokens: PropTypes.func.isRequired,
+  price: PropTypes.string
 };
 
 export default ApproveForm;
