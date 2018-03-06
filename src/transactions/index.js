@@ -160,10 +160,11 @@ export async function claimReward (challengeId, salt) {
   await manager.watchForTransaction(ti);
 }
 
-export async function proposeNewParameterizerValue (parameterName, newParameterValue, tokensAmount) {
+export async function proposeNewParameterizerValue (parameterName, newParameterValue) {
   const registry = TCR.registry();
   const account = await TCR.defaultAccount();
   const parameterizer = await registry.getParameterizer();
+  const tokensAmount = await parameterizer.get('pMinDeposit');
   const manager = new TransactionManager(provider());
   const approvedRegistryTokens = (await TCR.getApprovedTokens()).parameterizer;
   const queue = new PromisesQueue();
@@ -208,10 +209,11 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
   return queue;
 }
 
-export async function challengeProposalTx (proposal, tokensAmount) {
+export async function challengeProposalTx (proposal) {
   const account = await TCR.defaultAccount();
   const registry = TCR.registry();
   const parameterizer = await registry.getParameterizer();
+  const tokensAmount = await parameterizer.get('pMinDeposit');
   const proposalInstance = parameterizer.getProposal(proposal.contractName, proposal.proposal);
   const manager = new TransactionManager(provider());
   const approvedRegistryTokens = (await TCR.getApprovedTokens()).parameterizer;

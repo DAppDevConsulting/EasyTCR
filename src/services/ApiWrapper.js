@@ -22,6 +22,9 @@ export default {
   onListingsRewordsChange: (handler) => {
     contractService.setRewardNotificationHandler(handler);
   },
+  onParametrizerProposalsChange: (handler) => {
+    contractService.setParametrizerNotificationHandelr(handler);
+  },
   onNewBlock: (handler) => {
     contractService.onNewBlock(handler);
   }

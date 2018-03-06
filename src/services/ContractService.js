@@ -2,12 +2,12 @@ import Web3 from 'web3';
 import _ from 'lodash';
 import { Registry } from 'ethereum-tcr-api';
 import PromisesQueueWatcher from '../utils/PromisesQueueWatcher';
-import TCR from '../TCR';
 const httpProvider = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/Dy4nhcddBU78aJPZ7TDA'));
 const SYNC_INTERVAL = 10000;
 let currentContract = '';
 let registryNotificationCandidate = null;
 let rewardNotificationCandidate = null;
+let parametrizerNotificationCandidate = null;
 let onNewBlockHandler = null;
 
 // TODO: in future store only one registry
@@ -54,20 +54,24 @@ class ContractSynchronizer {
   }
 }
 
+// TODO: refactor this class
 class SyncManager {
   constructor (registry, accountAddress) {
     this.registry = registry;
     this.accountAddress = accountAddress;
     this.regisrtySynchronizer = this._createRegistrySynchronizer();
     this.votingSynchronizer = null;
+    this.paramsSynchronizer = null;
     this.lastKnownBlock = 0;
     this._timeout = 0;
     this._synchronizationRunning = false;
     this._watcher = null;
     this._rewardWatcher = null;
+    this._parametrizerWatcher = null;
     this._listingsMap = new Map();
     this._unclaimedPools = new Map();
     this._poolIdToListing = new Map();
+    this._paramsProposalsMap = new Map();
   }
 
   _createRegistrySynchronizer () {
@@ -117,6 +121,21 @@ class SyncManager {
     );
   }
 
+  async _createParamsSynchronizer () {
+    let parametrizer = await this.registry.getParameterizer();
+    let map = new Map();
+    map.set('_ReparameterizationProposal', (e) => this._onReparameterizationProposal(e));
+    map.set('_NewChallenge', (e) => this._onReparameterizationChallenge(e));
+    return new ContractSynchronizer(
+      parametrizer.contract,
+      map,
+      (events) => {
+        let grouped = _.groupBy(events, 'returnValues.propID');
+        return _.keys(grouped).map(k => grouped[k]);
+      }
+    );
+  }
+
   // TODO: сделать более универсально
   setRewardWatcher (watcher) {
     this._rewardWatcher = watcher;
@@ -124,6 +143,10 @@ class SyncManager {
 
   setRegistryWatcher (watcher) {
     this._watcher = watcher;
+  }
+
+  setParametrizerWatcher (watcher) {
+    this._parametrizerWatcher = watcher;
   }
 
   _callWatcher () {
@@ -150,6 +173,9 @@ class SyncManager {
     if (!this.votingSynchronizer) {
       this.votingSynchronizer = await this._createVotingSynchronizer();
     }
+    if (!this.paramsSynchronizer) {
+      this.paramsSynchronizer = await this._createParamsSynchronizer();
+    }
     await this._synchronizeAndUpdateActualBlock();
   }
 
@@ -159,6 +185,7 @@ class SyncManager {
     // TODO: сейчас последовательность важна. Подумать как унифицировать.
     await this.votingSynchronizer.handlePastEvents(this.lastKnownBlock, actualBlock.number);
     await this.regisrtySynchronizer.handlePastEvents(this.lastKnownBlock, actualBlock.number);
+    await this.paramsSynchronizer.handlePastEvents(this.lastKnownBlock, actualBlock.number);
     this.lastKnownBlock = actualBlock.number;
     // TODO: вынести в более подходящее место
     if (typeof onNewBlockHandler === 'function') {
@@ -171,6 +198,7 @@ class SyncManager {
     this._listingsMap.clear();
     this._unclaimedPools.clear();
     this._poolIdToListing.clear();
+    this._paramsProposalsMap.clear();
     this.lastKnownBlock = 0;
     clearTimeout(this._timeout);
     this._synchronizationRunning = false;
@@ -244,6 +272,15 @@ class SyncManager {
     });
   }
 
+  _onReparameterizationProposal (event) {
+    this._paramsProposalsMap.set(event.returnValues.name, event.returnValues.value);
+    if (typeof this._parametrizerWatcher === 'function') {
+      this._parametrizerWatcher('change', event.returnValues.name);
+    }
+  }
+
+  _onReparameterizationChallenge (event) {}
+
   listings () {
     return [...this._listingsMap.values()];
   }
@@ -254,6 +291,15 @@ class SyncManager {
         let poolData = _.assign(this._unclaimedPools.get(id), this._poolIdToListing.get(id));
         return poolData;
       }).filter((item) => item.isResolved);
+  }
+
+  parametrizerProposals () {
+    const proposals = {};
+    const iterator = this._paramsProposalsMap.keys();
+    for (let key of iterator) {
+      proposals[key] = this._paramsProposalsMap.get(key);
+    }
+    return proposals;
   }
 
   synchronizationRunning () {
@@ -292,6 +338,10 @@ const prepareSynchronizers = async (address, accountAddress) => {
     _map.get(currentContract).setRewardWatcher(rewardNotificationCandidate);
     rewardNotificationCandidate = null;
   }
+  if (typeof parametrizerNotificationCandidate === 'function' && !synchronizationRunning) {
+    _map.get(currentContract).setParametrizerWatcher(parametrizerNotificationCandidate);
+    parametrizerNotificationCandidate = null;
+  }
 };
 
 // TODO: Добавить отмену, т.к. сейчас дожидаемся пока отработает прошлый запрос.
@@ -318,6 +368,11 @@ const getListingsToClaimReward = async (address, accountAddress) => {
   return _map.get(address).listingsToClaimReward();
 };
 
+const getParameterizerProposals = async (address, accountAddress) => {
+  await getPromiseFromQueue(address, accountAddress);
+  return _map.get(address).parametrizerProposals();
+};
+
 // TODO: кривоватая схема
 const setRegistryNotificationHandler = (handler) => {
   registryNotificationCandidate = handler;
@@ -325,23 +380,12 @@ const setRegistryNotificationHandler = (handler) => {
 const setRewardNotificationHandler = (handler) => {
   rewardNotificationCandidate = handler;
 };
-
-const onNewBlock = (handler) => {
-  console.log('add new block handler');
-  onNewBlockHandler = handler;
+const setParametrizerNotificationHandelr = (handler) => {
+  parametrizerNotificationCandidate = handler;
 };
 
-const getParameterizerProposals = async (address, accountAddress) => {
-  const registry = TCR.registry();
-  const parameterizer = await registry.getParameterizer();
-
-  const lastKnownBlock = 0;
-  const actualBlock = await getActualBlock();
-
-  return parameterizer.contract.getPastEvents('_ReparameterizationProposal', {
-    fromBlock: lastKnownBlock,
-    toBlock: actualBlock.number
-  });
+const onNewBlock = (handler) => {
+  onNewBlockHandler = handler;
 };
 
 export default {
@@ -350,5 +394,6 @@ export default {
   getParameterizerProposals,
   setRegistryNotificationHandler,
   setRewardNotificationHandler,
+  setParametrizerNotificationHandelr,
   onNewBlock
 };
