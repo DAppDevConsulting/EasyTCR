@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import {bindActionCreators} from 'redux';
-import * as actions from '../../actions/CandidateActions';
-import * as appActions from '../../actions/AppActions';
 import {connect} from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 import BN from 'bn.js';
+import * as actions from '../../actions/CandidateActions';
+import * as appActions from '../../actions/AppActions';
 import TCR from '../../TCR';
 import keys from '../../i18n';
 import './style.css';
 import UrlUtils from '../../utils/UrlUtils';
-import ApproveForm from './approveForm';
-import TokensInformation from './tokensInformation';
+import ApproveForm from './ApproveForm';
+import TokensInformation from './TokensInformation';
 
 class ManageTokensContainer extends Component {
   constructor (props) {
@@ -42,6 +40,8 @@ class ManageTokensContainer extends Component {
     this.approveParameterizerTokens = this.approveParameterizerTokens.bind(this);
     this.requestVotingRights = this.requestVotingRights.bind(this);
     this.withdrawVotingRights = this.withdrawVotingRights.bind(this);
+    this.buyTokens = this.buyTokens.bind(this);
+    this.changeBuyTokens = this.changeBuyTokens.bind(this);
   }
 
   componentWillMount () {
@@ -55,15 +55,19 @@ class ManageTokensContainer extends Component {
     TCR.getTokenPrice('wei').then(price => this.setState({ price: price.toString() }));
   }
 
-  handleInput (e) {
-    const value = e.target.value;
-    const re = /^\d+$/;
+  // handleInput (e) {
+  //   const value = e.target.value;
+  //   const re = /^\d+$/;
 
-    if (re.test(value) || value === '') {
-      this.setState({ value, errorText: '' });
-    } else {
-      this.setState({ value, errorText: keys.invalidInput });
-    }
+  //   if (re.test(value) || value === '') {
+  //     this.setState({ value, errorText: '' });
+  //   } else {
+  //     this.setState({ value, errorText: keys.invalidInput });
+  //   }
+  // }
+
+  changeBuyTokens (value) {
+    this.setState({ value });
   }
 
   buyTokens () {
@@ -138,73 +142,42 @@ class ManageTokensContainer extends Component {
     this.setState({withdrawVotingRights});
   }
 
-  renderBuyTokensForm () {
-    const labelText = keys.formatString(
+  render () {
+    const buyLabelText = keys.formatString(
       keys.manageTokensPage_rate,
       {price: this.state.price, wei: keys.wei, tokenName: keys.tokenName}
-    );
+    ).join('');
 
-    return (
-      <div>
-        <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
-        <div className='buyTokensForm'>
-          <div className='buyTokensForm_item'>
-            <div className='buyTokensForm_element'>
-              <TextField
-                style={{width: 316}}
-                floatingLabelText={labelText}
-                floatingLabelFixed
-                hintText={keys.manageTokensPage_buyTokensHint}
-                value={this.state.value || ''}
-                onChange={e => this.handleInput(e)}
-                errorText={this.state.errorText}
-              />
-            </div>
-            <div className='buyTokensForm_element'>
-              <RaisedButton
-                label={keys.buy}
-                disabled={!this.state.value || this.state.errorText}
-                onClick={() => this.buyTokens()}
-                backgroundColor={keys.successColor}
-                labelColor={keys.buttonLabelColor}
-                style={{ marginTop: '28px' }}
-              />
-            </div>
-          </div>
-          <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
-        </div>
-      </div>
-    );
-  }
-
-  render () {
     return (
       <div className='ContentContainer'>
-        <TokensInformation
-          {...this.props.candidate}
-        />
-        {this.renderBuyTokensForm()}
+        <TokensInformation {...this.props.candidate} />
+        <div>
+          <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
+          <ApproveForm
+            textFieldLabel={buyLabelText}
+            textFieldHint={keys.manageTokensPage_buyTokensHint}
+            buttonLabel={keys.buy}
+            tokens={this.state.value}
+            approveTokens={this.buyTokens}
+            changeHandler={this.changeBuyTokens}
+          />
+          <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
+        </div>
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_approvedRegistryLabel}
-          textFieldHint={keys.manageTokensPage_buyTokensHint}
-          buttonLabel={keys.approve}
           tokens={this.state.registryTokens}
           approveTokens={this.approveRegistryTokens}
           changeHandler={this.changeRegistryTokens}
         />
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_approvedPLCRLabel}
-          textFieldHint={keys.manageTokensPage_buyTokensHint}
-          buttonLabel={keys.approve}
           tokens={this.state.plcrTokens}
           approveTokens={this.approvePLCRTokens}
           changeHandler={this.changePLCRTokens}
         />
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_approvedParameterizerLabel}
-          textFieldHint={keys.manageTokensPage_buyTokensHint}
-          buttonLabel={keys.approve}
           tokens={this.state.parameterizerTokens}
           approveTokens={this.approveParameterizerTokens}
           changeHandler={this.changeParameterizerTokens}
@@ -230,19 +203,15 @@ class ManageTokensContainer extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    candidate: state.candidate,
-    registry: state.app.registry
-  };
-}
+const mapStateToProps = state => ({
+  candidate: state.candidate,
+  registry: state.app.registry
+});
 
-function mapDispatchToProps (dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch),
-    appActions: bindActionCreators(appActions, dispatch)
-  };
-}
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(actions, dispatch),
+  appActions: bindActionCreators(appActions, dispatch)
+});
 
 ManageTokensContainer.propTypes = {
   candidate: PropTypes.object.isRequired,

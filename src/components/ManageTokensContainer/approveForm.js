@@ -4,7 +4,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import keys from '../../i18n';
 
-const ApproveForm = ({ textFieldLabel, textFieldHint, buttonLabel, tokens, approveTokens, changeHandler }) => (
+const ApproveForm = ({
+  textFieldLabel,
+  textFieldHint,
+  buttonLabel,
+  tokens,
+  approveTokens,
+  changeHandler
+}) => (
   <div className='buyTokensForm'>
     <div className='buyTokensForm_item'>
       <div className='buyTokensForm_element'>
@@ -12,14 +19,14 @@ const ApproveForm = ({ textFieldLabel, textFieldHint, buttonLabel, tokens, appro
           style={{width: 316}}
           floatingLabelText={textFieldLabel}
           floatingLabelFixed
-          hintText={textFieldHint}
+          hintText={textFieldHint || keys.manageTokensPage_buyTokensHint}
           value={tokens || ''}
           onChange={e => changeHandler(e.target.value)}
         />
       </div>
       <div className='buyTokensForm_element'>
         <RaisedButton
-          label={buttonLabel}
+          label={buttonLabel || keys.approve}
           disabled={!tokens}
           onClick={() => approveTokens()}
           backgroundColor={keys.successColor}
@@ -33,8 +40,8 @@ const ApproveForm = ({ textFieldLabel, textFieldHint, buttonLabel, tokens, appro
 
 ApproveForm.propTypes = {
   textFieldLabel: PropTypes.string.isRequired,
-  textFieldHint: PropTypes.string.isRequired,
-  buttonLabel: PropTypes.string.isRequired,
+  textFieldHint: PropTypes.string,
+  buttonLabel: PropTypes.string,
   tokens: PropTypes.string,
   approveTokens: PropTypes.func.isRequired,
   changeHandler: PropTypes.func.isRequired
