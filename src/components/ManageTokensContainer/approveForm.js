@@ -34,12 +34,7 @@ class ApproveForm extends Component {
   }
 
   render () {
-    const {
-      textFieldLabel,
-      textFieldHint,
-      buttonLabel,
-      price
-    } = this.props;
+    const { textFieldLabel, textFieldHint, buttonLabel, price } = this.props;
 
     return (
       <div className='buyTokensForm'>
