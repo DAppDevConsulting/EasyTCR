@@ -16,9 +16,9 @@ const ParameterizerAction = ({ activeProposal }) => {
   }
 
   switch (activeProposal.status) {
-    case keys.inRegistry:
+    case keys.Actual:
       return <ParameterizerEdit activeProposal={activeProposal} />;
-    case keys.inChallenge:
+    case keys.NewValue:
       return <ParameterizerChallenge activeProposal={activeProposal} />;
     case keys.VoteCommit:
       return <ParameterizerVote activeProposal={activeProposal} />;

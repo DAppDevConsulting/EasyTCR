@@ -30,6 +30,8 @@
     "VoteCommit": "In Commit",
     "VoteReveal": "In Reveal",
     "NeedProcess": "Need process",
+    "Actual": "Actual",
+    "NewValue": "New Value",
     "notExists": "Ooops... No candidate in contract",
 
     "menu_header": "Menu",
@@ -184,6 +186,7 @@
     "actionVote": "Vote",
     "actionReveal": "Reveal",
     "actionProcess": "Process",
+    "actionChallenge": "Challenge",
 
     "invalidInput": "Input is not valid",
     "updating": "Updating...",

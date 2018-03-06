@@ -14,7 +14,7 @@ export const getReadableStatus = status => {
     case 'VoteReveal':
       return keys.VoteReveal;
     default:
-      return keys.inChallenge;
+      return keys.NewValue;
   }
 };
 
@@ -29,9 +29,9 @@ export const getStatusStyle = status => {
   };
 
   switch (status) {
-    case keys.inRegistry:
+    case keys.Actual:
       return { ...style, backgroundColor: keys.successColor };
-    case keys.VoteCommit:
+    case keys.NewValue:
       return { ...style, backgroundColor: keys.inChallengeColor };
     default:
       return style;
@@ -40,8 +40,10 @@ export const getStatusStyle = status => {
 
 export const getActionButtonLabel = status => {
   switch (status) {
-    case keys.inRegistry:
+    case keys.Actual:
       return keys.actionEdit;
+    case keys.NewValue:
+      return keys.actionChallenge;
     case keys.VoteCommit:
       return keys.actionVote;
     case keys.VoteReveal:
