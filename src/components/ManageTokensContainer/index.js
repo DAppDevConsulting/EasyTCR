@@ -16,24 +16,13 @@ class ManageTokensContainer extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      value: '',
+      // value: '',
       multiplier: 1,
-      price: '',
-      errorText: '',
-      registryTokens: '',
-      plcrTokens: '',
-      parameterizerTokens: '',
-      requestVotingRights: '',
-      withdrawVotingRights: ''
+      price: ''
     };
 
     this.weiToEthConverter = (wei) => wei; // TODO: сделать один конвертер. Кажется там константные значения везде.
     this.weiToEthLimit = new BN('1000000000000000', 10);
-    this.changeRegistryTokens = this.changeRegistryTokens.bind(this);
-    this.changePLCRTokens = this.changePLCRTokens.bind(this);
-    this.changeParameterizerTokens = this.changeParameterizerTokens.bind(this);
-    this.changeVotingRights = this.changeVotingRights.bind(this);
-    this.changeWithdrawVotingRights = this.changeWithdrawVotingRights.bind(this);
     this.approveRegistryTokens = this.approveRegistryTokens.bind(this);
     this.approveRegistryTokens = this.approveRegistryTokens.bind(this);
     this.approvePLCRTokens = this.approvePLCRTokens.bind(this);
@@ -41,7 +30,6 @@ class ManageTokensContainer extends Component {
     this.requestVotingRights = this.requestVotingRights.bind(this);
     this.withdrawVotingRights = this.withdrawVotingRights.bind(this);
     this.buyTokens = this.buyTokens.bind(this);
-    this.changeBuyTokens = this.changeBuyTokens.bind(this);
   }
 
   componentWillMount () {
@@ -55,49 +43,28 @@ class ManageTokensContainer extends Component {
     TCR.getTokenPrice('wei').then(price => this.setState({ price: price.toString() }));
   }
 
-  // handleInput (e) {
-  //   const value = e.target.value;
-  //   const re = /^\d+$/;
-
-  //   if (re.test(value) || value === '') {
-  //     this.setState({ value, errorText: '' });
-  //   } else {
-  //     this.setState({ value, errorText: keys.invalidInput });
-  //   }
-  // }
-
-  changeBuyTokens (value) {
-    this.setState({ value });
+  buyTokens (value) {
+    this.props.actions.buyTokens(value);
   }
 
-  buyTokens () {
-    this.props.actions.buyTokens(this.getTokensToBuy());
-    this.setState({value: ''});
+  approveRegistryTokens (value) {
+    this.props.actions.approveRegistryTokens(value);
   }
 
-  approveRegistryTokens () {
-    this.props.actions.approveRegistryTokens(this.state.registryTokens);
-    this.setState({registryTokens: ''});
+  approvePLCRTokens (value) {
+    this.props.actions.approvePLCRTokens(value);
   }
 
-  approvePLCRTokens () {
-    this.props.actions.approvePLCRTokens(this.state.plcrTokens);
-    this.setState({plcrTokens: ''});
+  approveParameterizerTokens (value) {
+    this.props.actions.approveParameterizerTokens(value);
   }
 
-  approveParameterizerTokens () {
-    this.props.actions.approveParameterizerTokens(this.state.parameterizerTokens);
-    this.setState({parameterizerTokens: ''});
+  requestVotingRights (value) {
+    this.props.actions.requestVotingRights(value);
   }
 
-  requestVotingRights () {
-    this.props.actions.requestVotingRights(this.state.requestVotingRights);
-    this.setState({requestVotingRights: ''});
-  }
-
-  withdrawVotingRights () {
-    this.props.actions.withdrawVotingRights(this.state.withdrawVotingRights);
-    this.setState({withdrawVotingRights: ''});
+  withdrawVotingRights (value) {
+    this.props.actions.withdrawVotingRights(value);
   }
 
   getTokensToBuy () {
@@ -122,26 +89,6 @@ class ManageTokensContainer extends Component {
     return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
   }
 
-  changeRegistryTokens (registryTokens) {
-    this.setState({registryTokens});
-  }
-
-  changePLCRTokens (plcrTokens) {
-    this.setState({plcrTokens});
-  }
-
-  changeParameterizerTokens (parameterizerTokens) {
-    this.setState({parameterizerTokens});
-  }
-
-  changeVotingRights (requestVotingRights) {
-    this.setState({requestVotingRights});
-  }
-
-  changeWithdrawVotingRights (withdrawVotingRights) {
-    this.setState({withdrawVotingRights});
-  }
-
   render () {
     const buyLabelText = keys.formatString(
       keys.manageTokensPage_rate,
@@ -157,46 +104,34 @@ class ManageTokensContainer extends Component {
             textFieldLabel={buyLabelText}
             textFieldHint={keys.manageTokensPage_buyTokensHint}
             buttonLabel={keys.buy}
-            tokens={this.state.value}
             approveTokens={this.buyTokens}
-            changeHandler={this.changeBuyTokens}
           />
           <p className='balanceText'>{keys.formatString(keys.manageTokensPage_supposedPrice, this.getTotalPriceText())}</p>
         </div>
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_approvedRegistryLabel}
-          tokens={this.state.registryTokens}
           approveTokens={this.approveRegistryTokens}
-          changeHandler={this.changeRegistryTokens}
         />
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_approvedPLCRLabel}
-          tokens={this.state.plcrTokens}
           approveTokens={this.approvePLCRTokens}
-          changeHandler={this.changePLCRTokens}
         />
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_approvedParameterizerLabel}
-          tokens={this.state.parameterizerTokens}
           approveTokens={this.approveParameterizerTokens}
-          changeHandler={this.changeParameterizerTokens}
         />
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_requestVotingRightsLabel}
           textFieldHint={keys.manageTokensPage_votingRightsHint}
           buttonLabel={keys.request}
-          tokens={this.state.requestVotingRights}
           approveTokens={this.requestVotingRights}
-          changeHandler={this.changeVotingRights}
         />
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_withdrawVotingRightsLabel}
           textFieldHint={keys.manageTokensPage_votingRightsHint}
           buttonLabel={keys.withdraw}
-          tokens={this.state.withdrawVotingRights}
           approveTokens={this.withdrawVotingRights}
-          changeHandler={this.changeWithdrawVotingRights}
         />
       </div>
     );
