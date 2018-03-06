@@ -88,6 +88,12 @@ class ManageTokensContainer extends Component {
   //   return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
   // }
 
+  componentWillReceiveProps (newProps) {
+    if (newProps !== this.props) {
+      this.setState({ price: '' });
+    }
+  }
+
   render () {
     const buyLabelText = keys.formatString(
       keys.manageTokensPage_rate,
