@@ -11,17 +11,17 @@ import {
 // import { getConsumerListings } from '../actions/ConsumerActions';
 
 const changeChannel = channel();
-ListingsProvider.addChangeListener(() => {
+ListingsProvider.onChange(() => {
   changeChannel.put({type: REQUEST_CONSUMER_LISTINGS});
 });
 
 export function * getConsumerListings (action) {
-  let listings = yield apply(ListingsProvider, 'getListings', [TCR.registry(), TCR.defaultAccountAddress()]);
+  let listings = yield apply(ListingsProvider, 'get', [TCR.registry(), TCR.defaultAccountAddress()]);
   yield put({type: UPDATE_CONSUMER_LISTINGS, listings});
 }
 
 export function * getListingData (action) {
-  let listing = yield apply(ListingsProvider, 'getListing', [TCR.registry(), action.listing]);
+  let listing = yield apply(ListingsProvider, 'getExtended', [TCR.registry(), action.listing]);
   yield put({type: UPDATE_LISTING_DATA, listing});
 }
 

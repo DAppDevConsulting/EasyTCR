@@ -25,7 +25,7 @@ import {
 
 // TODO: refactor this shit
 const changeChannel = channel();
-ListingsProvider.addChangeListener(() => {
+ListingsProvider.onChange(() => {
   changeChannel.put({type: REQUEST_CANDIDATE_LISTINGS});
 });
 
@@ -95,7 +95,7 @@ export function * getCandidateListings (action) {
   }
   let listings = yield apply(
     ListingsProvider,
-    'getListings',
+    'get',
     [TCR.registry(), TCR.defaultAccountAddress(), {owner: TCR.defaultAccountAddress()}]
   );
   yield put({type: UPDATE_CANDIDATE_LISTINGS, listings, useIpfs: ContractsManager.isRegistryUseIpfs(TCR.registry().address)});

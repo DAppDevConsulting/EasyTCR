@@ -10,18 +10,18 @@ import {
   CHANGE_REGISTRY
 } from '../constants/actions';
 import TCR from '../TCR';
-import RegistrySwitcher from '../services/RegistrySwitcher';
+import RegistriesProvider from '../services/RegistriesProvider';
 import ListingsProvider from '../services/ListingsProvider';
-import ChallengeProvider from '../services/ChallengeProvider';
+import ListingsRewardsProvider from '../services/ListingsRewardsProvider';
 import {claimReward as getClaimReward} from '../transactions';
 
 const changeChannel = channel();
-ChallengeProvider.addChangeListener(() => {
+ListingsRewardsProvider.onChange(() => {
   changeChannel.put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
 });
 
 export function * getListingsToClaimReward (action) {
-  let listings = yield apply(ChallengeProvider, 'getListingsToClaimReward', [TCR.registry(), TCR.defaultAccountAddress()]);
+  let listings = yield apply(ListingsRewardsProvider, 'get', [TCR.registry(), TCR.defaultAccountAddress()]);
   yield put({type: UPDATE_LISTINGS_TO_CLAIM_REWARD, listings});
 }
 
@@ -35,10 +35,10 @@ export function * getListing (action) {
   if (action.registry !== TCR.registry().address) {
     yield put({type: CHANGE_REGISTRY, defaultRegistry: action.registry});
   }
-  yield apply(RegistrySwitcher, 'switchToRegistry', [action.registry]);
+  yield apply(RegistriesProvider, 'switchTo', [action.registry]);
   let listing = yield apply(
     ListingsProvider,
-    'getListing',
+    'getExtended',
     [TCR.registry(), TCR.defaultAccountAddress(), action.listing]
   );
   yield put({type: UPDATE_CURRENT_LISTING, currentListing: listing});

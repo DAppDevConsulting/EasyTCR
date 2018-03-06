@@ -9,7 +9,7 @@ import {
   CHALLENGE_PROPOSAL,
   CANCEL_PARAMETERIZER_TX
 } from '../constants/actions';
-import api from '../services/BackendApi';
+import api from '../services/ApiWrapper';
 import {
   proposeNewParameterizerValue as getProposeNewParameterizerValue,
   processProposal as getProcessProposal,

@@ -1,17 +1,17 @@
-import api from './BackendApi';
+import api from './ApiWrapper';
 
+const handlers = [];
 let currentRegistry = null;
-let changeListeners = [];
 
 const notificationListener = async () => {
-  for (let cb of changeListeners) {
+  for (let cb of handlers) {
     if (typeof cb === 'function') {
       cb();
     }
   }
 };
 
-const getListingsToClaimReward = async (registry, accountAddress) => {
+const get = async (registry, accountAddress) => {
   if (!currentRegistry || currentRegistry.address !== registry.address) {
     currentRegistry = registry;
     api.listenRewordsNotification(notificationListener);
@@ -20,9 +20,9 @@ const getListingsToClaimReward = async (registry, accountAddress) => {
   return result;
 };
 
-const addChangeListener = (listener) => changeListeners.push(listener);
+const onChange = (handler) => handlers.push(handler);
 
 export default {
-  getListingsToClaimReward,
-  addChangeListener
+  get,
+  onChange
 };

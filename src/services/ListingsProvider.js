@@ -1,71 +1,53 @@
-import api from './BackendApi';
+import api from './ApiWrapper';
 import ListingsMapper from './ListingsMapper';
 import {ContractsManager} from '../TCR';
 import IPFS from './IPFS';
+import Cache from '../utils/Cache';
 
-const registryCache = new Map();
 let currentRegistry = null;
-let useIpfs = false;
-let changeListeners = [];
-const refreshCandidates = new Set();
+const handlers = [];
+let cache = null;
 
-class ListingWatcher {
-  constructor (listing) {
-    this.listing = listing;
-    const now = new Date().getTime();
-    // TODO: нужен более надежный механизм.
-    if (listing.timestamp > now) {
-      this._timer = setTimeout(
-        () => {
-          refreshCandidates.add(this.listing.name);
-        },
-        this.listing.timestamp - now
-      );
-    } else if (listing.dueDate) { // TODO: hack
-      refreshCandidates.add(this.listing.name);
-    }
-  }
-
-  destroy () {
-    clearTimeout(this._timer);
-  }
-}
-
-const getFromCache = (itemName) => {
-  return registryCache.has(itemName) ? registryCache.get(itemName).listing : null;
-};
-
-const addToCache = async (item) => {
-  if (useIpfs) {
-    let record = await IPFS.get(item.name);
-    // TODO: подумать над универсальным форматом
-    item.label = record.name ? record.name : item.name;
-  } else {
-    item.label = item.name;
-  }
-  deleteFromCache(item.name);
-  registryCache.set(item.name, new ListingWatcher(item));
-};
-
-const deleteFromCache = (itemName) => {
-  if (registryCache.has(itemName)) {
-    registryCache.get(itemName).destroy();
-    registryCache.delete(itemName);
-  }
+const createCache = (registry) => {
+  const useIpfs = ContractsManager.isRegistryUseIpfs(registry.address);
+  return new Cache(
+    async (key) => {
+      const item = await ListingsMapper.map(key, registry);
+      if (useIpfs) {
+        let record = await IPFS.get(item.name);
+        // TODO: подумать над универсальным форматом
+        item.label = record.name ? record.name : item.name;
+      } else {
+        item.label = item.name;
+      }
+      return item;
+    },
+    (item) => new Promise((resolve, reject) => {
+      const now = new Date().getTime();
+      // TODO: нужен более надежный механизм.
+      if (item.timestamp > now) {
+        setTimeout(
+          resolve,
+          item.timestamp - now
+        );
+      } else if (item.dueDate) { // TODO: hack
+        resolve();
+      }
+    })
+  );
 };
 
 const notificationListener = async (type, listing) => {
   if (type === 'remove') {
-    deleteFromCache(listing);
+    cache.delete(listing);
   } else if (type === 'add' || type === 'change') {
-    let item = await ListingsMapper.getProps(listing, currentRegistry);
-    await addToCache(item);
+    await cache.reset(listing);
   }
   callChangeListeners();
 };
 
 const callChangeListeners = () => {
-  for (let cb of changeListeners) {
+  for (let cb of handlers) {
     if (typeof cb === 'function') {
       cb();
     }
@@ -73,39 +55,33 @@ const callChangeListeners = () => {
 };
 
 const newBlockListener = async (block) => {
-  const blockTs = block.timestamp * 1000;
-  const iterator = refreshCandidates.keys();
-  for (let key of iterator) {
-    if (getFromCache(key) && getFromCache(key).timestamp < blockTs) {
-      refreshCandidates.delete(key);
-      await notificationListener('change', key);
-    }
-  }
+  cache.refresh();
 };
 
-const getListings = async (registry, accountAddress, condition) => {
+const get = async (registry, accountAddress, condition) => {
   if (!currentRegistry || currentRegistry.address !== registry.address) {
-    registryCache.clear();
+    cache = createCache(registry);
     currentRegistry = registry;
-    useIpfs = ContractsManager.isRegistryUseIpfs(registry.address);
     api.listenNotification(notificationListener);
     api.onNewBlock(newBlockListener);
   }
-  let listings = await api.getListings(registry.address, accountAddress, [], condition && condition.owner ? condition.owner : '');
-  let toCache = await ListingsMapper.mapListings(listings.filter(item => !registryCache.has(item.listing)), registry);
-  await Promise.all(toCache.map(item => addToCache(item)));
-  return listings.map(item => getFromCache(item.listing));
-};
-
-const getListing = async (registry, accountAddress, name) => {
-  const result = await ListingsMapper.mapListing(name, registry, accountAddress);
+  let listings = await api.getListings(registry.address, accountAddress, condition && condition.owner ? condition.owner : '');
+  const result = await Promise.all(listings.map(async (item) => {
+    let lstng = await cache.get(item.listing);
+    return lstng;
+  }));
   return result;
 };
 
-const addChangeListener = (listener) => changeListeners.push(listener);
+const getExtended = async (registry, accountAddress, name) => {
+  const result = await ListingsMapper.mapExtended(name, registry, accountAddress);
+  return result;
+};
+
+const onChange = (listener) => handlers.push(listener);
 
 export default {
-  getListing,
-  getListings,
-  addChangeListener
+  getExtended,
+  get,
+  onChange
 };
