@@ -11,6 +11,7 @@ import './style.css';
 import UrlUtils from '../../utils/UrlUtils';
 import ApproveForm from './ApproveForm';
 import TokensInformation from './TokensInformation';
+import LinearProgress from 'material-ui/LinearProgress';
 
 class ManageTokensContainer extends Component {
   constructor (props) {
@@ -88,17 +89,17 @@ class ManageTokensContainer extends Component {
   //   return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
   // }
 
-  componentWillReceiveProps (newProps) {
-    if (newProps !== this.props) {
-      this.setState({ price: '' });
-    }
-  }
-
   render () {
     const buyLabelText = keys.formatString(
       keys.manageTokensPage_rate,
       {price: this.state.price, wei: keys.wei, tokenName: keys.tokenName}
     ).join('');
+
+    if (this.props.candidate.isFetchingBalance) {
+      return <div className='ContentContainer'>
+        <LinearProgress mode='indeterminate' />
+      </div>;
+    }
 
     return (
       <div className='ContentContainer'>

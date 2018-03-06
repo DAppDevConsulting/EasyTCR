@@ -19,7 +19,6 @@ class ApproveForm extends Component {
   }
 
   handleInput (value) {
-    console.log('handleInput', value);
     const re = /^\d+$/;
 
     if (re.test(value) && value !== '') {
@@ -32,12 +31,6 @@ class ApproveForm extends Component {
   handleApprove (value) {
     this.setState({ isSendingTx: true });
     this.props.approveTokens(value);
-  }
-
-  componentWillReceiveProps (newProps) {
-    if (newProps !== this.props) {
-      this.setState({ value: '', errorText: '', isSendingTx: false });
-    }
   }
 
   render () {
