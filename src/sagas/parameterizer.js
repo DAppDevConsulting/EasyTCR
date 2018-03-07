@@ -54,5 +54,4 @@ export default function * flow () {
   yield takeEvery(PROCESS_PROPOSAL, processProposal);
   yield takeEvery(CHALLENGE_PROPOSAL, challengeProposal);
   yield takeEvery(changeChannel, fetchParameters);
-
 }

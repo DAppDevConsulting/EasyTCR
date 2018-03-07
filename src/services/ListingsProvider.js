@@ -43,19 +43,25 @@ const notificationListener = async (type, listing) => {
   } else if (type === 'add' || type === 'change') {
     await cache.reset(listing);
   }
-  callChangeListeners();
+  const idsSet = new Set();
+  idsSet.add(listing);
+  callChangeListeners(idsSet);
 };
 
-const callChangeListeners = () => {
+const callChangeListeners = (idsSet) => {
   for (let cb of handlers) {
     if (typeof cb === 'function') {
-      cb();
+      cb(idsSet);
     }
   }
 };
 
 const newBlockListener = async (block) => {
+  const idsSet = cache.getKeysToRefresh();
   cache.refresh();
+  if (idsSet.size) {
+    callChangeListeners(idsSet);
+  }
 };
 
 const get = async (registry, accountAddress, condition) => {

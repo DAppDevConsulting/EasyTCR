@@ -25,11 +25,21 @@ export default class Cache {
 
   delete (key) {
     this._map.delete(key);
+    this._obsoleteKeys.delete(key);
   }
 
   async reset (key) {
-    this._map.delete(key);
+    this.delete(key);
     await this.get(key);
+  }
+
+  getKeysToRefresh () {
+    const result = new Set();
+    let iterator = this._obsoleteKeys.keys();
+    for (let key of iterator) {
+      result.add(key);
+    }
+    return result;
   }
 
   async refresh () {

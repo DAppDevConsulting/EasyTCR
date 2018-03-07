@@ -33,10 +33,11 @@ class ContractSynchronizer {
       return;
     }
 
+    // events duplicates. We exclude first block.
     try {
       let events = await this.contract.getPastEvents(
         'allEvents',
-        {fromBlock: lastKnownBlock, toBlock: actualBlock}
+        {fromBlock: lastKnownBlock + 1, toBlock: actualBlock}
       );
       await Promise.all(
         this._parallelizeEvents(events)
@@ -240,7 +241,7 @@ class SyncManager {
     }
     if (this._unclaimedPools.has(challengeId)) {
       let pool = this._unclaimedPools.get(challengeId);
-      if (pool.choice === isSucceeded) { // TODO: убедиться что это правильно
+      if (pool.choice === isSucceeded) {
         this._unclaimedPools.delete(challengeId);
         this._poolIdToListing.delete(challengeId);
       } else {
