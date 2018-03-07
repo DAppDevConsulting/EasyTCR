@@ -18,7 +18,7 @@ import ManageRegistriesForm from './components/ManageRegistriesForm';
 import SettingsPopup from './components/SettingsPopup';
 import './App.css';
 import keys from './i18n';
-
+const tcrOfTcrs = require('./cfg.json').TCRofTCRs;
 const muiTheme = getMuiTheme({
   palette: {
     accent1Color: deepOrange500
@@ -104,7 +104,7 @@ class App extends Component {
             <Header
               onSettingsClick={() => this.setState({settingsPopupOpened: true})}
               onSwitcherClick={() => this.setState({manageRegistriesOpened: true})}
-              onTCRofTCRsClick={() => changeRegistry('0x81e1269708582ae17560b6acc0f45d0416df8d68')}
+              onTCRofTCRsClick={() => changeRegistry(tcrOfTcrs.registry)}
             />
             <div>
               <SideBar />

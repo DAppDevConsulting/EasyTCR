@@ -14,6 +14,8 @@ import GlobalIcon from 'material-ui/svg-icons/av/new-releases';
 import { yellow500 } from 'material-ui/styles/colors';
 import storage from '../../utils/CookieStorage';
 
+const tcrOfTcrs = require('../../cfg.json').TCRofTCRs;
+
 const Header = ({ balance, onSwitcherClick, onSettingsClick, onTCRofTCRsClick, isTCRofTCRsActive }) => {
   const useBackend = !!storage.get('useBackend');
   return (
@@ -60,7 +62,7 @@ Header.propTypes = {
 function mapStateToProps (state) {
   return {
     balance: state.candidate,
-    isTCRofTCRsActive: state.app.registry === '0x81e1269708582ae17560b6acc0f45d0416df8d68'
+    isTCRofTCRsActive: state.app.registry === tcrOfTcrs.registry
   };
 }
 
