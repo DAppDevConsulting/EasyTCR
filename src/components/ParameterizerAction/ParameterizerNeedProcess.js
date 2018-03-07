@@ -19,7 +19,7 @@ class ParameterizerNeedProcess extends Component {
   }
 
   resolveReparameterization () {
-    this.props.tokenHolderActions.hideTxQueue();
+    this.props.tokenHolderActions.hideParameterizerTxQueue();
     this.props.tokenHolderActions.requestParameterizerInformation();
   }
 
@@ -28,7 +28,7 @@ class ParameterizerNeedProcess extends Component {
   }
 
   handleCancel () {
-    this.props.tokenHolderActions.hideTxQueue();
+    this.props.tokenHolderActions.hideParameterizerTxQueue();
   }
 
   render () {

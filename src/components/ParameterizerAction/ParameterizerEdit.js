@@ -57,7 +57,7 @@ class ParameterizerEdit extends Component {
           <TxQueue
             mode='vertical'
             queue={txQueue}
-            cancel={tokenHolderActions.hideTxQueue}
+            cancel={tokenHolderActions.hideParameterizerTxQueue}
             title='Make an application to registry'
             onEnd={() => this.resolveReparameterization()}
           />

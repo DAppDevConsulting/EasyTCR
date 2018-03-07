@@ -41,7 +41,7 @@ class ParameterizerVote extends Component {
   }
 
   resolveVoting () {
-    this.props.tokenHolderActions.hideVotingCommitTxQueue();
+    this.props.tokenHolderActions.hideParameterizerTxQueue();
   }
 
   render () {
@@ -54,7 +54,7 @@ class ParameterizerVote extends Component {
             ? <TxQueue
               mode='vertical'
               queue={txQueue}
-              cancel={tokenHolderActions.hideVotingCommitTxQueue}
+              cancel={tokenHolderActions.hideParameterizerTxQueue}
               title={keys.txQueueTitle}
               onEnd={() => this.resolveVoting()}
             />

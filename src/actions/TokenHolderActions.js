@@ -13,7 +13,8 @@ import {
   PROPOSE_NEW_PARAMETER_VALUE,
   REQUEST_PARAMETERIZER_INFORMATION,
   PROCESS_PROPOSAL,
-  CHALLENGE_PROPOSAL
+  CHALLENGE_PROPOSAL,
+  PARAMETERIZER_HIDE_TX_QUEUE
 } from '../constants/actions';
 
 export function challenge (listing) {
@@ -26,6 +27,12 @@ export function challenge (listing) {
 export function hideTxQueue () {
   return {
     type: CHALLENGE_HIDE_TX_QUEUE
+  };
+}
+
+export function hideParameterizerTxQueue () {
+  return {
+    type: PARAMETERIZER_HIDE_TX_QUEUE
   };
 }
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as appActions from '../../actions/AppActions';
+import * as tokenHolderActions from '../../actions/TokenHolderActions'
 import ParameterizerList from '../ParameterizerList';
 import ParameterizerAction from '../ParameterizerAction';
 import './style.css';
@@ -34,9 +35,8 @@ class ParameterizerContainer extends Component {
   }
 
   selectParameter (parameter) {
-    this.setState({
-      activeProposal: parameter
-    });
+    this.props.tokenHolderActions.hideParameterizerTxQueue();
+    this.setState({ activeProposal: parameter });
   }
 
   render () {
@@ -64,6 +64,7 @@ class ParameterizerContainer extends Component {
 ParameterizerContainer.propTypes = {
   parameterizer: PropTypes.object.isRequired,
   appActions: PropTypes.object.isRequired,
+  tokenHolderActions: PropTypes.object.isRequired,
   registry: PropTypes.string.isRequired
 };
 
@@ -74,7 +75,8 @@ const mapStateToProps = state => ({
 
 function mapDispatchToProps (dispatch) {
   return {
-    appActions: bindActionCreators(appActions, dispatch)
+    appActions: bindActionCreators(appActions, dispatch),
+    tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
   };
 }
 

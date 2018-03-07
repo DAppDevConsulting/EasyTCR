@@ -28,7 +28,7 @@ class ParameterizerReveal extends Component {
   }
 
   resolveVoting () {
-    this.props.tokenHolderActions.hideVotingRevealTxQueue();
+    this.props.tokenHolderActions.hideParameterizerTxQueue();
   }
 
   getRadioButtonStyleForOption (option) {
@@ -58,7 +58,7 @@ class ParameterizerReveal extends Component {
           <TxQueue
             mode='vertical'
             queue={txQueue}
-            cancel={tokenHolderActions.hideVotingRevealTxQueue}
+            cancel={tokenHolderActions.hideParameterizerTxQueue}
             title={keys.txQueueTitle}
             onEnd={() => this.resolveVoting()}
           />
