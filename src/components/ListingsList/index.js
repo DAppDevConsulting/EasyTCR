@@ -10,6 +10,7 @@ import {
 } from 'material-ui/Table';
 import PropTypes from 'prop-types';
 import keys from '../../i18n';
+import { getListingItemStatusStyle } from '../../utils/ListingsList';
 
 const renderRow = (config, data, registry, index) => (
   <TableRow key={index}>
@@ -20,10 +21,13 @@ const renderRow = (config, data, registry, index) => (
         // check for WillBeWhitelisted and WillBeRejected statuses and render Need refresh
         return (
           <TableRowColumn key={key}>
-            {data[column.propName] === keys.WillBeWhitelisted ||
-            data[column.propName] === keys.WillBeRejected
-              ? keys.needRefresh
-              : data[column.propName]}
+            <span style={getListingItemStatusStyle(data[column.propName])}>
+              { data[column.propName] === keys.WillBeWhitelisted ||
+                data[column.propName] === keys.WillBeRejected
+                ? keys.needRefresh
+                : data[column.propName]
+              }
+            </span>
           </TableRowColumn>
         );
       } else if (column.propName === 'action') {
