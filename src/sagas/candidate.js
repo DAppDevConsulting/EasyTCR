@@ -1,5 +1,6 @@
 import { channel } from 'redux-saga';
 import {put, takeEvery, apply, call, select} from 'redux-saga/effects';
+import { Listing } from 'ethereum-tcr-api';
 import 'babel-polyfill';
 import TCR, {ContractsManager} from '../TCR';
 import IPFS from '../services/IPFS';
@@ -73,14 +74,19 @@ export function * applyListing (action) {
   if (!TCR.defaultAccountAddress()) {
     return;
   }
-  let name = action.name;
+
+  let data = {name: action.name};
+  let hash = Listing.hashName(action.name);
   if (!action.name && action.file) {
-    name = yield apply(IPFS, 'upload', [action.file]);
+    data = yield apply(IPFS, 'upload', [action.file]);
+    hash = Listing.hashName(data);
+  } else {
+    let content = JSON.stringify({...data, identifier: hash});
+    let file = yield apply(IPFS, 'contentToFile', [action.name, content]);
+    data = yield apply(IPFS, 'upload', [file]);
   }
 
-  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
-  let minDeposit = yield apply(parameterizer, 'get', ['minDeposit']);
-  let queue = yield call(getApplyListingQueue, name, action.tokens, minDeposit);
+  let queue = yield call(getApplyListingQueue, hash, data, action.tokens);
 
   yield put({ type: SHOW_TX_QUEUE, queue });
 }
@@ -98,7 +104,8 @@ export function * getCandidateListings (action) {
     'get',
     [TCR.registry(), TCR.defaultAccountAddress(), {owner: TCR.defaultAccountAddress()}]
   );
-  yield put({type: UPDATE_CANDIDATE_LISTINGS, listings, useIpfs: ContractsManager.isRegistryUseIpfs(TCR.registry().address)});
+  // yield put({type: UPDATE_CANDIDATE_LISTINGS, listings, useIpfs: ContractsManager.isRegistryUseIpfs(TCR.registry().address)});
+  yield put({type: UPDATE_CANDIDATE_LISTINGS, listings});
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }
 

@@ -60,7 +60,7 @@ Header.propTypes = {
 function mapStateToProps (state) {
   return {
     balance: state.candidate,
-    isTCRofTCRsActive: state.app.registry === '0x81e1269708582ae17560b6acc0f45d0416df8d68'
+    isTCRofTCRsActive: state.app.registry === '0x8708399ec21db3f10764970c76d352694fa76333'
   };
 }
 

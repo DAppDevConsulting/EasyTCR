@@ -35,7 +35,7 @@ const renderRow = (config, data, registry, index) => (
         return (
           <TableRowColumn key={key}>
             <Link
-              to={`/candidate/${registry}/${data.name}`}
+              to={`/candidate/${registry}/${data.id}`}
               style={{
                 color: keys.accentColor,
                 fontWeight: '400',

@@ -56,7 +56,7 @@ class ListingStatus extends Component {
   }
 
   render () {
-    const { status, whitelisted, name } = this.props.listing;
+    const { status, whitelisted, id } = this.props.listing;
 
     return (
       <div className='listingStatus'>
@@ -77,7 +77,7 @@ class ListingStatus extends Component {
                 buttonStyle={{ backgroundColor: keys.refreshButtonColor }}
                 style={{ marginLeft: '20px' }}
                 labelStyle={{ textTransform: 'Capitalize', color: keys.tabLabelColor }}
-                onClick={() => this.handleRefresh(name)}
+                onClick={() => this.handleRefresh(id)}
               />
             }
             <p className='refreshText'>{keys.refreshNote}</p>
