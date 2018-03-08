@@ -16,6 +16,8 @@ import * as appActions from '../../actions/AppActions';
 import storage from '../../utils/CookieStorage';
 import {LINK_TO_TOKEN_HOLDER} from '../../constants/Navigation';
 
+const tcrOfTcrs = require('../../cfg.json').TCRofTCRs;
+
 class ManageRegistriesForm extends Component {
   constructor (props) {
     super(props);
@@ -35,7 +37,7 @@ class ManageRegistriesForm extends Component {
     const {open, onClose, app, history} = this.props;
     const {addRegistry, changeRegistry} = this.props.appActions;
     const useBackend = !!storage.get('useBackend');
-    const registries = app.registries.filter(item => item.registry !== '0x81e1269708582ae17560b6acc0f45d0416df8d68');
+    const registries = app.registries.filter(item => item.registry !== tcrOfTcrs.registry);
 
     return (
       <Dialog

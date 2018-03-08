@@ -30,6 +30,7 @@
     "VoteCommit": "In Commit",
     "VoteReveal": "In Reveal",
     "NeedProcess": "Need process",
+    "NeedProcessToReject": "Omit",
     "Actual": "Actual",
     "NewValue": "New Value",
     "notExists": "Ooops... No candidate in contract",

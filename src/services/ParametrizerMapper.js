@@ -16,26 +16,30 @@ const map = async (name, localization, parametrizer, proposals) => {
     votesFor: 0,
     votesAgaints: 0
   };
+  let exists = false;
 
   if (proposal) {
     // get status & challengeId
     const proposalInstance = await parametrizer.getProposal(name, proposal);
-    const statusFromContract = await proposalInstance.getStageStatus();
-    status = getReadableStatus(statusFromContract);
-    challengeId = await proposalInstance.getChallengeId();
-    timestamp = await proposalInstance.expiresAt();
-    timestamp *= 1000;
+    exists = await proposalInstance.exists();
+    if (exists) {
+      const statusFromContract = await proposalInstance.getStageStatus();
+      status = getReadableStatus(statusFromContract);
+      challengeId = await proposalInstance.getChallengeId();
+      timestamp = await proposalInstance.expiresAt();
+      timestamp *= 1000;
 
-    // get vote results
-    const plcr = await parametrizer.getPLCRVoting();
-    const poll = await plcr.getPoll(challengeId);
-    voteResults = {
-      votesFor: await poll.getVotesFor(),
-      votesAgaints: await poll.getVotesAgainst()
-    };
+      // get vote results
+      const plcr = await parametrizer.getPLCRVoting();
+      const poll = await plcr.getPoll(challengeId);
+      voteResults = {
+        votesFor: await poll.getVotesFor(),
+        votesAgaints: await poll.getVotesAgainst()
+      };
+    }
   }
 
-  return { displayName: localization, contractName: name, proposal, status, value, challengeId, voteResults, timestamp };
+  return { displayName: localization, contractName: name, proposal: exists ? proposal : null, status, value, challengeId, voteResults, timestamp };
 };
 
 export default {

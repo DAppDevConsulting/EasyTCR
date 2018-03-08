@@ -1,5 +1,6 @@
-const geatway = 'https://ipfs.infura.io';
-const apiServer = 'https://ipfs.infura.io:5001';
+const IPFSConfig = require('../cfg.json').IPFS;
+const geatway = IPFSConfig.geatway;
+const apiServer = IPFSConfig.apiServer;
 
 const get = async (hash) => {
   let cfg = await (await window.fetch(

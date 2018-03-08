@@ -4,11 +4,7 @@ import { updateLocalization } from '../i18n';
 import Cache from '../utils/Cache';
 import IPFS from './IPFS';
 
-const TCRofTCRs = {
-  'registry': '0x81e1269708582ae17560b6acc0f45d0416df8d68',
-  'faucet': '0x94a2ecef046adf0a5a44fc80a0685b16a30b1170'
-};
-// require('../secrets.json').contracts;
+const TCRofTCRs = require('../cfg.json').TCRofTCRs;
 
 const cache = new Cache(async (key) => {
   const item = await IPFS.get(key);
