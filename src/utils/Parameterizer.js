@@ -8,6 +8,8 @@ export const getReadableStatus = status => {
       return keys.VoteCommit;
     case 'VoteReveal':
       return keys.VoteReveal;
+    case 'NeedProcessToReject':
+      return keys.NeedProcessToReject;
     default:
       return keys.NewValue;
   }
