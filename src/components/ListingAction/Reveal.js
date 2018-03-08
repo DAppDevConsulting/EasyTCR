@@ -179,9 +179,19 @@ class Reveal extends Component {
   }
 
   renderAlreadyRevealedState (listing) {
+    const { remainingTime } = this.state;
+
     return (
       <div style={{ width: '100%' }}>
         <h4 className='headline'>{keys.revealStage}</h4>
+        <div className='challengeTime'>
+          <p>{keys.remainingTimeText}</p>
+          {
+            remainingTime
+              ? <p>{remainingTime}</p>
+              : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
+          }
+        </div>
         <VoteResults {...this.calculateVotes(listing.voteResults)} />
         <p>Your vote already revealed</p>
       </div>
