@@ -11,6 +11,38 @@ import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
 
+const VoteResults = ({ supportVotes, opposeVotes }) => (
+  <div className='revealResultsContainer'>
+    <div className='revealResults'>
+      <div className='revealResultsOption'>{keys.support}</div>
+      <div className='revealResultsBarContainer'>
+        <LinearProgress
+          className='revealResultsBar support'
+          mode='determinate'
+          value={supportVotes}
+        />
+      </div>
+      <div className='revealResultsPercentage'>{supportVotes + '%'}</div>
+    </div>
+    <div className='revealResults'>
+      <div className='revealResultsOption'>{keys.oppose}</div>
+      <div className='revealResultsBarContainer'>
+        <LinearProgress
+          mode='determinate'
+          className='revealResultsBar oppose'
+          value={opposeVotes}
+        />
+      </div>
+      <div className='revealResultsPercentage'>{opposeVotes + '%'}</div>
+    </div>
+  </div>
+);
+
+VoteResults.propTypes = {
+  supportVotes: PropTypes.string.isRequired,
+  opposeVotes: PropTypes.string.isRequired
+};
+
 class Reveal extends Component {
   constructor (props) {
     super(props);
@@ -73,11 +105,20 @@ class Reveal extends Component {
     );
   }
 
+  calculateVotes (voteResults) {
+    const { votesFor, votesAgaints } = voteResults;
+    const sum = votesFor + votesAgaints;
+    const getPercentage = (votes, sum) => sum === 0 ? 0 : (votes / sum * 100).toFixed();
+
+    return {
+      supportVotes: +getPercentage(votesFor, sum),
+      opposeVotes: +getPercentage(votesAgaints, sum)
+    };
+  }
+
   renderRevealForm () {
     const { listing } = this.props;
     const { remainingTime } = this.state;
-    const supportVotes = 78;
-    const opposeVotes = 22;
 
     if (!listing.voteCommited) {
       return this.renderNoCoteCommitedState();
@@ -94,22 +135,7 @@ class Reveal extends Component {
                 : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
             }
           </div>
-          <div className='revealResultsContainer'>
-            <div className='revealResults'>
-              <div className='revealResultsOption'>{keys.support}</div>
-              <div className='revealResultsBarContainer'>
-                <LinearProgress className='revealResultsBar support' mode='determinate' value={supportVotes} />
-              </div>
-              <div className='revealResultsPercentage'>{supportVotes + '%'}</div>
-            </div>
-            <div className='revealResults'>
-              <div className='revealResultsOption'>{keys.oppose}</div>
-              <div className='revealResultsBarContainer'>
-                <LinearProgress mode='determinate' className='revealResultsBar oppose' value={opposeVotes} />
-              </div>
-              <div className='revealResultsPercentage'>{opposeVotes + '%'}</div>
-            </div>
-          </div>
+          <VoteResults {...this.calculateVotes(listing.voteResults)} />
 
           <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p>
           <TextField
@@ -152,10 +178,11 @@ class Reveal extends Component {
     );
   }
 
-  renderAlreadyRevealedState () {
+  renderAlreadyRevealedState (listing) {
     return (
-      <div>
+      <div style={{ width: '100%' }}>
         <h4 className='headline'>{keys.revealStage}</h4>
+        <VoteResults {...this.calculateVotes(listing.voteResults)} />
         <p>Your vote already revealed</p>
       </div>
     );
@@ -175,8 +202,12 @@ class Reveal extends Component {
 
     return (
       <div className='listingAction'>
-        {listing.voteRevealed ? this.renderAlreadyRevealedState()
-          : showTxQueue ? this.renderTxQueue() : this.renderRevealForm()}
+        { listing.voteRevealed
+          ? this.renderAlreadyRevealedState(listing)
+          : showTxQueue
+            ? this.renderTxQueue()
+            : this.renderRevealForm()
+        }
       </div>
     );
   }

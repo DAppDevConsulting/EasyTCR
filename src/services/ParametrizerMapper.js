@@ -4,6 +4,7 @@ import keys from '../i18n';
 const map = async (name, localization, parametrizer, proposals) => {
   const value = await parametrizer.get(name);
   const proposalValueFromContract = proposals[name];
+
   // new proposal cannot be the same as current value
   const proposal = value !== proposalValueFromContract ? proposalValueFromContract : null;
 
