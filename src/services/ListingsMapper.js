@@ -59,6 +59,12 @@ export default class ListingsMapper {
       const poll = await challenge.getPoll();
       const stage = await poll.getCurrentStage(); // commit, reveal, ended
 
+      // get vote results
+      result.voteResults = {
+        votesFor: await poll.getVotesFor(),
+        votesAgaints: await poll.getVotesAgainst()
+      };
+
       result.dueDate = '';
       result.timestamp = expTs * 1000;
 
