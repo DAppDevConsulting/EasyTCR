@@ -1,7 +1,8 @@
 import { channel } from 'redux-saga';
-import { put, takeEvery, apply, call } from 'redux-saga/effects';
+import {put, takeEvery, apply, call, select} from 'redux-saga/effects';
 import 'babel-polyfill';
-import TCR from '../TCR';
+import TCR, {ContractsManager} from '../TCR';
+import IPFS from '../services/IPFS';
 import { applyListing as getApplyListingQueue } from '../transactions';
 import ListingsProvider from '../services/ListingsProvider';
 import {
@@ -16,15 +17,19 @@ import {
   CANCEL_LISTING_APPLICATION,
   APPROVE_REGISTRY_TOKENS,
   APPROVE_PLCR_TOKENS,
+  APPROVE_PARAMETERIZER_TOKENS,
   REQUEST_VOTING_RIGHTS,
-  WITHDRAW_VOTING_RIGHTS
+  WITHDRAW_VOTING_RIGHTS,
+  REQUEST_CURRENT_LISTING
 } from '../constants/actions';
 
 // TODO: refactor this shit
 const changeChannel = channel();
-ListingsProvider.addChangeListener(() => {
-  changeChannel.put({type: REQUEST_CANDIDATE_LISTINGS});
+ListingsProvider.onChange((changedSet) => {
+  changeChannel.put({type: REQUEST_CANDIDATE_LISTINGS, changedSet});
 });
+
+const getCurrentListing = (state) => state.tokenHolder.currentListing;
 
 export function * buyTokens (action) {
   try {
@@ -47,6 +52,9 @@ export function * fetchTokenInformation (action) {
   let approvedRegistry = yield apply(account, 'getApprovedTokens', [TCR.registry().address]);
   let plcr = yield apply(TCR, 'getPLCRVoting');
   let approvedPLCR = yield apply(account, 'getApprovedTokens', [plcr.address]);
+  // get parameterizer approved tokens
+  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+  let approvedParameterizer = yield apply(account, 'getApprovedTokens', [parameterizer.address]);
   let votingRights = yield apply(plcr, 'getTokenBalance', [account.owner]);
 
   yield put({
@@ -55,6 +63,7 @@ export function * fetchTokenInformation (action) {
     ethers: balance.ethers,
     approvedRegistry,
     approvedPLCR,
+    approvedParameterizer,
     votingRights: votingRights.toString()
   });
 }
@@ -64,10 +73,14 @@ export function * applyListing (action) {
   if (!TCR.defaultAccountAddress()) {
     return;
   }
+  let name = action.name;
+  if (!action.name && action.file) {
+    name = yield apply(IPFS, 'upload', [action.file]);
+  }
 
   let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
   let minDeposit = yield apply(parameterizer, 'get', ['minDeposit']);
-  let queue = yield call(getApplyListingQueue, action.name, action.tokens, minDeposit);
+  let queue = yield call(getApplyListingQueue, name, action.tokens, minDeposit);
 
   yield put({ type: SHOW_TX_QUEUE, queue });
 }
@@ -82,10 +95,10 @@ export function * getCandidateListings (action) {
   }
   let listings = yield apply(
     ListingsProvider,
-    'getListings',
+    'get',
     [TCR.registry(), TCR.defaultAccountAddress(), {owner: TCR.defaultAccountAddress()}]
   );
-  yield put({type: UPDATE_CANDIDATE_LISTINGS, listings});
+  yield put({type: UPDATE_CANDIDATE_LISTINGS, listings, useIpfs: ContractsManager.isRegistryUseIpfs(TCR.registry().address)});
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }
 
@@ -108,6 +121,20 @@ export function * approvePLCRTokens (action) {
 
   try {
     yield apply(account, 'approveTokens', [plcr.address, action.tokens]);
+  } catch (err) {
+    // TODO: update UI
+    console.log(err);
+  }
+
+  yield put({ type: REQUEST_TOKEN_INFORMATION });
+}
+
+export function * approveParameterizerTokens (action) {
+  let account = yield apply(TCR, 'defaultAccount');
+  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+
+  try {
+    yield apply(account, 'approveTokens', [parameterizer.address, action.tokens]);
   } catch (err) {
     // TODO: update UI
     console.log(err);
@@ -142,17 +169,24 @@ export function * withdrawVotingRights (action) {
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }
 
+export function * updateListingsState (action) {
+  const currentListing = yield select(getCurrentListing);
+  yield put({type: REQUEST_CANDIDATE_LISTINGS});
+  if (currentListing && action.changedSet && action.changedSet.has(currentListing.name)) {
+    yield put({type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: currentListing.name});
+  }
+}
+
 export default function * flow () {
   yield takeEvery(BUY_TOKENS, buyTokens);
   yield takeEvery(APPLY_LISTING, applyListing);
   yield takeEvery(REQUEST_TOKEN_INFORMATION, fetchTokenInformation);
   yield takeEvery(REQUEST_CANDIDATE_LISTINGS, getCandidateListings);
-  // yield takeEvery('HIDE_TX_QUEUE', getCandidateListings);
   yield takeEvery(CANCEL_LISTING_APPLICATION, cancelListingApplication);
-  yield takeEvery(changeChannel, getCandidateListings);
-  // yield takeEvery('ADD_LISTING', addListing);
+  yield takeEvery(changeChannel, updateListingsState);
   yield takeEvery(APPROVE_REGISTRY_TOKENS, approveRegistryTokens);
   yield takeEvery(APPROVE_PLCR_TOKENS, approvePLCRTokens);
+  yield takeEvery(APPROVE_PARAMETERIZER_TOKENS, approveParameterizerTokens);
   yield takeEvery(REQUEST_VOTING_RIGHTS, requestVotingRights);
   yield takeEvery(WITHDRAW_VOTING_RIGHTS, withdrawVotingRights);
 }

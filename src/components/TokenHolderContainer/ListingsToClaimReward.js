@@ -84,7 +84,7 @@ class ListingsToClaimReward extends Component {
             showRowHover
             stripedRows={false}
           >
-            { listingsToClaimReward.map((row, index) => this.renderRow(config, row, index)).reverse() }
+            { listingsToClaimReward.map((row, index) => this.renderRow(config, row, index)) }
           </TableBody>
         </Table>
       </div>

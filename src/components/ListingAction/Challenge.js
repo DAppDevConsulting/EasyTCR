@@ -48,16 +48,9 @@ class Challenge extends Component {
     });
   }
 
-  // challengeListing (listing) {
-  //   this.setState({
-  //     isChallenging: true
-  //   });
-
-  //   // this.props.challengeHandler(listing.name)
-  // }
   resolveChallenge () {
     this.props.tokenHolderActions.hideTxQueue();
-    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name);
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name, this.props.registry);
   }
 
   render () {
@@ -103,6 +96,7 @@ class Challenge extends Component {
 
 Challenge.propTypes = {
   listing: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object,
   tokenHolderActions: PropTypes.object.isRequired,
@@ -113,9 +107,10 @@ Challenge.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  registry: state.app.registry,
   showTxQueue: state.challenge.showTxQueue,
   txQueue: state.challenge.queue,
-  minDeposit: state.parameterizer.parameters[0].value,
+  minDeposit: state.parameterizer.parameters[0].value
 });
 
 const mapDispatchToProps = (dispatch) => ({

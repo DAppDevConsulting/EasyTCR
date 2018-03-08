@@ -24,11 +24,11 @@ class ParameterizerReveal extends Component {
   }
 
   handleVote () {
-    this.props.tokenHolderActions.revealVote(this.props.listing.challengeId, this.state.option, this.state.salt);
+    this.props.tokenHolderActions.revealVote(this.props.activeProposal.challengeId, this.state.option, this.state.salt);
   }
 
   resolveVoting () {
-    this.props.tokenHolderActions.hideVotingRevealTxQueue();
+    this.props.tokenHolderActions.hideParameterizerTxQueue();
   }
 
   getRadioButtonStyleForOption (option) {
@@ -37,10 +37,20 @@ class ParameterizerReveal extends Component {
       : { fill: keys.textColor };
   }
 
+  calculateVotes (voteResults) {
+    const { votesFor, votesAgaints } = voteResults;
+    const sum = votesFor + votesAgaints;
+    const getPercentage = (votes, sum) => sum === 0 ? 0 : (votes / sum * 100).toFixed();
+
+    return {
+      supportVotes: +getPercentage(votesFor, sum),
+      opposeVotes: +getPercentage(votesAgaints, sum)
+    };
+  }
+
   render () {
     const { activeProposal, showTxQueue, txQueue, tokenHolderActions } = this.props;
-    const supportVotes = 78;
-    const opposeVotes = 22;
+    const { supportVotes, opposeVotes } = this.calculateVotes(activeProposal.voteResults);
 
     return (
       <div className='parameterizerAction'>
@@ -48,7 +58,7 @@ class ParameterizerReveal extends Component {
           <TxQueue
             mode='vertical'
             queue={txQueue}
-            cancel={tokenHolderActions.hideVotingRevealTxQueue}
+            cancel={tokenHolderActions.hideParameterizerTxQueue}
             title={keys.txQueueTitle}
             onEnd={() => this.resolveVoting()}
           />
@@ -73,7 +83,7 @@ class ParameterizerReveal extends Component {
                 </div>
               </div>
 
-              <p className='challengeId'>{keys.challengeIdText}: listing.challengeId</p>
+              <p className='challengeId'>{keys.challengeIdText}: {activeProposal.challengeId}</p>
               <TextField
                 floatingLabelText={keys.enterSaltText}
                 floatingLabelFixed
@@ -118,10 +128,10 @@ class ParameterizerReveal extends Component {
 }
 
 ParameterizerReveal.propTypes = {
-	activeProposal: PropTypes.object.isRequired,
-	tokenHolderActions: PropTypes.object.isRequired,
-	showTxQueue: PropTypes.bool.isRequired,
-	txQueue: PropTypes.object,
+  activeProposal: PropTypes.object.isRequired,
+  tokenHolderActions: PropTypes.object.isRequired,
+  showTxQueue: PropTypes.bool.isRequired,
+  txQueue: PropTypes.object
 };
 
 const mapStateToProps = (state) => ({

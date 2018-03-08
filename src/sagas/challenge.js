@@ -3,7 +3,7 @@ import TCR from '../TCR';
 import { challengeListing as getChallengeListingTx } from '../transactions';
 import {
   CHALLENGE_SHOW_TX_QUEUE,
-  CHALLENGE_START,
+  CHALLENGE_START
 } from '../constants/actions';
 
 export function * challengeListing (action) {

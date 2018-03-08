@@ -22,9 +22,12 @@ class ListingContainer extends Component {
   }
 
   componentWillMount () {
-    const listingName = decodeURI(window.location.pathname.split('/')[2]);
-    if (!this.props.listing || this.props.listing.name !== listingName) {
-      this.props.tokenHolderActions.requestCurrentListing(listingName);
+    const arr = window.location.pathname.split('/');
+    const registryAddress = decodeURI(arr[2]);
+    const listingName = decodeURI(arr[3]);
+    if (!this.props.listing || this.props.listing.name !== listingName ||
+        !this.props.registry || this.props.registry !== registryAddress) {
+      this.props.tokenHolderActions.requestCurrentListing(listingName, registryAddress);
     }
   }
 
@@ -65,13 +68,15 @@ class ListingContainer extends Component {
 
 ListingContainer.propTypes = {
   listing: PropTypes.object,
+  registry: PropTypes.string,
   consumerActions: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   listing: state.tokenHolder.currentListing,
-  minDeposit: state.parameterizer.parameters[0].value,
+  registry: state.app.registry,
+  minDeposit: state.parameterizer.parameters[0].value
 });
 
 const mapDispatchToProps = dispatch => ({

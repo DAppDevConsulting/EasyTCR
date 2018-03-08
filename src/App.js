@@ -10,17 +10,15 @@ import { deepOrange500, indigoA200 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import InfoIcon from 'material-ui/svg-icons/action/info';
-
+import UtlUtils from './utils/UrlUtils';
 import Header from './components/Header';
 import SideBar from './components/SideBar';
 import MainContainer from './components/MainContainer';
 import ManageRegistriesForm from './components/ManageRegistriesForm';
 import SettingsPopup from './components/SettingsPopup';
-import storage from './utils/CookieStorage';
-
 import './App.css';
 import keys from './i18n';
-
+const tcrOfTcrs = require('./cfg.json').TCRofTCRs;
 const muiTheme = getMuiTheme({
   palette: {
     accent1Color: deepOrange500
@@ -35,7 +33,7 @@ class App extends Component {
       manageRegistriesOpened: false,
       settingsPopupOpened: false,
       networkError: '',
-      metamaskNotAvailable: false,
+      metamaskNotAvailable: false
     };
   }
 
@@ -43,18 +41,18 @@ class App extends Component {
     // check if Metamask is unlocked
     window.web3.eth.getAccounts((error, result) => {
       if (result.length === 0) {
-        return this.setState({ metamaskNotAvailable: true })
+        return this.setState({ metamaskNotAvailable: true });
       }
-    })
+    });
 
     // check if Metamask is in Rinkeby network
     window.web3.version.getNetwork((error, network) => {
       if (network !== '4') {
-        return this.setState({ networkError: keys.networkError })
+        return this.setState({ networkError: keys.networkError });
       } else {
-        this.props.appActions.init(storage.get('currentRegistry'));
+        this.props.appActions.init(UtlUtils.getRegistryAddressByLink());
       }
-    })
+    });
   }
 
   renderNotInitialized () {
@@ -73,12 +71,12 @@ class App extends Component {
               { networkError }
             </div>
             : <div className='noMetamaskWarning'>
-            <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
-            { keys.formatString(
-              keys.metamaskWarningText,
-              { metamaskLink: <span>&nbsp;<a href='https://metamask.io/' target='_blank' rel='noopener noreferrer'>MetaMask</a>&nbsp;</span> }
-            )}
-          </div>
+              <InfoIcon color='#fff' style={{ marginRight: '10px' }} />
+              { keys.formatString(
+                keys.metamaskWarningText,
+                { metamaskLink: <span>&nbsp;<a href='https://metamask.io/' target='_blank' rel='noopener noreferrer'>MetaMask</a>&nbsp;</span> }
+              )}
+            </div>
           }
         </MuiThemeProvider>
       </Router>
@@ -106,7 +104,7 @@ class App extends Component {
             <Header
               onSettingsClick={() => this.setState({settingsPopupOpened: true})}
               onSwitcherClick={() => this.setState({manageRegistriesOpened: true})}
-              onTCRofTCRsClick={() => changeRegistry('0x643c5883f1135cb487a8eb1ec4b3926e1607b05f')}
+              onTCRofTCRsClick={() => changeRegistry(tcrOfTcrs.registry)}
             />
             <div>
               <SideBar />
@@ -148,7 +146,7 @@ function mapDispatchToProps (dispatch) {
 
 App.propTypes = {
   appActions: PropTypes.object.isRequired,
-  app: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

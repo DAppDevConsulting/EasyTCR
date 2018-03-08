@@ -1,56 +1,57 @@
-import { put, takeLatest, apply } from 'redux-saga/effects';
+import { call, put, takeEvery, apply } from 'redux-saga/effects';
+import {channel} from 'redux-saga';
 import TCR from '../TCR';
 import {
   UPDATE_PARAMETERIZER_INFORMATION,
   REQUEST_PARAMETERIZER_INFORMATION,
+  PROPOSE_NEW_PARAMETER_VALUE,
+  PARAMETERIZER_SHOW_TX_QUEUE,
+  PROCESS_PROPOSAL,
+  CHALLENGE_PROPOSAL,
+  CANCEL_PARAMETERIZER_TX
 } from '../constants/actions';
-import keys from '../i18n';
+import {
+  proposeNewParameterizerValue as getProposeNewParameterizerValue,
+  processProposal as getProcessProposal,
+  challengeProposalTx as getChallengeProposalTx
+} from '../transactions';
+import ParametrizerProvider from '../services/ParametrizerProvider';
 
-export function * fetchParameters (action) {
-  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+const changeChannel = channel();
+ParametrizerProvider.onChange(() => {
+  changeChannel.put({type: REQUEST_PARAMETERIZER_INFORMATION});
+});
 
-  let params = [
-    {
-      name: keys.tableParameterNames[0],
-      value: yield apply(parameterizer, 'get', ['minDeposit']),
-      status: keys.inRegistry,
-      proposal: null,
-    },
-    {
-      name: keys.tableParameterNames[1],
-      value: yield apply(parameterizer, 'get', ['applyStageLen']),
-      status: keys.inRegistry,
-      proposal: null,
-    },
-    {
-      name: keys.tableParameterNames[2],
-      value: yield apply(parameterizer, 'get', ['commitStageLen']),
-      status: keys.inChallenge,
-      proposal: null,
-    },
-    {
-      name: keys.tableParameterNames[3],
-      value: yield apply(parameterizer, 'get', ['revealStageLen']),
-      status: keys.inChallenge,
-      proposal: null,
-    },
-    {
-      name: keys.tableParameterNames[4],
-      value: yield apply(parameterizer, 'get', ['dispensationPct']),
-      status: keys.endOfVoting,
-      proposal: null,
-    },
-    {
-      name: keys.tableParameterNames[5],
-      value: yield apply(parameterizer, 'get', ['voteQuorum']),
-      status: keys.inRegistry,
-      proposal: null,
-    },
-  ];
+export function * fetchParameters () {
+  const paramsData = yield apply(ParametrizerProvider, 'get', [TCR.registry(), TCR.defaultAccountAddress()]);
 
-  yield put({type: UPDATE_PARAMETERIZER_INFORMATION, params});
+  yield put({ type: UPDATE_PARAMETERIZER_INFORMATION, params: paramsData.params, pMinDeposit: paramsData.pMinDeposit });
+}
+
+export function * proposeNewParameterizerValue (action) {
+  const queue = yield call(getProposeNewParameterizerValue, action.parameter.contractName, action.value);
+  yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
+}
+
+export function * processProposal (action) {
+  try {
+    yield call(getProcessProposal, action.proposal);
+    yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
+  } catch (error) {
+    yield put({ type: CANCEL_PARAMETERIZER_TX });
+  }
+}
+
+export function * challengeProposal (action) {
+  const queue = yield call(getChallengeProposalTx, action.proposal);
+
+  yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
 }
 
 export default function * flow () {
-  yield takeLatest(REQUEST_PARAMETERIZER_INFORMATION, fetchParameters);
+  yield takeEvery(REQUEST_PARAMETERIZER_INFORMATION, fetchParameters);
+  yield takeEvery(PROPOSE_NEW_PARAMETER_VALUE, proposeNewParameterizerValue);
+  yield takeEvery(PROCESS_PROPOSAL, processProposal);
+  yield takeEvery(CHALLENGE_PROPOSAL, challengeProposal);
+  yield takeEvery(changeChannel, fetchParameters);
 }

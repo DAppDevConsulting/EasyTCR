@@ -6,10 +6,10 @@ import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
-import crypto from 'crypto';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
+import randomInt from 'random-int';
 
 class ParameterizerVote extends Component {
   constructor (props) {
@@ -19,49 +19,49 @@ class ParameterizerVote extends Component {
 
     this.state = {
       hasVoted: false,
-      salt: crypto.randomBytes(16).toString('hex'),
+      salt: randomInt(1e6, 1e8),
       stake: 0,
       option: 1
     };
   }
 
   componentWillReceiveProps (newProps) {
-		if (newProps !== this.props) {
-			this.setState({
+    if (newProps !== this.props) {
+      this.setState({
         hasVoted: false,
-        salt: crypto.randomBytes(16).toString('hex'),
+        salt: randomInt(1e6, 1e8),
         stake: 0,
         option: 1
-      })
-		}
-	}
+      });
+    }
+  }
 
   handleVote () {
-    this.props.tokenHolderActions.commitVote(this.props.listing.challengeId, this.state.option, this.state.salt, this.state.stake);
+    this.props.tokenHolderActions.commitVote(this.props.activeProposal.challengeId, this.state.option, this.state.salt, this.state.stake);
   }
 
   resolveVoting () {
-    this.props.tokenHolderActions.hideVotingCommitTxQueue();
+    this.props.tokenHolderActions.hideParameterizerTxQueue();
   }
 
   render () {
-    const { listing, showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { activeProposal, showTxQueue, txQueue, tokenHolderActions } = this.props;
 
     return (
       <div className='parameterizerAction'>
         {
           showTxQueue
-          ? <TxQueue
+            ? <TxQueue
               mode='vertical'
               queue={txQueue}
-              cancel={tokenHolderActions.hideVotingCommitTxQueue}
+              cancel={tokenHolderActions.hideParameterizerTxQueue}
               title={keys.txQueueTitle}
               onEnd={() => this.resolveVoting()}
             />
-          : <div>
+            : <div>
               <h4 className='headline'>{keys.commitStage}</h4>
               <div className='actionData'>
-                { listing ? <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p> : null }
+                <p className='challengeId'>{keys.challengeIdText}: {activeProposal.challengeId}</p>
                 <TextField
                   floatingLabelText={keys.enterVotes}
                   floatingLabelFixed
@@ -92,25 +92,25 @@ class ParameterizerVote extends Component {
                   </RadioButtonGroup>
                 </div>
               </div>
-            {
-              this.state.hasVoted
-                ? <RaisedButton
+              {
+                this.state.hasVoted
+                  ? <RaisedButton
                     style={{ marginTop: '20px' }}
                     label={keys.downloadCommit}
                     backgroundColor={keys.successColor}
                     labelColor={keys.buttonLabelColor}
                     labelPosition='before'
                     icon={<DownloadIcon />}
-                />
-                : <RaisedButton
+                  />
+                  : <RaisedButton
                     style={{ marginTop: '20px' }}
                     label={keys.vote}
                     backgroundColor={keys.successColor}
                     labelColor={keys.buttonLabelColor}
                     onClick={() => this.handleVote()}
-                />
-            }
-          </div>
+                  />
+              }
+            </div>
         }
       </div>
     );
@@ -126,8 +126,7 @@ ParameterizerVote.propTypes = {
 
 const mapStateToProps = (state) => ({
   showTxQueue: state.commit.showTxQueue,
-  txQueue: state.commit.queue,
-  minDeposit: state.parameterizer.parameters[0].value,
+  txQueue: state.commit.queue
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -5,7 +5,7 @@ import {
   UPDATE_CANDIDATE_LISTINGS,
   BUY_TOKENS,
   REQUEST_CANDIDATE_LISTINGS,
-  REQUEST_TOKEN_INFORMATION,
+  REQUEST_TOKEN_INFORMATION
 } from '../constants/actions';
 
 const initialState = {
@@ -14,10 +14,12 @@ const initialState = {
   isFetchingBalance: false,
   approvedRegistry: 0,
   approvedPLCR: 0,
+  approvedParameterizer: 0,
   votingRights: 0,
   listings: [],
   isFetching: false,
   showTxQueue: false,
+  useIpfs: false,
   txQueue: null
 };
 
@@ -42,12 +44,13 @@ export default function candidate (state = initialState, action) {
         ethers: action.ethers,
         approvedRegistry: action.approvedRegistry,
         approvedPLCR: action.approvedPLCR,
+        approvedParameterizer: action.approvedParameterizer,
         votingRights: action.votingRights,
         isFetchingBalance: false
       };
 
     case UPDATE_CANDIDATE_LISTINGS:
-      return {...state, listings: action.listings, showTxQueue: false, isFetching: false};
+      return {...state, listings: action.listings, showTxQueue: false, useIpfs: action.useIpfs, isFetching: false};
 
     case REQUEST_CANDIDATE_LISTINGS:
       return {...state, isFetching: true};

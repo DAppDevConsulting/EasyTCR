@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import { Registry } from 'ethereum-tcr-api';
 
 const REGISTRY = 'registry';
+const CONFIG = 'config';
 const CONTRACTS = 'contracts';
 const PROVIDER = 'provider';
 const FAUCET = 'faucet';
@@ -67,6 +68,15 @@ export class ContractsManager {
     return [..._contractsAddressMap.keys()];
   }
 
+  static getRegistries () {
+    return [..._contractsAddressMap.values()];
+  }
+
+  static isRegistryUseIpfs (address) {
+    let registry = _contractsAddressMap.get(address);
+    return registry && registry.listingFields && registry.listingFields.length;
+  }
+
   static selectRegistry (address) {
     if (_contractsAddressMap.has(address)) {
       TCR.initialize(_contractsAddressMap.get(address));
@@ -88,10 +98,18 @@ class TCR {
     _map.set(DEFAULT_ACCOUNT_ADDRESS, provider().eth.defaultAccount);
     _map.set(REGISTRY, new Registry(contracts.registry, provider()));
     _map.set(FAUCET, new Faucet(contracts.faucet, provider()));
+    _map.set(CONFIG, contracts);
   }
 
   static registry () {
     return _map.get(REGISTRY);
+  }
+
+  static config () {
+    return _map.get(CONFIG);
+  }
+  static useIpfs () {
+    return this.config().listingFields && this.config().listingFields.length;
   }
 
   static defaultAccountAddress () {
@@ -104,6 +122,10 @@ class TCR {
 
   static async getPLCRVoting () {
     return this.registry().getPLCRVoting();
+  }
+
+  static async getParameterizer () {
+    return this.registry().getParameterizer();
   }
 
   static async buyTokens (amount) {
@@ -125,6 +147,29 @@ class TCR {
     let tokens = this.formatWithDecimals(await account.getTokenBalance());
     let ethers = this.fromWei(await account.getEtherBalance());
     return {tokens, ethers};
+  }
+
+  static async getApprovedTokens (address = null) {
+    let account = await this.registry().getAccount(address || this.defaultAccountAddress());
+    let plcr = await TCR.getPLCRVoting();
+    let parameterizer = await TCR.getParameterizer();
+
+    let registryTokens = await account.getApprovedTokens(this.registry().address);
+    let plcrTokens = await account.getApprovedTokens(plcr.address);
+    let parameterizerTokens = await account.getApprovedTokens(parameterizer.address);
+
+    // @TODO: fix it with BN
+    return {
+      registry: parseInt(registryTokens),
+      plcr: parseInt(plcrTokens),
+      parameterizer: parseInt(parameterizerTokens)
+    };
+  }
+
+  static async getVotingRights (address = null) {
+    let plcr = await TCR.getPLCRVoting();
+
+    return plcr.getTokenBalance(address || this.defaultAccountAddress());
   }
 
   static fromWei (amount) {

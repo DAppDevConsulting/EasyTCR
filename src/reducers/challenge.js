@@ -1,6 +1,6 @@
 import {
   CHALLENGE_SHOW_TX_QUEUE,
-  CHALLENGE_HIDE_TX_QUEUE,
+  CHALLENGE_HIDE_TX_QUEUE
 } from '../constants/actions';
 
 const initialState = {

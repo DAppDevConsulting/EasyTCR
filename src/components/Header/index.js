@@ -10,10 +10,11 @@ import keys from '../../i18n';
 import './style.css';
 import IconButton from 'material-ui/IconButton';
 import RegistryIcon from 'material-ui/svg-icons/av/playlist-add';
-import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import GlobalIcon from 'material-ui/svg-icons/av/new-releases';
 import { yellow500 } from 'material-ui/styles/colors';
 import storage from '../../utils/CookieStorage';
+
+const tcrOfTcrs = require('../../cfg.json').TCRofTCRs;
 
 const Header = ({ balance, onSwitcherClick, onSettingsClick, onTCRofTCRsClick, isTCRofTCRsActive }) => {
   const useBackend = !!storage.get('useBackend');
@@ -23,21 +24,17 @@ const Header = ({ balance, onSwitcherClick, onSettingsClick, onTCRofTCRsClick, i
         <ToolbarTitle text={keys.registryName} className='HeaderTitle' />
       </ToolbarGroup>
       <ToolbarGroup>
-        <EtherIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
-        { balance.isFetchingBalance 
-          ? <CircularProgress color={keys.headerTextColor} size={25}/>
+        <EtherIcon style={{color: keys.headerTextColor, marginRight: 7}} />
+        { balance.isFetchingBalance
+          ? <CircularProgress color={keys.headerTextColor} size={25} />
           : <ToolbarTitle className='HeaderText' text={balance.ethers + ` ${keys.eth}`} />
         }
         <ToolbarSeparator className='Separator' />
-        <AdtIcon style={{ color: keys.headerTextColor, marginRight: 7}} />
+        <AdtIcon style={{color: keys.headerTextColor, marginRight: 7}} />
         { balance.isFetchingBalance
-          ? <CircularProgress color={keys.headerTextColor} size={25}/>
+          ? <CircularProgress color={keys.headerTextColor} size={25} />
           : <ToolbarTitle className='HeaderText' text={balance.tokens + ` ${keys.tokenName}`} />
         }
-        <ToolbarSeparator className='Separator' />
-        <IconButton tooltip='Switch backend type' onClick={onSettingsClick}>
-          <SettingsIcon color={keys.headerTextColor} />
-        </IconButton>
         <ToolbarSeparator className='Separator' />
         {!useBackend &&
         <IconButton tooltip='Switch to TCR of TCRs' onClick={onTCRofTCRsClick}>
@@ -65,7 +62,7 @@ Header.propTypes = {
 function mapStateToProps (state) {
   return {
     balance: state.candidate,
-    isTCRofTCRsActive: state.app.registry === '0x643c5883f1135cb487a8eb1ec4b3926e1607b05f'
+    isTCRofTCRsActive: state.app.registry === tcrOfTcrs.registry
   };
 }
 

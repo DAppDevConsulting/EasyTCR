@@ -13,8 +13,8 @@ import Inreveal2 from './statuses/Inreveal-2';
 import RefreshInregistry1 from './statuses/Refresh-inregistry-1';
 import RefreshInregistry2 from './statuses/Refresh-inregistry-2';
 // import RefreshInregistryLast1 from './statuses/Refresh-inregistry-last-1'; //
-import RefreshRejected2 from './statuses/Refresh-rejected-2'; //
-import RefreshRejectedLast1 from './statuses/Refresh-rejected-last-1'; //
+import RefreshRejected2 from './statuses/Refresh-rejected-2';
+import RefreshRejectedLast1 from './statuses/Refresh-rejected-last-1';
 import Inregistry from './statuses/Inregistry';
 
 const renderStatus = (status, whitelisted) => {
@@ -64,22 +64,24 @@ class ListingStatus extends Component {
         { renderStatus(status, whitelisted)}
         { status === keys.WillBeWhitelisted || status === keys.WillBeRejected
           ? <div className='refreshStatus'>
-              { this.state.isRefreshing
-                ? <div className='loaderContainer'><RefreshIndicator
-                    status="loading"
-                    left={38}
-                    top={28}
-                  /></div>
-                : <RaisedButton
-                    label={keys.refreshLabel}
-                    buttonStyle={{ backgroundColor: keys.refreshButtonColor }}
-                    style={{ marginLeft: '20px' }}
-                    labelStyle={{ textTransform: 'Capitalize', color: keys.tabLabelColor }}
-                    onClick={() => this.handleRefresh(name)}
-                  />
-              }
-              <p className='refreshText'>{keys.refreshNote}</p>
-            </div>
+            { this.state.isRefreshing
+              ? <div className='loaderContainer'>
+                <RefreshIndicator
+                  status='loading'
+                  left={25}
+                  top={25}
+                />
+              </div>
+              : <RaisedButton
+                label={keys.refreshLabel}
+                buttonStyle={{ backgroundColor: keys.refreshButtonColor }}
+                style={{ marginLeft: '20px' }}
+                labelStyle={{ textTransform: 'Capitalize', color: keys.tabLabelColor }}
+                onClick={() => this.handleRefresh(name)}
+              />
+            }
+            <p className='refreshText'>{keys.refreshNote}</p>
+          </div>
           : null
         }
       </div>
@@ -89,7 +91,7 @@ class ListingStatus extends Component {
 
 ListingStatus.propTypes = {
   refreshListingStatus: PropTypes.func.isRequired,
-  listing: PropTypes.object.isRequired,
+  listing: PropTypes.object.isRequired
 };
 
 export default ListingStatus;

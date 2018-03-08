@@ -97,13 +97,15 @@
 }
 
 .revealResultsOption {
-    flex: 6;
+	flex: 6;
+	min-width: 60px;
+	margin-right: 13px;
 }
 
 .revealResultsBarContainer {
     display: flex;
     flex: 20;
-    align-items: center;
+	align-items: center;
 }
 
 .revealResultsBar {
@@ -155,4 +157,8 @@
 	margin-right: 0;
 	margin-left: 12px;
 	white-space: nowrap;
+}
+
+.actionTitle {
+	margin-top: 0;
 }

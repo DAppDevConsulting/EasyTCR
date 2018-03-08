@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import Dialog from 'material-ui/Dialog';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
@@ -13,6 +14,9 @@ import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import keys from '../../i18n';
 import * as appActions from '../../actions/AppActions';
 import storage from '../../utils/CookieStorage';
+import {LINK_TO_TOKEN_HOLDER} from '../../constants/Navigation';
+
+const tcrOfTcrs = require('../../cfg.json').TCRofTCRs;
 
 class ManageRegistriesForm extends Component {
   constructor (props) {
@@ -25,11 +29,15 @@ class ManageRegistriesForm extends Component {
     };
   }
 
+  getRegistryLabel (registry) {
+    return registry.name ? `${registry.name} (${registry.registry.substr(0, 10)}...)` : registry.registry;
+  }
+
   render () {
-    const {open, onClose, app} = this.props;
+    const {open, onClose, app, history} = this.props;
     const {addRegistry, changeRegistry} = this.props.appActions;
     const useBackend = !!storage.get('useBackend');
-    const registries = app.registries.filter(item => item !== '0x643c5883f1135cb487a8eb1ec4b3926e1607b05f');
+    const registries = app.registries.filter(item => item.registry !== tcrOfTcrs.registry);
 
     return (
       <Dialog
@@ -53,11 +61,14 @@ class ManageRegistriesForm extends Component {
                     <RadioButton
                       key={index}
                       onClick={() => {
-                        changeRegistry(registry);
+                        const newLink = `${LINK_TO_TOKEN_HOLDER}${registry.registry}`;
+                        // TODO: другие способы?
+                        history.push(newLink);
+                        changeRegistry(registry.registry);
                         onClose();
                       }}
-                      label={registry}
-                      value={registry}
+                      label={this.getRegistryLabel(registry)}
+                      value={registry.registry}
                       style={{ marginBottom: '10px' }}
                     />
                   );
@@ -157,7 +168,10 @@ ManageRegistriesForm.propTypes = {
   appActions: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  app: PropTypes.object.isRequired
+  app: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageRegistriesForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ManageRegistriesForm));

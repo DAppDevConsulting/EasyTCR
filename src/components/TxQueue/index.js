@@ -36,12 +36,12 @@ class TxQueue extends Component {
       height: 'auto',
       paddingLeft: '0',
       fontFamily: 'Open Sans, sans-serif',
-      color: 'inherit',
+      color: 'inherit'
     };
 
     return this.props.mode === 'vertical'
       ? { ...style, marginBottom: '10px' }
-      : { ...style, marginBottom: '14px' }
+      : { ...style, marginBottom: '14px' };
   }
 
   getStepStyle () {
@@ -114,10 +114,10 @@ class TxQueue extends Component {
           </StepLabel>
           { step === queue.actualStep()
             ? <div style={{
-                display: 'block',
-                paddingTop: '5px',
-                paddingLeft: '40px'
-              }}>{this.renderTxAction(step, queue)}</div>
+              display: 'block',
+              paddingTop: '5px',
+              paddingLeft: '40px'
+            }}>{this.renderTxAction(step, queue)}</div>
             : <span />
           }
         </Step>
@@ -130,7 +130,7 @@ class TxQueue extends Component {
     return (
       <div className='txQueueContainer'>
         <div className='txHeader'>
-          <p className='txHeaderText'>{keys.formatString(keys.transaction_metaMaskPrompts, keys.two)}:</p>
+          <p className='txHeaderText'>{keys.formatString(keys.transaction_metaMaskPrompts, this.props.queue.steps.length)}:</p>
           <IconButton
             onClick={() => this.props.cancel()}
           ><ClearIcon /></IconButton>

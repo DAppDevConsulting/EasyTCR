@@ -8,6 +8,7 @@ import {
   CANCEL_LISTING_APPLICATION,
   APPROVE_REGISTRY_TOKENS,
   APPROVE_PLCR_TOKENS,
+  APPROVE_PARAMETERIZER_TOKENS,
   REQUEST_VOTING_RIGHTS,
   WITHDRAW_VOTING_RIGHTS
 } from '../constants/actions';
@@ -16,7 +17,7 @@ import {
 export function buyTokens (tokens) {
   return {
     type: BUY_TOKENS,
-    tokens: tokens
+    tokens
   };
 }
 
@@ -32,6 +33,13 @@ export function approveRegistryTokens (tokens) {
 export function approvePLCRTokens (tokens) {
   return {
     type: APPROVE_PLCR_TOKENS,
+    tokens
+  };
+}
+
+export function approveParameterizerTokens (tokens) {
+  return {
+    type: APPROVE_PARAMETERIZER_TOKENS,
     tokens
   };
 }
@@ -71,11 +79,12 @@ export function getCandidateListings () {
   };
 }
 
-export function applyListing (name, tokens) {
+export function applyListing (name, tokens, file) {
   return {
     type: APPLY_LISTING,
     name,
-    tokens
+    tokens,
+    file
   };
 }
 

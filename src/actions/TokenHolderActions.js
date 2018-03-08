@@ -11,6 +11,10 @@ import {
   REQUEST_CURRENT_LISTING,
   CLEAR_CURRENT_LISTING,
   PROPOSE_NEW_PARAMETER_VALUE,
+  REQUEST_PARAMETERIZER_INFORMATION,
+  PROCESS_PROPOSAL,
+  CHALLENGE_PROPOSAL,
+  PARAMETERIZER_HIDE_TX_QUEUE
 } from '../constants/actions';
 
 export function challenge (listing) {
@@ -23,6 +27,12 @@ export function challenge (listing) {
 export function hideTxQueue () {
   return {
     type: CHALLENGE_HIDE_TX_QUEUE
+  };
+}
+
+export function hideParameterizerTxQueue () {
+  return {
+    type: PARAMETERIZER_HIDE_TX_QUEUE
   };
 }
 
@@ -79,10 +89,11 @@ export function claimReward (challengeId, salt) {
   };
 }
 
-export function requestCurrentListing (listing) {
+export function requestCurrentListing (listing, registry) {
   return {
     type: REQUEST_CURRENT_LISTING,
-    listing
+    listing,
+    registry
   };
 }
 
@@ -98,4 +109,18 @@ export function proposeNewValue (parameter, value) {
     parameter,
     value
   };
+}
+
+export function requestParameterizerInformation () {
+  return {
+    type: REQUEST_PARAMETERIZER_INFORMATION
+  };
+}
+
+export function processProposal (proposal) {
+  return { type: PROCESS_PROPOSAL, proposal };
+}
+
+export function challengeProposal (proposal) {
+  return { type: CHALLENGE_PROPOSAL, proposal };
 }

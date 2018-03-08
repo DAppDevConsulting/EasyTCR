@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
@@ -10,17 +11,69 @@ import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
 
+const VoteResults = ({ supportVotes, opposeVotes }) => (
+  <div className='revealResultsContainer'>
+    <div className='revealResults'>
+      <div className='revealResultsOption'>{keys.support}</div>
+      <div className='revealResultsBarContainer'>
+        <LinearProgress
+          className='revealResultsBar support'
+          mode='determinate'
+          value={supportVotes}
+        />
+      </div>
+      <div className='revealResultsPercentage'>{supportVotes + '%'}</div>
+    </div>
+    <div className='revealResults'>
+      <div className='revealResultsOption'>{keys.oppose}</div>
+      <div className='revealResultsBarContainer'>
+        <LinearProgress
+          mode='determinate'
+          className='revealResultsBar oppose'
+          value={opposeVotes}
+        />
+      </div>
+      <div className='revealResultsPercentage'>{opposeVotes + '%'}</div>
+    </div>
+  </div>
+);
+
+VoteResults.propTypes = {
+  supportVotes: PropTypes.string.isRequired,
+  opposeVotes: PropTypes.string.isRequired
+};
+
 class Reveal extends Component {
   constructor (props) {
     super(props);
 
     this.handleVote = this.handleVote.bind(this);
+    this.calculateRemainingTime = this.calculateRemainingTime.bind(this);
 
     this.state = {
       hasVoted: false,
       salt: '',
-      option: 1
+      option: 1,
+      remainingTime: null
     };
+  }
+
+  componentDidMount () {
+    this.setState({
+      intervalObj: setInterval(() => this.calculateRemainingTime(), 1000)
+    });
+  }
+
+  componentWillUnmount () {
+    this.props.tokenHolderActions.hideTxQueue();
+    clearInterval(this.state.intervalObj);
+  }
+
+  calculateRemainingTime () {
+    let diff = moment.duration(this.props.listing.timestamp - moment().valueOf());
+    this.setState({
+      remainingTime: diff > 0 ? diff.humanize() : 'passed'
+    });
   }
 
   handleVote () {
@@ -30,7 +83,7 @@ class Reveal extends Component {
   resolveVoting () {
     // TODO: убрать это из глобального стейта
     this.props.tokenHolderActions.hideVotingRevealTxQueue();
-    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name);
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name, this.props.registry);
   }
 
   getRadioButtonStyleForOption (option) {
@@ -52,34 +105,37 @@ class Reveal extends Component {
     );
   }
 
+  calculateVotes (voteResults) {
+    const { votesFor, votesAgaints } = voteResults;
+    const sum = votesFor + votesAgaints;
+    const getPercentage = (votes, sum) => sum === 0 ? 0 : (votes / sum * 100).toFixed();
+
+    return {
+      supportVotes: +getPercentage(votesFor, sum),
+      opposeVotes: +getPercentage(votesAgaints, sum)
+    };
+  }
+
   renderRevealForm () {
     const { listing } = this.props;
-    const supportVotes = 78;
-    const opposeVotes = 22;
+    const { remainingTime } = this.state;
 
     if (!listing.voteCommited) {
       return this.renderNoCoteCommitedState();
     }
     return (
       <div style={{width: '100%'}}>
-        <h4 className='headline'>{keys.revealStage}</h4>
+        <h4 className='actionTitle'>{keys.revealStage}</h4>
         <div className='actionData'>
-          <div className='revealResultsContainer'>
-            <div className='revealResults'>
-              <div className='revealResultsOption'>{keys.support}</div>
-              <div className='revealResultsBarContainer'>
-                <LinearProgress className='revealResultsBar support' mode='determinate' value={supportVotes} />
-              </div>
-              <div className='revealResultsPercentage'>{supportVotes + '%'}</div>
-            </div>
-            <div className='revealResults'>
-              <div className='revealResultsOption'>{keys.oppose}</div>
-              <div className='revealResultsBarContainer'>
-                <LinearProgress mode='determinate' className='revealResultsBar oppose' value={opposeVotes} />
-              </div>
-              <div className='revealResultsPercentage'>{opposeVotes + '%'}</div>
-            </div>
+          <div className='challengeTime'>
+            <p>{keys.remainingTimeText}</p>
+            {
+              remainingTime
+                ? <p>{remainingTime}</p>
+                : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
+            }
           </div>
+          <VoteResults {...this.calculateVotes(listing.voteResults)} />
 
           <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p>
           <TextField
@@ -122,10 +178,21 @@ class Reveal extends Component {
     );
   }
 
-  renderAlreadyRevealedState () {
+  renderAlreadyRevealedState (listing) {
+    const { remainingTime } = this.state;
+
     return (
-      <div>
+      <div style={{ width: '100%' }}>
         <h4 className='headline'>{keys.revealStage}</h4>
+        <div className='challengeTime'>
+          <p>{keys.remainingTimeText}</p>
+          {
+            remainingTime
+              ? <p>{remainingTime}</p>
+              : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
+          }
+        </div>
+        <VoteResults {...this.calculateVotes(listing.voteResults)} />
         <p>Your vote already revealed</p>
       </div>
     );
@@ -145,8 +212,12 @@ class Reveal extends Component {
 
     return (
       <div className='listingAction'>
-        {listing.voteRevealed ? this.renderAlreadyRevealedState()
-          : showTxQueue ? this.renderTxQueue() : this.renderRevealForm()}
+        { listing.voteRevealed
+          ? this.renderAlreadyRevealedState(listing)
+          : showTxQueue
+            ? this.renderTxQueue()
+            : this.renderRevealForm()
+        }
       </div>
     );
   }
@@ -154,12 +225,14 @@ class Reveal extends Component {
 
 Reveal.propTypes = {
   listing: PropTypes.object.isRequired,
+  registry: PropTypes.string.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object
 };
 
 const mapStateToProps = (state) => ({
+  registry: state.app.registry,
   showTxQueue: state.reveal.showTxQueue,
   txQueue: state.reveal.queue
 });
