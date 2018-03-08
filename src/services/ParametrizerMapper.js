@@ -15,11 +15,12 @@ const map = async (name, localization, parametrizer, proposals) => {
     votesFor: 0,
     votesAgaints: 0
   };
+  let exists = false;
 
   if (proposal) {
     // get status & challengeId
     const proposalInstance = await parametrizer.getProposal(name, proposal);
-    const exists = await proposalInstance.exists();
+    exists = await proposalInstance.exists();
     if (exists) {
       const statusFromContract = await proposalInstance.getStageStatus();
       status = getReadableStatus(statusFromContract);
@@ -37,7 +38,7 @@ const map = async (name, localization, parametrizer, proposals) => {
     }
   }
 
-  return { displayName: localization, contractName: name, proposal, status, value, challengeId, voteResults, timestamp };
+  return { displayName: localization, contractName: name, proposal: exists ? proposal : null, status, value, challengeId, voteResults, timestamp };
 };
 
 export default {
