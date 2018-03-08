@@ -155,8 +155,8 @@ class SyncManager {
     }
   }
 
-  addListing (listing, account) {
-    this._listingsMap.set(listing, {listing: listing, account});
+  addListing (listing, data, account) {
+    this._listingsMap.set(listing, {listing: listing, data, account});
     this._callWatcher('add', listing);
   }
 
@@ -206,17 +206,18 @@ class SyncManager {
   }
 
   async _onApplication (event) {
-    const domain = event.returnValues.domain;
-    const listing = this.registry.getListing(domain);
+    const hash = event.returnValues.listingHash;
+    const data = event.returnValues.data;
+    const listing = this.registry.getListing(hash);
     const exists = await listing.exists();
     if (exists) {
       const listingOwner = await listing.getOwner();
-      this.addListing(domain, listingOwner);
+      this.addListing(hash, data, listingOwner);
     }
   }
 
   _onRemove (event) {
-    this.removeListing(event.returnValues.domain);
+    this.removeListing(event.returnValues.listingHash);
   }
 
   _onNewDomainWhitelisted (event) {
@@ -226,9 +227,9 @@ class SyncManager {
   _onChallenge (event) {
     this._poolIdToListing.set(event.returnValues.pollID, {
       challengeId: event.returnValues.pollID,
-      listing: event.returnValues.domain
+      listing: event.returnValues.listingHash
     });
-    this._callWatcher('change', event.returnValues.domain);
+    this._callWatcher('change', event.returnValues.listingHash);
   }
 
   _onChallengeResolved (event, isSucceeded) {
@@ -363,6 +364,10 @@ const getListings = async (address, accountAddress) => {
   return _map.get(address).listings();
 };
 
+const getListing = async (address, hash) => {
+  return _map.get(address).listings().find(item => item.listing === hash);
+};
+
 const getListingsToClaimReward = async (address, accountAddress) => {
   await getPromiseFromQueue(address, accountAddress);
   return _map.get(address).listingsToClaimReward();
@@ -390,6 +395,7 @@ const onNewBlock = (handler) => {
 
 export default {
   getListings,
+  getListing,
   getListingsToClaimReward,
   getParameterizerProposals,
   setRegistryNotificationHandler,

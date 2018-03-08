@@ -11,8 +11,11 @@ const TCRofTCRs = {
 // require('../secrets.json').contracts;
 
 const cache = new Cache(async (key) => {
-  const item = await IPFS.get(key);
+  const listing = await api.getListing(TCRofTCRs.registry, key);
+  const item = await IPFS.get(listing.data);
   item.registry = item.id;
+  item.identifier = key; // todo: Reimplement
+
   return item;
 });
 
@@ -45,13 +48,14 @@ const switchTo = async (registryAddress) => {
   }
   let contracts = await get();
   ContractsManager.setRegistries(contracts);
-  let addresses = ContractsManager.getRegistriesAddresses();
-  let address = addresses[0];
+  let registries = ContractsManager.getRegistries();
+  let registry = registries[0];
+  let address = registry.id;
   if (registryAddress && ContractsManager.hasRegistry(registryAddress)) {
     address = registryAddress;
   }
   ContractsManager.selectRegistry(address);
-  let localization = await getLocalization(address);
+  let localization = await getLocalization(registry.identifier);
   updateLocalization(localization);
 };
 

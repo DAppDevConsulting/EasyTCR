@@ -9,17 +9,12 @@ const handlers = [];
 let cache = null;
 
 const createCache = (registry) => {
-  const useIpfs = ContractsManager.isRegistryUseIpfs(registry.address);
   return new Cache(
     async (key) => {
-      const item = await ListingsMapper.map(key, registry);
-      if (useIpfs) {
-        let record = await IPFS.get(item.name);
-        // TODO: подумать над универсальным форматом
-        item.label = record.name ? record.name : item.name;
-      } else {
-        item.label = item.name;
-      }
+      const listing = await api.getListing(registry.address, key);
+      const item = await ListingsMapper.map(key, listing.data, registry);
+      item.label = item.name;
+
       return item;
     },
     (item) => new Promise((resolve, reject) => {
@@ -66,15 +61,15 @@ const get = async (registry, accountAddress, condition) => {
     api.onNewBlock(newBlockListener);
   }
   let listings = await api.getListings(registry.address, accountAddress, condition && condition.owner ? condition.owner : '');
-  const result = await Promise.all(listings.map(async (item) => {
-    let lstng = await cache.get(item.listing);
-    return lstng;
+  return Promise.all(listings.map(async (item) => {
+    return cache.get(item.listing);
   }));
-  return result;
 };
 
-const getExtended = async (registry, accountAddress, name) => {
-  const result = await ListingsMapper.mapExtended(name, registry, accountAddress);
+const getExtended = async (registry, accountAddress, hash) => {
+  let listing = await api.getListing(registry.address, hash);
+  const result = await ListingsMapper.mapExtended(hash, listing.data, registry, accountAddress);
+
   return result;
 };
 

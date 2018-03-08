@@ -8,6 +8,9 @@ export default {
     }
     return listings;
   },
+  getListing: async (registry, hash) => {
+    return contractService.getListing(registry, hash);
+  },
   getListingsToClaimReward: async (registry, account) => {
     let listings = await contractService.getListingsToClaimReward(registry, account);
     return listings;

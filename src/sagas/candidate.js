@@ -104,7 +104,6 @@ export function * getCandidateListings (action) {
     'get',
     [TCR.registry(), TCR.defaultAccountAddress(), {owner: TCR.defaultAccountAddress()}]
   );
-  // yield put({type: UPDATE_CANDIDATE_LISTINGS, listings, useIpfs: ContractsManager.isRegistryUseIpfs(TCR.registry().address)});
   yield put({type: UPDATE_CANDIDATE_LISTINGS, listings});
   yield put({ type: REQUEST_TOKEN_INFORMATION });
 }
