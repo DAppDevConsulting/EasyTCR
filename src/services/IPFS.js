@@ -12,6 +12,11 @@ const get = async (hash) => {
   return cfg;
 };
 
+const contentToFile = async (name, content) => {
+  return new File([content], `${name}.json`, {type: 'application/json'});
+};
+
+
 const upload = async (file) => {
   try {
     let formData = new FormData();
@@ -32,5 +37,6 @@ const upload = async (file) => {
 
 export default {
   get,
-  upload
+  upload,
+  contentToFile
 };

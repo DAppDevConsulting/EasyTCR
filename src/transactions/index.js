@@ -3,7 +3,7 @@ import TransactionManager from './TransactionsManager';
 import PromisesQueue from '../utils/PromisesQueue';
 import keys from '../i18n';
 
-export async function applyListing (name, tokensAmount) {
+export async function applyListing (hash, data, tokensAmount) {
   const account = await TCR.defaultAccount();
   const manager = new TransactionManager(provider());
   const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
@@ -26,7 +26,7 @@ export async function applyListing (name, tokensAmount) {
 
   queue.add(
     async () => {
-      return TCR.registry().createListing(name, tokensAmount); // TODO: следить за статусом транзакции
+      return TCR.registry().createListing(hash, tokensAmount, data); // TODO: следить за статусом транзакции
     },
     {
       label: keys.candidatePage_transactionsSteps_applyCandidate,

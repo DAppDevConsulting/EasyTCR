@@ -1,11 +1,12 @@
 import keys from '../i18n';
 import moment from 'moment';
+import IPFS from './IPFS';
 
 const NULL_VOTE_COMMIT_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 export default class ListingsMapper {
-  static async mapExtended (listingName, registry, accountAddress) {
-    let listing = await this.map(listingName, registry);
+  static async mapExtended (listingName, data, registry, accountAddress) {
+    let listing = await this.map(listingName, data, registry);
     let pollId = parseInt(listing.challengeId);
     if (pollId) {
       let plcr = await registry.getPLCRVoting();
@@ -22,8 +23,9 @@ export default class ListingsMapper {
     return listing;
   }
 
-  static async map (listingName, registry) {
+  static async map (listingName, data, registry) {
     let listing = registry.getListing(listingName);
+    let listingData = await IPFS.get(data);
 
     try {
       let props = await Promise.all([
@@ -40,7 +42,13 @@ export default class ListingsMapper {
       let challengeId = props[3];
       let stagingStatus = props[4];
 
-      let result = { name: listing.name, label: listing.name, challengeId, whitelisted };
+      let result = {
+        id: listingName,
+        name: listingData ? listingData.name : '',
+        label: '',
+        challengeId,
+        whitelisted
+      };
 
       if (stagingStatus) {
         result.status = keys[stagingStatus];
@@ -96,7 +104,7 @@ export default class ListingsMapper {
     try {
       console.time('mapCollection');
       let tcrListings = await Promise.all(listings.map(async (listing) => {
-        let res = await this.map(listing.listing, registry);
+        let res = await this.map(listing.listing, listing.data, registry);
         return res;
       }));
       console.timeEnd('mapCollection');

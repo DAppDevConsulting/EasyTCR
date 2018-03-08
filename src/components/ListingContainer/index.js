@@ -25,7 +25,7 @@ class ListingContainer extends Component {
     const arr = window.location.pathname.split('/');
     const registryAddress = decodeURI(arr[2]);
     const listingName = decodeURI(arr[3]);
-    if (!this.props.listing || this.props.listing.name !== listingName ||
+    if (!this.props.listing || this.props.listing.id !== listingName ||
         !this.props.registry || this.props.registry !== registryAddress) {
       this.props.tokenHolderActions.requestCurrentListing(listingName, registryAddress);
     }

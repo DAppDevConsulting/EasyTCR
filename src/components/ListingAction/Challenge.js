@@ -85,7 +85,7 @@ class Challenge extends Component {
               label={keys.challenge}
               backgroundColor={keys.successColor}
               labelColor={keys.buttonLabelColor}
-              onClick={() => tokenHolderActions.challenge(this.props.listing.name)}
+              onClick={() => tokenHolderActions.challenge(this.props.listing.id)}
             />
           </div>
         )}

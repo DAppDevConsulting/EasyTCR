@@ -68,10 +68,11 @@ class CandidateContainer extends Component {
   }
 
   render () {
-    const { listings, txQueue, showTxQueue, useIpfs, isFetching } = this.props.candidate;
+    const { listings, txQueue, showTxQueue, isFetching } = this.props.candidate;
     const { cancelListingApplication } = this.props.actions;
+    const useFileUpload = this.props.registry === '0x8708399ec21db3f10764970c76d352694fa76333'; // Is TCR of TCRs
     // TODO: validate this value
-    const minCrutch = Math.max(this.props.parameterizer.parameters[0].value, 50000);
+    const minCrutch = this.props.parameterizer.parameters[0].value;
     return (
       <div className='ContentContainer'>
         <h3 className='pageHeadline'>{keys.candidatePage_title}</h3>
@@ -87,7 +88,7 @@ class CandidateContainer extends Component {
         </Card>
         {!showTxQueue &&
         <div className='formWrapper'>
-          {!useIpfs &&
+          {!useFileUpload &&
           <div className='formItem'>
             <div>{keys.candidate}<span className='requiredIcon'>*</span></div>
             <TextField
@@ -100,7 +101,7 @@ class CandidateContainer extends Component {
             />
           </div>
           }
-          {useIpfs &&
+          {useFileUpload &&
           <div className='formItem'>
             <div>{keys.candidate_configFile}<span className='requiredIcon'>*</span></div>
             <DropZone
