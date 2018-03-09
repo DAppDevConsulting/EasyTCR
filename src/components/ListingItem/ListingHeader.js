@@ -29,7 +29,7 @@ const ListingHeader = ({
         </div>
         <div className='listingDeposit'>
           <h4 className='headline'>Deposit: {listing.deposit}</h4>
-          <p className='listingMeta'>Min deposit: {minDeposit || '0'}</p>
+          <p className='listingMeta' style={minDeposit > listing.deposit ? { color: 'red' } : {}}>Min deposit: {minDeposit || '0'}</p>
         </div>
         <div className='changeDeposit'>
           <TextField
