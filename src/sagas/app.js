@@ -1,5 +1,5 @@
 import { apply, put, call, takeLatest } from 'redux-saga/effects';
-import TCR, { ContractsManager } from '../TCR';
+import TCR, { ContractsManager, provider } from '../TCR';
 import storage from '../utils/CookieStorage';
 import RegistriesProvider from '../services/RegistriesProvider';
 import {
@@ -28,7 +28,7 @@ export function * changeBackendUsage (action) {
 }
 
 export function * init (action) {
-  yield apply(RegistriesProvider, 'switchTo', [action.defaultRegistry]);
+  yield apply(RegistriesProvider, 'switchTo', [action.defaultRegistry, provider().eth.defaultAccount]);
   yield put({ type: REGISTRY_CHANGED, registry: TCR.registry().address });
   yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
   yield put({ type: REQUEST_TOKEN_INFORMATION });

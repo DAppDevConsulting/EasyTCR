@@ -38,6 +38,7 @@ export function * processProposal (action) {
     yield call(getProcessProposal, action.proposal);
     yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
   } catch (error) {
+    console.log(error);
     yield put({ type: CANCEL_PARAMETERIZER_TX });
   }
 }

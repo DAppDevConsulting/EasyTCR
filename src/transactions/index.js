@@ -150,7 +150,8 @@ export async function processProposal (proposalObj) {
   const parameterizer = await registry.getParameterizer();
   const { contractName, proposal } = proposalObj;
   const proposalInstance = parameterizer.getProposal(contractName, proposal);
-  return proposalInstance.process();
+  // TODO: fix in tcr-api
+  return proposalInstance.process({});
 }
 
 export async function claimReward (challengeId, salt) {

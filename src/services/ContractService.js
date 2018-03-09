@@ -2,7 +2,9 @@ import Web3 from 'web3';
 import _ from 'lodash';
 import { Registry } from 'ethereum-tcr-api';
 import PromisesQueueWatcher from '../utils/PromisesQueueWatcher';
-const httpProvider = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/Dy4nhcddBU78aJPZ7TDA'));
+import InMemDb from '../utils/InMemDb';
+const Web3Config = require('../cfg').WEB3;
+const httpProvider = new Web3(new Web3.providers.HttpProvider(Web3Config.http));
 const SYNC_INTERVAL = 10000;
 let currentContract = '';
 let registryNotificationCandidate = null;
@@ -54,6 +56,10 @@ class ContractSynchronizer {
     }
   }
 }
+const LISTINGS = 'listings';
+const UNCLAIMED_POLLS = 'unclaimedPolls';
+const POLLS = 'polls';
+const PARAMS = 'params';
 
 // TODO: refactor this class
 class SyncManager {
@@ -69,10 +75,12 @@ class SyncManager {
     this._watcher = null;
     this._rewardWatcher = null;
     this._parametrizerWatcher = null;
-    this._listingsMap = new Map();
-    this._unclaimedPools = new Map();
-    this._poolIdToListing = new Map();
-    this._paramsProposalsMap = new Map();
+    this._db = new InMemDb(
+      {name: LISTINGS, key: 'listing'},
+      {name: UNCLAIMED_POLLS, key: 'challengeId'},
+      {name: POLLS, key: 'challengeId'},
+      {name: PARAMS, key: 'name'}
+    );
   }
 
   _createRegistrySynchronizer () {
@@ -157,12 +165,12 @@ class SyncManager {
   }
 
   addListing (listing, data, account) {
-    this._listingsMap.set(listing, {listing: listing, data, account});
+    this._db.setTo(LISTINGS, {listing, data, account});
     this._callWatcher('add', listing);
   }
 
   removeListing (listing) {
-    this._listingsMap.delete(listing);
+    this._db.deleteFrom(LISTINGS, listing);
     this._callWatcher('remove', listing);
   }
 
@@ -196,10 +204,7 @@ class SyncManager {
   }
 
   clear () {
-    this._listingsMap.clear();
-    this._unclaimedPools.clear();
-    this._poolIdToListing.clear();
-    this._paramsProposalsMap.clear();
+    this._db.clear();
     this.lastKnownBlock = 0;
     clearTimeout(this._timeout);
     this._synchronizationRunning = false;
@@ -222,11 +227,11 @@ class SyncManager {
   }
 
   _onNewDomainWhitelisted (event) {
-    this._callWatcher('change', event.returnValues.domain);
+    this._callWatcher('change', event.returnValues.listingHash);
   }
 
   _onChallenge (event) {
-    this._poolIdToListing.set(event.returnValues.pollID, {
+    this._db.setTo(POLLS, {
       challengeId: event.returnValues.pollID,
       listing: event.returnValues.listingHash
     });
@@ -236,27 +241,27 @@ class SyncManager {
   _onChallengeResolved (event, isSucceeded) {
     let challengeId = event.returnValues.challengeID;
     // if listing status updated we need to refresh it on client
-    if (!isSucceeded && this._poolIdToListing.has(challengeId)) {
-      let changed = this._poolIdToListing.get(challengeId);
+    if (!isSucceeded && this._db.hasIn(POLLS, challengeId)) {
+      let changed = this._db.getByKeyFrom(POLLS, challengeId);
       this._callWatcher('change', changed.listing);
     }
-    if (this._unclaimedPools.has(challengeId)) {
-      let pool = this._unclaimedPools.get(challengeId);
+    if (this._db.hasIn(UNCLAIMED_POLLS, challengeId)) {
+      let pool = this._db.getByKeyFrom(UNCLAIMED_POLLS, challengeId);
       if (pool.choice === isSucceeded) {
-        this._unclaimedPools.delete(challengeId);
-        this._poolIdToListing.delete(challengeId);
+        this._db.deleteFrom(UNCLAIMED_POLLS, challengeId);
+        this._db.deleteFrom(POLLS, challengeId);
       } else {
         pool.isResolved = true;
       }
     } else {
-      this._poolIdToListing.delete(challengeId);
+      this._db.deleteFrom(POLLS, challengeId);
     }
   }
 
   _onRewardClaimed (event) {
     if (event.returnValues.voter === this.accountAddress) {
-      this._unclaimedPools.delete(event.returnValues.challengeID);
-      this._poolIdToListing.delete(event.returnValues.challengeID);
+      this._db.deleteFrom(UNCLAIMED_POLLS, event.returnValues.challengeID);
+      this._db.deleteFrom(POLLS, event.returnValues.challengeID);
       if (typeof this._rewardWatcher === 'function') {
         this._rewardWatcher('claimed');
       }
@@ -266,7 +271,7 @@ class SyncManager {
   _onVoteCommitted (event) {}
 
   _onVoteRevealed (event) {
-    this._unclaimedPools.set(event.returnValues.pollID, {
+    this._db.setTo(UNCLAIMED_POLLS, {
       challengeId: event.returnValues.pollID,
       numTokens: event.returnValues.numTokens,
       isResolved: false,
@@ -275,7 +280,7 @@ class SyncManager {
   }
 
   _onReparameterizationProposal (event) {
-    this._paramsProposalsMap.set(event.returnValues.name, event.returnValues.value);
+    this._db.setTo(PARAMS, {name: event.returnValues.name, value: event.returnValues.value});
     if (typeof this._parametrizerWatcher === 'function') {
       this._parametrizerWatcher('change', event.returnValues.name);
     }
@@ -283,25 +288,26 @@ class SyncManager {
 
   _onReparameterizationChallenge (event) {}
 
+  isInitialized () {
+    return this.lastKnownBlock > 0;
+  }
+
   listings () {
-    return [...this._listingsMap.values()];
+    return this._db.getAllFrom(LISTINGS);
+  }
+  getListingByHash (hash) {
+    return this._db.getByKeyFrom(LISTINGS, hash);
   }
 
   listingsToClaimReward () {
-    return [...this._unclaimedPools.keys()]
-      .map((id) => {
-        let poolData = _.assign(this._unclaimedPools.get(id), this._poolIdToListing.get(id));
-        return poolData;
-      }).filter((item) => item.isResolved);
+    return this._db.getFromJoined(UNCLAIMED_POLLS, POLLS).filter((item) => item.isResolved);
   }
 
   parametrizerProposals () {
-    const proposals = {};
-    const iterator = this._paramsProposalsMap.keys();
-    for (let key of iterator) {
-      proposals[key] = this._paramsProposalsMap.get(key);
-    }
-    return proposals;
+    return _.reduce(this._db.getAllFrom(PARAMS), (res, item) => {
+      res[item.name] = item.value;
+      return res;
+    }, {});
   }
 
   synchronizationRunning () {
@@ -317,6 +323,10 @@ const getActualBlock = async () => {
     console.error(err);
   }
   return 0;
+};
+
+const isRegistryReady = (address) => {
+  return _map.has(address) && _map.get(address).isInitialized();
 };
 
 const prepareSynchronizers = async (address, accountAddress) => {
@@ -361,21 +371,30 @@ const getPromiseFromQueue = (address, accountAddress) => {
 };
 
 const getListings = async (address, accountAddress) => {
-  await getPromiseFromQueue(address, accountAddress);
+  if (!isRegistryReady(address)) {
+    await getPromiseFromQueue(address, accountAddress);
+  }
   return _map.get(address).listings();
 };
 
 const getListing = async (address, hash, accountAddress) => {
-  return _map.get(address).listings().find(item => item.listing === hash);
+  if (!isRegistryReady(address)) {
+    await getPromiseFromQueue(address, accountAddress);
+  }
+  return _map.get(address).getListingByHash(hash);
 };
 
 const getListingsToClaimReward = async (address, accountAddress) => {
-  await getPromiseFromQueue(address, accountAddress);
+  if (!isRegistryReady(address)) {
+    await getPromiseFromQueue(address, accountAddress);
+  }
   return _map.get(address).listingsToClaimReward();
 };
 
 const getParameterizerProposals = async (address, accountAddress) => {
-  await getPromiseFromQueue(address, accountAddress);
+  if (!isRegistryReady(address)) {
+    await getPromiseFromQueue(address, accountAddress);
+  }
   return _map.get(address).parametrizerProposals();
 };
 
