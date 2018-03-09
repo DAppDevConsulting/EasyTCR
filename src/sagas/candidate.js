@@ -2,7 +2,7 @@ import { channel } from 'redux-saga';
 import {put, takeEvery, apply, call, select} from 'redux-saga/effects';
 import { Listing } from 'ethereum-tcr-api';
 import 'babel-polyfill';
-import TCR, {ContractsManager} from '../TCR';
+import TCR from '../TCR';
 import IPFS from '../services/IPFS';
 import { applyListing as getApplyListingQueue } from '../transactions';
 import ListingsProvider from '../services/ListingsProvider';
@@ -21,7 +21,10 @@ import {
   APPROVE_PARAMETERIZER_TOKENS,
   REQUEST_VOTING_RIGHTS,
   WITHDRAW_VOTING_RIGHTS,
-  REQUEST_CURRENT_LISTING
+  REQUEST_CURRENT_LISTING,
+  LISTING_EXIT,
+  DEPOSIT_LISTING,
+  WITHDRAW_LISTING
 } from '../constants/actions';
 
 // TODO: refactor this shit
@@ -183,6 +186,18 @@ export function * updateListingsState (action) {
   }
 }
 
+export function * exitListing (action) {
+  console.log('saga exitListing', action);
+}
+
+export function * depositListing (action) {
+  console.log('saga depositListing', action);
+}
+
+export function * withdrawListing (action) {
+  console.log('saga withdrawListing', action);
+}
+
 export default function * flow () {
   yield takeEvery(BUY_TOKENS, buyTokens);
   yield takeEvery(APPLY_LISTING, applyListing);
@@ -195,4 +210,7 @@ export default function * flow () {
   yield takeEvery(APPROVE_PARAMETERIZER_TOKENS, approveParameterizerTokens);
   yield takeEvery(REQUEST_VOTING_RIGHTS, requestVotingRights);
   yield takeEvery(WITHDRAW_VOTING_RIGHTS, withdrawVotingRights);
+  yield takeEvery(LISTING_EXIT, exitListing);
+  yield takeEvery(DEPOSIT_LISTING, depositListing);
+  yield takeEvery(WITHDRAW_LISTING, withdrawListing);
 }
