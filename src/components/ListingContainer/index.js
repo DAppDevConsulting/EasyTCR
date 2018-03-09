@@ -15,8 +15,13 @@ class ListingContainer extends Component {
     super();
 
     this.challengeListing = this.challengeListing.bind(this);
+    this.handleDepositValueChange = this.handleDepositValueChange.bind(this);
     this.setDepositValue = this.setDepositValue.bind(this);
     this.handleExit = this.handleExit.bind(this);
+
+    this.state = {
+      depositValue: 0
+    };
   }
 
   challengeListing (listing) {
@@ -37,12 +42,17 @@ class ListingContainer extends Component {
     this.props.tokenHolderActions.clearCurrentListing();
   }
 
-  setDepositValue (value) {
-    console.log('setDepositValue', value);
+  setDepositValue (listing, value) {
+    console.log('setDepositValue', listing, value);
   }
 
   handleExit (listing) {
     console.log('handleExit', listing);
+  }
+
+  handleDepositValueChange (value) {
+    console.log('handleDepositValueChange', value);
+    this.setState({ depositValue: value });
   }
 
   render () {
@@ -59,9 +69,11 @@ class ListingContainer extends Component {
             <ListingItem
               listing={listing}
               isCandidate={candidate.listings.map(l => l.id).includes(listing.id)}
+              handleDepositValueChange={this.handleDepositValueChange}
               setDepositValue={this.setDepositValue}
               handleExit={this.handleExit}
               minDeposit={minDeposit}
+              depositValue={this.state.depositValue}
             />
             <ListingAction
               listing={listing}
@@ -84,7 +96,7 @@ ListingContainer.propTypes = {
   listing: PropTypes.object,
   candidate: PropTypes.object,
   registry: PropTypes.string,
-  consumerActions: PropTypes.object.isRequired,
+  minDeposit: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tokenHolderActions: PropTypes.object.isRequired
 };
 
