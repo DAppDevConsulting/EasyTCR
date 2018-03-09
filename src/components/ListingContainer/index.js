@@ -10,6 +10,7 @@ import ListingStatus from '../ListingStatus';
 import ListingItem from '../ListingItem';
 import ListingAction from '../ListingAction';
 import './style.css';
+import keys from '../../i18n';
 
 class ListingContainer extends Component {
   constructor (props) {
@@ -44,8 +45,12 @@ class ListingContainer extends Component {
     this.props.tokenHolderActions.clearCurrentListing();
   }
 
-  setDepositValue (listingName, value) {
-    console.log('setDepositValue', listingName, value);
+  setDepositValue (listing, value) {
+    const valueNum = parseInt(value, 10);
+
+    listing.deposit > valueNum
+      ? this.props.candidateActions.withdrawListing(listing.name, listing.deposit - valueNum)
+      : this.props.candidateActions.depositListing(listing.name, valueNum - listing.deposit);
   }
 
   handleExit (listingName) {
@@ -54,13 +59,12 @@ class ListingContainer extends Component {
 
   handleDepositValueChange (value) {
     const re = /^\d+$/;
-    const minDepostNumber = parseInt(this.props.minDeposit, 10);
-    const valueNumber = parseInt(value, 10);
-
-    if ((re.test(value) && minDepostNumber <= valueNumber) || value === '') {
+    if (this.props.listing.deposit === parseInt(value, 10)) {
+      this.setState({ depositValue: value, errorText: 'New value is the same as an old one' });
+    } else if (re.test(value) || value === '') {
       this.setState({ depositValue: value, errorText: '' });
     } else {
-      this.setState({ depositValue: value, errorText: 'Input is invalid or less than Min Deposit value' });
+      this.setState({ depositValue: value, errorText: keys.invalidInput });
     }
   }
 

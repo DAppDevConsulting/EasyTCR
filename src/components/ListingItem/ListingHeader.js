@@ -43,7 +43,7 @@ const ListingHeader = ({
             <RaisedButton
               label='Proceed'
               style={{ marginBottom: 10 }}
-              onClick={() => setDepositValue(listing.name, depositValue)}
+              onClick={() => setDepositValue(listing, depositValue)}
               disabled={!depositValue || !!errorText}
             />
             <br />
