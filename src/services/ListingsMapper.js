@@ -10,12 +10,12 @@ export default class ListingsMapper {
     let pollId = parseInt(listing.challengeId);
     if (pollId) {
       let plcr = await registry.getPLCRVoting();
-      let props = await Promise.all([
-        plcr.getCommitHash(accountAddress, pollId),
-        plcr.hasBeenRevealed(accountAddress, pollId)
-      ]);
-      listing.voteCommited = props[0] !== NULL_VOTE_COMMIT_HASH;
-      listing.voteRevealed = props[1];
+      let commitHash = await plcr.getCommitHash(accountAddress, pollId);
+      listing.voteCommited = commitHash !== NULL_VOTE_COMMIT_HASH;
+      listing.voteRevealed = false;
+      if (listing.voteCommited) {
+        listing.voteRevealed = await plcr.hasBeenRevealed(accountAddress, pollId);
+      }
     } else {
       listing.voteCommited = false;
       listing.voteRevealed = false;
