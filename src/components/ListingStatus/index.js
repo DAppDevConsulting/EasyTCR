@@ -47,12 +47,12 @@ class ListingStatus extends Component {
     this.handleRefresh = this.handleRefresh.bind(this);
   }
 
-  handleRefresh (name) {
+  handleRefresh (id) {
     this.setState({
       isRefreshing: true
     });
 
-    this.props.refreshListingStatus(name);
+    this.props.refreshListingStatus(id);
   }
 
   render () {

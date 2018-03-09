@@ -2,7 +2,7 @@ import { channel } from 'redux-saga';
 import {put, takeEvery, apply, call, select} from 'redux-saga/effects';
 import { Listing } from 'ethereum-tcr-api';
 import 'babel-polyfill';
-import TCR, {ContractsManager} from '../TCR';
+import TCR from '../TCR';
 import IPFS from '../services/IPFS';
 import { applyListing as getApplyListingQueue } from '../transactions';
 import ListingsProvider from '../services/ListingsProvider';
@@ -178,8 +178,8 @@ export function * withdrawVotingRights (action) {
 export function * updateListingsState (action) {
   const currentListing = yield select(getCurrentListing);
   yield put({type: REQUEST_CANDIDATE_LISTINGS});
-  if (currentListing && action.changedSet && action.changedSet.has(currentListing.name)) {
-    yield put({type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: currentListing.name});
+  if (currentListing && action.changedSet && action.changedSet.has(currentListing.id)) {
+    yield put({type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: currentListing.id});
   }
 }
 

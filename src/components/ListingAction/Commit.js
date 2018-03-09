@@ -54,7 +54,7 @@ class Commit extends Component {
   resolveVoting () {
     // TODO: зачем это выносить в глобальный стейт?
     this.props.tokenHolderActions.hideVotingCommitTxQueue();
-    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name, this.props.registry);
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.id, this.props.registry);
   }
 
   renderTxQueue () {

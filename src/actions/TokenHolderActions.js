@@ -68,10 +68,10 @@ export function hideVotingRevealTxQueue () {
   };
 }
 
-export function refreshListingStatus (name) {
+export function refreshListingStatus (id) {
   return {
     type: REFRESH_LISTING_SEND,
-    name
+    id
   };
 }
 

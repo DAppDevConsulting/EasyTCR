@@ -14,7 +14,8 @@ import {
   UPDATE_REGISTRIES_LIST,
   SEND_TRANSACTIONS,
   REQUEST_CANDIDATE_LISTINGS,
-  REQUEST_CONSUMER_LISTINGS
+  REQUEST_CONSUMER_LISTINGS,
+  REQUEST_LISTINGS_TO_CLAIM_REWARD
 } from '../constants/actions';
 
 export function * sendTxBatch (action) {
@@ -36,6 +37,7 @@ export function * init (action) {
   // TODO: hack! Fix it after sync/async question will be revolved
   yield put({type: REQUEST_CANDIDATE_LISTINGS});
   yield put({type: REQUEST_CONSUMER_LISTINGS});
+  yield put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
 }
 
 export default function * flow () {

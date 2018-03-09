@@ -1,10 +1,9 @@
-import { takeEvery, put, call } from 'redux-saga/effects';
+import { takeEvery, call } from 'redux-saga/effects';
 import { refreshListingStatus as getrefreshListingStatus } from '../transactions';
-import { REFRESH_LISTING_SEND, REQUEST_CURRENT_LISTING } from '../constants/actions';
-import TCR from '../TCR';
+import { REFRESH_LISTING_SEND } from '../constants/actions';
 
 export function * refreshListingStatus (action) {
-  yield call(getrefreshListingStatus, action.name);
+  yield call(getrefreshListingStatus, action.id);
 
   // yield put({ type: REQUEST_CURRENT_LISTING, listing: action.name, registry: TCR.registry().address });
 }

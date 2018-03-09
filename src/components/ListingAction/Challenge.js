@@ -26,20 +26,25 @@ class Challenge extends Component {
 
   componentDidMount () {
     this.setState({
-      intervalObj: setInterval(() => this.calculateRemainingTime(), 1000)
+      intervalObj: setTimeout(() => this.calculateRemainingTime(), 1000)
     });
   }
 
   componentWillUnmount () {
     this.props.tokenHolderActions.hideTxQueue();
-    clearInterval(this.state.intervalObj);
+    clearTimeout(this.state.intervalObj);
   }
 
   calculateRemainingTime () {
+    if (this.props.listing.status !== keys.inApplication) {
+      return;
+    }
     let diff = moment.duration(this.props.listing.timestamp - moment().valueOf());
-    this.setState({
-      remainingTime: diff > 0 ? diff.humanize() : 'passed'
-    });
+    let newState = {remainingTime: diff > 0 ? diff.humanize() : 'passed'};
+    if (diff > 0) {
+      newState.intervalObj = setTimeout(() => this.calculateRemainingTime(), 1000);
+    }
+    this.setState(newState);
   }
 
   toggleChallenge () {
@@ -50,12 +55,13 @@ class Challenge extends Component {
 
   resolveChallenge () {
     this.props.tokenHolderActions.hideTxQueue();
-    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name, this.props.registry);
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.id, this.props.registry);
   }
 
   render () {
     const { showTxQueue, txQueue, tokenHolderActions, minDeposit } = this.props;
     const { remainingTime } = this.state;
+    const showTimer = this.props.listing.status === keys.inApplication;
 
     return (
       <div className='listingAction'>
@@ -71,14 +77,16 @@ class Challenge extends Component {
           <div>
             <h4 className='actionTitle'>{keys.challenge}</h4>
             <div className='actionData'>
-              <div className='challengeTime'>
-                <p>{keys.remainingTimeText}</p>
-                {
-                  remainingTime
-                    ? <p>{ remainingTime }</p>
-                    : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
-                }
-              </div>
+              {showTimer ? (
+                <div className='challengeTime'>
+                  <p>{keys.remainingTimeText}</p>
+                  {
+                    remainingTime
+                      ? <p>{ remainingTime }</p>
+                      : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
+                  }
+                </div>
+              ) : ('')}
             </div>
             <p className='challengeDeposit'>{`${keys.minDepositRequired}: ${minDeposit}`}</p>
             <RaisedButton

@@ -1,7 +1,5 @@
 import api from './ApiWrapper';
 import ListingsMapper from './ListingsMapper';
-import {ContractsManager} from '../TCR';
-import IPFS from './IPFS';
 import Cache from '../utils/Cache';
 
 let currentRegistry = null;
@@ -75,7 +73,7 @@ const get = async (registry, accountAddress, condition) => {
 const getExtended = async (registry, accountAddress, hash) => {
   let listing = await api.getListing(registry.address, hash, accountAddress);
   if (!listing) {
-    return null;
+    listing = {};
   }
 
   return ListingsMapper.mapExtended(hash, listing.data, registry, accountAddress);

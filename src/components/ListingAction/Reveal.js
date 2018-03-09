@@ -83,7 +83,7 @@ class Reveal extends Component {
   resolveVoting () {
     // TODO: убрать это из глобального стейта
     this.props.tokenHolderActions.hideVotingRevealTxQueue();
-    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.name, this.props.registry);
+    this.props.tokenHolderActions.requestCurrentListing(this.props.listing.id, this.props.registry);
   }
 
   getRadioButtonStyleForOption (option) {

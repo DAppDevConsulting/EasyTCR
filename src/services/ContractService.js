@@ -88,7 +88,7 @@ class SyncManager {
     map.set('_Application', (e) => this._onApplication(e));
     map.set('_ApplicationRemoved', (e) => this._onRemove(e));
     map.set('_ListingRemoved', (e) => this._onRemove(e));
-    map.set('_NewDomainWhitelisted', (e) => this._onNewDomainWhitelisted(e));
+    map.set('_NewListingWhitelisted', (e) => this._onNewListingWhitelisted(e));
     map.set('_Challenge', (e) => this._onChallenge(e));
     map.set('_ChallengeFailed', (e) => this._onChallengeResolved(e, false));
     map.set('_ChallengeSucceeded', (e) => this._onChallengeResolved(e, true));
@@ -99,7 +99,7 @@ class SyncManager {
       (events) => {
         let parts = _.partition(events, (e) => {
           return e.event === '_Application' || e.event === '_ApplicationRemoved' ||
-            e.event === '_ListingRemoved' || e.event === '_NewDomainWhitelisted';
+            e.event === '_ListingRemoved' || e.event === '_NewListingWhitelisted';
         });
         let grouped = _.groupBy(parts[0], 'returnValues.domain');
         parts[1].forEach(e => {
@@ -226,7 +226,7 @@ class SyncManager {
     this.removeListing(event.returnValues.listingHash);
   }
 
-  _onNewDomainWhitelisted (event) {
+  _onNewListingWhitelisted (event) {
     this._callWatcher('change', event.returnValues.listingHash);
   }
 

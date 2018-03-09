@@ -3,7 +3,6 @@ import moment from 'moment';
 import IPFS from './IPFS';
 
 const NULL_VOTE_COMMIT_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
-
 export default class ListingsMapper {
   static async mapExtended (listingName, data, registry, accountAddress) {
     let listing = await this.map(listingName, data, registry);
@@ -25,7 +24,7 @@ export default class ListingsMapper {
 
   static async map (listingName, data, registry) {
     let listing = registry.getListing(listingName);
-    let listingData = await IPFS.get(data);
+    let listingData = data ? await IPFS.get(data) : null;
 
     try {
       let props = await Promise.all([
