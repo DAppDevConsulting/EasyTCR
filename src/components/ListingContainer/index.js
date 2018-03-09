@@ -60,7 +60,7 @@ class ListingContainer extends Component {
   handleDepositValueChange (value) {
     const re = /^\d+$/;
     if (this.props.listing.deposit === parseInt(value, 10)) {
-      this.setState({ depositValue: value, errorText: 'New value is the same as an old one' });
+      this.setState({ depositValue: value, errorText: keys.sameValueError });
     } else if (re.test(value) || value === '') {
       this.setState({ depositValue: value, errorText: '' });
     } else {
