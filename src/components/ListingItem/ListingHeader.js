@@ -4,29 +4,44 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 
-const ListingHeader = ({ listing, minDeposit, isCandidate, setDepositValue, handleExit }) => {
+const ListingHeader = ({
+  listing,
+  depositValue,
+  minDeposit,
+  isCandidate,
+  handleDepositValueChange,
+  setDepositValue,
+  handleExit
+}) => {
   if (isCandidate) {
     return (
       <div className='listingHeader'>
         <div>
-          <h4 className='headline'>{ listing.name }</h4>
-          <p className='listingMeta'>{keys.added}: { listing.added || '01-02-2017' }</p>
-          <p className='listingMeta'>{keys.unchallenged}: { listing.unchallenged || '13:04:01' }</p>
+          <h4 className='headline'>{listing.name}</h4>
+          <p className='listingMeta'>
+            {keys.added}: {listing.added || '01-02-2017'}
+          </p>
+          <p className='listingMeta'>
+            {keys.unchallenged}:{' '}
+            {listing.unchallenged || '13:04:01'}
+          </p>
         </div>
         <div className='listingDeposit'>
-          <h4 className='headline'>Deposit: { listing.deposit }</h4>
-          <p className='listingMeta'>Min deposit: { minDeposit || '0' }</p>
+          <h4 className='headline'>Deposit: {listing.deposit}</h4>
+          <p className='listingMeta'>Min deposit: {minDeposit || '0'}</p>
         </div>
         <div className='changeDeposit'>
           <TextField
             hintText='Set new deposit value'
             style={{ marginRight: 15 }}
+            value={depositValue}
+            onChange={e => handleDepositValueChange(e.target.value)}
           />
           <div>
             <RaisedButton
               label='Proceed'
               style={{ marginBottom: 10 }}
-              onClick={() => setDepositValue(1)}
+              onClick={() => setDepositValue(listing, depositValue)}
             />
             <br />
             <RaisedButton
@@ -42,8 +57,11 @@ const ListingHeader = ({ listing, minDeposit, isCandidate, setDepositValue, hand
   return (
     <div className='listingHeader'>
       <div>
-        <h4 className='headline'>{ listing.name }</h4>
-        <p className='listingMeta'>{keys.added}: { listing.added || '01-02-2017' } | {keys.unchallenged}: { listing.unchallenged || '13:04:01' }</p>
+        <h4 className='headline'>{listing.name}</h4>
+        <p className='listingMeta'>
+          {keys.added}: {listing.added || '01-02-2017'} |{' '}
+          {keys.unchallenged}: {listing.unchallenged || '13:04:01'}
+        </p>
       </div>
     </div>
   );
@@ -51,8 +69,10 @@ const ListingHeader = ({ listing, minDeposit, isCandidate, setDepositValue, hand
 
 ListingHeader.propTypes = {
   listing: PropTypes.object.isRequired,
-  minDeposit: PropTypes.string,
+  depositValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  minDeposit: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   isCandidate: PropTypes.bool,
+  handleDepositValueChange: PropTypes.func.isRequired,
   setDepositValue: PropTypes.func.isRequired,
   handleExit: PropTypes.func.isRequired
 };
