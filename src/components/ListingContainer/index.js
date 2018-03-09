@@ -20,7 +20,7 @@ class ListingContainer extends Component {
     this.handleExit = this.handleExit.bind(this);
 
     this.state = {
-      depositValue: 0
+      depositValue: ''
     };
   }
 

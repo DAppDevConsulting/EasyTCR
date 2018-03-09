@@ -42,6 +42,7 @@ const ListingHeader = ({
               label='Proceed'
               style={{ marginBottom: 10 }}
               onClick={() => setDepositValue(listing, depositValue)}
+              disabled={!depositValue}
             />
             <br />
             <RaisedButton
