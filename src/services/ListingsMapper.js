@@ -33,7 +33,8 @@ export default class ListingsMapper {
         listing.exists(),
         listing.expiresAt(),
         listing.getChallengeId(),
-        listing.getStageStatus()
+        listing.getStageStatus(),
+        listing.getDeposit()
       ]);
 
       let whitelisted = props[0];
@@ -41,13 +42,15 @@ export default class ListingsMapper {
       let expTs = props[2];
       let challengeId = props[3];
       let stagingStatus = props[4];
+      let deposit = props[5];
 
       let result = {
         id: listingName,
         name: listingData ? listingData.name : '',
         label: '',
         challengeId,
-        whitelisted
+        whitelisted,
+        deposit
       };
 
       if (stagingStatus) {
