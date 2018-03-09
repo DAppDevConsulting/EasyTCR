@@ -29,7 +29,7 @@ export default class InMemDb {
   }
 
   hasIn (collectionName, key) {
-    return this._collections.get(collectionName).has(key);
+    return this._collections.get(collectionName).map.has(key);
   }
 
   getByKeyFrom (collectionName, key) {
