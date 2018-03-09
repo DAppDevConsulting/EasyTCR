@@ -15,6 +15,8 @@ class ListingContainer extends Component {
     super();
 
     this.challengeListing = this.challengeListing.bind(this);
+    this.setDepositValue = this.setDepositValue.bind(this);
+    this.handleExit = this.handleExit.bind(this);
   }
 
   challengeListing (listing) {
@@ -35,8 +37,16 @@ class ListingContainer extends Component {
     this.props.tokenHolderActions.clearCurrentListing();
   }
 
+  setDepositValue (value) {
+    console.log('setDepositValue', value);
+  }
+
+  handleExit (listing) {
+    console.log('handleExit', listing);
+  }
+
   render () {
-    const { listing, tokenHolderActions } = this.props;
+    const { listing, tokenHolderActions, candidate, minDeposit } = this.props;
 
     if (listing) {
       return (
@@ -48,6 +58,10 @@ class ListingContainer extends Component {
           <div className='ListingContainer'>
             <ListingItem
               listing={listing}
+              isCandidate={candidate.listings.map(l => l.id).includes(listing.id)}
+              setDepositValue={this.setDepositValue}
+              handleExit={this.handleExit}
+              minDeposit={minDeposit}
             />
             <ListingAction
               listing={listing}
@@ -68,6 +82,7 @@ class ListingContainer extends Component {
 
 ListingContainer.propTypes = {
   listing: PropTypes.object,
+  candidate: PropTypes.object,
   registry: PropTypes.string,
   consumerActions: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired
@@ -76,7 +91,8 @@ ListingContainer.propTypes = {
 const mapStateToProps = state => ({
   listing: state.tokenHolder.currentListing,
   registry: state.app.registry,
-  minDeposit: state.parameterizer.parameters[0].value
+  minDeposit: state.parameterizer.parameters[0].value,
+  candidate: state.candidate
 });
 
 const mapDispatchToProps = dispatch => ({

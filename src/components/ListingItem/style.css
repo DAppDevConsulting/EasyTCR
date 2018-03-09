@@ -10,6 +10,8 @@
 .listingHeader {
 	padding: 25px 25px 18px 25px;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+	display: flex;
+	justify-content: space-between;
 }
 
 .listingHeader .headline {
@@ -28,4 +30,8 @@
 	line-height: 1.5;
 	color: #7f8fa4;
 	padding: 40px 0;
+}
+
+.changeDeposit {
+	display: flex;
 }
