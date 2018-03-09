@@ -49,12 +49,12 @@ class ListingContainer extends Component {
     const valueNum = parseInt(value, 10);
 
     listing.deposit > valueNum
-      ? this.props.candidateActions.withdrawListing(listing.name, listing.deposit - valueNum)
-      : this.props.candidateActions.depositListing(listing.name, valueNum - listing.deposit);
+      ? this.props.candidateActions.withdrawListing(listing.id, listing.deposit - valueNum)
+      : this.props.candidateActions.depositListing(listing.id, valueNum - listing.deposit);
   }
 
-  handleExit (listingName) {
-    this.props.candidateActions.exitListing(listingName);
+  handleExit (listingId) {
+    this.props.candidateActions.exitListing(listingId);
   }
 
   handleDepositValueChange (value) {

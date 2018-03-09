@@ -4,7 +4,12 @@ import { Listing } from 'ethereum-tcr-api';
 import 'babel-polyfill';
 import TCR from '../TCR';
 import IPFS from '../services/IPFS';
-import { applyListing as getApplyListingQueue } from '../transactions';
+import {
+  applyListing as getApplyListingQueue,
+  exitListing as getExitListing,
+  depositListing as getDepositListing,
+  withdrawListing as getWithdrawListing
+} from '../transactions';
 import ListingsProvider from '../services/ListingsProvider';
 import {
   REQUEST_CANDIDATE_LISTINGS,
@@ -187,15 +192,20 @@ export function * updateListingsState (action) {
 }
 
 export function * exitListing (action) {
-  console.log('saga exitListing', action);
+  yield call(getExitListing, action.listingId);
+  yield put({ type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: action.listingName });
 }
 
 export function * depositListing (action) {
   console.log('saga depositListing', action);
+  yield call(getDepositListing, action.listingId, action.value);
+  yield put({ type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: action.listingName });
 }
 
 export function * withdrawListing (action) {
   console.log('saga withdrawListing', action);
+  yield call(getWithdrawListing, action.listingId, action.value);
+  yield put({ type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: action.listingName });
 }
 
 export default function * flow () {

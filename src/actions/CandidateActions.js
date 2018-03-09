@@ -103,25 +103,25 @@ export function cancelListingApplication () {
   };
 }
 
-export function exitListing (listingName) {
+export function exitListing (listingId) {
   return {
     type: LISTING_EXIT,
-    listingName
+    listingId
   };
 }
 
-export function depositListing (listingName, value) {
+export function depositListing (listingId, value) {
   return {
     type: DEPOSIT_LISTING,
-    listingName,
+    listingId,
     value
   };
 }
 
-export function withdrawListing (listingName, value) {
+export function withdrawListing (listingId, value) {
   return {
     type: WITHDRAW_LISTING,
-    listingName,
+    listingId,
     value
   };
 }

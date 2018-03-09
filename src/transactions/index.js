@@ -238,3 +238,27 @@ export async function challengeProposalTx (proposal) {
 
   return queue;
 }
+
+export async function depositListing (name, value) {
+  const registry = TCR.registry();
+  const listing = await registry.getListing(name);
+
+  return listing.deposit(value)
+    .catch(error => console.error(error));
+}
+
+export async function withdrawListing (name, value) {
+  const registry = TCR.registry();
+  const listing = await registry.getListing(name);
+
+  return listing.withdraw(value)
+    .catch(error => console.error(error));
+}
+
+export async function exitListing (name) {
+  const registry = TCR.registry();
+  const listing = await registry.getListing(name);
+
+  return listing.remove()
+    .catch(error => console.error(error));
+}
