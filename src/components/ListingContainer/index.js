@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import * as consumerActions from '../../actions/ConsumerActions';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
+import * as candidateActions from '../../actions/CandidateActions';
 import ListingStatus from '../ListingStatus';
 import ListingItem from '../ListingItem';
 import ListingAction from '../ListingAction';
@@ -20,7 +21,8 @@ class ListingContainer extends Component {
     this.handleExit = this.handleExit.bind(this);
 
     this.state = {
-      depositValue: ''
+      depositValue: '',
+      errorText: ''
     };
   }
 
@@ -42,17 +44,24 @@ class ListingContainer extends Component {
     this.props.tokenHolderActions.clearCurrentListing();
   }
 
-  setDepositValue (listing, value) {
-    console.log('setDepositValue', listing, value);
+  setDepositValue (listingName, value) {
+    console.log('setDepositValue', listingName, value);
   }
 
-  handleExit (listing) {
-    console.log('handleExit', listing);
+  handleExit (listingName) {
+    this.props.candidateActions.exitListing(listingName);
   }
 
   handleDepositValueChange (value) {
-    console.log('handleDepositValueChange', value);
-    this.setState({ depositValue: value });
+    const re = /^\d+$/;
+    const minDepostNumber = parseInt(this.props.minDeposit, 10);
+    const valueNumber = parseInt(value, 10);
+
+    if ((re.test(value) && minDepostNumber <= valueNumber) || value === '') {
+      this.setState({ depositValue: value, errorText: '' });
+    } else {
+      this.setState({ depositValue: value, errorText: 'Input is invalid or less than Min Deposit value' });
+    }
   }
 
   render () {
@@ -74,6 +83,7 @@ class ListingContainer extends Component {
               handleExit={this.handleExit}
               minDeposit={minDeposit}
               depositValue={this.state.depositValue}
+              errorText={this.state.errorText}
             />
             <ListingAction
               listing={listing}
@@ -97,7 +107,8 @@ ListingContainer.propTypes = {
   candidate: PropTypes.object,
   registry: PropTypes.string,
   minDeposit: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  tokenHolderActions: PropTypes.object.isRequired
+  tokenHolderActions: PropTypes.object.isRequired,
+  candidateActions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -109,7 +120,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   consumerActions: bindActionCreators(consumerActions, dispatch),
-  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch)
+  tokenHolderActions: bindActionCreators(tokenHolderActions, dispatch),
+  candidateActions: bindActionCreators(candidateActions, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListingContainer);

@@ -11,7 +11,8 @@ const ListingHeader = ({
   isCandidate,
   handleDepositValueChange,
   setDepositValue,
-  handleExit
+  handleExit,
+  errorText
 }) => {
   if (isCandidate) {
     return (
@@ -36,18 +37,19 @@ const ListingHeader = ({
             style={{ marginRight: 15 }}
             value={depositValue}
             onChange={e => handleDepositValueChange(e.target.value)}
+            errorText={errorText}
           />
           <div>
             <RaisedButton
               label='Proceed'
               style={{ marginBottom: 10 }}
-              onClick={() => setDepositValue(listing, depositValue)}
-              disabled={!depositValue}
+              onClick={() => setDepositValue(listing.name, depositValue)}
+              disabled={!depositValue || !!errorText}
             />
             <br />
             <RaisedButton
               label='Exit'
-              onClick={() => handleExit(listing)}
+              onClick={() => handleExit(listing.name)}
             />
           </div>
         </div>
@@ -75,7 +77,8 @@ ListingHeader.propTypes = {
   isCandidate: PropTypes.bool,
   handleDepositValueChange: PropTypes.func.isRequired,
   setDepositValue: PropTypes.func.isRequired,
-  handleExit: PropTypes.func.isRequired
+  handleExit: PropTypes.func.isRequired,
+  errorText: PropTypes.string
 };
 
 export default ListingHeader;
