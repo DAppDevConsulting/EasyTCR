@@ -10,7 +10,10 @@ import {
   APPROVE_PLCR_TOKENS,
   APPROVE_PARAMETERIZER_TOKENS,
   REQUEST_VOTING_RIGHTS,
-  WITHDRAW_VOTING_RIGHTS
+  WITHDRAW_VOTING_RIGHTS,
+  LISTING_EXIT,
+  DEPOSIT_LISTING,
+  WITHDRAW_LISTING
 } from '../constants/actions';
 
 // TODO: move to TokenHolderActions
@@ -97,5 +100,28 @@ export function hideTxQueue () {
 export function cancelListingApplication () {
   return {
     type: CANCEL_LISTING_APPLICATION
+  };
+}
+
+export function exitListing (listingId) {
+  return {
+    type: LISTING_EXIT,
+    listingId
+  };
+}
+
+export function depositListing (listingId, value) {
+  return {
+    type: DEPOSIT_LISTING,
+    listingId,
+    value
+  };
+}
+
+export function withdrawListing (listingId, value) {
+  return {
+    type: WITHDRAW_LISTING,
+    listingId,
+    value
   };
 }

@@ -199,6 +199,8 @@
     "tabLabelColor": "#3f536e",
     "refreshButtonColor": "rgba(153, 153, 153, 0.2)",
     "inChallengeColor": "#f7bf47",
-    "headerTextColor": "#fff"
+    "headerTextColor": "#fff",
+
+    "sameValueError": "New value is the same as an old one"
   }
 }
