@@ -241,7 +241,6 @@ export async function challengeProposalTx (proposal) {
 }
 
 export async function depositListing (id, value) {
-  console.log('txs depositListing', id, value);
   const registry = TCR.registry();
   const listing = await registry.getListing(id);
 
