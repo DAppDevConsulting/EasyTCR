@@ -4,8 +4,8 @@ import IPFS from './IPFS';
 
 const NULL_VOTE_COMMIT_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
 export default class ListingsMapper {
-  static async mapExtended (listingName, data, registry, accountAddress) {
-    let listing = await this.map(listingName, data, registry);
+  static async mapExtended (listingHash, data, registry, accountAddress) {
+    let listing = await this.map(listingHash, data, registry);
     let pollId = parseInt(listing.challengeId);
     if (pollId) {
       let plcr = await registry.getPLCRVoting();
@@ -19,11 +19,12 @@ export default class ListingsMapper {
       listing.voteCommited = false;
       listing.voteRevealed = false;
     }
+    listing.belongToAccount = listing.account === accountAddress;
     return listing;
   }
 
-  static async map (listingName, data, registry) {
-    let listing = registry.getListing(listingName);
+  static async map (listingHash, data, registry) {
+    let listing = registry.getListing(listingHash);
     let listingData = data ? await IPFS.get(data) : null;
 
     try {
@@ -33,7 +34,8 @@ export default class ListingsMapper {
         listing.expiresAt(),
         listing.getChallengeId(),
         listing.getStageStatus(),
-        listing.getDeposit()
+        listing.getDeposit(),
+        listing.getOwner()
       ]);
 
       let whitelisted = props[0];
@@ -42,11 +44,13 @@ export default class ListingsMapper {
       let challengeId = props[3];
       let stagingStatus = props[4];
       let deposit = props[5];
+      let account = props[6];
 
       let result = {
-        id: listingName,
+        id: listingHash,
         name: listingData ? listingData.name : '',
         label: '',
+        account,
         challengeId,
         whitelisted,
         deposit

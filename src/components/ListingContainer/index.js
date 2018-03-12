@@ -51,6 +51,7 @@ class ListingContainer extends Component {
     listing.deposit > valueNum
       ? this.props.candidateActions.withdrawListing(listing.id, listing.deposit - valueNum)
       : this.props.candidateActions.depositListing(listing.id, valueNum - listing.deposit);
+    this.setState({ depositValue: '', errorText: '' });
   }
 
   handleExit (listingId) {
@@ -59,8 +60,11 @@ class ListingContainer extends Component {
 
   handleDepositValueChange (value) {
     const re = /^\d+$/;
-    if (this.props.listing.deposit === parseInt(value, 10)) {
+    const newValue = parseInt(value, 10);
+    if (this.props.listing.deposit === newValue) {
       this.setState({ depositValue: value, errorText: keys.sameValueError });
+    } else if (this.props.minDeposit > newValue) {
+      this.setState({ depositValue: value, errorText: keys.candidatePage_applyForm_stakeErrorText });
     } else if (re.test(value) || value === '') {
       this.setState({ depositValue: value, errorText: '' });
     } else {
@@ -69,7 +73,7 @@ class ListingContainer extends Component {
   }
 
   render () {
-    const { listing, tokenHolderActions, candidate, minDeposit } = this.props;
+    const { listing, tokenHolderActions, minDeposit } = this.props;
 
     if (listing) {
       return (
@@ -81,7 +85,6 @@ class ListingContainer extends Component {
           <div className='ListingContainer'>
             <ListingItem
               listing={listing}
-              isCandidate={candidate.listings.map(l => l.id).includes(listing.id)}
               handleDepositValueChange={this.handleDepositValueChange}
               setDepositValue={this.setDepositValue}
               handleExit={this.handleExit}
@@ -108,7 +111,6 @@ class ListingContainer extends Component {
 
 ListingContainer.propTypes = {
   listing: PropTypes.object,
-  candidate: PropTypes.object,
   registry: PropTypes.string,
   minDeposit: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tokenHolderActions: PropTypes.object.isRequired,

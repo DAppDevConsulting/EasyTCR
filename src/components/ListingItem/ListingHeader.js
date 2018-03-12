@@ -8,13 +8,12 @@ const ListingHeader = ({
   listing,
   depositValue,
   minDeposit,
-  isCandidate,
   handleDepositValueChange,
   setDepositValue,
   handleExit,
   errorText
 }) => {
-  if (isCandidate) {
+  if (listing.belongToAccount && (listing.status === keys.inRegistry || listing.status === keys.inApplication)) {
     return (
       <div className='listingHeader'>
         <div>
@@ -74,7 +73,6 @@ ListingHeader.propTypes = {
   listing: PropTypes.object.isRequired,
   depositValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   minDeposit: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isCandidate: PropTypes.bool,
   handleDepositValueChange: PropTypes.func.isRequired,
   setDepositValue: PropTypes.func.isRequired,
   handleExit: PropTypes.func.isRequired,
