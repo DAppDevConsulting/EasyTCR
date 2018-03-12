@@ -12,18 +12,20 @@ import {
   CANDIDATE,
   MANAGE_TOKENS,
   TOKEN_HOLDER,
-  PARAMETERIZER
+  PARAMETERIZER,
+  toPath
 } from '../../constants/Navigation';
 import {
   Route,
   Switch,
   Redirect
 } from 'react-router-dom';
+const tcrOfTcrs = require('../../cfg.json').TCRofTCRs;
 
 const MainContainer = props => (
   <Route>
     <Switch>
-      <Redirect path='/' to={CONSUMER} exact />
+      <Redirect path='/' to={toPath(CONSUMER, tcrOfTcrs.registry)} exact />
       <Route path={MANAGE_TOKENS} render={(props) => (
         <ManageTokensContainer />
       )} />
