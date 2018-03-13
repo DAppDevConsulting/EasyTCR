@@ -29,7 +29,7 @@
       "inRegistry": "in Registry",
       "inVotingCommit": "in Commit",
       "inVotingReveal": "in Reveal",
-      "notExists": "Ooops... No {candidate} in contract",
+      "notExists": "Ooops... No candidate in contract",
 
       "menu_header": "Menu",
       "menu_tokenHolder": "Token Holder",
@@ -38,7 +38,7 @@
       "menu_manageTokens": "Manage tokens",
 
       "tokenHolderPage_title": "Overview",
-      "tokenHolderPage_listingName": "{candidate} to review",
+      "tokenHolderPage_listingName": "Candidate to review",
       "tokenHolderPage_listingStatus": "Status",
       "tokenHolderPage_listingDate": "Due date",
       "tokenHolderPage_listingActions": "Actions",

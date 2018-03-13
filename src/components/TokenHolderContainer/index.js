@@ -17,7 +17,7 @@ class TokenHolderContainer extends Component {
 
     this.listConfig = {
       columns: [
-        {propName: 'label', title: keys.tokenHolderPage_listingName, tooltip: keys.tokenHolderPage_listingTooltip},
+        {propName: 'label', title: keys.formatString(keys.tokenHolderPage_listingName, {candidate: keys.candidate}), tooltip: keys.tokenHolderPage_listingTooltip},
         {propName: 'status', title: keys.tokenHolderPage_listingStatus, tooltip: keys.tokenHolderPage_listingStatusTooltip},
         {propName: 'dueDate', title: keys.tokenHolderPage_listingDate, tooltip: keys.tokenHolderPage_listingDateTooltip},
         {propName: 'action', title: keys.tokenHolderPage_listingActions, tooltip: keys.tokenHolderPage_listingActionsTooltip}
@@ -25,7 +25,7 @@ class TokenHolderContainer extends Component {
     };
     this.rewardsListingConfig = {
       columns: [
-        {propName: 'listing', title: keys.tokenHolderPage_listingName, tooltip: keys.tokenHolderPage_listingTooltip},
+        {propName: 'listing', title: keys.formatString(keys.tokenHolderPage_listingName, {candidate: keys.candidate}), tooltip: keys.tokenHolderPage_listingTooltip},
         {propName: 'challengeId', title: keys.challengeIdText},
         {propName: 'action', title: keys.claimRewardButtonText}
       ]
