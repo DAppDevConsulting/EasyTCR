@@ -3,12 +3,18 @@ const geatway = IPFSConfig.geatway;
 const apiServer = IPFSConfig.apiServer;
 
 const get = async (hash) => {
-  let cfg = await (await window.fetch(
-    `${geatway}/ipfs/${hash}`,
-    {
-      method: 'get'
-    }
-  )).json();
+  let cfg;
+  try {
+    cfg = await (await window.fetch(
+      `${geatway}/ipfs/${hash}`,
+      {
+        method: 'get'
+      }
+    )).json();
+  } catch (err) {
+    console.log(err);
+    cfg = {name: 'Invalid IPFS Hash'};
+  }
   return cfg;
 };
 

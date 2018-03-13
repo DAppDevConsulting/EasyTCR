@@ -57,6 +57,7 @@ class ContractSynchronizer {
   }
 }
 const LISTINGS = 'listings';
+const HASH_TO_DATA = 'hashToData';
 const UNCLAIMED_POLLS = 'unclaimedPolls';
 const POLLS = 'polls';
 const PARAMS = 'params';
@@ -77,6 +78,7 @@ class SyncManager {
     this._parametrizerWatcher = null;
     this._db = new InMemDb(
       {name: LISTINGS, key: 'listing'},
+      {name: HASH_TO_DATA, key: 'listing'},
       {name: UNCLAIMED_POLLS, key: 'challengeId'},
       {name: POLLS, key: 'challengeId'},
       {name: PARAMS, key: 'name'}
@@ -101,7 +103,7 @@ class SyncManager {
           return e.event === '_Application' || e.event === '_ApplicationRemoved' ||
             e.event === '_ListingRemoved' || e.event === '_NewListingWhitelisted';
         });
-        let grouped = _.groupBy(parts[0], 'returnValues.domain');
+        let grouped = _.groupBy(parts[0], 'returnValues.listingHash');
         parts[1].forEach(e => {
           if (e.event === '_Challenge') {
             e.returnValues.challengeID = e.returnValues.pollID;
@@ -166,6 +168,7 @@ class SyncManager {
 
   addListing (listing, data, account) {
     this._db.setTo(LISTINGS, {listing, data, account});
+    this._db.setTo(HASH_TO_DATA, {listing, data});
     this._callWatcher('add', listing);
   }
 
@@ -299,8 +302,13 @@ class SyncManager {
     return this._db.getByKeyFrom(LISTINGS, hash);
   }
 
-  listingsToClaimReward () {
-    return this._db.getFromJoined(UNCLAIMED_POLLS, POLLS).filter((item) => item.isResolved);
+  challengesToClaimReward () {
+    return this._db.getAllFrom(UNCLAIMED_POLLS).filter((item) => item.isResolved);
+  }
+
+  getListingToClaimRewardByChallengeId (challengeId) {
+    return this._db.getFromJoinedByKey(UNCLAIMED_POLLS, challengeId,
+      {name: POLLS}, {name: HASH_TO_DATA, key: 'listing'});
   }
 
   parametrizerProposals () {
@@ -384,11 +392,11 @@ const getListing = async (address, hash, accountAddress) => {
   return _map.get(address).getListingByHash(hash);
 };
 
-const getListingsToClaimReward = async (address, accountAddress) => {
+const getChallengesToClaimReward = async (address, accountAddress) => {
   if (!isRegistryReady(address)) {
     await getPromiseFromQueue(address, accountAddress);
   }
-  return _map.get(address).listingsToClaimReward();
+  return _map.get(address).challengesToClaimReward();
 };
 
 const getParameterizerProposals = async (address, accountAddress) => {
@@ -396,6 +404,13 @@ const getParameterizerProposals = async (address, accountAddress) => {
     await getPromiseFromQueue(address, accountAddress);
   }
   return _map.get(address).parametrizerProposals();
+};
+
+const getListingToClaimReward = async (address, challengeId, accountAddress) => {
+  if (!isRegistryReady(address)) {
+    await getPromiseFromQueue(address, accountAddress);
+  }
+  return _map.get(address).getListingToClaimRewardByChallengeId(challengeId);
 };
 
 // TODO: кривоватая схема
@@ -416,7 +431,8 @@ const onNewBlock = (handler) => {
 export default {
   getListings,
   getListing,
-  getListingsToClaimReward,
+  getChallengesToClaimReward,
+  getListingToClaimReward,
   getParameterizerProposals,
   setRegistryNotificationHandler,
   setRewardNotificationHandler,

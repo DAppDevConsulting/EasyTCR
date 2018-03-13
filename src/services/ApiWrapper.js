@@ -8,12 +8,16 @@ export default {
     }
     return listings;
   },
-  getListing: async (registry, hash) => {
-    return contractService.getListing(registry, hash);
+  getListing: async (registry, hash, account) => {
+    return contractService.getListing(registry, hash, account);
   },
-  getListingsToClaimReward: async (registry, account) => {
-    let listings = await contractService.getListingsToClaimReward(registry, account);
+  getChallengesToClaimReward: async (registry, account) => {
+    let listings = await contractService.getChallengesToClaimReward(registry, account);
     return listings;
+  },
+  getListingToClaimReward: async (registry, challengeId, account) => {
+    let result = await contractService.getListingToClaimReward(registry, challengeId, account);
+    return result;
   },
   getParameterizerProposals: async (registry, account) => {
     const proposals = await contractService.getParameterizerProposals(registry, account);

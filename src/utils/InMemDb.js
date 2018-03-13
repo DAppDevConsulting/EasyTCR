@@ -41,13 +41,25 @@ export default class InMemDb {
     return [...collection.map.values()];
   }
 
-  getFromJoined (collectionName1, collectionName2) {
-    const c1 = this._collections.get(collectionName1);
-    const c2 = this._collections.get(collectionName2);
-    return [...c1.map.keys()]
+  getKeysFrom (collectionName) {
+    return [...this._collections.get(collectionName).map.keys()];
+  }
+
+  getFromJoined (collectionName, ...joinOpts) {
+    const collection = this._collections.get(collectionName);
+    return [...collection.map.keys()]
       .map((key) => {
-        let poolData = _.assign(c1.map.get(key), c2.map.get(key));
-        return poolData;
+        return this.getFromJoinedByKey(collectionName, key, ...joinOpts);
       });
+  }
+
+  getFromJoinedByKey (collectionName, key, ...joinOpts) {
+    const collection = this._collections.get(collectionName);
+    let result = collection.map.get(key);
+    joinOpts.forEach((option) => {
+      const c = this._collections.get(option.name);
+      result = _.assign(result, option.key ? c.map.get(result[option.key]) : c.map.get(key));
+    });
+    return result;
   }
 }
