@@ -70,6 +70,20 @@ class Commit extends Component {
     );
   }
 
+  renderRemainingTime () {
+    const { remainingTime } = this.state;
+    return (
+      <div className='challengeTime'>
+        <p>{keys.remainingTimeText}</p>
+        {
+          remainingTime
+            ? <p>{remainingTime}</p>
+            : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
+        }
+      </div>
+    );
+  }
+
   renderVoteForm () {
     const { listing } = this.props;
     const { remainingTime } = this.state;
@@ -77,14 +91,7 @@ class Commit extends Component {
       <div>
         <h4 className='actionTitle'>{keys.commitStage}</h4>
         <div className='actionData'>
-          <div className='challengeTime'>
-            <p>{keys.remainingTimeText}</p>
-            {
-              remainingTime
-                ? <p>{remainingTime}</p>
-                : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
-            }
-          </div>
+          {this.renderRemainingTime()}
           { listing ? <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p> : null }
           <TextField
             floatingLabelText={keys.enterVotes}
@@ -142,6 +149,7 @@ class Commit extends Component {
     return (
       <div>
         <h4 className='headline'>{keys.commitStage}</h4>
+        {this.renderRemainingTime()}
         <p>Your vote already commited</p>
       </div>
     );

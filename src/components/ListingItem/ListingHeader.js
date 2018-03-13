@@ -48,7 +48,7 @@ const ListingHeader = ({
             <br />
             <RaisedButton
               label='Exit'
-              disabled={!listing.isWhitelisted}
+              disabled={!listing.whitelisted}
               onClick={() => handleExit(listing.id)}
             />
           </div>
