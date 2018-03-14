@@ -102,6 +102,8 @@
     "transaction_revealVoteText": "Revealing vote is the last step in Partial Lock Commit Reveal Voting participation. Finally, the voters will be able to see the actual results of current poll.",
     "transaction_submitReparameterizationHeader": "Propose reparameterization",
     "transaction_submitReparameterizationText": "Submit new parameterizer value",
+    "transaction_submitDepositHeader": "Submit deposit",
+    "transaction_submitDepositText": "Submit new deposit value",
 
     "notFoundTitle": "Error: 404 Page Not Found",
     "notFoundTextFirst": "Sorry, the page you're looking for cannot be accessed.",

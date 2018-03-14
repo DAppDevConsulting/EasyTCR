@@ -241,20 +241,58 @@ export async function challengeProposalTx (proposal) {
 }
 
 export async function depositListing (id, value) {
-  const registry = TCR.registry();
-  const listing = await registry.getListing(id);
+  const account = await TCR.defaultAccount();
+  const manager = new TransactionManager(provider());
+  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const listing = await TCR.registry().getListing(id);
 
-  return listing.deposit(value)
-    .catch(error => console.error(error));
+  const queue = new PromisesQueue();
+
+  if (approvedRegistryTokens < value) {
+    queue.add(
+      () => {
+        return account.approveTokens(TCR.registry().address, value)
+          .then(ti => {
+            return manager.watchForTransaction(ti);
+          });
+      },
+      {
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, value),
+        content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'TCR', type: 'Registry', tokenName: 'TCR' })
+      }
+    );
+  }
+
+  queue.add(
+    async () => {
+      return listing.deposit(value)
+        .catch(error => console.error(error));
+    },
+    {
+      label: keys.transaction_submitDepositHeader,
+      content: keys.transaction_submitDepositText
+    }
+  );
+
+  return queue;
 }
 
 export async function withdrawListing (id, value) {
-  console.log('txs withdrawListing', id, value);
   const registry = TCR.registry();
   const listing = await registry.getListing(id);
+  const queue = new PromisesQueue();
+  queue.add(
+    async () => {
+      return listing.withdraw(value)
+        .catch(error => console.error(error));
+    },
+    {
+      label: keys.transaction_submitDepositHeader,
+      content: keys.transaction_submitDepositText
+    }
+  );
 
-  return listing.withdraw(value)
-    .catch(error => console.error(error));
+  return queue;
 }
 
 export async function exitListing (name) {

@@ -86,7 +86,6 @@ class Commit extends Component {
 
   renderVoteForm () {
     const { listing } = this.props;
-    const { remainingTime } = this.state;
     return (
       <div>
         <h4 className='actionTitle'>{keys.commitStage}</h4>

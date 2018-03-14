@@ -5,6 +5,8 @@ import {
   REQUEST_CANDIDATE_LISTINGS,
   APPLY_LISTING,
   HIDE_TX_QUEUE,
+  SHOW_DEPOSIT_TX_QUEUE,
+  HIDE_DEPOSIT_TX_QUEUE,
   CANCEL_LISTING_APPLICATION,
   APPROVE_REGISTRY_TOKENS,
   APPROVE_PLCR_TOKENS,
@@ -94,6 +96,18 @@ export function applyListing (name, tokens, file) {
 export function hideTxQueue () {
   return {
     type: HIDE_TX_QUEUE
+  };
+}
+
+export function showDepositTxQueue () {
+  return {
+    type: SHOW_DEPOSIT_TX_QUEUE
+  };
+}
+
+export function hideDepositTxQueue () {
+  return {
+    type: HIDE_DEPOSIT_TX_QUEUE
   };
 }
 

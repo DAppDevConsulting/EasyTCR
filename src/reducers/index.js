@@ -7,6 +7,7 @@ import challenge from './challenge';
 import commit from './commit';
 import reveal from './reveal';
 import tokenHolder from './tokenHolder';
+import deposit from './deposit';
 
 export default combineReducers({
   app,
@@ -16,5 +17,6 @@ export default combineReducers({
   challenge,
   commit,
   reveal,
-  tokenHolder
+  tokenHolder,
+  deposit
 });

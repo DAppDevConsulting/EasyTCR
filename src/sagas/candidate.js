@@ -5,10 +5,7 @@ import 'babel-polyfill';
 import TCR from '../TCR';
 import IPFS from '../services/IPFS';
 import {
-  applyListing as getApplyListingQueue,
-  exitListing as getExitListing,
-  depositListing as getDepositListing,
-  withdrawListing as getWithdrawListing
+  applyListing as getApplyListingQueue
 } from '../transactions';
 import ListingsProvider from '../services/ListingsProvider';
 import {
@@ -26,10 +23,7 @@ import {
   APPROVE_PARAMETERIZER_TOKENS,
   REQUEST_VOTING_RIGHTS,
   WITHDRAW_VOTING_RIGHTS,
-  REQUEST_CURRENT_LISTING,
-  LISTING_EXIT,
-  DEPOSIT_LISTING,
-  WITHDRAW_LISTING
+  REQUEST_CURRENT_LISTING
 } from '../constants/actions';
 
 // TODO: refactor this shit
@@ -191,21 +185,6 @@ export function * updateListingsState (action) {
   }
 }
 
-export function * exitListing (action) {
-  yield call(getExitListing, action.listingId);
-  yield put({ type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: action.listingId });
-}
-
-export function * depositListing (action) {
-  yield call(getDepositListing, action.listingId, action.value);
-  yield put({ type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: action.listingId });
-}
-
-export function * withdrawListing (action) {
-  yield call(getWithdrawListing, action.listingId, action.value);
-  yield put({ type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: action.listingId });
-}
-
 export default function * flow () {
   yield takeEvery(BUY_TOKENS, buyTokens);
   yield takeEvery(APPLY_LISTING, applyListing);
@@ -218,7 +197,4 @@ export default function * flow () {
   yield takeEvery(APPROVE_PARAMETERIZER_TOKENS, approveParameterizerTokens);
   yield takeEvery(REQUEST_VOTING_RIGHTS, requestVotingRights);
   yield takeEvery(WITHDRAW_VOTING_RIGHTS, withdrawVotingRights);
-  yield takeEvery(LISTING_EXIT, exitListing);
-  yield takeEvery(DEPOSIT_LISTING, depositListing);
-  yield takeEvery(WITHDRAW_LISTING, withdrawListing);
 }

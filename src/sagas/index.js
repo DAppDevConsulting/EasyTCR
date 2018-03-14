@@ -9,6 +9,7 @@ import commit from './commit';
 import reveal from './reveal';
 import refreshStatus from './refreshStatus';
 import tokenHolder from './tokenHolder';
+import deposit from './deposit';
 
 const sagas = [
   app,
@@ -19,7 +20,8 @@ const sagas = [
   commit,
   reveal,
   refreshStatus,
-  tokenHolder
+  tokenHolder,
+  deposit
 ];
 
 export default function * root () {
