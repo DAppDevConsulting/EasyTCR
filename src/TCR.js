@@ -64,6 +64,10 @@ export class ContractsManager {
     return _contractsAddressMap.has(address);
   }
 
+  static getByAddress (address) {
+    return _contractsAddressMap.get(address);
+  }
+
   static getRegistriesAddresses () {
     return [..._contractsAddressMap.keys()];
   }

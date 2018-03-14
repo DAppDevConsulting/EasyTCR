@@ -13,7 +13,7 @@ const get = async (hash) => {
     )).json();
   } catch (err) {
     console.log(err);
-    cfg = {name: 'Invalid IPFS Hash'};
+    cfg = {name: 'Invalid IPFS Hash', id: 'Invalid IPFS hash'};
   }
   return cfg;
 };
@@ -21,7 +21,6 @@ const get = async (hash) => {
 const contentToFile = async (name, content) => {
   return new File([content], `${name}.json`, {type: 'application/json'});
 };
-
 
 const upload = async (file) => {
   try {

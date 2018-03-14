@@ -10,7 +10,7 @@ const cache = new Cache(async (key) => {
   const listing = await api.getListing(TCRofTCRs.registry, key);
   const item = await IPFS.get(listing.data);
   item.registry = item.id;
-  item.identifier = key; // todo: Reimplement
+  item.hash = key; // todo: Reimplement
 
   return item;
 });
@@ -28,9 +28,9 @@ const get = async () => {
   });
 };
 
-const getLocalization = async (registryAddress) => {
+const getLocalization = async (registryHash) => {
   try {
-    const registry = await cache.get(registryAddress);
+    const registry = await cache.get(registryHash);
     return registry.localization;
   } catch (err) {
     console.error(err);
@@ -44,14 +44,13 @@ const switchTo = async (registryAddress) => {
   }
   let contracts = await get();
   ContractsManager.setRegistries(contracts);
-  let registries = ContractsManager.getRegistries();
-  let registry = registries[0];
-  let address = registry.id;
+  let addresses = ContractsManager.getRegistriesAddresses();
+  let address = addresses[0];
   if (registryAddress && ContractsManager.hasRegistry(registryAddress)) {
     address = registryAddress;
   }
   ContractsManager.selectRegistry(address);
-  let localization = await getLocalization(registry.identifier);
+  let localization = await getLocalization(ContractsManager.getByAddress(address).hash);
   updateLocalization(localization);
 };
 
