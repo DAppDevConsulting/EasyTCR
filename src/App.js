@@ -11,6 +11,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import InfoIcon from 'material-ui/svg-icons/action/info';
 import UtlUtils from './utils/UrlUtils';
+import EthNetworkUtil from './utils/EthNetworkUtil';
 import Header from './components/Header';
 import SideBar from './components/SideBar';
 import MainContainer from './components/MainContainer';
@@ -19,6 +20,7 @@ import SettingsPopup from './components/SettingsPopup';
 import './App.css';
 import keys from './i18n';
 const tcrOfTcrs = require('./cfg.json').TCRofTCRs;
+const networkId = require('./cfg.json').network;
 const muiTheme = getMuiTheme({
   palette: {
     accent1Color: deepOrange500
@@ -51,8 +53,8 @@ class App extends Component {
 
     // check if Metamask is in Rinkeby network
     window.web3.version.getNetwork((error, network) => {
-      if (network !== '4') {
-        return this.setState({ networkError: keys.networkError });
+      if (network !== networkId) {
+        return this.setState({ networkError: keys.formatString(keys.networkError, EthNetworkUtil.getName(networkId)) });
       } else {
         const address = UtlUtils.getRegistryAddressByLink() || tcrOfTcrs.registry;
         this.props.appActions.init(address);

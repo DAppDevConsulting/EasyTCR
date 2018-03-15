@@ -112,7 +112,7 @@
     "notFoundReportIssue": "report this issue",
     "email": "victor.radchenko@dappdev.org",
 
-    "networkError": "Please, switch to Rinkeby network",
+    "networkError": "Please, switch to {0} network",
     "initializationText": "Initialization...",
     "metamaskWarningText": "Please download or unlock {metamaskLink} extension to load application and Ethereum wallet",
     "promisesQueueErrorCurrentStep": "Unable to run next step until current step is not finished",
