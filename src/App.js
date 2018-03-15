@@ -38,6 +38,11 @@ class App extends Component {
   }
 
   componentWillMount () {
+    if (!window.web3) {
+      this.setState({ metamaskNotAvailable: true });
+      return;
+    }
+
     // check if Metamask is unlocked
     window.web3.eth.getAccounts((error, result) => {
       if (result.length === 0) {
