@@ -162,6 +162,7 @@
 
     "txQueueTitle": "Make an application to registry",
     "revealStage": "Reveal Stage",
+    "commitFileIsInvalid": "Commit file is invalid",
     "support": "Support",
     "oppose": "Oppose",
     "choosePrevVoteOption": "Choose your previous vote option",

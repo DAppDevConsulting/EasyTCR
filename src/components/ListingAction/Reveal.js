@@ -4,12 +4,15 @@ import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
+import DropZone from 'react-dropzone';
+import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
+import FileUtil from "../../utils/FileUtil";
 
 const VoteResults = ({ supportVotes, opposeVotes }) => (
   <div className='revealResultsContainer'>
@@ -54,7 +57,8 @@ class Reveal extends Component {
       hasVoted: false,
       salt: '',
       option: 1,
-      remainingTime: null
+      remainingTime: null,
+      isCommitFileValid: true
     };
   }
 
@@ -116,9 +120,20 @@ class Reveal extends Component {
     };
   }
 
+  async onFileSelected (files) {
+    const file = files[0];
+    const content = await FileUtil.readAsJson(file);
+    const { listing, registry } = this.props;
+    if (content.registry === registry && content.challengeId === listing.challengeId) {
+      this.setState({isCommitFileValid: true, salt: content.salt, option: content.option});
+    } else {
+      this.setState({isCommitFileValid: false});
+    }
+  }
+
   renderRevealForm () {
     const { listing } = this.props;
-    const { remainingTime } = this.state;
+    const { remainingTime, isCommitFileValid } = this.state;
 
     if (!listing.voteCommited) {
       return this.renderNoCoteCommitedState();
@@ -138,6 +153,25 @@ class Reveal extends Component {
           <VoteResults {...this.calculateVotes(listing.voteResults)} />
 
           <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p>
+          <DropZone
+            multiple={false}
+            accept='application/json'
+            onDrop={(files) => this.onFileSelected(files)}
+            style={{
+              border: 'dashed 1px rgba(127, 143, 164, 0.4)',
+              height: '120px',
+              textAlign: 'center',
+              padding: '20px 0',
+              boxSizing: 'border-box'
+            }}
+          >
+            <CopyIcon style={{ width: '32px', height: '32px', color: 'rgba(127, 143, 164, 0.4)', marginBottom: '5px', flex: '1 1 auto' }} />
+            <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: '#7f8fa4', margin: '0' }}>Drag 'commit' file here or browse your computer</h2>
+          </DropZone>
+          {!isCommitFileValid
+            ? <p style={{color: '#ff0000'}}>{keys.commitFileIsInvalid}</p>
+            : ''
+          }
           <TextField
             floatingLabelText={keys.enterSaltText}
             floatingLabelFixed
@@ -151,6 +185,7 @@ class Reveal extends Component {
               name='voting'
               className='voteOptionsContainer'
               defaultSelected={this.state.option}
+              valueSelected={this.state.option}
               onChange={(e, option) => this.setState({option})}
             >
               <RadioButton

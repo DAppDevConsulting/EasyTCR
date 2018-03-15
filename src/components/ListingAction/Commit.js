@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
 import LinearProgress from 'material-ui/LinearProgress';
 import randomInt from 'random-int';
+import FileUtil from '../../utils/FileUtil';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
@@ -49,6 +50,13 @@ class Commit extends Component {
 
   handleVote () {
     this.props.tokenHolderActions.commitVote(this.props.listing.challengeId, this.state.option, this.state.salt, this.state.stake);
+  }
+
+  downloadCommit () {
+    const { salt, option } = this.state;
+    const { listing, registry } = this.props;
+    const fileName = `${registry}_${listing.challengeId}.json`;
+    FileUtil.save({salt, registry, option, challengeId: listing.challengeId}, fileName);
   }
 
   resolveVoting () {
@@ -139,6 +147,19 @@ class Commit extends Component {
               labelColor={keys.buttonLabelColor}
               onClick={() => this.handleVote()}
             />
+        }
+        <br />
+        { FileUtil.isSupported()
+          ? <RaisedButton
+            style={{marginTop: '20px'}}
+            label={keys.downloadCommit}
+            backgroundColor={keys.successColor}
+            labelColor={keys.buttonLabelColor}
+            labelPosition='before'
+            icon={<DownloadIcon />}
+            onClick={() => this.downloadCommit()}
+          />
+          : ''
         }
       </div>
     );
