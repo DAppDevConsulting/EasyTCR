@@ -2,6 +2,8 @@ const IPFSConfig = require('../cfg.json').IPFS;
 const geatway = IPFSConfig.geatway;
 const apiServer = IPFSConfig.apiServer;
 
+const defaultConfig = require('../defaultConfig');
+
 const get = async (hash) => {
   let cfg;
   try {
@@ -13,7 +15,9 @@ const get = async (hash) => {
     )).json();
   } catch (err) {
     console.log(err);
-    cfg = {name: 'Invalid IPFS Hash', id: 'Invalid IPFS hash'};
+    cfg = defaultConfig;
+    cfg.name = 'Invalid IPFS Hash';
+    cfg.id = 'Unknown id';
   }
   return cfg;
 };
