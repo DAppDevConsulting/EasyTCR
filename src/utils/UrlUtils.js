@@ -1,6 +1,6 @@
 const getRegistryAddressByLink = () => {
   const arr = window.location.pathname.split('/');
-  const registry = decodeURI(arr[2]);
+  const registry = arr[2] ? decodeURI(arr[2]) : ':registry';
   return registry === ':registry' ? null : registry;
 };
 

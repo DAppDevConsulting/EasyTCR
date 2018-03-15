@@ -54,7 +54,8 @@ class App extends Component {
       if (network !== '4') {
         return this.setState({ networkError: keys.networkError });
       } else {
-        this.props.appActions.init(UtlUtils.getRegistryAddressByLink());
+        const address = UtlUtils.getRegistryAddressByLink() || tcrOfTcrs.registry;
+        this.props.appActions.init(address);
       }
     });
   }
