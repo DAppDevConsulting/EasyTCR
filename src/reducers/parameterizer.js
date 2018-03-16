@@ -1,3 +1,4 @@
+import {getContractParamsNames, getParametrizerParamsNames} from '../utils/Parameterizer';
 import {
   UPDATE_PARAMETERIZER_INFORMATION,
   REQUEST_PARAMETERIZER_INFORMATION,
@@ -8,51 +9,15 @@ import {
 } from '../constants/actions';
 import keys from '../i18n';
 
+const paramsList = (names) => {
+  return names.map((value, index) => {
+    return {displayName: keys.tableParameterNames[index], contractName: value, value: 0, status: null, proposal: null};
+  });
+};
+
 const initialState = {
-  parameters: [
-    {
-      displayName: keys.tableParameterNames[0],
-      contractName: keys.contractParameterNames[0],
-      value: 0,
-      status: null,
-      proposal: null
-    },
-    {
-      displayName: keys.tableParameterNames[1],
-      contractName: keys.contractParameterNames[1],
-      value: 0,
-      status: null,
-      proposal: null
-    },
-    {
-      displayName: keys.tableParameterNames[2],
-      contractName: keys.contractParameterNames[2],
-      value: 0,
-      status: null,
-      proposal: null
-    },
-    {
-      displayName: keys.tableParameterNames[3],
-      contractName: keys.contractParameterNames[3],
-      value: 0,
-      status: null,
-      proposal: null
-    },
-    {
-      displayName: keys.tableParameterNames[4],
-      contractName: keys.contractParameterNames[4],
-      value: 0,
-      status: null,
-      proposal: null
-    },
-    {
-      displayName: keys.tableParameterNames[5],
-      contractName: keys.contractParameterNames[5],
-      value: 0,
-      status: null,
-      proposal: null
-    }
-  ],
+  parameters: paramsList(getContractParamsNames()),
+  pParameters: paramsList(getParametrizerParamsNames()),
   pMinDeposit: 0,
   isFetching: false,
   showTxQueue: false,
@@ -66,6 +31,7 @@ export default function parameterizer (state = initialState, action) {
       return {
         ...state,
         parameters: action.params,
+        pParameters: action.pParams,
         pMinDeposit: action.pMinDeposit,
         isFetching: false,
         showTxQueue: false,

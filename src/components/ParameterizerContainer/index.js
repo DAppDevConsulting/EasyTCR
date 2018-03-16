@@ -15,9 +15,11 @@ class ParameterizerContainer extends Component {
     super();
 
     this.selectParameter = this.selectParameter.bind(this);
+    this.selectParametrizrtParameter = this.selectParametrizrtParameter.bind(this);
 
     this.state = {
-      activeProposal: null
+      activeProposal: null,
+      activeParametrizerProposal: null
     };
   }
 
@@ -39,7 +41,12 @@ class ParameterizerContainer extends Component {
     this.setState({ activeProposal: parameter });
   }
 
+  selectParametrizrtParameter (parameter) {
+    this.setState({ activeParametrizerProposal: parameter });
+  }
+
   render () {
+    const {parameterizer} = this.props;
     return (
       <div className='ContentContainer'>
         <h4 className='pageHeadline'>{keys.parameterizationPage}</h4>
@@ -48,12 +55,27 @@ class ParameterizerContainer extends Component {
         </h3>
         <div className='ParameterizerContainer'>
           <ParameterizerList
-            parameterizer={this.props.parameterizer}
+            parameters={parameterizer.parameters}
+            isFetching={parameterizer.isFetching}
             activeProposal={this.state.activeProposal}
             selectParameter={this.selectParameter}
           />
           <ParameterizerAction
             activeProposal={this.state.activeProposal}
+          />
+        </div>
+        <h3 className='manageTokensTitle'>
+          {keys.pParameterizationTitle}
+        </h3>
+        <div className='ParameterizerContainer'>
+          <ParameterizerList
+            parameters={parameterizer.pParameters}
+            isFetching={parameterizer.isFetching}
+            activeProposal={this.state.activeParametrizerProposal}
+            selectParameter={this.selectParametrizrtParameter}
+          />
+          <ParameterizerAction
+            activeProposal={this.state.activeParametrizerProposal}
           />
         </div>
       </div>

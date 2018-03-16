@@ -52,5 +52,13 @@ export const getActionButtonLabel = status => {
   }
 };
 
+export const getContractParamsNames = () => {
+  return ['minDeposit', 'applyStageLen', 'commitStageLen', 'revealStageLen', 'dispensationPct', 'voteQuorum'];
+};
+
+export const getParametrizerParamsNames = () => {
+  return ['pMinDeposit', 'pApplyStageLen', 'pCommitStageLen', 'pRevealStageLen', 'pDispensationPct', 'pVoteQuorum'];
+};
+
 export const numberWithSpaces = (x) =>
   x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

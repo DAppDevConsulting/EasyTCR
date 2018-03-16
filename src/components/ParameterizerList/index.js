@@ -11,7 +11,7 @@ import Item from './Item';
 import './style.css';
 import keys from '../../i18n';
 
-const ParameterizerList = ({ parameterizer, activeProposal, selectParameter }) => (
+const ParameterizerList = ({ parameters, isFetching, activeProposal, selectParameter }) => (
   <div className='parameterizerList'>
     <Table fixedHeader fixedFooter selectable={false}>
       <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
@@ -26,10 +26,10 @@ const ParameterizerList = ({ parameterizer, activeProposal, selectParameter }) =
         showRowHover
         stripedRows={false}
       >
-        {parameterizer.parameters.map((param, index) =>
+        {parameters.map((param, index) =>
           <Item
             key={index}
-            isFetching={parameterizer.isFetching}
+            isFetching={isFetching}
             parameter={param}
             isActive={activeProposal ? activeProposal.displayName === param.displayName : false}
             selectParameter={selectParameter}
@@ -41,7 +41,8 @@ const ParameterizerList = ({ parameterizer, activeProposal, selectParameter }) =
 );
 
 ParameterizerList.propTypes = {
-  parameterizer: PropTypes.object.isRequired,
+  parameters: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool.isRequired,
   activeProposal: PropTypes.object,
   selectParameter: PropTypes.func.isRequired
 };

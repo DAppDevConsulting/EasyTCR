@@ -25,7 +25,7 @@ ParametrizerProvider.onChange(() => {
 export function * fetchParameters () {
   const paramsData = yield apply(ParametrizerProvider, 'get', [TCR.registry(), TCR.defaultAccountAddress()]);
 
-  yield put({ type: UPDATE_PARAMETERIZER_INFORMATION, params: paramsData.params, pMinDeposit: paramsData.pMinDeposit });
+  yield put({ type: UPDATE_PARAMETERIZER_INFORMATION, params: paramsData.params, pParams: paramsData.pParams, pMinDeposit: paramsData.pMinDeposit });
 }
 
 export function * proposeNewParameterizerValue (action) {
