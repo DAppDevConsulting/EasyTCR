@@ -177,7 +177,7 @@
     "minDepositRequired": "Minimum deposit required",
 
     "parameterizationPage": "Parameterization page",
-    "parameterizationTitle": "TVR Variables",
+    "parameterizationTitle": "TCR Variables",
     "pParameterizationTitle": "Parameterizer Variables",
     "parameterizationColumnNames": ["PARAMETER NAME", "VALUE", "PROPOSAL", "STATUS", "ACTIONS"],
     "tableParameterNames": ["Minimum Deposit", "Apply Stage Length", "Commit Stage Length", "Reveal Stage Length", "Dispensation Percent", "Vote Quorum"],
