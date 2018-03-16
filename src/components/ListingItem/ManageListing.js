@@ -13,10 +13,11 @@ const ManageListing = ({
   handleExit,
   errorText
 }) => {
+  const isRed = listing.deposit < minDeposit;
   return (
     <div className='listingHeader'>
       <div>
-        <h4 className='headline'>Deposit: {listing.deposit}</h4>
+        <h4 className='headline'>Deposit: <span style={{color: isRed ? '#ff0000' : '#000000'}}>{listing.deposit}</span></h4>
         <p className='listingMeta'>Min deposit: {minDeposit || '0'}</p>
       </div>
       <div className='changeDeposit'>
