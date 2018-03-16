@@ -14,7 +14,6 @@ const ManageListing = ({
   errorText
 }) => {
   const isRed = listing.deposit < minDeposit;
-
   return (
     <div className='listingHeader'>
       <div>
