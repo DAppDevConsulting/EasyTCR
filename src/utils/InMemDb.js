@@ -55,7 +55,7 @@ export default class InMemDb {
 
   getFromJoinedByKey (collectionName, key, ...joinOpts) {
     const collection = this._collections.get(collectionName);
-    let result = collection.map.get(key);
+    let result = _.assign({}, collection.map.get(key));
     joinOpts.forEach((option) => {
       const c = this._collections.get(option.name);
       result = _.assign(result, option.key ? c.map.get(result[option.key]) : c.map.get(key));

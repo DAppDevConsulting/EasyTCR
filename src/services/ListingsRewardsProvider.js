@@ -13,8 +13,7 @@ const createCache = (registry) => {
       const listing = await api.getListingToClaimReward(registry.address, key);
       const item = await IPFS.get(listing.data);
       item.label = item.name;
-
-      return _.assign(listing, item);
+      return _.assignIn({}, listing, item);
     }
   );
 };

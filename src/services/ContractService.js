@@ -168,7 +168,6 @@ class SyncManager {
 
   addListing (listing, data, account) {
     this._db.setTo(LISTINGS, {listing, data, account});
-    this._db.setTo(HASH_TO_DATA, {listing, data});
     this._callWatcher('add', listing);
   }
 
@@ -217,6 +216,7 @@ class SyncManager {
   async _onApplication (event) {
     const hash = event.returnValues.listingHash;
     const data = event.returnValues.data;
+    this._db.setTo(HASH_TO_DATA, {listing: hash, data});
     const listing = this.registry.getListing(hash);
     const exists = await listing.exists();
     if (exists) {
