@@ -23,20 +23,20 @@ const ManageListing = ({
       <div className='changeDeposit'>
         <TextField
           hintText='Set new deposit value'
-          style={{ marginRight: 15, width: 200 }}
+          style={{ marginRight: 15, width: 200, verticalAlign: 'top' }}
           value={depositValue}
           onChange={e => handleDepositValueChange(e.target.value)}
           errorText={errorText}
         />
         <RaisedButton
           label='Proceed'
-          style={{ marginRight: 15 }}
+          style={{ marginRight: 15, verticalAlign: 'top' }}
           onClick={() => setDepositValue(listing, depositValue)}
           disabled={!depositValue || !!errorText}
         />
         <RaisedButton
           label='Exit'
-          style={{ marginRight: 15 }}
+          style={{ marginRight: 15, verticalAlign: 'top' }}
           disabled={!listing.whitelisted}
           onClick={() => handleExit(listing.id)}
         />
