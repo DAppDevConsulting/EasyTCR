@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as appActions from '../../actions/AppActions';
-import * as tokenHolderActions from '../../actions/TokenHolderActions'
+import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import ParameterizerList from '../ParameterizerList';
 import ParameterizerAction from '../ParameterizerAction';
 import './style.css';
@@ -15,7 +15,7 @@ class ParameterizerContainer extends Component {
     super();
 
     this.selectParameter = this.selectParameter.bind(this);
-    this.selectParametrizrtParameter = this.selectParametrizrtParameter.bind(this);
+    this.selectParametrizerParameter = this.selectParametrizerParameter.bind(this);
 
     this.state = {
       activeProposal: null,
@@ -32,7 +32,7 @@ class ParameterizerContainer extends Component {
 
   componentWillReceiveProps (newProps) {
     if (newProps.parameterizer.parameters !== this.props.parameterizer.parameters) {
-      this.setState({ activeProposal: null });
+      this.setState({ activeProposal: null, activeParametrizerProposal: null });
     }
   }
 
@@ -41,7 +41,8 @@ class ParameterizerContainer extends Component {
     this.setState({ activeProposal: parameter });
   }
 
-  selectParametrizrtParameter (parameter) {
+  selectParametrizerParameter (parameter) {
+    this.props.tokenHolderActions.hideParameterizerTxQueue();
     this.setState({ activeParametrizerProposal: parameter });
   }
 
@@ -72,7 +73,7 @@ class ParameterizerContainer extends Component {
             parameters={parameterizer.pParameters}
             isFetching={parameterizer.isFetching}
             activeProposal={this.state.activeParametrizerProposal}
-            selectParameter={this.selectParametrizrtParameter}
+            selectParameter={this.selectParametrizerParameter}
           />
           <ParameterizerAction
             activeProposal={this.state.activeParametrizerProposal}

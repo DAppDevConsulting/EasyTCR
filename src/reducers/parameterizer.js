@@ -22,7 +22,8 @@ const initialState = {
   isFetching: false,
   showTxQueue: false,
   queue: null,
-  isProcessing: false
+  isProcessing: false,
+  transactionParameter: ''
 };
 
 export default function parameterizer (state = initialState, action) {
@@ -40,9 +41,9 @@ export default function parameterizer (state = initialState, action) {
     case REQUEST_PARAMETERIZER_INFORMATION:
       return { ...state, isFetching: true };
     case PARAMETERIZER_SHOW_TX_QUEUE:
-      return { ...state, queue: action.queue, showTxQueue: true };
+      return { ...state, queue: action.queue, showTxQueue: true, transactionParameter: action.transactionParameter };
     case PARAMETERIZER_HIDE_TX_QUEUE:
-      return { ...state, showTxQueue: false };
+      return { ...state, showTxQueue: false, transactionParameter: '' };
     case PROCESS_PROPOSAL:
       return { ...state, isProcessing: true };
     case CANCEL_PARAMETERIZER_TX:

@@ -32,11 +32,12 @@ class ParameterizerNeedProcess extends Component {
   }
 
   render () {
-    const { activeProposal, showTxQueue, txQueue, isProcessing } = this.props;
+    const { activeProposal, showTxQueue, txQueue, isProcessing, transactionParameter } = this.props;
+    const isMyTransaction = activeProposal.contractName === transactionParameter;
 
     return (
       <div className='parameterizerAction'>
-        {showTxQueue
+        {showTxQueue && isMyTransaction
           ? <TxQueue
             mode='vertical'
             queue={txQueue}
@@ -66,12 +67,14 @@ ParameterizerNeedProcess.propTypes = {
   tokenHolderActions: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object,
+  transactionParameter: PropTypes.string,
   isProcessing: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   showTxQueue: state.parameterizer.showTxQueue,
   txQueue: state.parameterizer.queue,
+  transactionParameter: state.parameterizer.transactionParameter,
   isProcessing: state.parameterizer.isProcessing
 });
 

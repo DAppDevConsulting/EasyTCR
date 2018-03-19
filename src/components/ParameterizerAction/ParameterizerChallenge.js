@@ -53,12 +53,13 @@ class ParameterizerChallenge extends Component {
   }
 
   render () {
-    const { showTxQueue, txQueue, tokenHolderActions, pMinDeposit, activeProposal } = this.props;
+    const { showTxQueue, txQueue, tokenHolderActions, pMinDeposit, activeProposal, transactionParameter } = this.props;
     const { remainingTime } = this.state;
+    const isMyTransaction = activeProposal.contractName === transactionParameter;
 
     return (
       <div className='parameterizerAction'>
-        {showTxQueue ? (
+        {showTxQueue && isMyTransaction ? (
           <TxQueue
             mode='vertical'
             queue={txQueue}
@@ -101,6 +102,7 @@ ParameterizerChallenge.propTypes = {
   activeProposal: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
   txQueue: PropTypes.object,
+  transactionParameter: PropTypes.string,
   tokenHolderActions: PropTypes.object.isRequired,
   pMinDeposit: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
@@ -108,6 +110,7 @@ ParameterizerChallenge.propTypes = {
 const mapStateToProps = state => ({
   showTxQueue: state.parameterizer.showTxQueue,
   txQueue: state.parameterizer.queue,
+  transactionParameter: state.parameterizer.transactionParameter,
   pMinDeposit: state.parameterizer.pMinDeposit
 });
 

@@ -37,7 +37,12 @@ class ParameterizerVote extends Component {
   }
 
   handleVote () {
-    this.props.tokenHolderActions.commitVote(this.props.activeProposal.challengeId, this.state.option, this.state.salt, this.state.stake);
+    this.props.tokenHolderActions.commitVote(
+      this.props.activeProposal.challengeId,
+      this.state.option,
+      this.state.salt,
+      this.state.stake
+    );
   }
 
   resolveVoting () {
@@ -45,12 +50,13 @@ class ParameterizerVote extends Component {
   }
 
   render () {
-    const { activeProposal, showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { activeProposal, showTxQueue, txQueue, tokenHolderActions, transactionParameter } = this.props;
+    const isMyTransaction = activeProposal.contractName === transactionParameter;
 
     return (
       <div className='parameterizerAction'>
         {
-          showTxQueue
+          showTxQueue && isMyTransaction
             ? <TxQueue
               mode='vertical'
               queue={txQueue}
@@ -121,11 +127,13 @@ ParameterizerVote.propTypes = {
   activeProposal: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
+  transactionParameter: PropTypes.string,
   txQueue: PropTypes.object
 };
 
 const mapStateToProps = (state) => ({
   showTxQueue: state.commit.showTxQueue,
+  transactionParameter: state.parameterizer.transactionParameter,
   txQueue: state.commit.queue
 });
 

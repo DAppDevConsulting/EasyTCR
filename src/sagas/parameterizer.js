@@ -30,7 +30,7 @@ export function * fetchParameters () {
 
 export function * proposeNewParameterizerValue (action) {
   const queue = yield call(getProposeNewParameterizerValue, action.parameter.contractName, action.value);
-  yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
+  yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue, transactionParameter: action.parameter.contractName });
 }
 
 export function * processProposal (action) {

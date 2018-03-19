@@ -49,12 +49,13 @@ class ParameterizerReveal extends Component {
   }
 
   render () {
-    const { activeProposal, showTxQueue, txQueue, tokenHolderActions } = this.props;
+    const { activeProposal, showTxQueue, txQueue, tokenHolderActions, transactionParameter } = this.props;
     const { supportVotes, opposeVotes } = this.calculateVotes(activeProposal.voteResults);
+    const isMyTransaction = activeProposal.contractName === transactionParameter;
 
     return (
       <div className='parameterizerAction'>
-        {showTxQueue ? (
+        {showTxQueue && isMyTransaction ? (
           <TxQueue
             mode='vertical'
             queue={txQueue}
@@ -131,6 +132,7 @@ ParameterizerReveal.propTypes = {
   activeProposal: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
+  transactionParameter: PropTypes.string,
   txQueue: PropTypes.object
 };
 

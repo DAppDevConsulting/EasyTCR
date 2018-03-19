@@ -48,12 +48,14 @@ class ParameterizerEdit extends Component {
       activeProposal,
       tokenHolderActions,
       showTxQueue,
-      txQueue
+      txQueue,
+      transactionParameter
     } = this.props;
+    const isMyTransaction = activeProposal.contractName === transactionParameter;
 
     return (
       <div className='parameterizerAction'>
-        { showTxQueue ? (
+        { showTxQueue && isMyTransaction ? (
           <TxQueue
             mode='vertical'
             queue={txQueue}
@@ -92,11 +94,13 @@ ParameterizerEdit.propTypes = {
   activeProposal: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
   showTxQueue: PropTypes.bool.isRequired,
+  transactionParameter: PropTypes.string,
   txQueue: PropTypes.object
 };
 
 const mapStateToProps = state => ({
   showTxQueue: state.parameterizer.showTxQueue,
+  transactionParameter: state.parameterizer.transactionParameter,
   txQueue: state.parameterizer.queue
 });
 
