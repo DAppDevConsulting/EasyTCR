@@ -1,4 +1,4 @@
-import { call, put, takeEvery, apply } from 'redux-saga/effects';
+import {call, put, takeEvery, apply, select} from 'redux-saga/effects';
 import {channel} from 'redux-saga';
 import TCR from '../TCR';
 import {
@@ -8,7 +8,7 @@ import {
   PARAMETERIZER_SHOW_TX_QUEUE,
   PROCESS_PROPOSAL,
   CHALLENGE_PROPOSAL,
-  CANCEL_PARAMETERIZER_TX
+  CANCEL_PARAMETERIZER_TX, REQUEST_CURRENT_LISTING
 } from '../constants/actions';
 import {
   proposeNewParameterizerValue as getProposeNewParameterizerValue,
@@ -21,6 +21,8 @@ const changeChannel = channel();
 ParametrizerProvider.onChange(() => {
   changeChannel.put({type: REQUEST_PARAMETERIZER_INFORMATION});
 });
+
+const getCurrentListing = (state) => state.tokenHolder.currentListing;
 
 export function * fetchParameters () {
   const paramsData = yield apply(ParametrizerProvider, 'get', [TCR.registry(), TCR.defaultAccountAddress()]);
@@ -37,6 +39,9 @@ export function * processProposal (action) {
   try {
     yield call(getProcessProposal, action.proposal);
     yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
+    const currentListing = yield select(getCurrentListing);
+    // refresh minDeposit value
+    yield put({ type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: currentListing.id });
   } catch (error) {
     console.log(error);
     yield put({ type: CANCEL_PARAMETERIZER_TX });
