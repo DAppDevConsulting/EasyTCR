@@ -100,6 +100,7 @@ class Commit extends Component {
         <div className='actionData'>
           {this.renderRemainingTime()}
           { listing ? <p className='challengeId'>{keys.challengeIdText}: {listing.challengeId}</p> : null }
+          { listing.voteCommited ? this.renderAlreadyCommitedBlock() : null }
           <TextField
             floatingLabelText={keys.enterVotes}
             floatingLabelFixed
@@ -165,24 +166,22 @@ class Commit extends Component {
     );
   }
 
-  renderAlreadyCommitedState () {
+  renderAlreadyCommitedBlock () {
     return (
       <div>
-        <h4 className='headline'>{keys.commitStage}</h4>
-        {this.renderRemainingTime()}
-        <p>Your vote already commited</p>
+        <p className='challengeId'>Your vote already commited</p>
+        <p className='challengeId'>You commit <b>{this.props.listing.commitedTokens} tokens</b></p>
       </div>
     );
   }
 
   render () {
-    const { listing, showTxQueue } = this.props;
+    const { showTxQueue } = this.props;
 
     return (
       <div className='listingAction'>
         {
-          listing.voteCommited ? this.renderAlreadyCommitedState()
-            : (showTxQueue ? this.renderTxQueue() : this.renderVoteForm())
+          showTxQueue ? this.renderTxQueue() : this.renderVoteForm()
         }
       </div>
     );

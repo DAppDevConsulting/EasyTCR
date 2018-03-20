@@ -9,6 +9,7 @@ export default class ListingsMapper {
     let pollId = parseInt(listing.challengeId);
     if (pollId) {
       let plcr = await registry.getPLCRVoting();
+      listing.commitedTokens = await plcr.getNumTokens(accountAddress, pollId);
       let commitHash = await plcr.getCommitHash(accountAddress, pollId);
       listing.voteCommited = commitHash !== NULL_VOTE_COMMIT_HASH;
       listing.voteRevealed = false;

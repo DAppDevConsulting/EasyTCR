@@ -35,7 +35,7 @@ export function * getListing (action) {
   if (action.registry !== TCR.registry().address) {
     yield put({type: CHANGE_REGISTRY, defaultRegistry: action.registry});
   }
-  yield apply(RegistriesProvider, 'switchTo', [action.registry]);
+  // yield apply(RegistriesProvider, 'switchTo', [action.registry]);
   let listing = yield apply(
     ListingsProvider,
     'getExtended',

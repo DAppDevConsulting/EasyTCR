@@ -185,7 +185,7 @@ class TCR {
   }
 
   static async getTokenPrice (unit = 'ether') {
-    let price = await _map.get(FAUCET).getPrice(unit);
+    let price = 0;// await _map.get(FAUCET).getPrice(unit);
     return price;
   }
 }

@@ -12,7 +12,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import * as tokenHolderActions from '../../actions/TokenHolderActions';
 import TxQueue from '../TxQueue';
 import keys from '../../i18n';
-import FileUtil from "../../utils/FileUtil";
+import FileUtil from '../../utils/FileUtil';
 
 const VoteResults = ({ supportVotes, opposeVotes }) => (
   <div className='revealResultsContainer'>
