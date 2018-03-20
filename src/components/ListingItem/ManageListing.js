@@ -1,8 +1,8 @@
 import React from 'react';
-import keys from '../../i18n';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
+import Deposit from './Deposit';
 
 const ManageListing = ({
   listing,
@@ -13,14 +13,9 @@ const ManageListing = ({
   handleExit,
   errorText
 }) => {
-  const isRed = listing.deposit < minDeposit;
-
   return (
     <div className='listingHeader'>
-      <div>
-        <h4 className='headline'>Deposit: <span style={{color: isRed ? '#ff0000' : '#000000'}}>{listing.deposit}</span></h4>
-        <p className='listingMeta'>Min deposit: {minDeposit || '0'}</p>
-      </div>
+      <Deposit listing={listing} minDeposit={minDeposit} />
       <div className='changeDeposit'>
         <TextField
           hintText='Set new deposit value'
