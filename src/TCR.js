@@ -148,8 +148,10 @@ class TCR {
   static async getBalance (address = null) {
     address = address || this.defaultAccountAddress();
     let account = await this.registry().getAccount(address);
-    let tokens = this.formatWithDecimals(await account.getTokenBalance());
+    let tokenDecimals = await account.getTokenDecimals();
+    let tokens = this.formatWithoutDecimals(await account.getTokenBalance(), tokenDecimals);
     let ethers = this.fromWei(await account.getEtherBalance());
+
     return {tokens, ethers};
   }
 
@@ -157,16 +159,17 @@ class TCR {
     let account = await this.registry().getAccount(address || this.defaultAccountAddress());
     let plcr = await TCR.getPLCRVoting();
     let parameterizer = await TCR.getParameterizer();
+    let tokenDecimals = await account.getTokenDecimals();
 
-    let registryTokens = await account.getApprovedTokens(this.registry().address);
-    let plcrTokens = await account.getApprovedTokens(plcr.address);
-    let parameterizerTokens = await account.getApprovedTokens(parameterizer.address);
+    let registryTokens = this.formatWithoutDecimals(await account.getApprovedTokens(this.registry().address), tokenDecimals);
+    let plcrTokens = this.formatWithoutDecimals(await account.getApprovedTokens(plcr.address), tokenDecimals);
+    let parameterizerTokens = this.formatWithoutDecimals(await account.getApprovedTokens(parameterizer.address), tokenDecimals);
 
     // @TODO: fix it with BN
     return {
-      registry: parseInt(registryTokens),
-      plcr: parseInt(plcrTokens),
-      parameterizer: parseInt(parameterizerTokens)
+      registry: registryTokens,
+      plcr: plcrTokens,
+      parameterizer: parameterizerTokens
     };
   }
 
@@ -180,8 +183,19 @@ class TCR {
     return _map.get(WEI_CONVERTOR)(amount);
   }
 
-  static formatWithDecimals (amount) {
-    return new BN(amount, 10) / 10 ** 9;
+  static convertTokensToBaseUnits (amount, decimals = 8) {
+    amount = new BN(amount, 10);
+    decimals = new BN(decimals, 10);
+
+    return amount.mul((new BN(10, 10).pow(decimals)));
+  }
+
+  static formatWithDecimals (amount, decimals = 8) {
+    return new BN(amount, 10) / 10 ** decimals;
+  }
+
+  static formatWithoutDecimals (amount, decimals = 8) {
+    return parseInt(this.formatWithDecimals(amount, decimals), 10);
   }
 
   static async getTokenPrice (unit = 'ether') {
