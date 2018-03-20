@@ -7,7 +7,6 @@ import LinearProgress from 'material-ui/LinearProgress';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import DropZone from 'react-dropzone';
 import keys from '../../i18n';
-import TCR from '../../TCR';
 import ListingsList from '../ListingsList';
 import UrlUtils from '../../utils/UrlUtils';
 import TxQueue from '../TxQueue';
@@ -24,7 +23,6 @@ class CandidateContainer extends Component {
 
     this.state = {
       value: 0,
-      price: 0,
       listing: '',
       listingError: '',
       file: null,
@@ -48,8 +46,6 @@ class CandidateContainer extends Component {
       this.props.appActions.changeRegistry(registry);
       return;
     }
-    // Setting token price for further usage
-    TCR.getTokenPrice().then(price => this.setState({ price: parseFloat(price, 16) }));
     this.props.actions.getCandidateListings();
   }
 
@@ -166,10 +162,6 @@ class CandidateContainer extends Component {
 
   getTotalPrice () {
     return (this.state.value || 0) * this.state.price;
-  }
-
-  buyTokens () {
-    this.props.actions.buyTokens(this.state.value, 10);
   }
 
   addListing () {

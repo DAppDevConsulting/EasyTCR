@@ -29,7 +29,6 @@ class ManageTokensContainer extends Component {
     this.approveParameterizerTokens = this.approveParameterizerTokens.bind(this);
     this.requestVotingRights = this.requestVotingRights.bind(this);
     this.withdrawVotingRights = this.withdrawVotingRights.bind(this);
-    this.buyTokens = this.buyTokens.bind(this);
   }
 
   componentWillMount () {
@@ -40,11 +39,6 @@ class ManageTokensContainer extends Component {
     }
     // Setting token price for further usage
     this.weiToEthConverter = TCR.fromWei;
-    TCR.getTokenPrice('wei').then(price => this.setState({ price: price.toString() }));
-  }
-
-  buyTokens (value) {
-    this.props.actions.buyTokens(value);
   }
 
   approveRegistryTokens (value) {
@@ -90,11 +84,6 @@ class ManageTokensContainer extends Component {
   // }
 
   render () {
-    const buyLabelText = keys.formatString(
-      keys.manageTokensPage_rate,
-      {price: this.state.price, wei: keys.wei, tokenName: keys.tokenName}
-    ).join('');
-
     if (this.props.candidate.isFetchingBalance) {
       return <div className='ContentContainer'>
         <LinearProgress mode='indeterminate' />
@@ -104,16 +93,6 @@ class ManageTokensContainer extends Component {
     return (
       <div className='ContentContainer'>
         <TokensInformation {...this.props.candidate} />
-        <div>
-          <h3 className='manageTokensTitle'> {keys.manageTokensPage_buyTokensHeader} </h3>
-          <ApproveForm
-            textFieldLabel={buyLabelText}
-            textFieldHint={keys.manageTokensPage_buyTokensHint}
-            buttonLabel={keys.buy}
-            approveTokens={this.buyTokens}
-            price={this.state.price}
-          />
-        </div>
         <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
         <ApproveForm
           textFieldLabel={keys.manageTokensPage_approvedRegistryLabel}

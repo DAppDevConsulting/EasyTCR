@@ -5,40 +5,10 @@ const REGISTRY = 'registry';
 const CONFIG = 'config';
 const CONTRACTS = 'contracts';
 const PROVIDER = 'provider';
-const FAUCET = 'faucet';
 const DEFAULT_ACCOUNT_ADDRESS = 'defaultAccountAddress';
 const WEI_CONVERTOR = 'weiConvertor';
 
 const _map = new Map();
-
-function wait (time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
-
-class Faucet {
-  constructor (address, provider) {
-    this.address = address;
-    this.contract = new provider.eth.Contract(require('./Sale.json'), this.address);
-  }
-
-  async purchaseTokens (amount) {
-    let bnAmount = new BN(amount, 10);
-    let price = new BN(await this.getPrice('wei'), 10);
-    let value = bnAmount.mul(price);// parseFloat(await this.getPrice('wei') * amount);
-
-    return this.contract.methods.purchaseTokens().send({ value: value, from: _map.get(DEFAULT_ACCOUNT_ADDRESS) });
-  }
-
-  async getPrice (unit = 'ether') {
-    let price = await this.contract.methods.price().call();
-
-    if (unit === 'wei') {
-      return price;
-    }
-
-    return _map.get(WEI_CONVERTOR)(price.toString(), unit);
-  }
-}
 
 const _contractsAddressMap = new Map();
 
@@ -101,7 +71,6 @@ class TCR {
     _map.set(CONTRACTS, contracts);
     _map.set(DEFAULT_ACCOUNT_ADDRESS, provider().eth.defaultAccount);
     _map.set(REGISTRY, new Registry(contracts.registry, provider()));
-    _map.set(FAUCET, new Faucet(contracts.faucet, provider()));
     _map.set(CONFIG, contracts);
   }
 
@@ -130,19 +99,6 @@ class TCR {
 
   static async getParameterizer () {
     return this.registry().getParameterizer();
-  }
-
-  static async buyTokens (amount) {
-    let account = await this.defaultAccount();
-    let prevTokensBalance = new BN(await account.getTokenBalance(), 10);
-    let bnAmount = new BN(amount, 10);
-    await _map.get(FAUCET).purchaseTokens(amount);
-    let currentBalance = new BN(await account.getTokenBalance(), 10);
-    // TODO: костыль! Разобраться как можно получить актуальное состояние контракта
-    while (currentBalance.lt(prevTokensBalance.add(bnAmount))) {
-      await wait(1000);
-      currentBalance = new BN(await account.getTokenBalance(), 10);
-    }
   }
 
   static async getBalance (address = null) {
@@ -182,11 +138,6 @@ class TCR {
 
   static formatWithDecimals (amount) {
     return new BN(amount, 10) / 10 ** 9;
-  }
-
-  static async getTokenPrice (unit = 'ether') {
-    let price = 0;// await _map.get(FAUCET).getPrice(unit);
-    return price;
   }
 }
 
