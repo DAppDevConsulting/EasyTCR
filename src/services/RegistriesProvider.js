@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {Registry} from 'ethereum-tcr-api';
 import api from './ApiWrapper';
 import TCR, { ContractsManager, provider } from '../TCR';
 import { updateLocalization } from '../i18n';
@@ -14,6 +15,8 @@ const cache = new Cache(async (key) => {
   const item = await IPFS.get(listing.data);
   item.registry = item.id;
   item.hash = key; // todo: Reimplement
+  let registry = new Registry(item.id, provider());
+  item.name = await registry.getName();
 
   return item;
 });
@@ -49,9 +52,10 @@ const getLocalization = async (registryHash) => {
   return '';
 };
 
-const createDefault = (address) => {
+const createDefault = async (address) => {
   defaultConfig.id = defaultConfig.registry = address;
-  defaultConfig.name = 'TCR'; // TODO: get from contract
+  let registry = new Registry(address, provider());
+  defaultConfig.name = await registry.getName(); // TODO: get from contract
   defaultConfig.hash = NOT_IN_CONTRACT;
   return defaultConfig;
 };
@@ -63,7 +67,7 @@ const switchTo = async (registryAddress) => {
   let contracts = await get();
   // TCR of TCRs may contain itself as listing
   if (_.findIndex(contracts, (item) => item.id === registryAddress) < 0) {
-    contracts.push(createDefault(registryAddress));
+    contracts.push(await createDefault(registryAddress));
   }
   ContractsManager.setRegistries(contracts);
   let addresses = ContractsManager.getRegistriesAddresses();
