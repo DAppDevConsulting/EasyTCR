@@ -166,6 +166,12 @@ class SyncManager {
     }
   }
 
+  _callRewardsWatcher () {
+    if (typeof this._rewardWatcher === 'function') {
+      this._rewardWatcher(...arguments);
+    }
+  }
+
   addListing (listing, data, account) {
     this._db.setTo(LISTINGS, {listing, data, account});
     this._callWatcher('add', listing);
@@ -241,6 +247,11 @@ class SyncManager {
     this._callWatcher('change', event.returnValues.listingHash);
   }
 
+  _deletePoll (challengeId) {
+    this._db.deleteFrom(UNCLAIMED_POLLS, challengeId);
+    this._db.deleteFrom(POLLS, challengeId);
+  }
+
   _onChallengeResolved (event, isSucceeded) {
     let challengeId = event.returnValues.challengeID;
     // if listing status updated we need to refresh it on client
@@ -251,10 +262,10 @@ class SyncManager {
     if (this._db.hasIn(UNCLAIMED_POLLS, challengeId)) {
       let pool = this._db.getByKeyFrom(UNCLAIMED_POLLS, challengeId);
       if (pool.choice === isSucceeded) {
-        this._db.deleteFrom(UNCLAIMED_POLLS, challengeId);
-        this._db.deleteFrom(POLLS, challengeId);
+        this._deletePoll(challengeId);
       } else {
         pool.isResolved = true;
+        this._callRewardsWatcher('resolved', challengeId);
       }
     } else {
       this._db.deleteFrom(POLLS, challengeId);
@@ -263,11 +274,8 @@ class SyncManager {
 
   _onRewardClaimed (event) {
     if (event.returnValues.voter === this.accountAddress) {
-      this._db.deleteFrom(UNCLAIMED_POLLS, event.returnValues.challengeID);
-      this._db.deleteFrom(POLLS, event.returnValues.challengeID);
-      if (typeof this._rewardWatcher === 'function') {
-        this._rewardWatcher('claimed');
-      }
+      this._deletePoll(event.returnValues.challengeID);
+      this._callWatcher('claimed', event.returnValues.challengeID);
     }
   }
 

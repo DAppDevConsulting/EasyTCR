@@ -27,6 +27,8 @@ class TokenHolderContainer extends Component {
       columns: [
         {propName: 'label', title: keys.formatString(keys.tokenHolderPage_listingName, {candidate: keys.candidate}), tooltip: keys.tokenHolderPage_listingTooltip},
         {propName: 'challengeId', title: keys.challengeIdText},
+        {propName: 'numTokens', title: keys.challengeVoterStake},
+        {propName: 'expectedReward', title: keys.challengeExpectedReward},
         {propName: 'action', title: keys.claimRewardButtonText}
       ]
     };

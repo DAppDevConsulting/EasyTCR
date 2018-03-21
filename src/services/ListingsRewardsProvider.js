@@ -1,24 +1,25 @@
 import api from './ApiWrapper';
-import IPFS from './IPFS';
-import _ from 'lodash';
 import Cache from '../utils/Cache';
+import ListingsRewardsMapper from './ListingsRewardsMapper';
 
 const handlers = [];
 let currentRegistry = null;
 let cache = null;
 
-const createCache = (registry) => {
+const createCache = (registry, accountAddress) => {
   return new Cache(
     async (key) => {
       const listing = await api.getListingToClaimReward(registry.address, key);
-      const item = await IPFS.get(listing.data);
-      item.label = item.name;
-      return _.assignIn({}, listing, item);
+      const result = await ListingsRewardsMapper.map(listing, registry, accountAddress);
+      return result;
     }
   );
 };
 
-const notificationListener = async () => {
+const notificationListener = async (type, challengeId) => {
+  if (type === 'claimed') {
+    cache.delete(challengeId);
+  }
   for (let cb of handlers) {
     if (typeof cb === 'function') {
       cb();
@@ -29,7 +30,7 @@ const notificationListener = async () => {
 const get = async (registry, accountAddress) => {
   if (!currentRegistry || currentRegistry.address !== registry.address) {
     currentRegistry = registry;
-    cache = createCache(registry);
+    cache = createCache(registry, accountAddress);
     api.onListingsRewordsChange(notificationListener);
   }
   let challenges = await api.getChallengesToClaimReward(registry.address, accountAddress);

@@ -120,6 +120,8 @@
 
     "claimRewardText": "Listings to claim reward",
     "challengeIdText": "Challenge ID",
+    "challengeVoterStake": "Your Stake",
+    "challengeExpectedReward": "Expected reward",
     "enterSaltText": "Enter secret phrase (salt)",
     "saveSaltText": "Save Secret Phrase (salt)",
     "claimRewardButtonText": "Claim reward",
