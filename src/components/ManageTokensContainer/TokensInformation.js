@@ -8,6 +8,7 @@ const TokensInformation = ({
   approvedPLCR,
   approvedParameterizer,
   votingRights,
+  isFetchingBalance,
   ethers
 }) => {
   const balanceText = keys.formatString(
@@ -36,7 +37,7 @@ const TokensInformation = ({
     <div>
       <h4 className='pageHeadline'>{keys.manageTokensPage_title}</h4>
       <h3 className='manageTokensTitle'> {keys.manageTokensPage_balanceHeader} </h3>
-      <p className='balanceText'>{tokens ? balanceText : keys.updating }</p>
+      <p className='balanceText'>{isFetchingBalance ? keys.updating : balanceText }</p>
       <p className='balanceText'>{approvedRegistry ? registryApproveText : keys.updating }</p>
       <p className='balanceText'>{approvedPLCR ? plcrApproveText : keys.updating }</p>
       <p className='balanceText'>{approvedParameterizer ? parameterizerText : keys.updating }</p>
