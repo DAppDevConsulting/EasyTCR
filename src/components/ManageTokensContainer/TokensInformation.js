@@ -52,6 +52,7 @@ TokensInformation.propTypes = {
   approvedPLCR: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   approvedParameterizer: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   votingRights: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  isFetchingBalance: PropTypes.bool,
   ethers: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
