@@ -3,6 +3,7 @@
     "registryName": "TCR",
 
     "eth": "ETH",
+    "ethers": "Ethers",
     "tokenName": "TKN",
     "wei": "WEI",
 
@@ -69,10 +70,10 @@
     "manageTokensPage_title": "Manage Tokens",
     "manageTokensPage_balanceHeader": "Your balance",
     "manageTokensPage_balanceText": "You have {tokens} {tokenName} and {ethers} {eth}",
-    "manageTokensPage_approvedRegistryText": "You have {tokens} {tokenName} approved for Registry",
-    "manageTokensPage_approvedPLCRText": "You have {tokens} {tokenName} approved for PLCR",
-    "manageTokensPage_approvedParameterizerText": "You have {tokens} {tokenName} approved for Parameterizer",
-    "manageTokensPage_votingRightsText": "You have {rights} voting rights",
+    "manageTokensPage_approvedRegistryText": "Approved for Registry",
+    "manageTokensPage_approvedPLCRText": "Approved for PLCR",
+    "manageTokensPage_approvedParameterizerText": "Approved for Parameterizer",
+    "manageTokensPage_votingRightsText": "Voting Rights",
     "manageTokensPage_buyTokensHeader": "Buy Tokens",
     "manageTokensPage_approvingAndVotingRightsHeader": "Pre approve Tokens and Voting rights",
     "manageTokensPage_approvedRegistryLabel": "Pre-approve Registry Token transfer",
@@ -85,7 +86,7 @@
     "manageTokensPage_votingRightsHint": "Enter voting rights amount",
     "manageTokensPage_supposedTokens": "You want to buy {0} {1}",
     "manageTokensPage_supposedPrice": "Total price {0}",
-
+    "manageTokensColumnNames": ["NAME", "BALANCE", "VALUE", "ACTION"],
 
     "transaction_Approve": "Approve",
     "transaction_Retry": "Retry",

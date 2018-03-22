@@ -52,21 +52,18 @@ export function * fetchTokenInformation (action) {
 
   let balance = yield apply(TCR, 'getBalance');
   let account = yield apply(TCR, 'defaultAccount');
-  let approvedRegistry = yield apply(account, 'getApprovedTokens', [TCR.registry().address]);
   let plcr = yield apply(TCR, 'getPLCRVoting');
-  let approvedPLCR = yield apply(account, 'getApprovedTokens', [plcr.address]);
   // get parameterizer approved tokens
-  let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
-  let approvedParameterizer = yield apply(account, 'getApprovedTokens', [parameterizer.address]);
   let votingRights = yield apply(plcr, 'getTokenBalance', [account.owner]);
+  let approvedTokens = yield apply(TCR, 'getApprovedTokens', [account.owner, false]);
 
   yield put({
     type: UPDATE_TOKEN_INFORMATION,
     tokens: balance.tokens,
     ethers: balance.ethers,
-    approvedRegistry,
-    approvedPLCR,
-    approvedParameterizer,
+    approvedRegistry: approvedTokens.registry.toString(),
+    approvedPLCR: approvedTokens.plcr.toString(),
+    approvedParameterizer: approvedTokens.parameterizer.toString(),
     votingRights: votingRights.toString()
   });
 }
@@ -112,9 +109,11 @@ export function * getCandidateListings (action) {
 
 export function * approveRegistryTokens (action) {
   let account = yield apply(TCR, 'defaultAccount');
+  let tokenDecimals = yield apply(account, 'getTokenDecimals');
+  let amount = yield apply(TCR, 'convertTokensToBaseUnits', [action.tokens, tokenDecimals]);
 
   try {
-    yield apply(account, 'approveTokens', [TCR.registry().address, action.tokens]);
+    yield apply(account, 'approveTokens', [TCR.registry().address, amount]);
   } catch (err) {
     // TODO: update UI
     console.log(err);
@@ -126,9 +125,11 @@ export function * approveRegistryTokens (action) {
 export function * approvePLCRTokens (action) {
   let account = yield apply(TCR, 'defaultAccount');
   let plcr = yield apply(TCR, 'getPLCRVoting');
+  let tokenDecimals = yield apply(account, 'getTokenDecimals');
+  let amount = yield apply(TCR, 'convertTokensToBaseUnits', [action.tokens, tokenDecimals]);
 
   try {
-    yield apply(account, 'approveTokens', [plcr.address, action.tokens]);
+    yield apply(account, 'approveTokens', [plcr.address, amount]);
   } catch (err) {
     // TODO: update UI
     console.log(err);
@@ -140,9 +141,11 @@ export function * approvePLCRTokens (action) {
 export function * approveParameterizerTokens (action) {
   let account = yield apply(TCR, 'defaultAccount');
   let parameterizer = yield apply(TCR.registry(), 'getParameterizer');
+  let tokenDecimals = yield apply(account, 'getTokenDecimals');
+  let amount = yield apply(TCR, 'convertTokensToBaseUnits', [action.tokens, tokenDecimals]);
 
   try {
-    yield apply(account, 'approveTokens', [parameterizer.address, action.tokens]);
+    yield apply(account, 'approveTokens', [parameterizer.address, amount]);
   } catch (err) {
     // TODO: update UI
     console.log(err);

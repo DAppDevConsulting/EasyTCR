@@ -162,15 +162,14 @@ export async function claimReward (challengeId, salt) {
 }
 
 export async function proposeNewParameterizerValue (parameterName, newParameterValue) {
-  const registry = TCR.registry();
   const account = await TCR.defaultAccount();
-  const parameterizer = await registry.getParameterizer();
+  const parameterizer = await TCR.getParameterizer();
   const tokensAmount = await parameterizer.get('pMinDeposit');
   const manager = new TransactionManager(provider());
-  const approvedRegistryTokens = (await TCR.getApprovedTokens()).parameterizer;
+  const approvedParameterizationTokens = (await TCR.getApprovedTokens()).parameterizer;
   const queue = new PromisesQueue();
 
-  if (approvedRegistryTokens < parseInt(tokensAmount)) {
+  if (approvedParameterizationTokens < parseInt(tokensAmount)) {
     queue.add(
       () => {
         return account
@@ -188,7 +187,7 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
           keys.transaction_approveTransferTokensText,
           {
             name: keys.registryName,
-            type: 'Registry',
+            type: 'Parameterizer',
             tokenName: keys.tokenName
           }
         )

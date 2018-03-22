@@ -9,9 +9,16 @@ import TCR from '../../TCR';
 import keys from '../../i18n';
 import './style.css';
 import UrlUtils from '../../utils/UrlUtils';
-import ApproveForm from './ApproveForm';
-import TokensInformation from './TokensInformation';
+import BalanceItem from './BalanceItem';
 import LinearProgress from 'material-ui/LinearProgress';
+
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow
+} from 'material-ui/Table';
 
 class ManageTokensContainer extends Component {
   constructor (props) {
@@ -61,27 +68,63 @@ class ManageTokensContainer extends Component {
     this.props.actions.withdrawVotingRights(value);
   }
 
-  // getTokensToBuy () {
-  //   const tokens = new BN(this.state.value || 0, 10);
-  //   const multiplier = new BN(this.state.multiplier, 10);
-  //   return tokens.mul(multiplier);
-  // }
+  getBalanceData () {
+    const { tokens, approvedRegistry, approvedPLCR, approvedParameterizer, votingRights, ethers } = this.props.candidate;
 
-  // getTotalPrice () {
-  //   const price = new BN(this.state.price, 10);
-  //   return this.getTokensToBuy().mul(price);
-  // }
+    return [{
+      name: keys.ethers,
+      balance: `${ethers} ${keys.eth}`
+    }, {
+      name: `${keys.tokenName} tokens`,
+      balance: tokens
+    }, {
+      name: keys.manageTokensPage_approvedRegistryText,
+      balance: `${approvedRegistry} ${keys.tokenName}`,
+      hint: keys.manageTokensPage_buyTokensHint,
+      actions: [{
+        name: keys.approve,
+        func: this.approveRegistryTokens
+      }]
+    }, {
+      name: keys.manageTokensPage_approvedPLCRText,
+      balance: `${approvedPLCR} ${keys.tokenName}`,
+      hint: keys.manageTokensPage_buyTokensHint,
+      actions: [{
+        name: keys.approve,
+        func: this.approvePLCRTokens
+      }]
+    }, {
+      name: keys.manageTokensPage_approvedParameterizerText,
+      balance: `${approvedParameterizer} ${keys.tokenName}`,
+      hint: keys.manageTokensPage_buyTokensHint,
+      actions: [{
+        name: keys.approve,
+        func: this.approveParameterizerTokens
+      }]
+    }, {
+      name: keys.manageTokensPage_votingRightsText,
+      balance: `${votingRights}`,
+      hint: keys.manageTokensPage_votingRightsHint,
+      actions: [{
+        name: keys.request,
+        func: this.requestVotingRights
+      }, {
+        name: keys.withdraw,
+        func: this.withdrawVotingRights
+      }]
+    }];
+  }
 
-  // getTotalPriceText () {
-  //   if (this.state.errorText) return 0;
-
-  //   const price = this.getTotalPrice();
-  //   if (price.lt(this.weiToEthLimit)) {
-  //     return price.toString() + ` ${keys.wei}`;
-  //   }
-
-  //   return parseFloat(this.weiToEthConverter(price.toString())) + ` ${keys.eth}`;
-  // }
+  renderBalanceRows () {
+    return this.getBalanceData().map(item => {
+      return <BalanceItem
+        name={item.name}
+        balance={item.balance}
+        hint={item.hint}
+        actions={item.actions}
+      />;
+    });
+  }
 
   render () {
     if (this.props.candidate.isFetchingBalance) {
@@ -92,32 +135,24 @@ class ManageTokensContainer extends Component {
 
     return (
       <div className='ContentContainer'>
-        <TokensInformation {...this.props.candidate} />
-        <h3 className='manageTokensTitle'> {keys.manageTokensPage_approvingAndVotingRightsHeader} </h3>
-        <ApproveForm
-          textFieldLabel={keys.manageTokensPage_approvedRegistryLabel}
-          approveTokens={this.approveRegistryTokens}
-        />
-        <ApproveForm
-          textFieldLabel={keys.manageTokensPage_approvedPLCRLabel}
-          approveTokens={this.approvePLCRTokens}
-        />
-        <ApproveForm
-          textFieldLabel={keys.manageTokensPage_approvedParameterizerLabel}
-          approveTokens={this.approveParameterizerTokens}
-        />
-        <ApproveForm
-          textFieldLabel={keys.manageTokensPage_requestVotingRightsLabel}
-          textFieldHint={keys.manageTokensPage_votingRightsHint}
-          buttonLabel={keys.request}
-          approveTokens={this.requestVotingRights}
-        />
-        <ApproveForm
-          textFieldLabel={keys.manageTokensPage_withdrawVotingRightsLabel}
-          textFieldHint={keys.manageTokensPage_votingRightsHint}
-          buttonLabel={keys.withdraw}
-          approveTokens={this.withdrawVotingRights}
-        />
+        <h4 className='pageHeadline'>{keys.manageTokensPage_title}</h4>
+        <h3 className='manageTokensTitle'> {keys.manageTokensPage_balanceHeader} </h3>
+        <Table fixedHeader fixedFooter selectable={false}>
+          <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+            <TableRow>
+              {keys.manageTokensColumnNames.map((column, index) =>
+                <TableHeaderColumn key={index}>{column}</TableHeaderColumn>)}
+            </TableRow>
+          </TableHeader>
+          <TableBody
+            displayRowCheckbox={false}
+            deselectOnClickaway
+            showRowHover
+            stripedRows={false}
+          >
+            {this.renderBalanceRows()}
+          </TableBody>
+        </Table>
       </div>
     );
   }
