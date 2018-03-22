@@ -6,6 +6,7 @@ import Card from 'material-ui/Card';
 import LinearProgress from 'material-ui/LinearProgress';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import DropZone from 'react-dropzone';
+import BN from 'bn.js';
 import keys from '../../i18n';
 import ListingsList from '../ListingsList';
 import UrlUtils from '../../utils/UrlUtils';
@@ -127,9 +128,9 @@ class CandidateContainer extends Component {
               value={this.state.stake || ''}
               errorText={this.state.stakeError}
               onChange={(e, value) => {
-                let stake = parseInt(value, 10);
-                let errorText = stake > 0 && stake < minCrutch ? keys.candidatePage_applyForm_stakeErrorText : '';
-                this.setState({stake: stake, stakeError: errorText});
+                let stake = new BN(value, 10);
+                let errorText = stake.gt(0) && stake.lt(new BN(minCrutch, 10)) ? keys.candidatePage_applyForm_stakeErrorText : '';
+                this.setState({stake: stake.toString(), stakeError: errorText});
               }}
             />
             <BaseUnitsTooltip />

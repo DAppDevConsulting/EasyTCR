@@ -17,6 +17,7 @@ import {claimReward as getClaimReward} from '../transactions';
 
 const changeChannel = channel();
 ListingsRewardsProvider.onChange(() => {
+  console.log('on change');
   changeChannel.put({type: REQUEST_LISTINGS_TO_CLAIM_REWARD});
 });
 

@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import TCR, {provider} from '../TCR';
 import TransactionManager from './TransactionsManager';
 import PromisesQueue from '../utils/PromisesQueue';
@@ -6,19 +7,21 @@ import keys from '../i18n';
 export async function applyListing (hash, data, tokensAmount) {
   const account = await TCR.defaultAccount();
   const manager = new TransactionManager(provider());
-  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const approvedRegistryTokens = new BN((await TCR.getApprovedTokens()).registry, 10);
+  tokensAmount = new BN(tokensAmount.toString(), 10);
   const queue = new PromisesQueue();
 
-  if (approvedRegistryTokens < tokensAmount) {
+  if (approvedRegistryTokens.lt(tokensAmount)) {
+    const diff = tokensAmount.sub(approvedRegistryTokens);
     queue.add(
       () => {
-        return account.approveTokens(TCR.registry().address, tokensAmount)
+        return account.approveTokens(TCR.registry().address, diff)
           .then(ti => {
             return manager.watchForTransaction(ti);
           });
       },
       {
-        label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff.toString()),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'TCR', type: 'Registry', tokenName: 'TCR' })
       }
     );
@@ -42,19 +45,21 @@ export async function challengeListing (name, tokensAmount) {
   const account = await TCR.defaultAccount();
   const listing = await registry.getListing(name);
   const manager = new TransactionManager(provider());
-  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const approvedRegistryTokens = new BN((await TCR.getApprovedTokens()).registry, 10);
+  tokensAmount = new BN(tokensAmount, 10);
   const queue = new PromisesQueue();
 
-  if (approvedRegistryTokens < parseInt(tokensAmount)) {
+  if (approvedRegistryTokens.lt(tokensAmount)) {
+    const diff = tokensAmount.sub(approvedRegistryTokens);
     queue.add(
       () => {
-        return account.approveTokens(TCR.registry().address, tokensAmount)
+        return account.approveTokens(TCR.registry().address, diff)
           .then(ti => {
             return manager.watchForTransaction(ti);
           });
       },
       {
-        label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
       }
     );
@@ -79,32 +84,34 @@ export async function commitVote (id, hash, stake) {
   const plcr = await TCR.getPLCRVoting();
   const poll = plcr.getPoll(id);
   const manager = new TransactionManager(provider());
-  const approvedPlcrTokens = (await TCR.getApprovedTokens()).plcr;
-  const votingRights = await TCR.getVotingRights();
+  const approvedPlcrTokens = new BN((await TCR.getApprovedTokens()).plcr, 10);
+  stake = new BN(stake, 10);
+  const votingRights = new BN(await TCR.getVotingRights());
   const queue = new PromisesQueue();
 
-  if (votingRights < stake) {
-    stake = stake - votingRights; // Just to buy the necessary amount
+  if (votingRights.lt(stake)) {
+    const preapprove = stake.sub(votingRights); // Just to buy the necessary amount
 
-    if (parseInt(approvedPlcrTokens) < stake) {
+    if (approvedPlcrTokens.lt(preapprove)) {
+      const diff = preapprove.sub(approvedPlcrTokens);
       queue.add(
         () => {
-          return account.approveTokens(plcr.address, stake)
+          return account.approveTokens(plcr.address, diff)
             .then(ti => {
               return manager.watchForTransaction(ti);
             });
         },
         {
-          label: keys.formatString(keys.transaction_approveTransferTokensHeader, stake),
+          label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff),
           content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'PLCR', tokenName: keys.tokenName })
         }
       );
     }
 
     queue.add(
-      () => plcr.requestVotingRights(stake),
+      () => plcr.requestVotingRights(preapprove),
       {
-        label: keys.formatString(keys.transaction_requestVotingRightsHeader, stake),
+        label: keys.formatString(keys.transaction_requestVotingRightsHeader, preapprove),
         content: keys.transaction_requestVotingRightsText
       }
     );
@@ -164,16 +171,17 @@ export async function claimReward (challengeId, salt) {
 export async function proposeNewParameterizerValue (parameterName, newParameterValue) {
   const account = await TCR.defaultAccount();
   const parameterizer = await TCR.getParameterizer();
-  const tokensAmount = await parameterizer.get('pMinDeposit');
+  const tokensAmount = new BN(await parameterizer.get('pMinDeposit'), 10);
   const manager = new TransactionManager(provider());
-  const approvedParameterizationTokens = (await TCR.getApprovedTokens()).parameterizer;
+  const approvedParameterizationTokens = new BN((await TCR.getApprovedTokens()).parameterizer, 10);
   const queue = new PromisesQueue();
 
-  if (approvedParameterizationTokens < parseInt(tokensAmount)) {
+  if (approvedParameterizationTokens.lt(tokensAmount)) {
+    const diff = tokensAmount.sub(approvedParameterizationTokens);
     queue.add(
       () => {
         return account
-          .approveTokens(parameterizer.address, tokensAmount)
+          .approveTokens(parameterizer.address, diff)
           .then(ti => {
             return manager.watchForTransaction(ti);
           });
@@ -181,7 +189,7 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
       {
         label: keys.formatString(
           keys.transaction_approveTransferTokensHeader,
-          tokensAmount
+          diff
         ),
         content: keys.formatString(
           keys.transaction_approveTransferTokensText,
@@ -213,15 +221,16 @@ export async function challengeProposalTx (proposal) {
   const account = await TCR.defaultAccount();
   const registry = TCR.registry();
   const parameterizer = await registry.getParameterizer();
-  const tokensAmount = await parameterizer.get('pMinDeposit');
+  const tokensAmount = new BN(await parameterizer.get('pMinDeposit'), 10);
   const proposalInstance = parameterizer.getProposal(proposal.contractName, proposal.proposal);
   const manager = new TransactionManager(provider());
-  const approvedRegistryTokens = (await TCR.getApprovedTokens()).parameterizer;
+  const approvedRegistryTokens = new BN((await TCR.getApprovedTokens()).parameterizer, 10);
   const queue = new PromisesQueue();
 
-  if (approvedRegistryTokens < parseInt(tokensAmount)) {
+  if (approvedRegistryTokens.lt(tokensAmount)) {
+    const diff = tokensAmount.sub(approvedRegistryTokens);
     queue.add(
-      () => account.approveTokens(parameterizer.address, tokensAmount).then(ti => manager.watchForTransaction(ti)),
+      () => account.approveTokens(parameterizer.address, diff).then(ti => manager.watchForTransaction(ti)),
       {
         label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
@@ -242,21 +251,23 @@ export async function challengeProposalTx (proposal) {
 export async function depositListing (id, value) {
   const account = await TCR.defaultAccount();
   const manager = new TransactionManager(provider());
-  const approvedRegistryTokens = (await TCR.getApprovedTokens()).registry;
+  const approvedRegistryTokens = new BN((await TCR.getApprovedTokens()).registry, 10);
   const listing = await TCR.registry().getListing(id);
+  value = new BN(value, 10);
 
   const queue = new PromisesQueue();
 
-  if (approvedRegistryTokens < value) {
+  if (approvedRegistryTokens.lt(value)) {
+    const diff = value.sub(approvedRegistryTokens);
     queue.add(
       () => {
-        return account.approveTokens(TCR.registry().address, value)
+        return account.approveTokens(TCR.registry().address, diff)
           .then(ti => {
             return manager.watchForTransaction(ti);
           });
       },
       {
-        label: keys.formatString(keys.transaction_approveTransferTokensHeader, value),
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'TCR', type: 'Registry', tokenName: 'TCR' })
       }
     );
