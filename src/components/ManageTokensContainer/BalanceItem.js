@@ -21,7 +21,7 @@ class BalanceItem extends Component {
   handleInput (value) {
     const re = /^\d+$/;
 
-    if (re.test(value) && value !== '') {
+    if (re.test(value) || value === '') {
       this.setState({ value, errorText: '' });
     } else {
       this.setState({ value, errorText: keys.invalidInput });
