@@ -42,6 +42,7 @@ class BalanceItem extends Component {
     return this.props.actions.map(item => {
       return (
         <RaisedButton
+          key={item.name}
           style={{marginRight: 5}}
           label={this.state.isSendingTx ? '' : (item.name || keys.approve)}
           disabled={!this.state.value || !!this.state.errorText || this.state.isSendingTx}

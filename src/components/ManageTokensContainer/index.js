@@ -118,6 +118,7 @@ class ManageTokensContainer extends Component {
   renderBalanceRows () {
     return this.getBalanceData().map(item => {
       return <BalanceItem
+        key={item.name}
         name={item.name}
         balance={item.balance}
         hint={item.hint}
