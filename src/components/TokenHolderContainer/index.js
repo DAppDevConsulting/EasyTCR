@@ -45,8 +45,7 @@ class TokenHolderContainer extends Component {
   }
 
   render () {
-    const { listings } = this.props.consumer;
-    const { listingsToClaimReward } = this.props.tokenHolder;
+    const { listings, listingsToClaimReward } = this.props;
     const showRewardsBlock = listingsToClaimReward && listingsToClaimReward.length;
 
     return (
@@ -80,9 +79,9 @@ class TokenHolderContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    consumer: state.consumer,
+    listings: state.consumer.listings,
     registry: state.app.registry,
-    tokenHolder: state.tokenHolder
+    listingsToClaimReward: state.tokenHolder.listingsToClaimReward
   };
 }
 
@@ -95,9 +94,9 @@ function mapDispatchToProps (dispatch) {
 }
 
 TokenHolderContainer.propTypes = {
-  consumer: PropTypes.object.isRequired,
   registry: PropTypes.string.isRequired,
-  tokenHolder: PropTypes.object.isRequired,
+  listings: PropTypes.array,
+  listingsToClaimReward: PropTypes.array,
   consumerActions: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired,
   appActions: PropTypes.object.isRequired

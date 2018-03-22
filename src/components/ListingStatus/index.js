@@ -17,7 +17,8 @@ import RefreshRejected2 from './statuses/Refresh-rejected-2';
 import RefreshRejectedLast1 from './statuses/Refresh-rejected-last-1';
 import Inregistry from './statuses/Inregistry';
 
-const renderStatus = (status, whitelisted) => {
+const renderStatus = (status, whitelisted, challengeId) => {
+  const hasChallenge = challengeId && challengeId !== '0';
   switch (status) {
     case keys.VoteReveal:
       return whitelisted ? <Inreveal2 /> : <Inreveal1 />;
@@ -28,9 +29,9 @@ const renderStatus = (status, whitelisted) => {
     case keys.inApplication:
       return <Inapplication />;
     case keys.WillBeWhitelisted:
-      return whitelisted ? <RefreshInregistry2 /> : <RefreshInregistry1 />;
+      return whitelisted || hasChallenge ? <RefreshInregistry2 /> : <RefreshInregistry1 />;
     case keys.WillBeRejected:
-      return whitelisted ? <RefreshRejected2 /> : <RefreshRejectedLast1 />;
+      return whitelisted || hasChallenge ? <RefreshRejected2 /> : <RefreshRejectedLast1 />;
     default:
       return <p>{keys.notExists}</p>;
   }
@@ -56,12 +57,12 @@ class ListingStatus extends Component {
   }
 
   render () {
-    const { status, whitelisted, id } = this.props.listing;
+    const { status, whitelisted, challengeId, id } = this.props.listing;
 
     return (
       <div className='listingStatus'>
         <p>{keys.statusLabel}:</p>
-        { renderStatus(status, whitelisted)}
+        { renderStatus(status, whitelisted, challengeId)}
         { status === keys.WillBeWhitelisted || status === keys.WillBeRejected
           ? <div className='refreshStatus'>
             { this.state.isRefreshing
