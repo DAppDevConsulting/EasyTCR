@@ -41,7 +41,9 @@ export function * processProposal (action) {
     yield put({ type: REQUEST_PARAMETERIZER_INFORMATION });
     const currentListing = yield select(getCurrentListing);
     // refresh minDeposit value
-    yield put({ type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: currentListing.id });
+    if (currentListing) {
+      yield put({type: REQUEST_CURRENT_LISTING, registry: TCR.registry().address, listing: currentListing.id});
+    }
   } catch (error) {
     console.log(error);
     yield put({ type: CANCEL_PARAMETERIZER_TX });
