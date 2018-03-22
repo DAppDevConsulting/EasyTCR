@@ -234,9 +234,18 @@ class Reveal extends Component {
   }
 
   renderNoCoteCommitedState () {
+    const { remainingTime } = this.state;
     return (
       <div>
         <h4 className='headline'>{keys.revealStage}</h4>
+        <div className='challengeTime'>
+          <p>{keys.remainingTimeText}</p>
+          {
+            remainingTime
+              ? <p>{remainingTime}</p>
+              : <LinearProgress mode='indeterminate' style={{ width: '100px', marginTop: '7px' }} />
+          }
+        </div>
         <p>Your vote not commited</p>
       </div>
     );
