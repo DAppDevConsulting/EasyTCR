@@ -55,8 +55,7 @@ export function * fetchTokenInformation (action) {
   let plcr = yield apply(TCR, 'getPLCRVoting');
   // get parameterizer approved tokens
   let votingRights = yield apply(plcr, 'getTokenBalance', [account.owner]);
-  let approvedTokens = yield apply(TCR, 'getApprovedTokens', [account.owner]);
-  console.log(approvedTokens);
+  let approvedTokens = yield apply(TCR, 'getApprovedTokens', [account.owner, false]);
 
   yield put({
     type: UPDATE_TOKEN_INFORMATION,

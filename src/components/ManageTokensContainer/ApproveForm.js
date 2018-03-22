@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import LinearProgress from 'material-ui/LinearProgress';
 import keys from '../../i18n';
-import { numberWithSpaces } from '../../utils/Parameterizer';
+import CircularProgress from 'material-ui/CircularProgress';
+import { TableRow, TableRowColumn } from 'material-ui/Table';
 
 class ApproveForm extends Component {
   constructor (props) {
@@ -28,60 +28,70 @@ class ApproveForm extends Component {
     }
   }
 
-  handleApprove (value) {
-    this.setState({ isSendingTx: true });
-    this.props.approveTokens(value);
+  handleApprove (func, value) {
+    this.setState({ isSendingTx: true }, () => {
+      func(value);
+    });
+  }
+
+  hasAction () {
+    return this.props.actions ? this.props.actions.length > 0 : false;
+  }
+
+  renderActions () {
+    return this.props.actions.map(item => {
+      return (
+        <RaisedButton
+          style={{marginRight: 5}}
+          label={this.state.isSendingTx ? '' : (item.name || keys.approve)}
+          disabled={!this.state.value || !!this.state.errorText || this.state.isSendingTx}
+          onClick={() => this.handleApprove(item.func, this.state.value)}
+          backgroundColor={keys.successColor}
+          labelColor={keys.buttonLabelColor}
+        />
+      );
+    });
   }
 
   render () {
-    const { textFieldLabel, textFieldHint, buttonLabel, price } = this.props;
+    const { name, balance, hint } = this.props;
 
     return (
-      <div className='buyTokensForm'>
-        <div className='buyTokensForm_item'>
-          <div className='buyTokensForm_element'>
+      <TableRow>
+        <TableRowColumn>{name}</TableRowColumn>
+        <TableRowColumn>{balance}</TableRowColumn>
+        <TableRowColumn>
+          {this.hasAction() && (
             <TextField
               style={{ width: 316 }}
-              floatingLabelText={textFieldLabel}
               floatingLabelFixed
-              hintText={textFieldHint || keys.manageTokensPage_buyTokensHint}
+              hintText={hint}
               errorText={this.state.errorText}
               value={this.state.value}
               onChange={e => this.handleInput(e.target.value)}
             />
-          </div>
-          <div className='buyTokensForm_element'>
-            <RaisedButton
-              label={buttonLabel || keys.approve}
-              disabled={!this.state.value || !!this.state.errorText || this.state.isSendingTx}
-              onClick={() => this.handleApprove(this.state.value)}
-              backgroundColor={keys.successColor}
-              labelColor={keys.buttonLabelColor}
-              style={{ marginTop: '28px' }}
-            />
-          </div>
-        </div>
-        { price && this.state.value && !this.state.errorText &&
-          <p className='balanceText'>
-            {keys.formatString(
-              keys.manageTokensPage_supposedPrice,
-              numberWithSpaces(price * this.state.value)
-            )}
-            &nbsp;{keys.wei}
-          </p>
-        }
-        { this.state.isSendingTx && <LinearProgress mode='indeterminate' style={{ width: 316 }} /> }
-      </div>
+          )}
+        </TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>
+          {this.hasAction() && (this.state.isSendingTx
+            ? <CircularProgress size={23} thickness={2} />
+            : this.renderActions()
+          )}
+        </TableRowColumn>
+      </TableRow>
     );
   }
 }
 
+ApproveForm.defaultProps = {
+  actions: []
+};
+
 ApproveForm.propTypes = {
-  textFieldLabel: PropTypes.string.isRequired,
-  textFieldHint: PropTypes.string,
-  buttonLabel: PropTypes.string,
-  approveTokens: PropTypes.func.isRequired,
-  price: PropTypes.string
+  name: PropTypes.string.isRequired,
+  balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  hint: PropTypes.string,
+  actions: PropTypes.array
 };
 
 export default ApproveForm;

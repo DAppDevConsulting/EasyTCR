@@ -9,6 +9,7 @@ import './style.css';
 import keys from '../../i18n';
 import TxQueue from '../TxQueue';
 import { numberWithSpaces } from '../../utils/Parameterizer';
+import BaseUnitsTooltip from '../BaseUnitsTooltip';
 
 class ParameterizerEdit extends Component {
   constructor (props) {
@@ -76,6 +77,7 @@ class ParameterizerEdit extends Component {
               onChange={e => this.handleValueChange(e.target.value)}
               value={this.state.newValue}
             />
+            <BaseUnitsTooltip />
             <RaisedButton
               label={keys.proposeValueChange}
               backgroundColor={keys.successColor}

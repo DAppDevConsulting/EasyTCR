@@ -155,22 +155,28 @@ class TCR {
     return {tokens, ethers};
   }
 
-  static async getApprovedTokens (address = null) {
+  static async getApprovedTokens (address = null, baseUnits = true) {
     let account = await this.registry().getAccount(address || this.defaultAccountAddress());
     let plcr = await TCR.getPLCRVoting();
     let parameterizer = await TCR.getParameterizer();
-    let tokenDecimals = await account.getTokenDecimals();
 
-    let registryTokens = this.formatWithoutDecimals(await account.getApprovedTokens(this.registry().address), tokenDecimals);
-    let plcrTokens = this.formatWithoutDecimals(await account.getApprovedTokens(plcr.address), tokenDecimals);
-    let parameterizerTokens = this.formatWithoutDecimals(await account.getApprovedTokens(parameterizer.address), tokenDecimals);
+    let data = {
+      registry: await account.getApprovedTokens(this.registry().address),
+      plcr: await account.getApprovedTokens(plcr.address),
+      parameterizer: await account.getApprovedTokens(parameterizer.address)
+    };
+
+    // Converting from base units to tokens for displaying
+    if (!baseUnits) {
+      let tokenDecimals = await account.getTokenDecimals();
+
+      Object.keys(data).map((key, index) => {
+        data[key] = this.formatWithoutDecimals(data[key], tokenDecimals);
+      });
+    }
 
     // @TODO: fix it with BN
-    return {
-      registry: registryTokens,
-      plcr: plcrTokens,
-      parameterizer: parameterizerTokens
-    };
+    return data;
   }
 
   static async getVotingRights (address = null) {

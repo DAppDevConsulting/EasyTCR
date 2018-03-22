@@ -17,6 +17,7 @@ import * as actions from '../../actions/CandidateActions';
 import * as appActions from '../../actions/AppActions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import BaseUnitsTooltip from '../BaseUnitsTooltip';
 
 class CandidateContainer extends Component {
   constructor (props) {
@@ -135,6 +136,7 @@ class CandidateContainer extends Component {
                 this.setState({stake: stake, stakeError: errorText});
               }}
             />
+            <BaseUnitsTooltip />
           </div>
           <div className='formItem'>
             <RaisedButton
