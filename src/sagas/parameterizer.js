@@ -51,7 +51,7 @@ export function * processProposal (action) {
 export function * challengeProposal (action) {
   const queue = yield call(getChallengeProposalTx, action.proposal);
 
-  yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue });
+  yield put({ type: PARAMETERIZER_SHOW_TX_QUEUE, queue, transactionParameter: action.proposal.contractName });
 }
 
 export default function * flow () {

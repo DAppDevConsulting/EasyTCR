@@ -12,7 +12,6 @@ export default class ListingsRewardsMapper {
     const item = await IPFS.get(listing.data);
     item.label = item.name ? item.name : item.id;
     const challengeData = await registry.contract.methods.challenges(listing.challengeId).call();
-    console.log(challengeData);
     if (challengeData && challengeData.totalTokens) {
       const plcr = await registry.getPLCRVoting();
       listing.numTokens = await plcr.getNumTokens(accountAddress, listing.challengeId);
