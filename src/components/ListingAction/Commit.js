@@ -63,6 +63,7 @@ class Commit extends Component {
     // TODO: зачем это выносить в глобальный стейт?
     this.props.tokenHolderActions.hideVotingCommitTxQueue();
     this.props.tokenHolderActions.requestCurrentListing(this.props.listing.id, this.props.registry);
+    this.setState({salt: randomInt(1e6, 1e8), stake: 1, option: 1});
   }
 
   renderTxQueue () {
@@ -131,6 +132,19 @@ class Commit extends Component {
             </RadioButtonGroup>
           </div>
         </div>
+        { FileUtil.isSupported()
+          ? <RaisedButton
+            style={{marginTop: '20px'}}
+            label={keys.downloadCommit}
+            backgroundColor={keys.successColor}
+            labelColor={keys.buttonLabelColor}
+            labelPosition='before'
+            icon={<DownloadIcon />}
+            onClick={() => this.downloadCommit()}
+          />
+          : ''
+        }
+        <br />
         {
           this.state.hasVoted
             ? <RaisedButton
@@ -149,19 +163,6 @@ class Commit extends Component {
               onClick={() => this.handleVote()}
             />
         }
-        <br />
-        { FileUtil.isSupported()
-          ? <RaisedButton
-            style={{marginTop: '20px'}}
-            label={keys.downloadCommit}
-            backgroundColor={keys.successColor}
-            labelColor={keys.buttonLabelColor}
-            labelPosition='before'
-            icon={<DownloadIcon />}
-            onClick={() => this.downloadCommit()}
-          />
-          : ''
-        }
       </div>
     );
   }
@@ -169,8 +170,8 @@ class Commit extends Component {
   renderAlreadyCommitedBlock () {
     return (
       <div>
-        <p className='challengeId'>Your vote already commited</p>
-        <p className='challengeId'>You commit <b>{this.props.listing.commitedTokens} tokens</b></p>
+        <p className='challengeId'>{keys.voteAlreadyCommited}</p>
+        <p className='challengeId'>{keys.commitedTokensNum} <b>{keys.formatString(keys.tokensMul, this.props.listing.commitedTokens)}</b></p>
       </div>
     );
   }

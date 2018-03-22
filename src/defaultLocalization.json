@@ -177,6 +177,9 @@
     "challenge": "Challenge",
     "remainingTimeText": "Remaining time",
     "minDepositRequired": "Minimum deposit required",
+    "voteAlreadyCommited": "Your vote already committed",
+    "commitedTokensNum": "You have committed",
+    "tokensMul": "{0} tokens",
 
     "parameterizationPage": "Parameterization page",
     "parameterizationTitle": "TCR Variables",
