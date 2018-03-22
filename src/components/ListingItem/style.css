@@ -24,6 +24,10 @@
 	margin: 0;
 }
 
+.listingMeta a:hover {
+	text-decoration: underline;
+}
+
 .listingContent {
 	text-align: center;
 	font-size: 14px;

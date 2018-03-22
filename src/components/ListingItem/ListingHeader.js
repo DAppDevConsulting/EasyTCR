@@ -2,18 +2,20 @@ import React from 'react';
 import keys from '../../i18n';
 import PropTypes from 'prop-types';
 import Deposit from './Deposit';
+import EthNetworkUtil from '../../utils/EthNetworkUtil';
+const networkId = require('../../cfg.json').network;
 
 const ListingHeader = ({
   listing,
   minDeposit
 }) => {
+  const ownerUrl = `${EthNetworkUtil.getEtherscanUrl(networkId)}/address/${listing.account}`;
   return (
     <div className='listingHeader'>
       <div>
         <h4 className='headline'>{listing.name}</h4>
         <p className='listingMeta'>
-          {keys.added}: {listing.added || '01-02-2017'} |{' '}
-          {keys.unchallenged}: {listing.unchallenged || '13:04:01'}
+          <a href={ownerUrl} target='_blank'>{keys.owner}</a>
         </p>
       </div>
       {!listing.belongToAccount ? <Deposit listing={listing} minDeposit={minDeposit} /> : null}
