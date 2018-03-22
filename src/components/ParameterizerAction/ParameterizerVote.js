@@ -20,7 +20,7 @@ class ParameterizerVote extends Component {
     this.state = {
       hasVoted: false,
       salt: randomInt(1e6, 1e8),
-      stake: 0,
+      stake: 1,
       option: 1
     };
   }
@@ -30,7 +30,7 @@ class ParameterizerVote extends Component {
       this.setState({
         hasVoted: false,
         salt: randomInt(1e6, 1e8),
-        stake: 0,
+        stake: 1,
         option: 1
       });
     }
