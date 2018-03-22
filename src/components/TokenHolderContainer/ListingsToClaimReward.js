@@ -71,6 +71,7 @@ class ListingsToClaimReward extends Component {
           open={this.state.popupOpened}
           onClose={() => this.setState({popupOpened: false})}
           listing={this.state.selectedListing}
+          registry={this.props.registry}
         />
         <Table
           fixedHeader
@@ -93,6 +94,7 @@ class ListingsToClaimReward extends Component {
 }
 
 ListingsToClaimReward.propTypes = {
+  registry: PropTypes.string,
   config: PropTypes.object.isRequired,
   tokenHolder: PropTypes.object.isRequired,
   tokenHolderActions: PropTypes.object.isRequired

@@ -58,7 +58,7 @@ class TokenHolderContainer extends Component {
               <CardHeader
                 title={keys.listingsToClaimReward}
               />
-              <ListingsToClaimReward config={this.rewardsListingConfig} />
+              <ListingsToClaimReward config={this.rewardsListingConfig} registry={this.props.registry} />
             </Card>
             : ''
           }
