@@ -21,6 +21,7 @@ class BalanceItem extends Component {
   handleInput (value) {
     const re = /^\d+$/;
 
+    // TODO: weak validation. 0066777 will be correct.
     if (re.test(value) || value === '') {
       this.setState({ value, errorText: '' });
     } else {

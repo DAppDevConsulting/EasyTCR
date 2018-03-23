@@ -153,11 +153,12 @@ class TCR {
   }
 
   static formatWithDecimals (amount, decimals = 8) {
-    return new BN(amount, 10) / 10 ** decimals;
+    const decimalsBN = new BN(10, 10).pow(new BN(decimals));
+    return new BN(amount, 10).div(decimalsBN);
   }
 
   static formatWithoutDecimals (amount, decimals = 8) {
-    return parseInt(this.formatWithDecimals(amount, decimals), 10);
+    return new BN(this.formatWithDecimals(amount, decimals), 10).toString();
   }
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import BN from 'bn.js';
 import Card from 'material-ui/Card';
 import TxQueue from '../TxQueue';
 import './style.css';
@@ -23,11 +24,12 @@ class ListingItem extends Component {
   }
 
   setDepositValue (listing, value) {
-    const valueNum = parseInt(value, 10);
+    const valueNum = new BN(value, 10);
+    const listingDeposit = new BN(listing.deposit.toString(), 10);
 
-    listing.deposit > valueNum
-      ? this.props.actions.withdrawListing(listing.id, listing.deposit - valueNum)
-      : this.props.actions.depositListing(listing.id, valueNum - listing.deposit);
+    listingDeposit.gt(valueNum)
+      ? this.props.actions.withdrawListing(listing.id, listingDeposit.sub(valueNum))
+      : this.props.actions.depositListing(listing.id, valueNum.sub(listingDeposit));
     this.setState({ depositValue: '', errorText: '' });
   }
 
@@ -37,10 +39,12 @@ class ListingItem extends Component {
 
   handleDepositValueChange (value) {
     const re = /^\d+$/;
-    const newValue = parseInt(value, 10);
-    if (this.props.listing.deposit === newValue) {
+    const valueNum = new BN(value, 10);
+    const minDeposit = new BN(this.props.minDeposit, 10);
+    const listingDeposit = new BN(this.props.listing.deposit.toString(), 10);
+    if (listingDeposit.eq(valueNum)) {
       this.setState({ depositValue: value, errorText: keys.sameValueError });
-    } else if (this.props.minDeposit > newValue) {
+    } else if (minDeposit.gt(valueNum)) {
       this.setState({ depositValue: value, errorText: keys.candidatePage_applyForm_stakeErrorText });
     } else if (re.test(value) || value === '') {
       this.setState({ depositValue: value, errorText: '' });

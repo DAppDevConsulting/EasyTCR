@@ -59,7 +59,7 @@ export async function challengeListing (name, tokensAmount) {
           });
       },
       {
-        label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff),
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff.toString()),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
       }
     );
@@ -102,7 +102,7 @@ export async function commitVote (id, hash, stake) {
             });
         },
         {
-          label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff),
+          label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff.toString()),
           content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'PLCR', tokenName: keys.tokenName })
         }
       );
@@ -111,7 +111,7 @@ export async function commitVote (id, hash, stake) {
     queue.add(
       () => plcr.requestVotingRights(preapprove),
       {
-        label: keys.formatString(keys.transaction_requestVotingRightsHeader, preapprove),
+        label: keys.formatString(keys.transaction_requestVotingRightsHeader, preapprove.toString()),
         content: keys.transaction_requestVotingRightsText
       }
     );
@@ -157,7 +157,6 @@ export async function processProposal (proposalObj) {
   const parameterizer = await registry.getParameterizer();
   const { contractName, proposal } = proposalObj;
   const proposalInstance = parameterizer.getProposal(contractName, proposal);
-  // TODO: fix in tcr-api
   return proposalInstance.process({});
 }
 
@@ -189,7 +188,7 @@ export async function proposeNewParameterizerValue (parameterName, newParameterV
       {
         label: keys.formatString(
           keys.transaction_approveTransferTokensHeader,
-          diff
+          diff.toString()
         ),
         content: keys.formatString(
           keys.transaction_approveTransferTokensText,
@@ -232,7 +231,7 @@ export async function challengeProposalTx (proposal) {
     queue.add(
       () => account.approveTokens(parameterizer.address, diff).then(ti => manager.watchForTransaction(ti)),
       {
-        label: keys.formatString(keys.transaction_approveTransferTokensHeader, tokensAmount),
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff.toString()),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: keys.registryName, type: 'Registry', tokenName: keys.tokenName })
       }
     );
@@ -267,7 +266,7 @@ export async function depositListing (id, value) {
           });
       },
       {
-        label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff),
+        label: keys.formatString(keys.transaction_approveTransferTokensHeader, diff.toString()),
         content: keys.formatString(keys.transaction_approveTransferTokensText, { name: 'TCR', type: 'Registry', tokenName: 'TCR' })
       }
     );
@@ -293,7 +292,7 @@ export async function withdrawListing (id, value) {
   const queue = new PromisesQueue();
   queue.add(
     async () => {
-      return listing.withdraw(value)
+      return listing.withdraw(new BN(value, 10))
         .catch(error => console.error(error));
     },
     {
