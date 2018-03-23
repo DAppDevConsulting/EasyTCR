@@ -14,7 +14,11 @@ import {
   REQUEST_PARAMETERIZER_INFORMATION,
   PROCESS_PROPOSAL,
   CHALLENGE_PROPOSAL,
-  PARAMETERIZER_HIDE_TX_QUEUE
+  PARAMETERIZER_HIDE_TX_QUEUE,
+  PARAMETERIZER_COMMIT_SEND,
+  PARAMETERIZER_COMMIT_HIDE_TX_QUEUE,
+  PARAMETERIZER_REVEAL_SEND,
+  PARAMETERIZER_REVEAL_HIDE_TX_QUEUE
 } from '../constants/actions';
 
 export function challenge (listing) {
@@ -123,4 +127,25 @@ export function processProposal (proposal) {
 
 export function challengeProposal (proposal) {
   return { type: CHALLENGE_PROPOSAL, proposal };
+}
+
+export function parameterizerCommitVote (parameter, id, option, salt, stake) {
+  return {
+    type: PARAMETERIZER_COMMIT_SEND,
+    parameter,
+    id,
+    option,
+    salt,
+    stake
+  };
+}
+
+export function parameterizerRvealVote (parameter, id, option, salt) {
+  return {
+    type: PARAMETERIZER_REVEAL_SEND,
+    parameter,
+    id,
+    option,
+    salt
+  };
 }

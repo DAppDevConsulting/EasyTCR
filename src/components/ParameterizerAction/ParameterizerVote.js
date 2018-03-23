@@ -37,7 +37,8 @@ class ParameterizerVote extends Component {
   }
 
   handleVote () {
-    this.props.tokenHolderActions.commitVote(
+    this.props.tokenHolderActions.parameterizerCommitVote(
+      this.props.activeProposal.contractName,
       this.props.activeProposal.challengeId,
       this.state.option,
       this.state.salt,
@@ -132,9 +133,9 @@ ParameterizerVote.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  showTxQueue: state.commit.showTxQueue,
+  showTxQueue: state.parameterizer.showTxQueue,
   transactionParameter: state.parameterizer.transactionParameter,
-  txQueue: state.commit.queue
+  txQueue: state.parameterizer.queue
 });
 
 const mapDispatchToProps = (dispatch) => ({

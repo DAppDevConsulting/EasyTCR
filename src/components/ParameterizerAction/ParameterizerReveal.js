@@ -24,7 +24,12 @@ class ParameterizerReveal extends Component {
   }
 
   handleVote () {
-    this.props.tokenHolderActions.revealVote(this.props.activeProposal.challengeId, this.state.option, this.state.salt);
+    this.props.tokenHolderActions.parameterizerRvealVote(
+      this.props.activeProposal.contractName,
+      this.props.activeProposal.challengeId,
+      this.state.option,
+      this.state.salt
+    );
   }
 
   resolveVoting () {
@@ -137,8 +142,9 @@ ParameterizerReveal.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  showTxQueue: state.reveal.showTxQueue,
-  txQueue: state.reveal.queue
+  showTxQueue: state.parameterizer.showTxQueue,
+  transactionParameter: state.parameterizer.transactionParameter,
+  txQueue: state.parameterizer.queue
 });
 
 const mapDispatchToProps = (dispatch) => ({
