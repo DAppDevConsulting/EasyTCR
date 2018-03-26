@@ -18,6 +18,8 @@ import * as appActions from '../../actions/AppActions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import BaseUnitsTooltip from '../BaseUnitsTooltip';
+const tcrOfTcrs = require('../../cfg.json').TCRofTCRs;
+
 
 class CandidateContainer extends Component {
   constructor (props) {
@@ -68,7 +70,7 @@ class CandidateContainer extends Component {
   render () {
     const { listings, txQueue, showTxQueue, isFetching } = this.props.candidate;
     const { cancelListingApplication } = this.props.actions;
-    const useFileUpload = this.props.registry === '0x8708399ec21db3f10764970c76d352694fa76333'; // Is TCR of TCRs
+    const useFileUpload = this.props.registry === tcrOfTcrs.registry; // Is TCR of TCRs
     // TODO: validate this value
     const minCrutch = this.props.parameterizer.parameters[0].value;
     return (
