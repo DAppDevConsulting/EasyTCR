@@ -53,7 +53,7 @@ class App extends Component {
 
     // check if Metamask is in Rinkeby network
     window.web3.version.getNetwork((error, network) => {
-      if (network !== networkId) {
+      if (networkId !== '*' && network !== networkId) {
         return this.setState({ networkError: keys.formatString(keys.networkError, EthNetworkUtil.getName(networkId)) });
       } else {
         const address = UtlUtils.getRegistryAddressByLink() || tcrOfTcrs.registry;
