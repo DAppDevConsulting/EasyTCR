@@ -86,7 +86,7 @@ export async function commitVote (id, hash, stake) {
   const manager = new TransactionManager(provider());
   const approvedPlcrTokens = new BN((await TCR.getApprovedTokens()).plcr, 10);
   stake = new BN(stake, 10);
-  const votingRights = new BN(await TCR.getVotingRights());
+  const votingRights = new BN((await TCR.getVotingRights()).toString());
   const queue = new PromisesQueue();
 
   if (votingRights.lt(stake)) {
