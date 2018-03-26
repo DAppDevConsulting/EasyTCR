@@ -13,7 +13,7 @@
         },
         ```
     
-    2. Set the Web3 fallback provider: 
+    2. Set the Web3 fallback provider (in case of local provider type `http://localhost:7455` or any other address): 
     
          ```json
         "WEB3": {
@@ -21,7 +21,7 @@
         },
         ```
         
-    3. Set the Ethereum network id (1 – mainnet, 4 – rinkeby):
+    3. Set the Ethereum network id (1 – mainnet, 4 – rinkeby, * – any network). 
     
         ```json
         ...
@@ -56,6 +56,10 @@
     
 4. Run `npm start` to start the development server.
 
+## Local Ethereum Network
+*ethereum-tcr-ui* is completely compatible with Ganache (TestRPC) client and it can be used as any other network.
+In order to check the Ganache deploying process of TCR, please refer to [oficial TCR repo](https://github.com/skmgoldin/tcr) and [Ganache CLI repo](https://github.com/trufflesuite/ganache-cli)
+
 ## Important files
 
 * `public/index.html` is the page template;
@@ -65,4 +69,4 @@
 * `src/defaultLocalization.json` default/fallback localization file.
 
 ### Deploying
-To completely install all dependencies via `npm install` you have to add an SSH key of the machine you're working on in order to pull a [ethereum-tcr-api](https://gitlab.com/ethereum-tcr/ethereum-tcr-api).
+To completely install all dependencies via `npm install` you have to add an SSH key of the machine you're working on in order to pull a [ethereum-tcr-api](https://gitlab.com/ethereum-tcr/ethereum-tcr-api) package.
