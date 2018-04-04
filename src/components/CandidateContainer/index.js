@@ -16,10 +16,8 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/CandidateActions';
 import * as appActions from '../../actions/AppActions';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import BaseUnitsTooltip from '../BaseUnitsTooltip';
 const tcrOfTcrs = require('../../cfg.json').TCRofTCRs;
-
 
 class CandidateContainer extends Component {
   constructor (props) {
