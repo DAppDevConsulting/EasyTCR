@@ -357,14 +357,25 @@ const prepareSynchronizers = async (address, accountAddress) => {
   await _map.get(address).synchronize();
   console.timeEnd('sync');
   // TODO: hack
+  setRegistryWatcher();
+  setRewardWatcher();
+  setParametrizerWatcher();
+};
+
+const setRegistryWatcher = () => {
   if (typeof registryNotificationCandidate === 'function') {
     _map.get(currentContract).setRegistryWatcher(registryNotificationCandidate);
     registryNotificationCandidate = null;
   }
+};
+const setRewardWatcher = () => {
   if (typeof rewardNotificationCandidate === 'function') {
     _map.get(currentContract).setRewardWatcher(rewardNotificationCandidate);
     rewardNotificationCandidate = null;
   }
+};
+
+const setParametrizerWatcher = () => {
   if (typeof parametrizerNotificationCandidate === 'function') {
     _map.get(currentContract).setParametrizerWatcher(parametrizerNotificationCandidate);
     parametrizerNotificationCandidate = null;
@@ -423,12 +434,23 @@ const getListingToClaimReward = async (address, challengeId, accountAddress) => 
 // TODO: кривоватая схема
 const setRegistryNotificationHandler = (handler) => {
   registryNotificationCandidate = handler;
+  if (currentContract && isRegistryReady(currentContract)) {
+    setRegistryWatcher();
+  }
 };
+
 const setRewardNotificationHandler = (handler) => {
   rewardNotificationCandidate = handler;
+  if (currentContract && isRegistryReady(currentContract)) {
+    setRewardWatcher();
+  }
 };
+
 const setParametrizerNotificationHandelr = (handler) => {
   parametrizerNotificationCandidate = handler;
+  if (currentContract && isRegistryReady(currentContract)) {
+    setParametrizerWatcher();
+  }
 };
 
 const onNewBlock = (handler) => {
