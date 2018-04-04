@@ -158,7 +158,7 @@ class TCR {
   }
 
   static formatWithoutDecimals (amount, decimals = 8) {
-    return new BN(this.formatWithDecimals(amount, decimals), 10).toString();
+    return this.formatWithDecimals(amount, decimals).toString();
   }
 }
 
