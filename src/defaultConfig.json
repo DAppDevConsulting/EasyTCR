@@ -47,6 +47,7 @@
       "candidatePage_transactionsSteps_applyCandidate": "Apply candidate",
       "candidatePage_transactionsSteps_applyCandidateText": "Submit candidate application to Registry.",
       "candidatePage_applyForm_stakeTitle": "Bet Token or get Tokens to bet!",
+      "candidatePage_applyForm_stakeLabel": "Deposit amount",
       "candidatePage_applyForm_stakeHint": "Min {0}",
       "candidatePage_applyForm_stakeErrorText": "Stake less then min!",
       "candidatePage_listingName": "My TCR contract",

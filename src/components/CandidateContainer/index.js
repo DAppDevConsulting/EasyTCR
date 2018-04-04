@@ -53,20 +53,6 @@ class CandidateContainer extends Component {
     this.props.actions.getCandidateListings();
   }
 
-  // only for English
-  renderLink (key) {
-    const parts = key.split('or ');
-    const parts2 = parts[1].split(' to');
-
-    return (
-      <div style={{ display: 'inline-block' }}>
-        { parts[0] }or&nbsp;
-        <Link to='manage_tokens' style={{ textDecoration: 'underline' }}>{parts2[0]}</Link>
-        &nbsp;to{ parts2[1] }
-      </div>
-    );
-  }
-
   render () {
     const { listings, txQueue, showTxQueue, isFetching } = this.props.candidate;
     const { cancelListingApplication } = this.props.actions;
@@ -103,7 +89,7 @@ class CandidateContainer extends Component {
           }
           {useFileUpload &&
           <div className='formItem'>
-            <div>{keys.candidate_configFile}<span className='requiredIcon'>*</span></div>
+            <div>{keys.candidate_configFile}<span className='requiredIcon'> *</span></div>
             <DropZone
               multiple={false}
               accept='application/json'
@@ -124,7 +110,7 @@ class CandidateContainer extends Component {
           </div>
           }
           <div className='formItem'>
-            <div>{this.renderLink(keys.candidatePage_applyForm_stakeTitle)}<span className='requiredIcon'>*</span></div>
+            <div>{keys.candidatePage_applyForm_stakeLabel}<span className='requiredIcon'> *</span></div>
             <TextField
               hintText={keys.formatString(keys.candidatePage_applyForm_stakeHint, minCrutch)}
               value={this.state.stake || ''}
