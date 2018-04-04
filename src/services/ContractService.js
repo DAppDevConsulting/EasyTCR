@@ -353,20 +353,19 @@ const prepareSynchronizers = async (address, accountAddress) => {
     _map.get(currentContract).clear();
   }
   currentContract = address;
-  let synchronizationRunning = _map.get(address).synchronizationRunning();
   console.time('sync');
   await _map.get(address).synchronize();
   console.timeEnd('sync');
   // TODO: hack
-  if (typeof registryNotificationCandidate === 'function' && !synchronizationRunning) {
+  if (typeof registryNotificationCandidate === 'function') {
     _map.get(currentContract).setRegistryWatcher(registryNotificationCandidate);
     registryNotificationCandidate = null;
   }
-  if (typeof rewardNotificationCandidate === 'function' && !synchronizationRunning) {
+  if (typeof rewardNotificationCandidate === 'function') {
     _map.get(currentContract).setRewardWatcher(rewardNotificationCandidate);
     rewardNotificationCandidate = null;
   }
-  if (typeof parametrizerNotificationCandidate === 'function' && !synchronizationRunning) {
+  if (typeof parametrizerNotificationCandidate === 'function') {
     _map.get(currentContract).setParametrizerWatcher(parametrizerNotificationCandidate);
     parametrizerNotificationCandidate = null;
   }
