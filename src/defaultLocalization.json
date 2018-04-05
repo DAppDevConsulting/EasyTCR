@@ -51,6 +51,8 @@
     "tokenHolderPage_listingDate": "Due date",
     "tokenHolderPage_listingActions": "Actions",
 
+    "tcrConfigError": "TCR Config file error: id field must be an address!",
+
     "candidatePage_title": "Applicant page",
     "candidatePage_addListingTitle": "Apply candidate",
     "candidatePage_transactionsSteps_title": "Make an application to Registry",

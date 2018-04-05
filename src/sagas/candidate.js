@@ -76,9 +76,8 @@ export function * applyListing (action) {
 
   let data = {name: action.name};
   let hash = Listing.hashName(action.name);
-  if (!action.name && action.file) {
+  if (action.file) {
     data = yield apply(IPFS, 'upload', [action.file]);
-    hash = Listing.hashName(data);
   } else {
     let content = JSON.stringify({...data, identifier: hash});
     let file = yield apply(IPFS, 'contentToFile', [action.name, content]);

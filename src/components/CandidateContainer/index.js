@@ -17,6 +17,7 @@ import * as actions from '../../actions/CandidateActions';
 import * as appActions from '../../actions/AppActions';
 import { connect } from 'react-redux';
 import BaseUnitsTooltip from '../BaseUnitsTooltip';
+import FileUtil from '../../utils/FileUtil';
 const tcrOfTcrs = require('../../cfg.json').TCRofTCRs;
 
 class CandidateContainer extends Component {
@@ -105,6 +106,9 @@ class CandidateContainer extends Component {
               <p style={{ margin: '0' }}>or <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>browse your computer</span></p>
             </DropZone>
             <div>{this.state.file ? this.state.file.name : ''}</div>
+            {this.state.listingError &&
+            <div className='configError'>{this.state.listingError}</div>
+            }
           </div>
           }
           <div className='formItem'>
@@ -158,8 +162,13 @@ class CandidateContainer extends Component {
     this.setState({listing: '', stake: 0, file: null});
   }
 
-  onFileSelected (files) {
-    this.setState({file: files[0]});
+  async onFileSelected (files) {
+    const file = files[0];
+    const reg = /0x[a-fA-F0-9]{40}/;
+    const content = await FileUtil.readAsJson(file);
+    const result = content.id ? reg.exec(content.id) : null;
+    const listingError = result && result.length === 1 ? null : keys.tcrConfigError;
+    this.setState({listing: content.id, file, listingError});
   }
 }
 
