@@ -108,6 +108,9 @@ class TCR {
    * @returns Boolean
    */
   static isValidIdForListing (listingHash, identifier) {
+    if (!identifier) {
+      return false;
+    }
     return listingHash === Listing.hashName(identifier);
   }
 
