@@ -28,6 +28,11 @@ const renderRow = (config, data, registry, index) => (
                 : data[column.propName]
               }
             </span>
+            {data.isSuspicious && (
+              <span style={{...getListingItemStatusStyle(data[column.propName]), backgroundColor: keys.errorColor}}>
+                {keys.candidatePage_suspicious}
+              </span>
+            )}
           </TableRowColumn>
         );
       } else if (column.propName === 'action') {

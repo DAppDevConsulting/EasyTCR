@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { Registry } from 'ethereum-tcr-api';
+import { Registry, Listing } from 'ethereum-tcr-api';
 
 const REGISTRY = 'registry';
 const CONFIG = 'config';
@@ -99,6 +99,16 @@ class TCR {
 
   static async getParameterizer () {
     return this.registry().getParameterizer();
+  }
+
+  /**
+   * Validates listing for the case when human-readable identifier hash is not the same as listing hash
+   * @param listingHash Listing hash
+   * @param identifier Unhashed (human-readable) identifier associated with listing
+   * @returns Boolean
+   */
+  static isValidIdForListing (listingHash, identifier) {
+    return listingHash === Listing.hashName(identifier);
   }
 
   static async getBalance (address = null) {

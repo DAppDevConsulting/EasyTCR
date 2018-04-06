@@ -7,7 +7,8 @@ export const getListingItemStatusStyle = status => {
     backgroundColor: '#c2cad4',
     color: '#fff',
     textTransform: 'uppercase',
-    fontSize: '10px'
+    fontSize: '10px',
+    marginRight: '4px'
   };
 
   switch (status) {

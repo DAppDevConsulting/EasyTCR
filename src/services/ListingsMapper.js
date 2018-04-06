@@ -1,6 +1,7 @@
 import keys from '../i18n';
 import moment from 'moment';
 import IPFS from './IPFS';
+import TCR from '../TCR';
 
 const NULL_VOTE_COMMIT_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
 export default class ListingsMapper {
@@ -61,7 +62,8 @@ export default class ListingsMapper {
         account,
         challengeId,
         whitelisted,
-        deposit
+        deposit,
+        isSuspicious: listingHash !== listingData.identifier
       };
 
       if (stagingStatus) {

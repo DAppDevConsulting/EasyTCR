@@ -3,6 +3,8 @@ import keys from '../../i18n';
 import PropTypes from 'prop-types';
 import Deposit from './Deposit';
 import EthNetworkUtil from '../../utils/EthNetworkUtil';
+import { getListingItemStatusStyle } from '../../utils/ListingsList';
+
 const networkId = require('../../cfg.json').network;
 
 const ListingHeader = ({
@@ -14,6 +16,11 @@ const ListingHeader = ({
     <div className='listingHeader'>
       <div>
         <h4 className='headline'>{listing.name}</h4>
+        {listing.isSuspicious && (
+          <span style={{...getListingItemStatusStyle(listing.status), backgroundColor: keys.errorColor}}>
+            {keys.candidatePage_suspicious}
+          </span>
+        )}
         <p className='listingMeta'>
           <a href={ownerUrl} target='_blank'>{keys.owner}</a>
         </p>

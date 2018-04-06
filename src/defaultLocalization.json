@@ -66,6 +66,7 @@
     "candidatePage_listingStatus": "Status",
     "candidatePage_listingDate": "Due date",
     "candidatePage_listingActions": "Actions",
+    "candidatePage_suspicious": "Suspicious",
 
     "consumerPage_title": "Consumer page",
     "consumerPage_listingName": "Candidate",
@@ -209,6 +210,7 @@
     "buttonColor": "#536dfe",
     "buttonLabelColor": "#fff",
     "successColor": "#66bb6a",
+    "errorColor": "#F8333C",
     "textColor": "#7f8fa4",
     "accentColor": "#748FFC",
     "tabLabelColor": "#3f536e",

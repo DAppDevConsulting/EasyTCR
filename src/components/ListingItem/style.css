@@ -16,6 +16,8 @@
 
 .listingHeader .headline {
 	margin-bottom: 3px;
+    display: inline-block;
+    margin-right: 5px;
 }
 
 .listingMeta {
