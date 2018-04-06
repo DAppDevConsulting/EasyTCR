@@ -74,12 +74,12 @@ export function * applyListing (action) {
     return;
   }
 
-  let data = {name: action.name};
+  let data;
   let hash = Listing.hashName(action.name);
   if (action.file) {
     data = yield apply(IPFS, 'upload', [action.file]);
   } else {
-    let content = JSON.stringify({...data, identifier: hash});
+    let content = JSON.stringify({id: action.name});
     let file = yield apply(IPFS, 'contentToFile', [action.name, content]);
     data = yield apply(IPFS, 'upload', [file]);
   }

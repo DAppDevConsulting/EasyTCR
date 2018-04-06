@@ -15,11 +15,16 @@ const cache = new Cache(async (key) => {
   const item = await IPFS.get(listing.data);
   item.registry = item.id;
   item.hash = key; // todo: Reimplement
-  let registry = new Registry(item.id, provider());
-  item.name = await registry.getName();
+  item.name = await getRegistryName(item.id);
 
   return item;
 });
+
+const getRegistryName = async (address) => {
+  let registry = new Registry(address, provider());
+  const name = await registry.getName();
+  return name;
+};
 
 const isValidTcr = (item) => {
   return provider().utils.isAddress(item.id);
@@ -54,8 +59,7 @@ const getLocalization = async (registryHash) => {
 
 const createDefault = async (address) => {
   defaultConfig.id = defaultConfig.registry = address;
-  let registry = new Registry(address, provider());
-  defaultConfig.name = await registry.getName(); // TODO: get from contract
+  defaultConfig.name = await getRegistryName(address);
   defaultConfig.hash = NOT_IN_CONTRACT;
   return defaultConfig;
 };
@@ -82,5 +86,6 @@ const switchTo = async (registryAddress) => {
 
 export default {
   get,
-  switchTo
+  switchTo,
+  getRegistryName
 };

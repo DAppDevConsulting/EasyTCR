@@ -1,6 +1,9 @@
 import api from './ApiWrapper';
 import ListingsMapper from './ListingsMapper';
 import Cache from '../utils/Cache';
+import RegistriesProvider from './RegistriesProvider';
+
+const TCRofTCRs = require('../cfg.json').TCRofTCRs;
 
 let currentRegistry = null;
 const handlers = [];
@@ -11,7 +14,13 @@ const createCache = (registry) => {
     async (key) => {
       const listing = await api.getListing(registry.address, key);
       const item = await ListingsMapper.map(key, listing.data, registry);
-      item.label = item.name;
+      // if is TCR of TCRs - get name from contract
+      if (registry.address === TCRofTCRs.registry) {
+        const nameFromContract = await RegistriesProvider.getRegistryName(item.name);
+        item.label = `${nameFromContract} (${item.name})`;
+      } else {
+        item.label = item.name;
+      }
 
       return item;
     },

@@ -25,11 +25,12 @@ export default class ListingsMapper {
     return listing;
   }
 
+  // TODO: in future use one of "name" or "id" for human-readable field
   static getName (listingData) {
     if (!listingData) {
       return '';
     }
-    return listingData.name ? listingData.name : listingData.id
+    return listingData.id ? listingData.id : listingData.name;
   }
 
   static async map (listingHash, data, registry) {
@@ -63,7 +64,7 @@ export default class ListingsMapper {
         challengeId,
         whitelisted,
         deposit,
-        isSuspicious: listingHash !== listingData.identifier
+        isSuspicious: !TCR.isValidIdForListing(listingHash, this.getName(listingData))
       };
 
       if (stagingStatus) {
