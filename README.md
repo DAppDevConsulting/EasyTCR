@@ -1,4 +1,4 @@
-# Token Curated Regestries UI
+# Token Curated Registries UI
 
 ## Installation
 1. Clone this repo.
