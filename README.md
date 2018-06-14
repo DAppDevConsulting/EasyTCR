@@ -8,7 +8,7 @@
     
         ```json
         "IPFS": {
-            "geatway": "https://ipfs.infura.io",
+            "gateway": "https://ipfs.infura.io",
             "apiServer": "https://ipfs.infura.io:5001"
         },
         ```
@@ -41,7 +41,7 @@
     ```json
     {
       "IPFS": {
-        "geatway": "https://ipfs.infura.io",
+        "gateway": "https://ipfs.infura.io",
         "apiServer": "https://ipfs.infura.io:5001"
       },
       "WEB3": {

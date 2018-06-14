@@ -1,5 +1,5 @@
 const IPFSConfig = require('../cfg.json').IPFS;
-const geatway = IPFSConfig.geatway;
+const gateway = IPFSConfig.gateway;
 const apiServer = IPFSConfig.apiServer;
 
 const defaultConfig = require('../defaultConfig');
@@ -8,7 +8,7 @@ const get = async (hash) => {
   let cfg;
   try {
     cfg = await (await window.fetch(
-      `${geatway}/ipfs/${hash}`,
+      `${gateway}/ipfs/${hash}`,
       {
         method: 'get'
       }
